@@ -1,0 +1,30 @@
+{
+  "name": "@stations/client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "description": "Browser-safe spatial catalogue reader, viewport feed store for custom maps and Windy plugins, and @azohra/meteo.station/client re-exports",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./build-inventory.json": "./dist/build-inventory.json"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-packages.mjs @stations/client",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@azohra/meteo.station": "0.7.0",
+    "@stations/contracts": "workspace:*",
+    "@stations/geography": "workspace:*"
+  }
+}

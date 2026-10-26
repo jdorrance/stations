@@ -1,0 +1,55 @@
+{
+  "name": "@stations/providers",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "description": "Weather station discovery, live vendor adapters, and mountable HTTP feed handler",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./azohra-vendors": {
+      "types": "./dist/azohra-vendors.d.ts",
+      "import": "./dist/azohra-vendors.js"
+    },
+    "./openwindmap": {
+      "types": "./dist/openwindmap.d.ts",
+      "import": "./dist/openwindmap.js"
+    },
+    "./holfuy": {
+      "types": "./dist/holfuy.d.ts",
+      "import": "./dist/holfuy.js"
+    },
+    "./awc": {
+      "types": "./dist/awc.d.ts",
+      "import": "./dist/awc.js"
+    },
+    "./seeds": {
+      "types": "./dist/seeds.d.ts",
+      "import": "./dist/seeds.js"
+    },
+    "./handler": {
+      "types": "./dist/handler.d.ts",
+      "import": "./dist/handler.js"
+    },
+    "./build-inventory.json": "./dist/build-inventory.json"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-packages.mjs @stations/providers",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@azohra/meteo.core": "0.3.1",
+    "@azohra/meteo.station": "0.7.0",
+    "@stations/contracts": "workspace:*",
+    "@stations/geography": "workspace:*"
+  }
+}

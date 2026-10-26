@@ -1,0 +1,35 @@
+{
+  "name": "stations-workspace",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build:packages": "node scripts/build-packages.mjs",
+    "check:boundaries": "node scripts/check-boundaries.mjs",
+    "check:api": "node scripts/check-api.mjs",
+    "test:packages": "node --test packages/*/test/*.test.mjs",
+    "test:consumer": "node scripts/test-consumer.mjs",
+    "check": "pnpm build:packages && pnpm check:boundaries && pnpm check:api",
+    "test": "node --test packages/*/test/*.test.mjs",
+    "build": "pnpm build:packages",
+    "catalogue:build": "node scripts/build-catalogue.mjs"
+  },
+  "devDependencies": {
+    "@stations/client": "workspace:*",
+    "@stations/contracts": "workspace:*",
+    "@stations/geography": "workspace:*",
+    "@stations/providers": "workspace:*",
+    "@types/node": "24.10.1",
+    "esbuild": "0.25.0",
+    "typescript": "5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

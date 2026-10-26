@@ -1,0 +1,512 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "stations": [
+    {
+      "uid": "awc:CYVR",
+      "vendor": "awc",
+      "nativeId": "CYVR",
+      "name": "Vancouver International",
+      "latitude": 49.194,
+      "longitude": -123.184,
+      "elevationM": 4,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYVR",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "CYVR"
+      }
+    },
+    {
+      "uid": "awc:KSEA",
+      "vendor": "awc",
+      "nativeId": "KSEA",
+      "name": "Seattle-Tacoma International",
+      "latitude": 47.449,
+      "longitude": -122.309,
+      "elevationM": 132,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=KSEA",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "KSEA"
+      }
+    },
+    {
+      "uid": "awc:MMTO",
+      "vendor": "awc",
+      "nativeId": "MMTO",
+      "name": "Toluca Licenciado Adolfo Lopez Mateos",
+      "latitude": 19.337,
+      "longitude": -99.566,
+      "elevationM": 2580,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "MMTO"
+      }
+    },
+    {
+      "uid": "awc:UDSG",
+      "vendor": "awc",
+      "nativeId": "UDSG",
+      "name": "Gyumri Shirak Airport",
+      "latitude": 40.75,
+      "longitude": 43.859,
+      "elevationM": 1524,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UDSG",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "UDSG"
+      }
+    },
+    {
+      "uid": "awc:UDYZ",
+      "vendor": "awc",
+      "nativeId": "UDYZ",
+      "name": "Yerevan Zvartnots International",
+      "latitude": 40.147,
+      "longitude": 44.396,
+      "elevationM": 865,
+      "country": "AM",
+      "region": "Yerevan",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UDYZ",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "UDYZ"
+      }
+    },
+    {
+      "uid": "campbell:woodside-agassiz",
+      "vendor": "campbell",
+      "nativeId": "woodside-agassiz",
+      "name": "Mt Woodside Launch",
+      "latitude": 49.2611,
+      "longitude": -121.8722,
+      "elevationM": 645,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://example.com/stations/woodside-agassiz",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": false,
+        "history": true
+      },
+      "samplingWindowSeconds": 3,
+      "recommendedPollSeconds": 15,
+      "locator": {
+        "baseUrl": "https://logger.example.com/woodside",
+        "source": "woodside",
+        "currentTable": "I3Sec",
+        "historyTable": "I5Min"
+      }
+    },
+    {
+      "uid": "ecowitt:A4:CF:12:7B:44:01",
+      "vendor": "ecowitt",
+      "nativeId": "A4:CF:12:7B:44:01",
+      "name": "Woodstock Ediths Gap Ridge",
+      "latitude": 38.8706,
+      "longitude": -78.45,
+      "elevationM": 610,
+      "country": "US",
+      "region": "VA",
+      "timeZone": "America/New_York",
+      "pageUrl": null,
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "mac": "A4:CF:12:7B:44:01"
+      }
+    },
+    {
+      "uid": "holfuy:1104",
+      "vendor": "holfuy",
+      "nativeId": "1104",
+      "name": "Point of the Mountain South",
+      "latitude": 40.4535,
+      "longitude": -111.9032,
+      "elevationM": 1555,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://holfuy.com/en/weather/1104",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 155,
+          "toDeg": 215
+        }
+      ],
+      "locator": {
+        "stationId": 1104,
+        "requiresPassword": false
+      }
+    },
+    {
+      "uid": "holfuy:1420",
+      "vendor": "holfuy",
+      "nativeId": "1420",
+      "name": "El Peñón (Valle de Bravo)",
+      "latitude": 19.0628,
+      "longitude": -100.0956,
+      "elevationM": 2310,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://holfuy.com/en/weather/1420",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 180,
+          "toDeg": 260
+        }
+      ],
+      "locator": {
+        "stationId": 1420,
+        "requiresPassword": false
+      }
+    },
+    {
+      "uid": "holfuy:1652",
+      "vendor": "holfuy",
+      "nativeId": "1652",
+      "name": "Hatis 300 Launch",
+      "latitude": 40.2727,
+      "longitude": 44.7074,
+      "elevationM": 1850,
+      "country": "AM",
+      "region": "Kotayk",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://holfuy.com/en/weather/1652",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 170,
+          "toDeg": 250
+        }
+      ],
+      "locator": {
+        "stationId": 1652,
+        "requiresPassword": false
+      }
+    },
+    {
+      "uid": "openwindmap:618",
+      "vendor": "openwindmap",
+      "nativeId": "618",
+      "name": "Monte Alto Launch (Valle de Bravo)",
+      "latitude": 19.1672,
+      "longitude": -100.1235,
+      "elevationM": 2150,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://www.openwindmap.org/PP618",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": "618"
+      }
+    },
+    {
+      "uid": "openwindmap:904",
+      "vendor": "openwindmap",
+      "nativeId": "904",
+      "name": "Aparan / Lernaglukh Ridge",
+      "latitude": 40.5942,
+      "longitude": 44.4704,
+      "elevationM": 2380,
+      "country": "AM",
+      "region": "Aragatsotn",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.openwindmap.org/PP904",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": "904"
+      }
+    },
+    {
+      "uid": "tempest:89104",
+      "vendor": "tempest",
+      "nativeId": "89104",
+      "name": "Chelan Butte Summit",
+      "latitude": 47.8042,
+      "longitude": -120.039,
+      "elevationM": 1185,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://tempestwx.com/station/89104",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": 89104
+      }
+    },
+    {
+      "uid": "tempest:94512",
+      "vendor": "tempest",
+      "nativeId": "94512",
+      "name": "Woodrat Mountain Launch",
+      "latitude": 42.2317,
+      "longitude": -123.004,
+      "elevationM": 1160,
+      "country": "US",
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://tempestwx.com/station/94512",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": 94512
+      }
+    },
+    {
+      "uid": "windnerd:blanchard-mountain",
+      "vendor": "windnerd",
+      "nativeId": "blanchard-mountain",
+      "name": "Samish Overlook (Blanchard)",
+      "latitude": 48.6097,
+      "longitude": -122.426,
+      "elevationM": 460,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://windnerd.net/stations/blanchard-mountain",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": false,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 180,
+          "toDeg": 285
+        }
+      ],
+      "locator": {
+        "stationKey": "blanchard-mountain",
+        "locationId": 202
+      }
+    },
+    {
+      "uid": "windnerd:mount-7-golden",
+      "vendor": "windnerd",
+      "nativeId": "mount-7-golden",
+      "name": "Mount 7 Launch (Golden)",
+      "latitude": 51.2718,
+      "longitude": -116.9062,
+      "elevationM": 1945,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://windnerd.net/stations/mount-7-golden",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 210,
+          "toDeg": 300
+        }
+      ],
+      "locator": {
+        "stationKey": "mount-7-golden",
+        "locationId": 240
+      }
+    },
+    {
+      "uid": "windnerd:sevan-tsovagyugh",
+      "vendor": "windnerd",
+      "nativeId": "sevan-tsovagyugh",
+      "name": "Sevan Upper / Tsovagyugh",
+      "latitude": 40.5891,
+      "longitude": 44.9515,
+      "elevationM": 2290,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://windnerd.net/stations/sevan-tsovagyugh",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 140,
+          "toDeg": 220
+        }
+      ],
+      "locator": {
+        "stationKey": "sevan-tsovagyugh",
+        "locationId": 405
+      }
+    },
+    {
+      "uid": "windnerd:tiger-mountain",
+      "vendor": "windnerd",
+      "nativeId": "tiger-mountain",
+      "name": "Tiger Mountain North Launch",
+      "latitude": 47.4995,
+      "longitude": -122.009,
+      "elevationM": 730,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://windnerd.net/stations/tiger-mountain",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 290,
+          "toDeg": 20
+        }
+      ],
+      "locator": {
+        "stationKey": "tiger-mountain",
+        "locationId": 201
+      }
+    }
+  ]
+}

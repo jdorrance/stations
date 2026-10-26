@@ -1,0 +1,39 @@
+{
+  "name": "@stations/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "description": "Wire contracts for station catalogues, spatial GeoJSON snapshots, and @azohra/meteo.station feeds",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./catalogue": {
+      "types": "./dist/catalogue.d.ts",
+      "import": "./dist/catalogue.js"
+    },
+    "./geojson": {
+      "types": "./dist/geojson.d.ts",
+      "import": "./dist/geojson.js"
+    },
+    "./build-inventory.json": "./dist/build-inventory.json"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-packages.mjs @stations/contracts",
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@azohra/meteo.core": "0.3.1",
+    "@azohra/meteo.station": "0.7.0",
+    "@stations/geography": "workspace:*",
+    "zod": "4.6.7"
+  }
+}

@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "regions": [
+    "AM"
+  ],
+  "stations": [
+    {
+      "uid": "awc:UDSG",
+      "vendor": "awc",
+      "nativeId": "UDSG",
+      "name": "Gyumri Shirak Airport",
+      "latitude": 40.75,
+      "longitude": 43.859,
+      "elevationM": 1524,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UDSG",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "UDSG"
+      }
+    },
+    {
+      "uid": "awc:UDYZ",
+      "vendor": "awc",
+      "nativeId": "UDYZ",
+      "name": "Yerevan Zvartnots International",
+      "latitude": 40.147,
+      "longitude": 44.396,
+      "elevationM": 865,
+      "country": "AM",
+      "region": "Yerevan",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UDYZ",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "UDYZ"
+      }
+    },
+    {
+      "uid": "holfuy:1652",
+      "vendor": "holfuy",
+      "nativeId": "1652",
+      "name": "Hatis 300 Launch",
+      "latitude": 40.2727,
+      "longitude": 44.7074,
+      "elevationM": 1850,
+      "country": "AM",
+      "region": "Kotayk",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://holfuy.com/en/weather/1652",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 170,
+          "toDeg": 250
+        }
+      ],
+      "locator": {
+        "stationId": 1652,
+        "requiresPassword": false
+      }
+    },
+    {
+      "uid": "openwindmap:904",
+      "vendor": "openwindmap",
+      "nativeId": "904",
+      "name": "Aparan / Lernaglukh Ridge",
+      "latitude": 40.5942,
+      "longitude": 44.4704,
+      "elevationM": 2380,
+      "country": "AM",
+      "region": "Aragatsotn",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.openwindmap.org/PP904",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": "904"
+      }
+    },
+    {
+      "uid": "windnerd:sevan-tsovagyugh",
+      "vendor": "windnerd",
+      "nativeId": "sevan-tsovagyugh",
+      "name": "Sevan Upper / Tsovagyugh",
+      "latitude": 40.5891,
+      "longitude": 44.9515,
+      "elevationM": 2290,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://windnerd.net/stations/sevan-tsovagyugh",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 140,
+          "toDeg": 220
+        }
+      ],
+      "locator": {
+        "stationKey": "sevan-tsovagyugh",
+        "locationId": 405
+      }
+    }
+  ]
+}

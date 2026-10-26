@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "regions": [
+    "CA"
+  ],
+  "stations": [
+    {
+      "uid": "awc:CYVR",
+      "vendor": "awc",
+      "nativeId": "CYVR",
+      "name": "Vancouver International",
+      "latitude": 49.194,
+      "longitude": -123.184,
+      "elevationM": 4,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYVR",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "CYVR"
+      }
+    },
+    {
+      "uid": "campbell:woodside-agassiz",
+      "vendor": "campbell",
+      "nativeId": "woodside-agassiz",
+      "name": "Mt Woodside Launch",
+      "latitude": 49.2611,
+      "longitude": -121.8722,
+      "elevationM": 645,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://example.com/stations/woodside-agassiz",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": false,
+        "history": true
+      },
+      "samplingWindowSeconds": 3,
+      "recommendedPollSeconds": 15,
+      "locator": {
+        "baseUrl": "https://logger.example.com/woodside",
+        "source": "woodside",
+        "currentTable": "I3Sec",
+        "historyTable": "I5Min"
+      }
+    },
+    {
+      "uid": "windnerd:mount-7-golden",
+      "vendor": "windnerd",
+      "nativeId": "mount-7-golden",
+      "name": "Mount 7 Launch (Golden)",
+      "latitude": 51.2718,
+      "longitude": -116.9062,
+      "elevationM": 1945,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://windnerd.net/stations/mount-7-golden",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true,
+        "live": true,
+        "battery": true,
+        "recentSummaries": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 210,
+          "toDeg": 300
+        }
+      ],
+      "locator": {
+        "stationKey": "mount-7-golden",
+        "locationId": 240
+      }
+    }
+  ]
+}

@@ -1,0 +1,742 @@
+{
+  "type": "FeatureCollection",
+  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "awc:CYVR",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.184,
+          49.194,
+          4
+        ]
+      },
+      "properties": {
+        "uid": "awc:CYVR",
+        "vendor": "awc",
+        "name": "Vancouver International",
+        "sourceLabel": "awc",
+        "elevationM": 4,
+        "country": "CA",
+        "region": "BC",
+        "pageUrl": "https://aviationweather.gov/data/metar/?id=CYVR",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "awc:KSEA",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.309,
+          47.449,
+          132
+        ]
+      },
+      "properties": {
+        "uid": "awc:KSEA",
+        "vendor": "awc",
+        "name": "Seattle-Tacoma International",
+        "sourceLabel": "awc",
+        "elevationM": 132,
+        "country": "US",
+        "region": "WA",
+        "pageUrl": "https://aviationweather.gov/data/metar/?id=KSEA",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "awc:MMTO",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -99.566,
+          19.337,
+          2580
+        ]
+      },
+      "properties": {
+        "uid": "awc:MMTO",
+        "vendor": "awc",
+        "name": "Toluca Licenciado Adolfo Lopez Mateos",
+        "sourceLabel": "awc",
+        "elevationM": 2580,
+        "country": "MX",
+        "region": "MEX",
+        "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTO",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "awc:UDSG",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          43.859,
+          40.75,
+          1524
+        ]
+      },
+      "properties": {
+        "uid": "awc:UDSG",
+        "vendor": "awc",
+        "name": "Gyumri Shirak Airport",
+        "sourceLabel": "awc",
+        "elevationM": 1524,
+        "country": "AM",
+        "region": "Shirak",
+        "pageUrl": "https://aviationweather.gov/data/metar/?id=UDSG",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "awc:UDYZ",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.396,
+          40.147,
+          865
+        ]
+      },
+      "properties": {
+        "uid": "awc:UDYZ",
+        "vendor": "awc",
+        "name": "Yerevan Zvartnots International",
+        "sourceLabel": "awc",
+        "elevationM": 865,
+        "country": "AM",
+        "region": "Yerevan",
+        "pageUrl": "https://aviationweather.gov/data/metar/?id=UDYZ",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "campbell:woodside-agassiz",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -121.8722,
+          49.2611,
+          645
+        ]
+      },
+      "properties": {
+        "uid": "campbell:woodside-agassiz",
+        "vendor": "campbell",
+        "name": "Mt Woodside Launch",
+        "sourceLabel": "campbell",
+        "elevationM": 645,
+        "country": "CA",
+        "region": "BC",
+        "pageUrl": "https://example.com/stations/woodside-agassiz",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": false,
+          "history": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ecowitt:A4:CF:12:7B:44:01",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -78.45,
+          38.8706,
+          610
+        ]
+      },
+      "properties": {
+        "uid": "ecowitt:A4:CF:12:7B:44:01",
+        "vendor": "ecowitt",
+        "name": "Woodstock Ediths Gap Ridge",
+        "sourceLabel": "ecowitt",
+        "elevationM": 610,
+        "country": "US",
+        "region": "VA",
+        "pageUrl": null,
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false,
+          "battery": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "holfuy:1104",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -111.9032,
+          40.4535,
+          1555
+        ]
+      },
+      "properties": {
+        "uid": "holfuy:1104",
+        "vendor": "holfuy",
+        "name": "Point of the Mountain South",
+        "sourceLabel": "holfuy",
+        "elevationM": 1555,
+        "country": "US",
+        "region": "UT",
+        "pageUrl": "https://holfuy.com/en/weather/1104",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false,
+          "battery": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "holfuy:1420",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.0956,
+          19.0628,
+          2310
+        ]
+      },
+      "properties": {
+        "uid": "holfuy:1420",
+        "vendor": "holfuy",
+        "name": "El Peñón (Valle de Bravo)",
+        "sourceLabel": "holfuy",
+        "elevationM": 2310,
+        "country": "MX",
+        "region": "MEX",
+        "pageUrl": "https://holfuy.com/en/weather/1420",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false,
+          "battery": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "holfuy:1652",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.7074,
+          40.2727,
+          1850
+        ]
+      },
+      "properties": {
+        "uid": "holfuy:1652",
+        "vendor": "holfuy",
+        "name": "Hatis 300 Launch",
+        "sourceLabel": "holfuy",
+        "elevationM": 1850,
+        "country": "AM",
+        "region": "Kotayk",
+        "pageUrl": "https://holfuy.com/en/weather/1652",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false,
+          "battery": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "openwindmap:618",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -100.1235,
+          19.1672,
+          2150
+        ]
+      },
+      "properties": {
+        "uid": "openwindmap:618",
+        "vendor": "openwindmap",
+        "name": "Monte Alto Launch (Valle de Bravo)",
+        "sourceLabel": "openwindmap",
+        "elevationM": 2150,
+        "country": "MX",
+        "region": "MEX",
+        "pageUrl": "https://www.openwindmap.org/PP618",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": false,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "openwindmap:904",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.4704,
+          40.5942,
+          2380
+        ]
+      },
+      "properties": {
+        "uid": "openwindmap:904",
+        "vendor": "openwindmap",
+        "name": "Aparan / Lernaglukh Ridge",
+        "sourceLabel": "openwindmap",
+        "elevationM": 2380,
+        "country": "AM",
+        "region": "Aragatsotn",
+        "pageUrl": "https://www.openwindmap.org/PP904",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": false,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tempest:89104",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -120.039,
+          47.8042,
+          1185
+        ]
+      },
+      "properties": {
+        "uid": "tempest:89104",
+        "vendor": "tempest",
+        "name": "Chelan Butte Summit",
+        "sourceLabel": "tempest",
+        "elevationM": 1185,
+        "country": "US",
+        "region": "WA",
+        "pageUrl": "https://tempestwx.com/station/89104",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "tempest:94512",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.004,
+          42.2317,
+          1160
+        ]
+      },
+      "properties": {
+        "uid": "tempest:94512",
+        "vendor": "tempest",
+        "name": "Woodrat Mountain Launch",
+        "sourceLabel": "tempest",
+        "elevationM": 1160,
+        "country": "US",
+        "region": "OR",
+        "pageUrl": "https://tempestwx.com/station/94512",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": false
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "windnerd:blanchard-mountain",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.426,
+          48.6097,
+          460
+        ]
+      },
+      "properties": {
+        "uid": "windnerd:blanchard-mountain",
+        "vendor": "windnerd",
+        "name": "Samish Overlook (Blanchard)",
+        "sourceLabel": "windnerd",
+        "elevationM": 460,
+        "country": "US",
+        "region": "WA",
+        "pageUrl": "https://windnerd.net/stations/blanchard-mountain",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": false,
+          "history": true,
+          "live": true,
+          "battery": true,
+          "recentSummaries": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "windnerd:mount-7-golden",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -116.9062,
+          51.2718,
+          1945
+        ]
+      },
+      "properties": {
+        "uid": "windnerd:mount-7-golden",
+        "vendor": "windnerd",
+        "name": "Mount 7 Launch (Golden)",
+        "sourceLabel": "windnerd",
+        "elevationM": 1945,
+        "country": "CA",
+        "region": "BC",
+        "pageUrl": "https://windnerd.net/stations/mount-7-golden",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": true,
+          "live": true,
+          "battery": true,
+          "recentSummaries": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "windnerd:sevan-tsovagyugh",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          44.9515,
+          40.5891,
+          2290
+        ]
+      },
+      "properties": {
+        "uid": "windnerd:sevan-tsovagyugh",
+        "vendor": "windnerd",
+        "name": "Sevan Upper / Tsovagyugh",
+        "sourceLabel": "windnerd",
+        "elevationM": 2290,
+        "country": "AM",
+        "region": "Gegharkunik",
+        "pageUrl": "https://windnerd.net/stations/sevan-tsovagyugh",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": true,
+          "live": true,
+          "battery": true,
+          "recentSummaries": true
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "windnerd:tiger-mountain",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -122.009,
+          47.4995,
+          730
+        ]
+      },
+      "properties": {
+        "uid": "windnerd:tiger-mountain",
+        "vendor": "windnerd",
+        "name": "Tiger Mountain North Launch",
+        "sourceLabel": "windnerd",
+        "elevationM": 730,
+        "country": "US",
+        "region": "WA",
+        "pageUrl": "https://windnerd.net/stations/tiger-mountain",
+        "status": "catalogue",
+        "freshness": null,
+        "unavailableReason": null,
+        "observedAt": null,
+        "windAvgMps": null,
+        "windGustMps": null,
+        "windLullMps": null,
+        "windDirectionDeg": null,
+        "windCompass": null,
+        "temperatureC": null,
+        "relativeHumidityPercent": null,
+        "seaLevelPressureHpa": null,
+        "capabilities": {
+          "gustLull": true,
+          "temperature": true,
+          "conditions": true,
+          "history": true,
+          "live": true,
+          "battery": true,
+          "recentSummaries": true
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "regions": [
+    "MX"
+  ],
+  "stations": [
+    {
+      "uid": "awc:MMTO",
+      "vendor": "awc",
+      "nativeId": "MMTO",
+      "name": "Toluca Licenciado Adolfo Lopez Mateos",
+      "latitude": 19.337,
+      "longitude": -99.566,
+      "elevationM": 2580,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "locator": {
+        "icaoId": "MMTO"
+      }
+    },
+    {
+      "uid": "holfuy:1420",
+      "vendor": "holfuy",
+      "nativeId": "1420",
+      "name": "El Peñón (Valle de Bravo)",
+      "latitude": 19.0628,
+      "longitude": -100.0956,
+      "elevationM": 2310,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://holfuy.com/en/weather/1420",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 180,
+          "toDeg": 260
+        }
+      ],
+      "locator": {
+        "stationId": 1420,
+        "requiresPassword": false
+      }
+    },
+    {
+      "uid": "openwindmap:618",
+      "vendor": "openwindmap",
+      "nativeId": "618",
+      "name": "Monte Alto Launch (Valle de Bravo)",
+      "latitude": 19.1672,
+      "longitude": -100.1235,
+      "elevationM": 2150,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://www.openwindmap.org/PP618",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "locator": {
+        "stationId": "618"
+      }
+    }
+  ]
+}
