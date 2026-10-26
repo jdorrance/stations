@@ -7,6 +7,7 @@
   "description": "Weather station discovery, live vendor adapters, and mountable HTTP feed handler",
   "files": [
     "dist",
+    "docs",
     "README.md",
     "CHANGELOG.md"
   ],
@@ -31,6 +32,58 @@
       "types": "./dist/awc.d.ts",
       "import": "./dist/awc.js"
     },
+    "./windsmobi": {
+      "types": "./dist/windsmobi.d.ts",
+      "import": "./dist/windsmobi.js"
+    },
+    "./windspion": {
+      "types": "./dist/windspion.d.ts",
+      "import": "./dist/windspion.js"
+    },
+    "./windguru": {
+      "types": "./dist/windguru.d.ts",
+      "import": "./dist/windguru.js"
+    },
+    "./windtalkers": {
+      "types": "./dist/windtalkers.d.ts",
+      "import": "./dist/windtalkers.js"
+    },
+    "./raws": {
+      "types": "./dist/raws.d.ts",
+      "import": "./dist/raws.js"
+    },
+    "./snotel": {
+      "types": "./dist/snotel.d.ts",
+      "import": "./dist/snotel.js"
+    },
+    "./avalanche": {
+      "types": "./dist/avalanche.d.ts",
+      "import": "./dist/avalanche.js"
+    },
+    "./iem": {
+      "types": "./dist/iem.d.ts",
+      "import": "./dist/iem.js"
+    },
+    "./nws": {
+      "types": "./dist/nws.d.ts",
+      "import": "./dist/nws.js"
+    },
+    "./eccc": {
+      "types": "./dist/eccc.d.ts",
+      "import": "./dist/eccc.js"
+    },
+    "./ndbc": {
+      "types": "./dist/ndbc.d.ts",
+      "import": "./dist/ndbc.js"
+    },
+    "./conagua": {
+      "types": "./dist/conagua.d.ts",
+      "import": "./dist/conagua.js"
+    },
+    "./cwop": {
+      "types": "./dist/cwop.d.ts",
+      "import": "./dist/cwop.js"
+    },
     "./seeds": {
       "types": "./dist/seeds.d.ts",
       "import": "./dist/seeds.js"
@@ -44,7 +97,7 @@
   "scripts": {
     "build": "node ../../scripts/build-packages.mjs @stations/providers",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test test/*.test.mjs"
+    "test": "pnpm build && node --test test/*.test.mjs"
   },
   "dependencies": {
     "@azohra/meteo.core": "0.3.1",

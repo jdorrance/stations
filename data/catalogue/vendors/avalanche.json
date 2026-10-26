@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "avalanche",
+  "count": 1,
+  "stations": [
+    {
+      "uid": "avalanche:kicking-horse",
+      "vendor": "avalanche",
+      "nativeId": "kicking-horse",
+      "name": "Kicking Horse Summit Ridge (Golden BC)",
+      "latitude": 51.2975,
+      "longitude": -117.0483,
+      "elevationM": 2450,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://www.avalanche.ca/weather/stations",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    }
+  ]
+}

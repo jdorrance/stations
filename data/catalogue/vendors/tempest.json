@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "tempest",
+  "count": 2,
+  "stations": [
+    {
+      "uid": "tempest:89104",
+      "vendor": "tempest",
+      "nativeId": "89104",
+      "name": "Chelan Butte Summit",
+      "latitude": 47.8042,
+      "longitude": -120.039,
+      "elevationM": 1185,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://tempestwx.com/station/89104",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "tempest:94512",
+      "vendor": "tempest",
+      "nativeId": "94512",
+      "name": "Woodrat Mountain Launch",
+      "latitude": 42.2317,
+      "longitude": -123.004,
+      "elevationM": 1160,
+      "country": "US",
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://tempestwx.com/station/94512",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "pws",
+      "locator": {}
+    }
+  ]
+}

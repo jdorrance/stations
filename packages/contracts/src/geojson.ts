@@ -9,18 +9,26 @@ import {
   type UnavailableReason,
 } from '@azohra/meteo.station';
 import type { RegionCode } from '@stations/geography/regions';
-import type { CatalogueStation, StationVendor } from './catalogue.ts';
-import { parseStationUid } from './catalogue.ts';
+import {
+  defaultCategoryForVendor,
+  parseStationUid,
+  type CatalogueStation,
+  type StationCategory,
+  type StationVendor,
+} from './catalogue.ts';
 
 export interface StationFeatureProperties {
   readonly uid: string;
   readonly vendor: StationVendor | 'unknown';
+  readonly category: StationCategory;
   readonly name: string;
   readonly sourceLabel: string;
   readonly elevationM: number | null;
   readonly country: RegionCode | null;
   readonly region: string | null;
   readonly pageUrl: string | null;
+  readonly nearestLaunchSlug: string | null;
+  readonly nearestLaunchDistanceKm: number | null;
   readonly status: 'catalogue' | 'ok' | 'unavailable';
   readonly freshness: FreshnessStatus | null;
   readonly unavailableReason: UnavailableReason | null;
@@ -41,7 +49,9 @@ export interface StationFeature {
   readonly id: string;
   readonly geometry: {
     readonly type: 'Point';
-    readonly coordinates: readonly [longitude: number, latitude: number] | readonly [longitude: number, latitude: number, elevationM: number];
+    readonly coordinates:
+      | readonly [longitude: number, latitude: number]
+      | readonly [longitude: number, latitude: number, elevationM: number];
   };
   readonly properties: StationFeatureProperties;
 }
@@ -74,12 +84,15 @@ export function catalogueToGeoJson(
     properties: {
       uid: station.uid,
       vendor: station.vendor,
+      category: station.category ?? defaultCategoryForVendor(station.vendor),
       name: station.name,
       sourceLabel: station.vendor,
       elevationM: station.elevationM,
       country: station.country,
       region: station.region,
       pageUrl: station.pageUrl,
+      nearestLaunchSlug: station.launchContext?.nearestLaunchSlug ?? null,
+      nearestLaunchDistanceKm: station.launchContext?.distanceKm ?? null,
       status: 'catalogue',
       freshness: null,
       unavailableReason: null,
@@ -114,6 +127,9 @@ function stationToFeature(
   const elevationM = station.elevationM ?? catalogueEntry?.elevationM ?? null;
   const parsedUid = parseStationUid(station.id);
   const vendor = catalogueEntry?.vendor ?? parsedUid?.vendor ?? 'unknown';
+  const category: StationCategory =
+    catalogueEntry?.category ??
+    (vendor === 'unknown' ? 'pws' : defaultCategoryForVendor(vendor));
 
   if (station.status === 'unavailable') {
     return {
@@ -126,12 +142,15 @@ function stationToFeature(
       properties: {
         uid: station.id,
         vendor,
+        category,
         name: station.name,
         sourceLabel: station.sourceLabel,
         elevationM,
         country: catalogueEntry?.country ?? null,
         region: catalogueEntry?.region ?? null,
         pageUrl: station.pageUrl ?? catalogueEntry?.pageUrl ?? null,
+        nearestLaunchSlug: catalogueEntry?.launchContext?.nearestLaunchSlug ?? null,
+        nearestLaunchDistanceKm: catalogueEntry?.launchContext?.distanceKm ?? null,
         status: 'unavailable',
         freshness: null,
         unavailableReason: station.reason,
@@ -171,12 +190,15 @@ function stationToFeature(
     properties: {
       uid: station.id,
       vendor,
+      category,
       name: station.name,
       sourceLabel: station.sourceLabel,
       elevationM,
       country: catalogueEntry?.country ?? null,
       region: catalogueEntry?.region ?? null,
       pageUrl: station.pageUrl ?? catalogueEntry?.pageUrl ?? null,
+      nearestLaunchSlug: catalogueEntry?.launchContext?.nearestLaunchSlug ?? null,
+      nearestLaunchDistanceKm: catalogueEntry?.launchContext?.distanceKm ?? null,
       status: 'ok',
       freshness: statusFreshness,
       unavailableReason: null,

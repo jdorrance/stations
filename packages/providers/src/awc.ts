@@ -1,18 +1,29 @@
+import {
+  KNOTS_TO_MPS,
+  isRecord,
+  observationTimeMs,
+  optionalWindMps,
+  strictNumber as finiteNumber,
+  validTemperatureC,
+  windDirection,
+} from './observation-values.ts';
 import { plausibleWindMps } from '@azohra/meteo.core';
 import {
   emptyConditions,
   isCalm,
-  normalizeDegrees,
   type AirConditions,
   type Reading,
 } from '@azohra/meteo.station';
 import {
-  defineStationAdapter,
-  fetchUpstreamText,
-  resolveEnvironment,
+  logUpstreamFailure,
   type StationAdapterOptions,
   type StationConfigInput,
 } from '@azohra/meteo.station/server';
+import {
+  defineStationAdapter,
+  resolveEnvironment,
+} from './server.ts';
+import { fetchUpstreamText } from '@azohra/meteo.station/server';
 import {
   formatStationUid,
   mergeCatalogueStations,
@@ -20,17 +31,20 @@ import {
 } from '@stations/contracts';
 import {
   INITIAL_SCOPE_REGIONS,
+  coverageForRegions,
   inferRegionCode,
-  regionDescriptor,
   validPosition,
   type Bounds,
   type Coverage,
 } from '@stations/geography';
-import { filterCatalogueStations, stationMetaFromCatalogue } from './azohra-vendors.ts';
+import {
+  customStationConfig,
+  filterCatalogueStations,
+  stationMetaFromCatalogue,
+} from './azohra-vendors.ts';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
 
 export const AWC_METAR_URL = 'https://aviationweather.gov/api/data/metar';
-const KNOTS_TO_MPS = 0.5144444444444445;
 const CACHE_TTL_SECONDS = 120;
 
 export type AwcStationConfig = {
@@ -44,14 +58,6 @@ export type AwcAdapterOptions = StationAdapterOptions & {
 export interface AwcParsedMetar {
   readonly station: CatalogueStation;
   readonly reading: Reading;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function finiteNumber(value: unknown): number | null {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
 /** Magnus approximation for relative humidity (%) from temperature and dew point (°C). */
@@ -77,7 +83,6 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
   }
 
   const country = inferRegionCode({ latitude, longitude });
-  const defaultZone = country ? regionDescriptor(country).defaultTimeZone : null;
   const name =
     typeof raw.name === 'string' && raw.name.trim().length > 0 ? raw.name.trim() : icaoId;
   const elevationM = finiteNumber(raw.elev);
@@ -92,7 +97,7 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
     elevationM,
     country,
     region: null,
-    timeZone: defaultZone,
+    timeZone: null,
     pageUrl: `https://aviationweather.gov/data/metar/?id=${encodeURIComponent(icaoId)}`,
     capabilities: {
       gustLull: true,
@@ -108,30 +113,31 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
   };
 
   const obsTimeEpoch = finiteNumber(raw.obsTime);
-  const reportTimeIso = typeof raw.reportTime === 'string' ? Date.parse(raw.reportTime) : Number.NaN;
+  const reportTimeIso = observationTimeMs(raw.reportTime);
   const observedAtMs =
     obsTimeEpoch !== null
-      ? obsTimeEpoch * 1_000
+      ? observationTimeMs(obsTimeEpoch)
       : Number.isFinite(reportTimeIso)
         ? reportTimeIso
         : Number.NaN;
   if (!Number.isFinite(observedAtMs)) return null;
 
-  const wspdKnots = finiteNumber(raw.wspd) ?? 0;
+  const wspdKnots = finiteNumber(raw.wspd);
+  if (wspdKnots === null || wspdKnots < 0 || wspdKnots * KNOTS_TO_MPS > 140) return null;
   const windAvgMps = plausibleWindMps(wspdKnots * KNOTS_TO_MPS, 'AWC');
   const wgstKnots = finiteNumber(raw.wgst);
   const windGustMps =
-    wgstKnots === null ? null : plausibleWindMps(wgstKnots * KNOTS_TO_MPS, 'AWC');
+    optionalWindMps(wgstKnots === null ? null : wgstKnots * KNOTS_TO_MPS);
   const wdirDeg = finiteNumber(raw.wdir);
 
   const temperatureC = finiteNumber(raw.temp);
   const dewPointC = finiteNumber(raw.dewp);
-  const seaLevelPressureHpa = finiteNumber(raw.slp) ?? finiteNumber(raw.altim);
+  const seaLevelPressureHpa = finiteNumber(raw.slp);
   const relativeHumidityPercent = relativeHumidityFromDewPoint(temperatureC, dewPointC);
 
   const conditions: AirConditions = {
     ...emptyConditions(),
-    dewPointC,
+    dewPointC: validTemperatureC(dewPointC),
     relativeHumidityPercent,
     seaLevelPressureHpa:
       seaLevelPressureHpa !== null && seaLevelPressureHpa >= 300 && seaLevelPressureHpa <= 1100
@@ -143,10 +149,10 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
     observedAt: new Date(observedAtMs).toISOString(),
     windAvgMps,
     windDirectionDeg:
-      isCalm(windAvgMps) || wdirDeg === null ? null : normalizeDegrees(wdirDeg),
+      isCalm(windAvgMps) || wdirDeg === null ? null : windDirection(wdirDeg),
     windGustMps,
     windLullMps: null,
-    temperatureC,
+    temperatureC: validTemperatureC(temperatureC),
     windChillC: null,
     conditions,
   };
@@ -154,15 +160,25 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
   return { station, reading };
 }
 
-export function parseAwcMetarList(text: string): AwcParsedMetar[] {
-  const data: unknown = JSON.parse(text);
+export function parseAwcMetarList(
+  text: string,
+  onInvalidEntry?: (error: unknown, index: number) => void,
+): AwcParsedMetar[] {
+  const data: unknown = text.trim() ? JSON.parse(text) : [];
   if (!Array.isArray(data)) {
     throw new Error('AWC METAR response must be a JSON array');
   }
   const results: AwcParsedMetar[] = [];
-  for (const row of data) {
-    const parsed = parseAwcMetarEntry(row);
+  for (const [index, row] of data.entries()) {
+    let parsed: AwcParsedMetar | null;
+    try {
+      parsed = parseAwcMetarEntry(row);
+    } catch (error) {
+      onInvalidEntry?.(error, index);
+      continue;
+    }
     if (parsed) results.push(parsed);
+    else onInvalidEntry?.(new Error('AWC METAR entry is missing valid station or wind data'), index);
   }
   return results;
 }
@@ -212,37 +228,57 @@ export const awcProvider: StationNetworkProvider = {
   async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
     const seeds = (options.seeds ?? []).filter(station => station.vendor === 'awc');
     const batches: CatalogueStation[][] = [seeds];
-    if (options.includeRemoteDiscovery && options.bounds) {
+    if (options.includeRemoteDiscovery) {
       const environment = resolveEnvironment(options.environment);
-      const url = new URL(AWC_METAR_URL);
-      url.searchParams.set('bbox', formatAwcBbox(options.bounds));
-      url.searchParams.set('format', 'json');
-      const text = await fetchUpstreamText(environment, {
-        url,
-        cacheKey: `awc/bbox/${formatAwcBbox(options.bounds)}`,
-        cacheTtlSeconds: 300,
-        subject: 'AWC regional METAR discovery',
-        limitBytes: 2 * 1024 * 1024,
-      });
-      batches.push(parseAwcMetarList(text).map(entry => entry.station));
+      const flatten = (coverage: Coverage): Bounds[] => coverage.kind === 'bounds' ? [coverage.bounds]
+        : coverage.kind === 'union' ? coverage.areas.flatMap(flatten) : [[-180, -90, 180, 90]];
+      const scopes = options.bounds ? [options.bounds] : flatten(coverageForRegions(options.regions ?? INITIAL_SCOPE_REGIONS));
+      const queue = scopes.flatMap(bounds => bounds[0] <= bounds[2] ? [{ bounds, depth: 0 }]
+        : [{ bounds: [bounds[0], bounds[1], 180, bounds[3]] as Bounds, depth: 0 },
+           { bounds: [-180, bounds[1], bounds[2], bounds[3]] as Bounds, depth: 0 }]);
+      // AWC caps results at 400. Subdivide only saturated scopes, with a fixed
+      // request budget and visible diagnostics if a region remains incomplete.
+      for (let requests = 0; queue.length && requests < 40; requests += 1) {
+        const { bounds, depth } = queue.shift()!;
+        const url = new URL(AWC_METAR_URL);
+        url.searchParams.set('bbox', formatAwcBbox(bounds));
+        url.searchParams.set('format', 'json');
+        try {
+          const text = await fetchUpstreamText(environment, {
+            url, cacheKey: `awc/bbox/${formatAwcBbox(bounds)}`, cacheTtlSeconds: 300,
+            subject: 'AWC regional METAR discovery', limitBytes: 2 * 1024 * 1024,
+          });
+          const parsed = parseAwcMetarList(text, (error, index) => {
+            logUpstreamFailure(environment, 'Skipped invalid AWC discovery entry', error, { index });
+          });
+          batches.push(parsed.map(entry => entry.station));
+          const raw: unknown = text.trim() ? JSON.parse(text) : [];
+          if (Array.isArray(raw) && raw.length >= 400) {
+            if (depth >= 8) {
+              logUpstreamFailure(environment, 'AWC discovery incomplete', new Error('Result cap reached at subdivision limit'));
+              continue;
+            }
+            const [west, south, east, north] = bounds;
+            const next: Bounds[] = east - west >= north - south
+              ? [[west, south, (west + east) / 2, north], [(west + east) / 2, south, east, north]]
+              : [[west, south, east, (south + north) / 2], [west, (south + north) / 2, east, north]];
+            queue.push(...next.map(bounds => ({ bounds, depth: depth + 1 })));
+          }
+        } catch (error) {
+          logUpstreamFailure(environment, 'AWC discovery failed', error);
+        }
+      }
+      if (queue.length) logUpstreamFailure(environment, 'AWC discovery incomplete', new Error('Discovery request budget exhausted'));
     }
+
     return filterCatalogueStations(mergeCatalogueStations(batches), {
       ...options,
       regions: options.regions ?? INITIAL_SCOPE_REGIONS,
     });
   },
   toStationConfig(station: CatalogueStation): StationConfigInput {
-    return {
-      vendor: 'custom',
-      id: station.uid,
-      name: station.name,
-      latitude: station.latitude,
-      longitude: station.longitude,
-      elevationM: station.elevationM,
-      timeZone: station.timeZone,
-      pageUrl: station.pageUrl,
-      load: ({ environment, historyHours, mode }) =>
-        loadAwcStation({ station }, { environment, historyHours, mode }),
-    };
+    return customStationConfig(station, ({ environment, historyHours, mode }) =>
+      loadAwcStation({ station }, { environment, historyHours, mode }),
+    );
   },
 };

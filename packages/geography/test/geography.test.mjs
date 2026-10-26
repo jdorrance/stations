@@ -3,6 +3,7 @@ import test from 'node:test';
 import {
   INITIAL_SCOPE_REGIONS,
   NORTH_AMERICA_REGIONS,
+  bearingDeg,
   boundsIntersect,
   containsPoint,
   containsPolygon,
@@ -15,6 +16,7 @@ import {
   normalizeLongitude,
   parseBoundsParam,
   regionDescriptor,
+  tileBounds,
   validBounds,
   validPosition,
 } from '../dist/index.js';
@@ -31,7 +33,7 @@ test('validPosition and validBounds validate geographic coordinates', () => {
   assert.equal(boundsIntersect([43, 38, 46, 41], [-125, 45, -120, 49]), false);
 });
 
-test('regional coverages and country inference classify US, CA, MX, and AM launches', () => {
+test('regional coverages and explicit country metadata identify US, CA, MX, and AM launches', () => {
   assert.deepEqual(NORTH_AMERICA_REGIONS, ['US', 'CA', 'MX']);
   assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM']);
   assert.equal(regionDescriptor('AM').defaultTimeZone, 'Asia/Yerevan');
@@ -42,16 +44,16 @@ test('regional coverages and country inference classify US, CA, MX, and AM launc
   const hatis = { latitude: 40.3063, longitude: 44.7253 };
   const alps = { latitude: 45.9237, longitude: 6.8694 };
 
-  assert.equal(inferRegionCode(tigerMountain), 'US');
-  assert.equal(inferRegionCode(pemberton), 'CA');
-  assert.equal(inferRegionCode(valleDeBravo), 'MX');
-  assert.equal(inferRegionCode(hatis), 'AM');
+  assert.equal(inferRegionCode(tigerMountain, 'US'), 'US');
+  assert.equal(inferRegionCode(pemberton, 'CA'), 'CA');
+  assert.equal(inferRegionCode(valleDeBravo, 'MX'), 'MX');
+  assert.equal(inferRegionCode(hatis, 'AM'), 'AM');
   assert.equal(inferRegionCode(alps), null);
 
-  assert.equal(inRegion('US', tigerMountain), true);
-  assert.equal(inRegion('CA', pemberton), true);
-  assert.equal(inRegion('MX', valleDeBravo), true);
-  assert.equal(inRegion('AM', hatis), true);
+  assert.equal(inRegion('US', tigerMountain, 'US'), true);
+  assert.equal(inRegion('CA', pemberton, 'CA'), true);
+  assert.equal(inRegion('MX', valleDeBravo, 'MX'), true);
+  assert.equal(inRegion('AM', hatis, 'AM'), true);
 
   const initialCoverage = coverageForRegions(INITIAL_SCOPE_REGIONS);
   assert.equal(coversPoint(initialCoverage, tigerMountain), true);
@@ -84,10 +86,16 @@ test('SpatialIndex queries bounding boxes and great-circle radii accurately', ()
   assert.equal(limited[0].item.id, 'am-hatis');
 });
 
-test('containsPolygon and distanceKm work across standard polygons', () => {
+test('containsPolygon, distanceKm, bearingDeg, and tileBounds work across standard geometries', () => {
   const box = [[[44.0, 40.0], [45.0, 40.0], [45.0, 41.0], [44.0, 41.0], [44.0, 40.0]]];
   assert.equal(containsPolygon(box, { latitude: 40.5, longitude: 44.5 }), true);
   assert.equal(containsPolygon(box, { latitude: 41.5, longitude: 44.5 }), false);
   assert.equal(containsPoint([44.0, 40.0, 45.0, 41.0], { latitude: 40.5, longitude: 44.5 }), true);
   assert.ok(distanceKm({ latitude: 40.0, longitude: 44.0 }, { latitude: 41.0, longitude: 44.0 }) > 110);
+  assert.ok(Math.abs(bearingDeg({ latitude: 40.0, longitude: 44.0 }, { latitude: 41.0, longitude: 44.0 }) - 0) < 0.01);
+  assert.ok(Math.abs(bearingDeg({ latitude: 0, longitude: 0 }, { latitude: 0, longitude: 1 }) - 90) < 0.01);
+  const tiles = tileBounds([-124, 46, -120, 48], 1, 2);
+  assert.equal(tiles.length, 4);
+  assert.deepEqual(tiles[0], [-124, 46, -122, 47]);
+  assert.deepEqual(tiles[3], [-122, 47, -120, 48]);
 });

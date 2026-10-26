@@ -67,9 +67,14 @@ export type {
 
 export {
   CATALOGUE_SCHEMA_VERSION,
+  STATION_CATEGORIES,
   STATION_VENDORS,
   catalogueStationSchema,
+  deduplicateCatalogueStations,
+  defaultCategoryForVendor,
+  enrichStationsWithLaunches,
   formatStationUid,
+  isStationCategory,
   isStationVendor,
   mergeCatalogueStations,
   parseCatalogueStation,
@@ -77,11 +82,15 @@ export {
   parseStationCatalogueJson,
   parseStationUid,
   stationCatalogueSchema,
+  stationLaunchContextSchema,
 } from './catalogue.ts';
 
 export type {
   CatalogueStation,
+  LaunchSite,
   StationCatalogueDocument,
+  StationCategory,
+  StationLaunchContext,
   StationLocator,
   StationLocatorValue,
   StationVendor,
@@ -93,3 +102,9 @@ export type {
   StationFeatureCollection,
   StationFeatureProperties,
 } from './geojson.ts';
+
+export { parseCatalogueNdjson, serializeCatalogueNdjson } from './ndjson.ts';
+export {
+  toPublicCatalogueStation,
+  toPublicStationCatalogue,
+} from './public-catalogue.ts';

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "weatherlink",
+  "count": 4,
+  "stations": [
+    {
+      "uid": "weatherlink:crestline-launch",
+      "vendor": "weatherlink",
+      "nativeId": "crestline-launch",
+      "name": "Crestline / Marshall Peak CSS Windtalker",
+      "latitude": 34.2425,
+      "longitude": -117.3036,
+      "elevationM": 1595,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://www.flycrestline.com/weather",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 170,
+          "toDeg": 250
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:santa-barbara-elings",
+      "vendor": "weatherlink",
+      "nativeId": "santa-barbara-elings",
+      "name": "Elings Park / Santa Barbara Soaring Windtalker",
+      "latitude": 34.4048,
+      "longitude": -119.7265,
+      "elevationM": 145,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://www.sbhgpa.com/weather",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 165,
+          "toDeg": 245
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:owens-valley-walts-point",
+      "vendor": "weatherlink",
+      "nativeId": "owens-valley-walts-point",
+      "name": "Walts Point Launch (Owens Valley)",
+      "latitude": 36.4472,
+      "longitude": -118.0953,
+      "elevationM": 2820,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://www.weatherlink.com/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 60,
+          "toDeg": 135
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:bridal-falls-bc",
+      "vendor": "weatherlink",
+      "nativeId": "bridal-falls-bc",
+      "name": "Mt Cheam / Bridal Falls WCSC Windtalker",
+      "latitude": 49.1806,
+      "longitude": -121.7375,
+      "elevationM": 760,
+      "country": "CA",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://www.westcoastsoaringclub.com/weather/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 250,
+          "toDeg": 330
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    }
+  ]
+}

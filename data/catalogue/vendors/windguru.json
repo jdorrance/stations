@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "windguru",
+  "count": 1,
+  "stations": [
+    {
+      "uid": "windguru:2041",
+      "vendor": "windguru",
+      "nativeId": "2041",
+      "name": "Columbia River Gorge - Stevenson / Dog Mountain",
+      "latitude": 45.6945,
+      "longitude": -121.8845,
+      "elevationM": 45,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://www.windguru.cz/station/2041",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "locator": {}
+    }
+  ]
+}

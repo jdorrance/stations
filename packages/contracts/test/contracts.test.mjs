@@ -4,13 +4,17 @@ import {
   CATALOGUE_SCHEMA_VERSION,
   STATION_SCHEMA_VERSION,
   catalogueToGeoJson,
+  deduplicateCatalogueStations,
+  enrichStationsWithLaunches,
   feedToGeoJson,
   formatStationUid,
   mergeCatalogueStations,
+  parseCatalogueNdjson,
   parseCatalogueStation,
   parseStationCatalogueJson,
   parseStationFeedJson,
   parseStationUid,
+  serializeCatalogueNdjson,
 } from '../dist/index.js';
 
 const sampleCatalogueStation = {
@@ -40,9 +44,14 @@ const sampleCatalogueStation = {
   },
 };
 
-test('formatStationUid, parseStationUid, and parseCatalogueStation validate station records', () => {
+test('formatStationUid, parseStationUid, and parseCatalogueStation validate station records across all vendors', () => {
   assert.equal(formatStationUid('windnerd', 'tiger-mtn'), 'windnerd:tiger-mtn');
   assert.deepEqual(parseStationUid('openwindmap:412'), { vendor: 'openwindmap', nativeId: '412' });
+  assert.deepEqual(parseStationUid('raws:451702'), { vendor: 'raws', nativeId: '451702' });
+  assert.deepEqual(parseStationUid('windsmobi:holfuy-1652'), {
+    vendor: 'windsmobi',
+    nativeId: 'holfuy-1652',
+  });
   assert.equal(parseStationUid('unknown:412'), null);
   assert.equal(parseStationUid('invalid'), null);
 
@@ -57,7 +66,7 @@ test('formatStationUid, parseStationUid, and parseCatalogueStation validate stat
   assert.equal(mismatchedUid, null);
 });
 
-test('parseStationCatalogueJson and mergeCatalogueStations deduplicate and enrich records', () => {
+test('parseStationCatalogueJson, deduplicateCatalogueStations, and enrichStationsWithLaunches work as expected', () => {
   const merged = mergeCatalogueStations([
     [{ ...sampleCatalogueStation, elevationM: null, region: null }],
     [{ ...sampleCatalogueStation, elevationM: 730, region: 'WA' }],
@@ -66,11 +75,62 @@ test('parseStationCatalogueJson and mergeCatalogueStations deduplicate and enric
   assert.equal(merged[0].elevationM, 730);
   assert.equal(merged[0].region, 'WA');
 
+  const awcKsea = {
+    ...sampleCatalogueStation,
+    uid: 'awc:KSEA',
+    vendor: 'awc',
+    nativeId: 'KSEA',
+    name: 'Seattle-Tacoma International',
+    latitude: 47.449,
+    longitude: -122.309,
+    locator: { icaoId: 'KSEA' },
+  };
+  const iemSea = {
+    ...sampleCatalogueStation,
+    uid: 'iem:SEA',
+    vendor: 'iem',
+    nativeId: 'SEA',
+    name: 'Seattle Tacoma Airport',
+    latitude: 47.4492,
+    longitude: -122.3094,
+    locator: { network: 'WA_ASOS' },
+  };
+  const nwsKsea = {
+    ...sampleCatalogueStation,
+    uid: 'nws:KSEA',
+    vendor: 'nws',
+    nativeId: 'KSEA',
+    name: 'Seattle, Seattle-Tacoma International Airport',
+    latitude: 47.4447,
+    longitude: -122.3136,
+    locator: { stationId: 'KSEA' },
+  };
+
+  const deduped = deduplicateCatalogueStations([nwsKsea, iemSea, awcKsea]);
+  assert.equal(deduped.length, 1);
+  assert.equal(deduped[0].uid, 'awc:KSEA');
+  assert.deepEqual(deduped[0].aliases, ['iem:SEA', 'nws:KSEA']);
+  assert.equal(deduped[0].category, 'synoptic');
+
+  const enriched = enrichStationsWithLaunches(
+    [sampleCatalogueStation],
+    [{ slug: 'wa-tiger-mountain', name: 'Tiger Mountain', latitude: 47.4995, longitude: -122.009 }],
+    50,
+  );
+  assert.ok(enriched[0].launchContext);
+  assert.equal(enriched[0].launchContext.nearestLaunchSlug, 'wa-tiger-mountain');
+  assert.equal(enriched[0].launchContext.distanceKm, 0);
+
+  const ndjson = serializeCatalogueNdjson(enriched);
+  const roundTrip = parseCatalogueNdjson(ndjson);
+  assert.equal(roundTrip.length, 1);
+  assert.equal(roundTrip[0].launchContext?.nearestLaunchSlug, 'wa-tiger-mountain');
+
   const doc = {
     schemaVersion: CATALOGUE_SCHEMA_VERSION,
     generatedAt: '2026-10-26T12:00:00Z',
     regions: ['US', 'CA', 'MX', 'AM'],
-    stations: merged,
+    stations: enriched,
   };
   const parsed = parseStationCatalogueJson(JSON.stringify(doc));
   assert.ok(parsed);
@@ -83,6 +143,7 @@ test('catalogueToGeoJson and feedToGeoJson emit valid GeoJSON FeatureCollections
   assert.equal(catalogueGeo.features.length, 1);
   assert.deepEqual(catalogueGeo.features[0].geometry.coordinates, [-122.009, 47.4995, 730]);
   assert.equal(catalogueGeo.features[0].properties.status, 'catalogue');
+  assert.equal(catalogueGeo.features[0].properties.category, 'freeflight');
 
   const rawFeed = {
     schemaVersion: STATION_SCHEMA_VERSION,

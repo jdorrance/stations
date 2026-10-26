@@ -37,7 +37,9 @@ export function validBounds(value: unknown): value is Bounds {
 
 export function parseBoundsParam(raw: string | null | undefined): Bounds | null {
   if (!raw) return null;
-  const parts = raw.split(',').map(part => Number(part.trim()));
+  const components = raw.split(',').map(part => part.trim());
+  if (components.length !== 4 || components.some(part => part.length === 0)) return null;
+  const parts = components.map(Number);
   if (parts.length !== 4 || !validBounds(parts)) return null;
   return [parts[0]!, parts[1]!, parts[2]!, parts[3]!];
 }
@@ -61,7 +63,8 @@ export function boundsIntersect(a: Bounds, b: Bounds): boolean {
       if (aWest <= bEast && bWest <= aEast) return true;
     }
   }
-  return false;
+  const dateLine = { longitude: 180, latitude: Math.max(a[1], b[1]) };
+  return containsPoint(a, dateLine) && containsPoint(b, dateLine);
 }
 
 export function coversPoint(coverage: Coverage, point: Position): boolean {
@@ -79,6 +82,50 @@ export function distanceKm(a: Position, b: Position): number {
   const dLon = normalizeLongitude(b.longitude - a.longitude) * r;
   const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.latitude * r) * Math.cos(b.latitude * r) * Math.sin(dLon / 2) ** 2;
   return 6371 * 2 * Math.asin(Math.sqrt(Math.min(1, Math.max(0, h))));
+}
+
+/** Initial forward azimuth in degrees [0, 360) from `a` to `b` on a sphere. */
+export function bearingDeg(a: Position, b: Position): number {
+  if (!validPosition(a) || !validPosition(b)) return NaN;
+  const r = Math.PI / 180;
+  const lat1 = a.latitude * r;
+  const lat2 = b.latitude * r;
+  const dLon = normalizeLongitude(b.longitude - a.longitude) * r;
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  return ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
+}
+
+/** Splits a bounding box into uniform tiles of at most `latStepDeg` by `lonStepDeg`. */
+export function tileBounds(bounds: Bounds, latStepDeg: number, lonStepDeg: number): Bounds[] {
+  if (!validBounds(bounds) || !Number.isFinite(latStepDeg) || latStepDeg <= 0 || !Number.isFinite(lonStepDeg) || lonStepDeg <= 0) {
+    return [];
+  }
+  const [west, south, east, north] = bounds;
+  const spans: readonly (readonly [number, number])[] = west > east
+    ? [[west, 180], [-180, east]]
+    : [[west, east]];
+  const rows = Math.ceil((north - south) / latStepDeg);
+  const columns = spans.map(([start, end]) => Math.ceil((end - start) / lonStepDeg));
+  const count = rows * columns.reduce((sum, value) => sum + value, 0);
+  if (!Number.isSafeInteger(count) || count > 1_000_000) {
+    throw new RangeError('tileBounds would create more than 1,000,000 tiles');
+  }
+  const tiles: Bounds[] = [];
+  for (let span = 0; span < spans.length; span += 1) {
+    const [start, end] = spans[span]!;
+    for (let row = 0; row < rows; row += 1) {
+      const tileSouth = south + row * latStepDeg;
+      const tileNorth = Math.min(north, south + (row + 1) * latStepDeg);
+      if (tileSouth >= tileNorth) continue;
+      for (let column = 0; column < columns[span]!; column += 1) {
+        const tileWest = start + column * lonStepDeg;
+        const tileEast = Math.min(end, start + (column + 1) * lonStepDeg);
+        if (tileWest < tileEast) tiles.push([tileWest, tileSouth, tileEast, tileNorth]);
+      }
+    }
+  }
+  return tiles;
 }
 
 /** Native-cell GeoJSON rings with short edges. Boundaries are covered; hole interiors are not. */

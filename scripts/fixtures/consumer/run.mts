@@ -15,7 +15,8 @@ import {
 } from '@stations/client';
 
 assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM']);
-assert.equal(inferRegionCode({ latitude: 40.2727, longitude: 44.7074 }), 'AM');
+assert.equal(inferRegionCode({ latitude: 40.2727, longitude: 44.7074 }, 'AM'), 'AM');
+assert.equal(inferRegionCode({ latitude: 40.2727, longitude: 44.7074 }), null);
 assert.equal(formatStationUid('windnerd', 'tiger-mountain'), 'windnerd:tiger-mountain');
 assert.deepEqual(parseStationUid('holfuy:1652'), { vendor: 'holfuy', nativeId: '1652' });
 
@@ -53,6 +54,7 @@ assert.ok(catalogue.stations.length >= 14);
 const handler = createStationsApiHandler({
   catalogue,
   environment,
+  credentials: { holfuyPasswords: { '1652': 'test-only-password' } },
   basePath: '/api/stations',
 });
 

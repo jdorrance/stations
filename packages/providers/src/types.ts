@@ -4,10 +4,15 @@ import type { Bounds, Coverage, RegionCode } from '@stations/geography';
 
 export interface ProviderCredentials {
   readonly tempestToken?: string;
+  readonly tempestTokens?: Readonly<Record<string, string>>;
   readonly ecowittApplicationKey?: string;
   readonly ecowittApiKey?: string;
   readonly holfuyApiKey?: string;
   readonly holfuyPasswords?: Readonly<Record<string, string>>;
+  readonly wuApiKey?: string;
+  readonly synopticToken?: string;
+  readonly ambientApiKey?: string;
+  readonly ambientApplicationKey?: string;
 }
 
 export interface DiscoverOptions {

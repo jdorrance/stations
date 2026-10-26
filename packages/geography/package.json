@@ -28,6 +28,6 @@
   "scripts": {
     "build": "node ../../scripts/build-packages.mjs @stations/geography",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test test/*.test.mjs"
+    "test": "pnpm build && node --test test/*.test.mjs"
   }
 }

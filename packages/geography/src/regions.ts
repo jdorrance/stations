@@ -1,4 +1,4 @@
-import { coversPoint, validPosition, type Bounds, type Coverage, type Position } from './index.ts';
+import { validPosition, type Bounds, type Coverage, type Position } from './index.ts';
 
 export const REGION_CODES = ['US', 'CA', 'MX', 'AM'] as const;
 export type RegionCode = (typeof REGION_CODES)[number];
@@ -9,8 +9,10 @@ export const INITIAL_SCOPE_REGIONS: readonly RegionCode[] = ['US', 'CA', 'MX', '
 export interface RegionDescriptor {
   readonly code: RegionCode;
   readonly name: string;
+  /** Representative display default; not the time zone of every station in the region. */
   readonly defaultTimeZone: string;
   readonly envelope: Bounds;
+  /** Coarse discovery coverage; not a country boundary or proof of attribution. */
   readonly coverage: Coverage;
 }
 
@@ -83,79 +85,16 @@ export function coverageForRegions(codes: readonly RegionCode[]): Coverage {
   };
 }
 
-/** Piecewise latitude of the US-Mexico border for longitudes in [-117.2, -97.0]. */
-function usMexicoBorderLatitude(longitude: number): number {
-  const pts: readonly (readonly [number, number])[] = [
-    [-117.12, 32.53],
-    [-114.81, 32.49],
-    [-111.07, 31.33],
-    [-108.21, 31.33],
-    [-106.53, 31.78],
-    [-103.00, 28.99],
-    [-101.40, 29.77],
-    [-99.50, 27.50],
-    [-97.14, 25.96],
-  ];
-  if (longitude <= pts[0]![0]) return pts[0]![1];
-  if (longitude >= pts[pts.length - 1]![0]) return pts[pts.length - 1]![1];
-  for (let i = 0; i < pts.length - 1; i += 1) {
-    const [lonA, latA] = pts[i]!;
-    const [lonB, latB] = pts[i + 1]!;
-    if (longitude >= lonA && longitude <= lonB) {
-      const t = (longitude - lonA) / (lonB - lonA);
-      return latA + t * (latB - latA);
-    }
-  }
-  return 31.33;
-}
-
-/** Piecewise latitude of the US-Canada border for longitudes in [-141.0, -66.9]. */
-function usCanadaBorderLatitude(longitude: number): number {
-  if (longitude < -130.0) return 54.68; // Southern tip of Alaska Panhandle
-  if (longitude < -123.25) return 48.45; // Strait of Juan de Fuca / Vancouver Island
-  if (longitude < -95.15) return 49.0; // 49th parallel
-  if (longitude < -82.4) return 46.5; // Upper Great Lakes
-  if (longitude < -79.0) return 42.3; // Southern Ontario peninsula (Windsor/Erie/Ontario)
-  if (longitude < -74.7) return 43.6; // Lake Ontario / St. Lawrence
-  if (longitude < -71.0) return 45.0; // VT/NY - Quebec border
-  return 47.3; // Maine - New Brunswick/Quebec
-}
-
 /**
- * Infers the RegionCode (`US`, `CA`, `MX`, `AM`) for a position.
- * If an explicit ISO country hint is valid and its coverage contains the point, it is preserved.
+ * Resolves a supported country from trusted upstream or curated metadata.
+ * Coordinates alone cannot establish country membership: the regional coverage
+ * rectangles are deliberately coarse and overlap neighboring countries.
+ * Returns null without a supported explicit country hint or for invalid positions.
  */
 export function inferRegionCode(point: Position, declaredCountry?: string | null): RegionCode | null {
   if (!validPosition(point)) return null;
   const normalized = declaredCountry?.trim().toUpperCase();
-  if (normalized && isRegionCode(normalized) && coversPoint(REGIONS[normalized].coverage, point)) {
-    return normalized;
-  }
-  if (coversPoint(REGIONS.AM.coverage, point)) return 'AM';
-  const { latitude, longitude } = point;
-
-  // Alaska, Hawaii, and US Caribbean
-  if (coversPoint({ kind: 'bounds', bounds: US_HAWAII_BOUNDS }, point)) return 'US';
-  if (coversPoint({ kind: 'bounds', bounds: US_CARIBBEAN_BOUNDS }, point)) return 'US';
-  if (longitude <= -141.0 && coversPoint({ kind: 'bounds', bounds: US_ALASKA_BOUNDS }, point)) return 'US';
-  if (longitude > -141.0 && longitude <= -129.97 && latitude >= 54.68 && latitude <= 60.0) {
-    // Southeast Alaska panhandle vs BC/Yukon
-    const panhandleEastLon = -130.0 - ((latitude - 54.68) / (60.0 - 54.68)) * 9.0;
-    if (longitude <= panhandleEastLon) return 'US';
-  }
-
-  if (coversPoint(REGIONS.MX.coverage, point) && latitude < usMexicoBorderLatitude(longitude)) {
-    return 'MX';
-  }
-  if (coversPoint(REGIONS.CA.coverage, point) && latitude >= usCanadaBorderLatitude(longitude)) {
-    return 'CA';
-  }
-  if (coversPoint(REGIONS.US.coverage, point)) {
-    return 'US';
-  }
-  if (coversPoint(REGIONS.CA.coverage, point)) return 'CA';
-  if (coversPoint(REGIONS.MX.coverage, point)) return 'MX';
-  return null;
+  return isRegionCode(normalized) ? normalized : null;
 }
 
 export function inRegion(code: RegionCode, point: Position, declaredCountry?: string | null): boolean {

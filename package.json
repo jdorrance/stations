@@ -11,20 +11,27 @@
     "build:packages": "node scripts/build-packages.mjs",
     "check:boundaries": "node scripts/check-boundaries.mjs",
     "check:api": "node scripts/check-api.mjs",
-    "test:packages": "node --test packages/*/test/*.test.mjs",
-    "test:consumer": "node scripts/test-consumer.mjs",
+    "test:packages": "pnpm build:packages && node --test packages/*/test/*.test.mjs",
+    "test:consumer": "pnpm build:packages && node scripts/test-consumer.mjs",
     "check": "pnpm build:packages && pnpm check:boundaries && pnpm check:api",
-    "test": "node --test packages/*/test/*.test.mjs",
-    "build": "pnpm build:packages",
-    "catalogue:build": "node scripts/build-catalogue.mjs"
+    "test": "pnpm build:packages && node --test packages/*/test/*.test.mjs scripts/test/*.test.mjs",
+    "verify": "pnpm check && node --test packages/*/test/*.test.mjs scripts/test/*.test.mjs && node scripts/test-consumer.mjs",
+    "build:web": "pnpm build:packages && node scripts/build-web.mjs",
+    "build": "pnpm build:packages && node scripts/build-web.mjs",
+    "dev": "pnpm build:web && node scripts/serve-explorer.mjs",
+    "catalogue:build": "pnpm build:packages && node scripts/build-catalogue.mjs",
+    "catalogue:crawl": "pnpm build:packages && node scripts/crawl-na.mjs",
+    "test:scripts": "pnpm build:packages && node --test scripts/test/*.test.mjs"
   },
   "devDependencies": {
+    "@azohra/meteo.station": "0.7.0",
     "@stations/client": "workspace:*",
     "@stations/contracts": "workspace:*",
     "@stations/geography": "workspace:*",
     "@stations/providers": "workspace:*",
     "@types/node": "24.10.1",
     "esbuild": "0.25.0",
+    "maplibre-gl": "6.14.0",
     "typescript": "5.9.3"
   },
   "pnpm": {

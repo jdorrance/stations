@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { memoryCache } from '@azohra/meteo.station/server';
+import { STATION_SCHEMA_VERSION } from '@stations/contracts';
 import {
   INITIAL_SEED_STATIONS,
   createStationsApiHandler,
@@ -67,6 +68,7 @@ test('createStationsClient and createViewportStationStore query spatial catalogu
 
   const handler = createStationsApiHandler({
     catalogue,
+    credentials: { holfuyApiKey: 'test-holfuy-key' },
     environment,
     basePath: '/api/stations',
   });
@@ -131,4 +133,232 @@ test('createCatalogueIndex supports filtering by country, vendor, and limit', ()
   assert.equal(usWindnerd.length, 2);
   assert.equal(index.byUid('windnerd:tiger-mountain')?.name, 'Tiger Mountain North Launch');
   assert.equal(index.toGeoJson(usWindnerd).features.length, 2);
+});
+
+
+function emptyFeed(servedAt = '2026-10-26T18:05:00Z') {
+  return { schemaVersion: STATION_SCHEMA_VERSION, servedAt, primaryStationId: null, stations: [] };
+}
+
+function deferred() {
+  let resolve;
+  const promise = new Promise(done => { resolve = done; });
+  return { promise, resolve };
+}
+
+test('viewport keeps the latest request when requests finish in either order', async t => {
+  for (const completionOrder of ['old-first', 'new-first']) {
+    await t.test(completionOrder, async () => {
+      const requests = [];
+      const store = createViewportStationStore({
+        client: {
+          loadFeed(query, request) {
+            const pending = deferred();
+            requests.push({ query, request, ...pending });
+            return pending.promise; // Deliberately ignores cancellation to exercise the generation guard.
+          },
+        },
+      });
+      const oldBounds = [0, 0, 1, 1];
+      const newBounds = [10, 10, 11, 11];
+      const oldLoad = store.setViewport(oldBounds);
+      await Promise.resolve();
+      const newLoad = store.setViewport(newBounds);
+      await Promise.resolve();
+      assert.equal(requests[0].request.signal.aborted, true);
+      assert.equal(requests[1].request.signal.aborted, false);
+      const oldFeed = emptyFeed('2026-10-26T18:04:00Z');
+      const newFeed = emptyFeed();
+      if (completionOrder === 'old-first') {
+        requests[0].resolve(oldFeed);
+        await oldLoad;
+        assert.deepEqual(store.getSnapshot().bounds, newBounds);
+        assert.equal(store.getSnapshot().loading, true);
+        assert.equal(store.getSnapshot().feed, null);
+        requests[1].resolve(newFeed);
+        await newLoad;
+      } else {
+        requests[1].resolve(newFeed);
+        await newLoad;
+        requests[0].resolve(oldFeed);
+        await oldLoad;
+      }
+      assert.deepEqual(store.getSnapshot().bounds, newBounds);
+      assert.deepEqual(store.getSnapshot().dataBounds, newBounds);
+      assert.equal(store.getSnapshot().feed, newFeed);
+      assert.equal(store.getSnapshot().loading, false);
+      assert.equal(store.getSnapshot().stale, false);
+      assert.equal(store.getSnapshot().error, null);
+    });
+  }
+});
+
+test('viewport coalesces identical in-flight bounds', async () => {
+  const pending = deferred();
+  let requests = 0;
+  const store = createViewportStationStore({ client: { loadFeed: () => { requests += 1; return pending.promise; } } });
+  const first = store.setViewport([0, 0, 1, 1]);
+  const second = store.setViewport([0, 0, 1, 1]);
+  const refresh = store.refresh();
+  assert.equal(first, second);
+  assert.equal(first, refresh);
+  await Promise.resolve();
+  assert.equal(requests, 1);
+  pending.resolve(emptyFeed());
+  await first;
+});
+
+test('viewport retains data bounds and reports errors during failed refreshes', async () => {
+  let status = 200;
+  const client = createStationsClient({
+    baseUrl: '/api/stations',
+    fetch: async () => new Response(JSON.stringify(emptyFeed()), { status }),
+  });
+  const store = createViewportStationStore({ client });
+  const firstBounds = [0, 0, 1, 1];
+  const nextBounds = [10, 10, 11, 11];
+  const initial = await store.setViewport(firstBounds);
+  status = 503;
+  const failedLoad = store.setViewport(nextBounds);
+  assert.equal(store.getSnapshot().stale, true);
+  assert.equal(store.getSnapshot().loading, true);
+  assert.deepEqual(store.getSnapshot().dataBounds, firstBounds);
+  const failed = await failedLoad;
+  assert.deepEqual(failed.bounds, nextBounds);
+  assert.deepEqual(failed.dataBounds, firstBounds);
+  assert.equal(failed.feed, initial.feed);
+  assert.equal(failed.geojson, initial.geojson);
+  assert.equal(failed.updatedAtMs, initial.updatedAtMs);
+  assert.equal(failed.loading, false);
+  assert.equal(failed.stale, true);
+  assert.equal(failed.error.kind, 'http');
+  assert.equal(failed.error.status, 503);
+  status = 200;
+  const retry = store.refresh();
+  assert.equal(store.getSnapshot().stale, true);
+  const recovered = await retry;
+  assert.deepEqual(recovered.dataBounds, nextBounds);
+  assert.equal(recovered.stale, false);
+  assert.equal(recovered.error, null);
+  const sameBoundsRefresh = store.refresh();
+  assert.equal(store.getSnapshot().stale, true);
+  await sameBoundsRefresh;
+});
+
+test('viewport clears loading when a custom client throws or returns no feed', async () => {
+  let shouldThrow = true;
+  const store = createViewportStationStore({
+    client: { loadFeed: async () => { if (shouldThrow) throw new Error('offline'); return null; } },
+  });
+  let snapshot = await store.setViewport([0, 0, 1, 1]);
+  assert.equal(snapshot.loading, false);
+  assert.equal(snapshot.error.kind, 'unknown');
+  assert.equal(snapshot.error.message, 'offline');
+  assert.equal(snapshot.dataBounds, null);
+  assert.equal(snapshot.stale, false);
+  shouldThrow = false;
+  snapshot = await store.refresh();
+  assert.equal(snapshot.loading, false);
+  assert.equal(snapshot.error.kind, 'unknown');
+});
+
+test('client distinguishes HTTP, network, and invalid document failures while nullable methods stay compatible', async t => {
+  const scenarios = [
+    { name: 'http', fetch: async () => new Response('unavailable', { status: 502 }), kind: 'http', status: 502 },
+    { name: 'network', fetch: async () => { throw new Error('offline'); }, kind: 'network' },
+    { name: 'invalid JSON', fetch: async () => new Response('{'), kind: 'parse' },
+    { name: 'invalid schema', fetch: async () => new Response('{}'), kind: 'parse' },
+  ];
+  for (const scenario of scenarios) {
+    await t.test(scenario.name, async () => {
+      const client = createStationsClient({ baseUrl: '/api/stations', fetch: scenario.fetch });
+      const result = await client.loadFeedResult();
+      assert.equal(result.data, null);
+      assert.equal(result.error.kind, scenario.kind);
+      assert.equal(result.error.status, scenario.status);
+      assert.equal(await client.loadFeed(), null);
+    });
+  }
+});
+
+test('client supports cancellation even when injected fetch ignores the signal', async () => {
+  let requestSignal;
+  const client = createStationsClient({
+    baseUrl: '/api/stations',
+    fetch: (_input, request) => { requestSignal = request.signal; return new Promise(() => {}); },
+  });
+  const controller = new AbortController();
+  const pending = client.loadFeedResult(undefined, { signal: controller.signal });
+  controller.abort();
+  const result = await pending;
+  assert.equal(requestSignal.aborted, true);
+  assert.equal(result.error.kind, 'aborted');
+  assert.equal(result.data, null);
+  const preAborted = await client.loadCatalogueResult(undefined, { signal: controller.signal });
+  assert.equal(preAborted.error.kind, 'aborted');
+});
+
+test('client times out both fetch and response body reads', async t => {
+  for (const stalledPart of ['fetch', 'body']) {
+    await t.test(stalledPart, async () => {
+      let requestSignal;
+      const client = createStationsClient({
+        baseUrl: '/api/stations',
+        timeoutMs: 10,
+        fetch: async (_input, request) => {
+          requestSignal = request.signal;
+          if (stalledPart === 'fetch') return new Promise(() => {});
+          return new Response(new ReadableStream({ start() {} }));
+        },
+      });
+      const result = await client.loadCurrentResult('holfuy:1652');
+      assert.equal(result.error.kind, 'timeout');
+      assert.equal(requestSignal.aborted, true);
+    });
+  }
+});
+
+test('client helpers can be destructured', async () => {
+  const client = createStationsClient({
+    baseUrl: '/api/stations',
+    fetch: async input => new Response(JSON.stringify(String(input).includes('/catalogue')
+      ? { schemaVersion: 1, generatedAt: '2026-10-26T18:05:00Z', regions: ['AM'], stations: [] }
+      : emptyFeed())),
+  });
+  const { loadCatalogueIndex, loadGeoJsonFeed } = client;
+  assert.equal((await loadCatalogueIndex()).size, 0);
+  assert.equal((await loadGeoJsonFeed()).features.length, 0);
+});
+
+
+test('catalogue aliases resolve without overriding canonical IDs and all spatial methods share filters', () => {
+  const base = INITIAL_SEED_STATIONS[0];
+  const launchContext = { nearestLaunchSlug: 'launch', nearestLaunchName: 'Launch', distanceKm: 2, bearingDeg: 0 };
+  const wrong = { ...base, uid: 'custom:wrong', vendor: 'custom', nativeId: 'wrong', latitude: 40, longitude: 44, category: 'pws' };
+  const target = { ...base, uid: 'custom:target', vendor: 'custom', nativeId: 'target', latitude: 40.01, longitude: 44, category: 'freeflight', aliases: ['custom:old', 'custom:wrong'], launchContext };
+  const index = createCatalogueIndex({ schemaVersion: 1, generatedAt: '2026-10-26T18:05:00Z', regions: [], stations: [wrong, target] });
+  assert.equal(index.byUid('custom:old'), target);
+  assert.equal(index.byUidMap.get('custom:old'), target);
+  assert.equal(index.byUid('custom:wrong'), wrong);
+  assert.equal(index.size, 2);
+  const filter = { categories: ['freeflight'], launchSlug: 'launch', maxLaunchDistanceKm: 3, limit: 1 };
+  assert.deepEqual(index.all(filter), [target]);
+  assert.deepEqual(index.inBounds([43, 39, 45, 41], filter), [target]);
+  assert.deepEqual(index.near({ latitude: 40, longitude: 44 }, 10, filter).map(match => match.item), [target]);
+  assert.deepEqual(index.near({ latitude: 40, longitude: 44 }, 10, { ...filter, maxLaunchDistanceKm: 1 }), []);
+  for (const limit of [0, -1, NaN, Infinity]) {
+    assert.deepEqual(index.all({ limit }), []);
+    assert.deepEqual(index.near({ latitude: 40, longitude: 44 }, 10, { limit }), []);
+  }
+});
+
+test('viewport forwards category and launch selection to the client', async () => {
+  let requested;
+  const store = createViewportStationStore({
+    client: { loadFeed: async query => { requested = query; return emptyFeed(); } },
+    categories: ['freeflight'], launch: 'launch',
+  });
+  await store.setViewport([43, 39, 45, 41]);
+  assert.deepEqual(requested.categories, ['freeflight']);
+  assert.equal(requested.launch, 'launch');
 });

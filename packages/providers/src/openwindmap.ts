@@ -2,17 +2,19 @@ import { kmhToMps, plausibleWindMps } from '@azohra/meteo.core';
 import {
   emptyConditions,
   isCalm,
-  normalizeDegrees,
   type AirConditions,
   type Reading,
 } from '@azohra/meteo.station';
 import {
-  defineStationAdapter,
-  fetchUpstreamText,
-  resolveEnvironment,
+  logUpstreamFailure,
   type StationAdapterOptions,
   type StationConfigInput,
 } from '@azohra/meteo.station/server';
+import {
+  defineStationAdapter,
+  resolveEnvironment,
+} from './server.ts';
+import { fetchUpstreamText } from '@azohra/meteo.station/server';
 import {
   formatStationUid,
   mergeCatalogueStations,
@@ -21,12 +23,16 @@ import {
 import {
   INITIAL_SCOPE_REGIONS,
   inferRegionCode,
-  regionDescriptor,
   validPosition,
   type Coverage,
 } from '@stations/geography';
-import { filterCatalogueStations, stationMetaFromCatalogue } from './azohra-vendors.ts';
+import {
+  customStationConfig,
+  filterCatalogueStations,
+  stationMetaFromCatalogue,
+} from './azohra-vendors.ts';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
+import { isRecord, strictNumber as finiteNumber, windDirection } from './observation-values.ts';
 
 export const OPENWINDMAP_ARCHIVE_URL = 'https://api.pioupiou.fr/v1/live-with-meta/all';
 export const OPENWINDMAP_STATION_URL = 'https://api.pioupiou.fr/v1/live-with-meta';
@@ -43,14 +49,6 @@ export type OpenWindMapAdapterOptions = StationAdapterOptions & {
 export interface OpenWindMapParsedStation {
   readonly station: CatalogueStation;
   readonly reading: Reading;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
-function finiteNumber(value: unknown): number | null {
-  return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
 export function parseOpenWindMapEntry(raw: unknown): OpenWindMapParsedStation | null {
@@ -72,7 +70,6 @@ export function parseOpenWindMapEntry(raw: unknown): OpenWindMapParsedStation | 
   }
 
   const country = inferRegionCode({ latitude, longitude });
-  const defaultZone = country ? regionDescriptor(country).defaultTimeZone : null;
   const name =
     typeof meta.name === 'string' && meta.name.trim().length > 0
       ? meta.name.trim()
@@ -91,7 +88,7 @@ export function parseOpenWindMapEntry(raw: unknown): OpenWindMapParsedStation | 
     elevationM,
     country,
     region: null,
-    timeZone: defaultZone,
+    timeZone: null,
     pageUrl: `https://www.openwindmap.org/PP${encodeURIComponent(nativeId)}`,
     capabilities: {
       gustLull: true,
@@ -129,7 +126,7 @@ export function parseOpenWindMapEntry(raw: unknown): OpenWindMapParsedStation | 
     observedAt: new Date(observedAtMs).toISOString(),
     windAvgMps,
     windDirectionDeg:
-      isCalm(windAvgMps) || headingDeg === null ? null : normalizeDegrees(headingDeg),
+      isCalm(windAvgMps) ? null : windDirection(headingDeg),
     windGustMps: maxKmh === null ? null : plausibleWindMps(kmhToMps(maxKmh), 'OpenWindMap'),
     windLullMps: minKmh === null ? null : plausibleWindMps(kmhToMps(minKmh), 'OpenWindMap'),
     temperatureC: null,
@@ -140,15 +137,25 @@ export function parseOpenWindMapEntry(raw: unknown): OpenWindMapParsedStation | 
   return { station, reading };
 }
 
-export function parseOpenWindMapArchive(text: string): OpenWindMapParsedStation[] {
+export function parseOpenWindMapArchive(
+  text: string,
+  onInvalidEntry?: (error: unknown, index: number) => void,
+): OpenWindMapParsedStation[] {
   const root: unknown = JSON.parse(text);
   if (!isRecord(root) || !Array.isArray(root.data)) {
     throw new Error('OpenWindMap archive response is missing data array');
   }
   const results: OpenWindMapParsedStation[] = [];
-  for (const item of root.data) {
-    const parsed = parseOpenWindMapEntry(item);
+  for (const [index, item] of root.data.entries()) {
+    let parsed: OpenWindMapParsedStation | null;
+    try {
+      parsed = parseOpenWindMapEntry(item);
+    } catch (error) {
+      onInvalidEntry?.(error, index);
+      continue;
+    }
     if (parsed) results.push(parsed);
+    else onInvalidEntry?.(new Error('OpenWindMap entry is missing valid station or wind data'), index);
   }
   return results;
 }
@@ -206,7 +213,9 @@ export const openWindMapProvider: StationNetworkProvider = {
         subject: 'OpenWindMap station archive',
         limitBytes: 4 * 1024 * 1024,
       });
-      const discovered = parseOpenWindMapArchive(text).map(entry => entry.station);
+      const discovered = parseOpenWindMapArchive(text, (error, index) => {
+        logUpstreamFailure(environment, 'Skipped invalid OpenWindMap discovery entry', error, { index });
+      }).map(entry => entry.station);
       batches.push(discovered);
     }
     return filterCatalogueStations(mergeCatalogueStations(batches), {
@@ -215,17 +224,8 @@ export const openWindMapProvider: StationNetworkProvider = {
     });
   },
   toStationConfig(station: CatalogueStation): StationConfigInput {
-    return {
-      vendor: 'custom',
-      id: station.uid,
-      name: station.name,
-      latitude: station.latitude,
-      longitude: station.longitude,
-      elevationM: station.elevationM,
-      timeZone: station.timeZone,
-      pageUrl: station.pageUrl,
-      load: ({ environment, historyHours, mode }) =>
-        loadOpenWindMapStation({ station }, { environment, historyHours, mode }),
-    };
+    return customStationConfig(station, ({ environment, historyHours, mode }) =>
+      loadOpenWindMapStation({ station }, { environment, historyHours, mode }),
+    );
   },
 };

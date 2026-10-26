@@ -1,10 +1,784 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "generatedAt": "2026-10-26T19:40:56.194Z",
   "regions": [
     "MX"
   ],
   "stations": [
+    {
+      "uid": "awc:MMAA",
+      "vendor": "awc",
+      "nativeId": "MMAA",
+      "name": "Acapulco/Alvarez Intl, GR, MX",
+      "latitude": 16.758,
+      "longitude": -99.754,
+      "elevationM": 5,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMAA",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMAA"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCE",
+      "vendor": "awc",
+      "nativeId": "MMCE",
+      "name": "Ciudad Del Carmen Arpt, CM, MX",
+      "latitude": 18.651,
+      "longitude": -91.8,
+      "elevationM": 5,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Merida",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCE",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCE"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCM",
+      "vendor": "awc",
+      "nativeId": "MMCM",
+      "name": "Chetumal Intl, QT, MX",
+      "latitude": 18.504,
+      "longitude": -88.326,
+      "elevationM": 10,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Cancun",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCM"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCN",
+      "vendor": "awc",
+      "nativeId": "MMCN",
+      "name": "Ciudad Obregón Intl, SO, MX",
+      "latitude": 27.395,
+      "longitude": -109.837,
+      "elevationM": 57,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Hermosillo",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCN",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCN"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCT",
+      "vendor": "awc",
+      "nativeId": "MMCT",
+      "name": "Chichén Itzá Intl, YU, MX",
+      "latitude": 20.641,
+      "longitude": -88.446,
+      "elevationM": 29,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Merida",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCT",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCT"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCU",
+      "vendor": "awc",
+      "nativeId": "MMCU",
+      "name": "Chihuahua Intl, CH, MX",
+      "latitude": 28.701,
+      "longitude": -105.965,
+      "elevationM": 1349,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Chihuahua",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCU",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCU"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMCV",
+      "vendor": "awc",
+      "nativeId": "MMCV",
+      "name": "Ciudad Victoria Intl, TM, MX",
+      "latitude": 23.706,
+      "longitude": -98.959,
+      "elevationM": 230,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCV",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMCV"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMDO",
+      "vendor": "awc",
+      "nativeId": "MMDO",
+      "name": "Durango/Victoria Intl, DG, MX",
+      "latitude": 24.124,
+      "longitude": -104.532,
+      "elevationM": 1863,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMDO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMDO"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-chupaderos",
+        "nearestLaunchName": "Chupaderos",
+        "distanceKm": 17.3,
+        "bearingDeg": 94
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMGL",
+      "vendor": "awc",
+      "nativeId": "MMGL",
+      "name": "Guadalajara Arpt, GT, MX",
+      "latitude": 20.523,
+      "longitude": -103.312,
+      "elevationM": 1531,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMGL",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMGL"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-chante",
+        "nearestLaunchName": "El Chante",
+        "distanceKm": 25.49,
+        "bearingDeg": 19
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMGM",
+      "vendor": "awc",
+      "nativeId": "MMGM",
+      "name": "Guaymas/Yáñez Intl, SO, MX",
+      "latitude": 27.964,
+      "longitude": -110.928,
+      "elevationM": 13,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Hermosillo",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMGM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMGM"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMHO",
+      "vendor": "awc",
+      "nativeId": "MMHO",
+      "name": "Hermosillo/Garcia Intl, SO, MX",
+      "latitude": 29.097,
+      "longitude": -111.051,
+      "elevationM": 186,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Hermosillo",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMHO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMHO"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-la-cementera",
+        "nearestLaunchName": "La Cementera",
+        "distanceKm": 11.22,
+        "bearingDeg": 291
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMIA",
+      "vendor": "awc",
+      "nativeId": "MMIA",
+      "name": "Colima Arpt, CL, MX",
+      "latitude": 19.276,
+      "longitude": -103.576,
+      "elevationM": 744,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMIA",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMIA"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-la-cumbre-colima",
+        "nearestLaunchName": "La Cumbre — Colima",
+        "distanceKm": 16.1,
+        "bearingDeg": 49
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMLM",
+      "vendor": "awc",
+      "nativeId": "MMLM",
+      "name": "Los Mochis Arpt, SI, MX",
+      "latitude": 25.688,
+      "longitude": -109.085,
+      "elevationM": 6,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMLM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMLM"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMLO",
+      "vendor": "awc",
+      "nativeId": "MMLO",
+      "name": "Leon/Del Bajío Arpt, GT, MX",
+      "latitude": 20.997,
+      "longitude": -101.481,
+      "elevationM": 1805,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMLO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMLO"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-cubilete",
+        "nearestLaunchName": "El Cubilete",
+        "distanceKm": 11.45,
+        "bearingDeg": 266
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMLP",
+      "vendor": "awc",
+      "nativeId": "MMLP",
+      "name": "La Paz/de León Intl, BS, MX",
+      "latitude": 24.077,
+      "longitude": -110.364,
+      "elevationM": 16,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMLP",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMLP"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMLT",
+      "vendor": "awc",
+      "nativeId": "MMLT",
+      "name": "Loreto Intl, BS, MX",
+      "latitude": 25.993,
+      "longitude": -111.35,
+      "elevationM": 4,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMLT",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMLT"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMD",
+      "vendor": "awc",
+      "nativeId": "MMMD",
+      "name": "Mérida Intl, YU, MX",
+      "latitude": 20.936,
+      "longitude": -89.659,
+      "elevationM": 10,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Merida",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMD",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMD"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMM",
+      "vendor": "awc",
+      "nativeId": "MMMM",
+      "name": "Morelia/Mujica Intl, MI, MX",
+      "latitude": 19.844,
+      "longitude": -101.037,
+      "elevationM": 1840,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMM"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-escalera",
+        "nearestLaunchName": "Escalera",
+        "distanceKm": 22.98,
+        "bearingDeg": 351
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMT",
+      "vendor": "awc",
+      "nativeId": "MMMT",
+      "name": "Minatitlán Arpt, VE, MX",
+      "latitude": 18.098,
+      "longitude": -94.583,
+      "elevationM": 15,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMT",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMT"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMX",
+      "vendor": "awc",
+      "nativeId": "MMMX",
+      "name": "Mexico City Intl, DF, MX",
+      "latitude": 19.436,
+      "longitude": -99.072,
+      "elevationM": 2224,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMX",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMX"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tepoztlan",
+        "nearestLaunchName": "Tepoztlán",
+        "distanceKm": 47.06,
+        "bearingDeg": 2
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMY",
+      "vendor": "awc",
+      "nativeId": "MMMY",
+      "name": "Monterrey Intl, NL, MX",
+      "latitude": 25.774,
+      "longitude": -100.104,
+      "elevationM": 382,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMY",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMY"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-teleferico",
+        "nearestLaunchName": "Teleférico",
+        "distanceKm": 20.28,
+        "bearingDeg": 44
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMZ",
+      "vendor": "awc",
+      "nativeId": "MMMZ",
+      "name": "Mazatlàn/Buelna Intl, SI, MX",
+      "latitude": 23.161,
+      "longitude": -106.271,
+      "elevationM": 7,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMZ",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMMZ"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMPE",
+      "vendor": "awc",
+      "nativeId": "MMPE",
+      "name": "Puerto Peñasco Intl, SO, MX",
+      "latitude": 31.354,
+      "longitude": -113.519,
+      "elevationM": 9,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Hermosillo",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPE",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMPE"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMPR",
+      "vendor": "awc",
+      "nativeId": "MMPR",
+      "name": "Puerto Vallarta Intl, JA, MX",
+      "latitude": 20.68,
+      "longitude": -105.25,
+      "elevationM": 6,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPR",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMPR"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-conchas-chinas",
+        "nearestLaunchName": "Conchas Chinas",
+        "distanceKm": 11.08,
+        "bearingDeg": 354
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMPS",
+      "vendor": "awc",
+      "nativeId": "MMPS",
+      "name": "Puerto Escondido Arpt, OA, MX",
+      "latitude": 15.876,
+      "longitude": -97.093,
+      "elevationM": 65,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMPS"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMSL",
+      "vendor": "awc",
+      "nativeId": "MMSL",
+      "name": "Cabo San Lucas Intl, BS, MX",
+      "latitude": 22.948,
+      "longitude": -109.936,
+      "elevationM": 205,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMSL",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMSL"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMTM",
+      "vendor": "awc",
+      "nativeId": "MMTM",
+      "name": "Tampico/Mina Intl, TM, MX",
+      "latitude": 22.29,
+      "longitude": -97.863,
+      "elevationM": 21,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMTM"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
     {
       "uid": "awc:MMTO",
       "vendor": "awc",
@@ -25,18 +799,2756 @@
       },
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
-      "locator": {
-        "icaoId": "MMTO"
-      }
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMTO"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-nevado-de-toluca",
+        "nearestLaunchName": "Nevado de Toluca",
+        "distanceKm": 31.46,
+        "bearingDeg": 37
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMTP",
+      "vendor": "awc",
+      "nativeId": "MMTP",
+      "name": "Tapachula Intl, TM, MX",
+      "latitude": 14.795,
+      "longitude": -92.371,
+      "elevationM": 27,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTP",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMTP"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMUN",
+      "vendor": "awc",
+      "nativeId": "MMUN",
+      "name": "Cancún Intl, QR, MX",
+      "latitude": 21.038,
+      "longitude": -86.855,
+      "elevationM": 13,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Cancun",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMUN",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMUN"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMVA",
+      "vendor": "awc",
+      "nativeId": "MMVA",
+      "name": "Villahermosa/Perez Intl, TB, MX",
+      "latitude": 17.998,
+      "longitude": -92.817,
+      "elevationM": 13,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMVA",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMVA"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMVR",
+      "vendor": "awc",
+      "nativeId": "MMVR",
+      "name": "Veracruz/Jara Intl, VE, MX",
+      "latitude": 19.144,
+      "longitude": -96.189,
+      "elevationM": 26,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMVR",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMVR"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMZC",
+      "vendor": "awc",
+      "nativeId": "MMZC",
+      "name": "Zacatecas/Ruiz Intl, ZA, MX",
+      "latitude": 22.904,
+      "longitude": -102.68,
+      "elevationM": 2175,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMZC",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMZC"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-zopilotes",
+        "nearestLaunchName": "Zopilotes",
+        "distanceKm": 15.5,
+        "bearingDeg": 305
+      },
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMZH",
+      "vendor": "awc",
+      "nativeId": "MMZH",
+      "name": "Ixtapa-Zihuatanejo Intl, GR, MX",
+      "latitude": 17.605,
+      "longitude": -101.464,
+      "elevationM": 9,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMZH",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMZH"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMZO",
+      "vendor": "awc",
+      "nativeId": "MMZO",
+      "name": "Manzanillo/Oro Intl, CL, MX",
+      "latitude": 19.147,
+      "longitude": -104.565,
+      "elevationM": 11,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMZO",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMZO"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:106",
+      "vendor": "conagua",
+      "nativeId": "106",
+      "name": "MATLAPA",
+      "latitude": 21.325,
+      "longitude": -98.815555555556,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:110",
+      "vendor": "conagua",
+      "nativeId": "110",
+      "name": "TEMOSACHIC",
+      "latitude": 28.95,
+      "longitude": -107.81666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:112",
+      "vendor": "conagua",
+      "nativeId": "112",
+      "name": "ORIZABA",
+      "latitude": 18.85,
+      "longitude": -97.1,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-loma-maria",
+        "nearestLaunchName": "Loma María",
+        "distanceKm": 8.83,
+        "bearingDeg": 172
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:305",
+      "vendor": "conagua",
+      "nativeId": "305",
+      "name": "SAN FELIPE",
+      "latitude": 31.028055555556,
+      "longitude": -114.83444444444,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:306",
+      "vendor": "conagua",
+      "nativeId": "306",
+      "name": "NCGRANDES",
+      "latitude": 30.416666666667,
+      "longitude": -107.93333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:307",
+      "vendor": "conagua",
+      "nativeId": "307",
+      "name": "PNEGRAS",
+      "latitude": 28.683055555556,
+      "longitude": -100.56666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:308",
+      "vendor": "conagua",
+      "nativeId": "308",
+      "name": "LORETO",
+      "latitude": 26.011388888889,
+      "longitude": -111.35,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:309",
+      "vendor": "conagua",
+      "nativeId": "309",
+      "name": "CHOIX",
+      "latitude": 26.716666666667,
+      "longitude": -108.33333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:310",
+      "vendor": "conagua",
+      "nativeId": "310",
+      "name": "TORREON",
+      "latitude": 25.533333333333,
+      "longitude": -103.45,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-helipuerto",
+        "nearestLaunchName": "Helipuerto",
+        "distanceKm": 3.69,
+        "bearingDeg": 13
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:311",
+      "vendor": "conagua",
+      "nativeId": "311",
+      "name": "CULIACAN",
+      "latitude": 24.8,
+      "longitude": -107.4,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:312",
+      "vendor": "conagua",
+      "nativeId": "312",
+      "name": "CD. VICTORIA",
+      "latitude": 23.733333333333,
+      "longitude": -99.133333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:313",
+      "vendor": "conagua",
+      "nativeId": "313",
+      "name": "S.L.POTOSI",
+      "latitude": 22.175833333333,
+      "longitude": -100.98361111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-piedrero-san-luis-potosi",
+        "nearestLaunchName": "El Piedrero — San Luis Potosí",
+        "distanceKm": 15.77,
+        "bearingDeg": 337
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:315",
+      "vendor": "conagua",
+      "nativeId": "315",
+      "name": "GUANAJUATOob",
+      "latitude": 21.016666666667,
+      "longitude": -101.25,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-cubilete",
+        "nearestLaunchName": "El Cubilete",
+        "distanceKm": 12.63,
+        "bearingDeg": 84
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:316",
+      "vendor": "conagua",
+      "nativeId": "316",
+      "name": "PROGRESO",
+      "latitude": 21.3,
+      "longitude": -89.65,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:317",
+      "vendor": "conagua",
+      "nativeId": "317",
+      "name": "VALLADOLID",
+      "latitude": 20.683333333333,
+      "longitude": -88.216666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:318",
+      "vendor": "conagua",
+      "nativeId": "318",
+      "name": "COLIMA",
+      "latitude": 19.233333333333,
+      "longitude": -103.73333333333,
+      "elevationM": 495,
+      "country": "MX",
+      "region": "COL",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-la-cumbre-colima",
+        "nearestLaunchName": "La Cumbre — Colima",
+        "distanceKm": 7.23,
+        "bearingDeg": 323
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:319",
+      "vendor": "conagua",
+      "nativeId": "319",
+      "name": "TLAXCALA",
+      "latitude": 19.316666666667,
+      "longitude": -98.233333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-chalchihuapan-puebla",
+        "nearestLaunchName": "Chalchihuapan — Puebla",
+        "distanceKm": 40.93,
+        "bearingDeg": 16
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:320",
+      "vendor": "conagua",
+      "nativeId": "320",
+      "name": "CUERNAVACA",
+      "latitude": 18.933333333333,
+      "longitude": -99.233333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tepoztlan",
+        "nearestLaunchName": "Tepoztlán",
+        "distanceKm": 17.45,
+        "bearingDeg": 239
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:321",
+      "vendor": "conagua",
+      "nativeId": "321",
+      "name": "OAXACA",
+      "latitude": 17,
+      "longitude": -96.716666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-zaachila",
+        "nearestLaunchName": "Zaachila",
+        "distanceKm": 16.33,
+        "bearingDeg": 63
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:322",
+      "vendor": "conagua",
+      "nativeId": "322",
+      "name": "PUERTO ANGELob",
+      "latitude": 15.671111111111,
+      "longitude": -96.497222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:323",
+      "vendor": "conagua",
+      "nativeId": "323",
+      "name": "ALTAR",
+      "latitude": 30.714166666667,
+      "longitude": -111.83444444444,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:324",
+      "vendor": "conagua",
+      "nativeId": "324",
+      "name": "OBREGON",
+      "latitude": 27.491944444444,
+      "longitude": -109.94055555556,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:325",
+      "vendor": "conagua",
+      "nativeId": "325",
+      "name": "MONCLOVA",
+      "latitude": 26.900277777778,
+      "longitude": -101.43388888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:326",
+      "vendor": "conagua",
+      "nativeId": "326",
+      "name": "TEPEHUANES",
+      "latitude": 25.3375,
+      "longitude": -105.72222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:327",
+      "vendor": "conagua",
+      "nativeId": "327",
+      "name": "SOMBRERETE",
+      "latitude": 23.466666666667,
+      "longitude": -103.65,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:328",
+      "vendor": "conagua",
+      "nativeId": "328",
+      "name": "SOTOLAMARINA",
+      "latitude": 23.764166666667,
+      "longitude": -98.207777777778,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:329",
+      "vendor": "conagua",
+      "nativeId": "329",
+      "name": "AGUASCALIENTES",
+      "latitude": 21.883333333333,
+      "longitude": -102.5,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-picacho",
+        "nearestLaunchName": "Picacho",
+        "distanceKm": 8.08,
+        "bearingDeg": 275
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:330",
+      "vendor": "conagua",
+      "nativeId": "330",
+      "name": "TULANCINGO",
+      "latitude": 20.084166666667,
+      "longitude": -98.357222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tulancingo",
+        "nearestLaunchName": "Tulancingo",
+        "distanceKm": 8.83,
+        "bearingDeg": 219
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:331",
+      "vendor": "conagua",
+      "nativeId": "331",
+      "name": "MORELIA",
+      "latitude": 19.7,
+      "longitude": -101.2,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-escalera",
+        "nearestLaunchName": "Escalera",
+        "distanceKm": 21.88,
+        "bearingDeg": 288
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:332",
+      "vendor": "conagua",
+      "nativeId": "332",
+      "name": "TACUBAYA",
+      "latitude": 19.403611111111,
+      "longitude": -99.196111111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tepoztlan",
+        "nearestLaunchName": "Tepoztlán",
+        "distanceKm": 44.82,
+        "bearingDeg": 346
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:333",
+      "vendor": "conagua",
+      "nativeId": "333",
+      "name": "FCARRILLO",
+      "latitude": 19.583333333333,
+      "longitude": -88.05,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:334",
+      "vendor": "conagua",
+      "nativeId": "334",
+      "name": "ARRIAGA",
+      "latitude": 16.1352,
+      "longitude": -93.5416,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:37",
+      "vendor": "conagua",
+      "nativeId": "37",
+      "name": "OBSERVATORIO MERIDA",
+      "latitude": 20.946944444444,
+      "longitude": -89.652222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:511",
+      "vendor": "conagua",
+      "nativeId": "511",
+      "name": "TAPACHULA",
+      "latitude": 14.886944444444,
+      "longitude": -92.296388888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:512",
+      "vendor": "conagua",
+      "nativeId": "512",
+      "name": "OBSERVATORIO COATZACOALCO",
+      "latitude": 18.140277777778,
+      "longitude": -94.510833333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:514",
+      "vendor": "conagua",
+      "nativeId": "514",
+      "name": "CHIHUAHUA ob",
+      "latitude": 28.670555555556,
+      "longitude": -106.03027777778,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:515",
+      "vendor": "conagua",
+      "nativeId": "515",
+      "name": "ACAPULCO ob",
+      "latitude": 16.762777777778,
+      "longitude": -99.749166666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:516",
+      "vendor": "conagua",
+      "nativeId": "516",
+      "name": "HUAJUAPAN",
+      "latitude": 17.788888888889,
+      "longitude": -97.771666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:517",
+      "vendor": "conagua",
+      "nativeId": "517",
+      "name": "SALINACRUZ",
+      "latitude": 16.161944444444,
+      "longitude": -95.226666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:518",
+      "vendor": "conagua",
+      "nativeId": "518",
+      "name": "CHETUMAL ob",
+      "latitude": 18.500555555556,
+      "longitude": -88.3275,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:519",
+      "vendor": "conagua",
+      "nativeId": "519",
+      "name": "TUXPAN",
+      "latitude": 20.96,
+      "longitude": -97.417222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:580",
+      "vendor": "conagua",
+      "nativeId": "580",
+      "name": "PUEBLA",
+      "latitude": 19.05,
+      "longitude": -98.166666666667,
+      "elevationM": 2244,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMPB"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-chalchihuapan-puebla",
+        "nearestLaunchName": "Chalchihuapan — Puebla",
+        "distanceKm": 20.82,
+        "bearingDeg": 62
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:581",
+      "vendor": "conagua",
+      "nativeId": "581",
+      "name": "CHILPANCINGO",
+      "latitude": 17.55,
+      "longitude": -99.5,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:582",
+      "vendor": "conagua",
+      "nativeId": "582",
+      "name": "SN CRISTOBAL",
+      "latitude": 16.733333333333,
+      "longitude": -92.633333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-fly-in-chiapas",
+        "nearestLaunchName": "Fly In Chiapas",
+        "distanceKm": 28.93,
+        "bearingDeg": 84
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:583",
+      "vendor": "conagua",
+      "nativeId": "583",
+      "name": "COMITAN",
+      "latitude": 16.23211,
+      "longitude": -92.135288,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:584",
+      "vendor": "conagua",
+      "nativeId": "584",
+      "name": "RIO VERDE",
+      "latitude": 21.921388888889,
+      "longitude": -99.996388888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:585",
+      "vendor": "conagua",
+      "nativeId": "585",
+      "name": "COLOTLAN",
+      "latitude": 22.107222222222,
+      "longitude": -103.26777777778,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:586",
+      "vendor": "conagua",
+      "nativeId": "586",
+      "name": "TEPIC",
+      "latitude": 21.489166666667,
+      "longitude": -104.89305555556,
+      "elevationM": 922,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMEP"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tecuitata",
+        "nearestLaunchName": "Tecuitata",
+        "distanceKm": 27.82,
+        "bearingDeg": 85
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:587",
+      "vendor": "conagua",
+      "nativeId": "587",
+      "name": "LAGOS DE MORENO",
+      "latitude": 21.348398,
+      "longitude": -101.94872,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-cantil-de-las-aguilas-15193",
+        "nearestLaunchName": "cantil de las aguilas",
+        "distanceKm": 30.51,
+        "bearingDeg": 266
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:588",
+      "vendor": "conagua",
+      "nativeId": "588",
+      "name": "GUADALAJARA",
+      "latitude": 20.71,
+      "longitude": -103.39,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-chante",
+        "nearestLaunchName": "El Chante",
+        "distanceKm": 44.85,
+        "bearingDeg": 0
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:589",
+      "vendor": "conagua",
+      "nativeId": "589",
+      "name": "QUERETARO",
+      "latitude": 20.583333333333,
+      "longitude": -100.4,
+      "elevationM": 1813,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "aliases": [
+        "iem:MX__ASOS:MMQT"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-tangano",
+        "nearestLaunchName": "El Tángano",
+        "distanceKm": 5.2,
+        "bearingDeg": 286
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:590",
+      "vendor": "conagua",
+      "nativeId": "590",
+      "name": "OBSERVATORIO MANZANILLO",
+      "latitude": 19.066666666667,
+      "longitude": -104.33333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:591",
+      "vendor": "conagua",
+      "nativeId": "591",
+      "name": "CD. GUZMAN",
+      "latitude": 19.730555555556,
+      "longitude": -103.46472222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-nevado-de-colima",
+        "nearestLaunchName": "Nevado de Colima",
+        "distanceKm": 24.28,
+        "bearingDeg": 39
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:592",
+      "vendor": "conagua",
+      "nativeId": "592",
+      "name": "ZAMORA",
+      "latitude": 19.983333333333,
+      "longitude": -102.31666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:593",
+      "vendor": "conagua",
+      "nativeId": "593",
+      "name": "TOLUCA",
+      "latitude": 19.291111111111,
+      "longitude": -99.714166666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-nevado-de-toluca",
+        "nearestLaunchName": "Nevado de Toluca",
+        "distanceKm": 20.31,
+        "bearingDeg": 10
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:594",
+      "vendor": "conagua",
+      "nativeId": "594",
+      "name": "PTO. PENASCO",
+      "latitude": 31.300833333333,
+      "longitude": -113.54861111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:595",
+      "vendor": "conagua",
+      "nativeId": "595",
+      "name": "P. NACOZARI",
+      "latitude": 30.366666666667,
+      "longitude": -109.68333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:596",
+      "vendor": "conagua",
+      "nativeId": "596",
+      "name": "HERMOSILLO",
+      "latitude": 29.078333333333,
+      "longitude": -110.93,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-la-cementera",
+        "nearestLaunchName": "La Cementera",
+        "distanceKm": 2.29,
+        "bearingDeg": 34
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:597",
+      "vendor": "conagua",
+      "nativeId": "597",
+      "name": "EMPALME",
+      "latitude": 27.95,
+      "longitude": -110.8,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:598",
+      "vendor": "conagua",
+      "nativeId": "598",
+      "name": "DURANGO",
+      "latitude": 24.094722222222,
+      "longitude": -104.59972222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-chupaderos",
+        "nearestLaunchName": "Chupaderos",
+        "distanceKm": 11.34,
+        "bearingDeg": 114
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:599",
+      "vendor": "conagua",
+      "nativeId": "599",
+      "name": "MAZATLAN",
+      "latitude": 23.216666666667,
+      "longitude": -106.41055555556,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:600",
+      "vendor": "conagua",
+      "nativeId": "600",
+      "name": "STA ROSALIA",
+      "latitude": 27.283333333333,
+      "longitude": -112.25,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:601",
+      "vendor": "conagua",
+      "nativeId": "601",
+      "name": "CD CONSTITUCION",
+      "latitude": 25.009722222222,
+      "longitude": -111.64666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:602",
+      "vendor": "conagua",
+      "nativeId": "602",
+      "name": "LA PAZ",
+      "latitude": 24.116666666667,
+      "longitude": -110.31666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:603",
+      "vendor": "conagua",
+      "nativeId": "603",
+      "name": "SALTILLO",
+      "latitude": 25.376388888889,
+      "longitude": -101.01666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-rinconada",
+        "nearestLaunchName": "Rinconada",
+        "distanceKm": 42.69,
+        "bearingDeg": 221
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:604",
+      "vendor": "conagua",
+      "nativeId": "604",
+      "name": "MONTERREY",
+      "latitude": 25.733611111111,
+      "longitude": -100.30472222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-teleferico",
+        "nearestLaunchName": "Teleférico",
+        "distanceKm": 11.71,
+        "bearingDeg": 329
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:605",
+      "vendor": "conagua",
+      "nativeId": "605",
+      "name": "PACHUCA",
+      "latitude": 20.123333333333,
+      "longitude": -98.7475,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tulancingo",
+        "nearestLaunchName": "Tulancingo",
+        "distanceKm": 46.41,
+        "bearingDeg": 267
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:606",
+      "vendor": "conagua",
+      "nativeId": "606",
+      "name": "TUXTLA GTZ.",
+      "latitude": 16.75,
+      "longitude": -93.133333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-fly-in-chiapas",
+        "nearestLaunchName": "Fly In Chiapas",
+        "distanceKm": 24.89,
+        "bearingDeg": 281
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:607",
+      "vendor": "conagua",
+      "nativeId": "607",
+      "name": "EJIDO NVO. LEON",
+      "latitude": 32.412777777778,
+      "longitude": -115.19194444444,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:608",
+      "vendor": "conagua",
+      "nativeId": "608",
+      "name": "ZACATECAS",
+      "latitude": 22.778333333333,
+      "longitude": -102.56638888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-zopilotes",
+        "nearestLaunchName": "Zopilotes",
+        "distanceKm": 5.21,
+        "bearingDeg": 192
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:609",
+      "vendor": "conagua",
+      "nativeId": "609",
+      "name": "VILLAHERMOSA",
+      "latitude": 17.983333333333,
+      "longitude": -92.933333333333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:610",
+      "vendor": "conagua",
+      "nativeId": "610",
+      "name": "CAMPECHE",
+      "latitude": 19.833333333333,
+      "longitude": -90.5,
+      "elevationM": 9,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Merida",
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "aliases": [
+        "awc:MMCP",
+        "iem:MX__ASOS:MMCP"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "mx-rusty-pelican",
+        "nearestLaunchName": "Rusty Pelican",
+        "distanceKm": 14.83,
+        "bearingDeg": 68
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:611",
+      "vendor": "conagua",
+      "nativeId": "611",
+      "name": "H. DEL PARRAL",
+      "latitude": 26.916666666667,
+      "longitude": -105.66666666667,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:612",
+      "vendor": "conagua",
+      "nativeId": "612",
+      "name": "OCAMPO_ob",
+      "latitude": 27.309166666667,
+      "longitude": -102.39611111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:613",
+      "vendor": "conagua",
+      "nativeId": "613",
+      "name": "CD. JUAREZ",
+      "latitude": 31.689722222222,
+      "longitude": -106.42722222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "us-nelson-s-launch",
+        "nearestLaunchName": "Nelson's Launch",
+        "distanceKm": 21.43,
+        "bearingDeg": 162
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:614",
+      "vendor": "conagua",
+      "nativeId": "614",
+      "name": "CONCHOS",
+      "latitude": 26.949722222222,
+      "longitude": -106.35388888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:615",
+      "vendor": "conagua",
+      "nativeId": "615",
+      "name": "ALGODONES",
+      "latitude": 32.704722222222,
+      "longitude": -114.73027777778,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:616",
+      "vendor": "conagua",
+      "nativeId": "616",
+      "name": "CEMCAS Ob",
+      "latitude": 19.479722222222,
+      "longitude": -98.973611111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-iztaccihuatl",
+        "nearestLaunchName": "Iztaccíhuatl",
+        "distanceKm": 48.99,
+        "bearingDeg": 314
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:617",
+      "vendor": "conagua",
+      "nativeId": "617",
+      "name": "CANDELA",
+      "latitude": 26.844444444444,
+      "longitude": -100.66111111111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:618",
+      "vendor": "conagua",
+      "nativeId": "618",
+      "name": "ZACATEPEC",
+      "latitude": 18.644166666667,
+      "longitude": -99.207222222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tuxpan-iguala",
+        "nearestLaunchName": "Tuxpan — Iguala",
+        "distanceKm": 40.01,
+        "bearingDeg": 45
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:717",
+      "vendor": "conagua",
+      "nativeId": "717",
+      "name": "CHMR MERIDA",
+      "latitude": 20.9836111,
+      "longitude": -89.6572222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:718",
+      "vendor": "conagua",
+      "nativeId": "718",
+      "name": "CANCUN ESIME",
+      "latitude": 21.1427778,
+      "longitude": -86.8869444,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:719",
+      "vendor": "conagua",
+      "nativeId": "719",
+      "name": "CCA",
+      "latitude": 19.3116667,
+      "longitude": -99.1958333,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tepoztlan",
+        "nearestLaunchName": "Tepoztlán",
+        "distanceKm": 35,
+        "bearingDeg": 342
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:720",
+      "vendor": "conagua",
+      "nativeId": "720",
+      "name": "MEXICALI OBS",
+      "latitude": 32.6258333,
+      "longitude": -115.376111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:73",
+      "vendor": "conagua",
+      "nativeId": "73",
+      "name": "XALAPA ob",
+      "latitude": 19.511944444444,
+      "longitude": -96.903888888889,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-alto-lucero",
+        "nearestLaunchName": "Alto Lucero",
+        "distanceKm": 22.81,
+        "bearingDeg": 240
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:75",
+      "vendor": "conagua",
+      "nativeId": "75",
+      "name": "VERACRUZ ob",
+      "latitude": 19.1425,
+      "longitude": -96.113055555556,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:761",
+      "vendor": "conagua",
+      "nativeId": "761",
+      "name": "PIJIJIAPAN",
+      "latitude": 15.70166667,
+      "longitude": -93.21222222,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:762",
+      "vendor": "conagua",
+      "nativeId": "762",
+      "name": "QUERETARO OB",
+      "latitude": 20.56333333,
+      "longitude": -100.3694444,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-tangano",
+        "nearestLaunchName": "El Tángano",
+        "distanceKm": 1.98,
+        "bearingDeg": 247
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:769",
+      "vendor": "conagua",
+      "nativeId": "769",
+      "name": "CABOS",
+      "latitude": 23.078345,
+      "longitude": -109.716674,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:770",
+      "vendor": "conagua",
+      "nativeId": "770",
+      "name": "MADERO",
+      "latitude": 22.280855,
+      "longitude": -97.797671,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:771",
+      "vendor": "conagua",
+      "nativeId": "771",
+      "name": "ALVARADO II",
+      "latitude": 18.788935,
+      "longitude": -95.757767,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "conagua:772",
+      "vendor": "conagua",
+      "nativeId": "772",
+      "name": "LEON",
+      "latitude": 21.0082122,
+      "longitude": -101.733123,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-cubilete",
+        "nearestLaunchName": "El Cubilete",
+        "distanceKm": 37.59,
+        "bearingDeg": 271
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:773",
+      "vendor": "conagua",
+      "nativeId": "773",
+      "name": "URSULO GALVAN",
+      "latitude": 19.413376,
+      "longitude": -96.357597,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-playa-la-mancha",
+        "nearestLaunchName": "Playa La Mancha",
+        "distanceKm": 19.01,
+        "bearingDeg": 174
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:774",
+      "vendor": "conagua",
+      "nativeId": "774",
+      "name": "MONTEMORELOS",
+      "latitude": 25.186695,
+      "longitude": -99.806111,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-rayones",
+        "nearestLaunchName": "Rayones",
+        "distanceKm": 18.75,
+        "bearingDeg": 61
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:775",
+      "vendor": "conagua",
+      "nativeId": "775",
+      "name": "UNISON",
+      "latitude": 29.014278,
+      "longitude": -111.135593,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-la-cementera",
+        "nearestLaunchName": "La Cementera",
+        "distanceKm": 19.44,
+        "bearingDeg": 254
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:777",
+      "vendor": "conagua",
+      "nativeId": "777",
+      "name": "PUERTO VALLARTA",
+      "latitude": 20.66117,
+      "longitude": -105.243801,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-conchas-chinas",
+        "nearestLaunchName": "Conchas Chinas",
+        "distanceKm": 8.93,
+        "bearingDeg": 356
+      },
+      "locator": {}
+    },
+    {
+      "uid": "conagua:93",
+      "vendor": "conagua",
+      "nativeId": "93",
+      "name": "TAMPICO",
+      "latitude": 22.3875,
+      "longitude": -97.925555555556,
+      "elevationM": null,
+      "country": "MX",
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://smn.conagua.gob.mx/tools/GUI/EMAS.php",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 600,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
     },
     {
       "uid": "holfuy:1420",
       "vendor": "holfuy",
       "nativeId": "1420",
-      "name": "El Peñón (Valle de Bravo)",
-      "latitude": 19.0628,
-      "longitude": -100.0956,
-      "elevationM": 2310,
+      "name": "Graach Südwest",
+      "latitude": 49.94497,
+      "longitude": 7.05801,
+      "elevationM": 0,
       "country": "MX",
       "region": "MEX",
       "timeZone": "America/Mexico_City",
@@ -56,10 +3568,835 @@
           "toDeg": 260
         }
       ],
-      "locator": {
-        "stationId": 1420,
-        "requiresPassword": false
-      }
+      "category": "freeflight",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "holfuy:1518",
+      "vendor": "holfuy",
+      "nativeId": "1518",
+      "name": "Tapalpa La Culebra Launch",
+      "latitude": 19.9412,
+      "longitude": -103.7918,
+      "elevationM": 2240,
+      "country": "MX",
+      "region": "JAL",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://holfuy.com/en/weather/1518",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 185,
+          "toDeg": 255
+        }
+      ],
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-gravedad-cero-tapalpa",
+        "nearestLaunchName": "Gravedad Cero — Tapalpa",
+        "distanceKm": 14.4,
+        "bearingDeg": 270
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMAN",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMAN",
+      "name": "Monterrey",
+      "latitude": 25.8656,
+      "longitude": -100.2372,
+      "elevationM": 448,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMAN&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-teleferico",
+        "nearestLaunchName": "Teleférico",
+        "distanceKm": 24.75,
+        "bearingDeg": 2
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMAS",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMAS",
+      "name": "Aguascalientes",
+      "latitude": 21.8533,
+      "longitude": -102.2914,
+      "elevationM": 1863,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMAS&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-picacho",
+        "nearestLaunchName": "Picacho",
+        "distanceKm": 13.74,
+        "bearingDeg": 101
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMBT",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMBT",
+      "name": "Huatulco",
+      "latitude": 15.7753,
+      "longitude": -96.2626,
+      "elevationM": 143,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMBT&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMCB",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMCB",
+      "name": "Cuernavaca",
+      "latitude": 18.8922,
+      "longitude": -99.2333,
+      "elevationM": 1560,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMCB&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tepoztlan",
+        "nearestLaunchName": "Tepoztlán",
+        "distanceKm": 20.16,
+        "bearingDeg": 228
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMCG",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMCG",
+      "name": "Nuevo Casas Grandes",
+      "latitude": 30.3974,
+      "longitude": -107.875,
+      "elevationM": 1452,
+      "country": "MX",
+      "region": "CH",
+      "timeZone": "America/Chihuahua",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMCG&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMCL",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMCL",
+      "name": "Culiacan",
+      "latitude": 24.82,
+      "longitude": -107.4,
+      "elevationM": 39,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMCL&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMCS",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMCS",
+      "name": "Ciudad Juarez",
+      "latitude": 31.6361,
+      "longitude": -106.4287,
+      "elevationM": 1171,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Ojinaga",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMCS&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "us-nelson-s-launch",
+        "nearestLaunchName": "Nelson's Launch",
+        "distanceKm": 27.12,
+        "bearingDeg": 166
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMCZ",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMCZ",
+      "name": "Cozumel",
+      "latitude": 20.5224,
+      "longitude": -86.9256,
+      "elevationM": 5,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Cancun",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMCZ&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMES",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMES",
+      "name": "Ensenada",
+      "latitude": 31.6667,
+      "longitude": -116.5667,
+      "elevationM": 264,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Santa_Isabel",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMES&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-las-antenas",
+        "nearestLaunchName": "Las Antenas",
+        "distanceKm": 5.6,
+        "bearingDeg": 100
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMIO",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMIO",
+      "name": "Saltillo",
+      "latitude": 25.5485,
+      "longitude": -100.9323,
+      "elevationM": 1421,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMIO&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-rinconada",
+        "nearestLaunchName": "Rinconada",
+        "distanceKm": 23.42,
+        "bearingDeg": 235
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMIT",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMIT",
+      "name": "Iztepec",
+      "latitude": 16.4493,
+      "longitude": -95.0937,
+      "elevationM": 61,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMIT&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMMA",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMMA",
+      "name": "Matamoros",
+      "latitude": 25.7699,
+      "longitude": -97.5253,
+      "elevationM": 8,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Matamoros",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMMA&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMML",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMML",
+      "name": "Mexicali",
+      "latitude": 32.6306,
+      "longitude": -115.2416,
+      "elevationM": 22,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Tijuana",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMML&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMMV",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMMV",
+      "name": "Monclova",
+      "latitude": 26.9,
+      "longitude": -101.4333,
+      "elevationM": 615,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMMV&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMNL",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMNL",
+      "name": "Nuevo Laredo",
+      "latitude": 27.4439,
+      "longitude": -99.5705,
+      "elevationM": 148,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Matamoros",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMNL&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMOX",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMOX",
+      "name": "Oaxaca",
+      "latitude": 17.0667,
+      "longitude": -96.7,
+      "elevationM": 1528,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMOX&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-zaachila",
+        "nearestLaunchName": "Zaachila",
+        "distanceKm": 22.07,
+        "bearingDeg": 48
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMPA",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMPA",
+      "name": "Poza Rico",
+      "latitude": 20.6027,
+      "longitude": -97.4608,
+      "elevationM": 142,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMPA&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMPG",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMPG",
+      "name": "Piedras Negras",
+      "latitude": 28.7,
+      "longitude": -100.5167,
+      "elevationM": 250,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Matamoros",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMPG&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMPN",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMPN",
+      "name": "Uruapan",
+      "latitude": 19.3967,
+      "longitude": -102.0391,
+      "elevationM": 1593,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMPN&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-lombardia",
+        "nearestLaunchName": "Lombardía",
+        "distanceKm": 24.9,
+        "bearingDeg": 7
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMPQ",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMPQ",
+      "name": "Palenque",
+      "latitude": 17.5334,
+      "longitude": -91.9845,
+      "elevationM": 77,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMPQ&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMRX",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMRX",
+      "name": "Reynosa",
+      "latitude": 26.0089,
+      "longitude": -98.2285,
+      "elevationM": 39,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Matamoros",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMRX&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMSD",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMSD",
+      "name": "San Jose Del Cabo",
+      "latitude": 23.1518,
+      "longitude": -109.721,
+      "elevationM": 109,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mazatlan",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMSD&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMSM",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMSM",
+      "name": "Santa Lucia",
+      "latitude": 19.7553,
+      "longitude": -99.0164,
+      "elevationM": 2245,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMSM&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMSP",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMSP",
+      "name": "San Luis Potosi",
+      "latitude": 22.2075,
+      "longitude": -101.0222,
+      "elevationM": 1903,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMSP&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-el-piedrero-san-luis-potosi",
+        "nearestLaunchName": "El Piedrero — San Luis Potosí",
+        "distanceKm": 20.7,
+        "bearingDeg": 330
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMTB",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMTB",
+      "name": "Tuxtla Gutierrez",
+      "latitude": 16.45,
+      "longitude": -93.07,
+      "elevationM": 528,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMTB&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-fly-in-chiapas",
+        "nearestLaunchName": "Fly In Chiapas",
+        "distanceKm": 33.74,
+        "bearingDeg": 212
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMTC",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMTC",
+      "name": "Torreon",
+      "latitude": 25.53,
+      "longitude": -103.45,
+      "elevationM": 1124,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Monterrey",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMTC&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-helipuerto",
+        "nearestLaunchName": "Helipuerto",
+        "distanceKm": 3.33,
+        "bearingDeg": 14
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMTG",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMTG",
+      "name": "Tuxtla Gutierrez",
+      "latitude": 16.75,
+      "longitude": -93.1333,
+      "elevationM": 528,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMTG&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-fly-in-chiapas",
+        "nearestLaunchName": "Fly In Chiapas",
+        "distanceKm": 24.89,
+        "bearingDeg": 281
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMTJ",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMTJ",
+      "name": "Tijuana",
+      "latitude": 32.5411,
+      "longitude": -116.9702,
+      "elevationM": 152,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Tijuana",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMTJ&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "us-otay-mesa",
+        "nearestLaunchName": "Otay Mesa",
+        "distanceKm": 8.02,
+        "bearingDeg": 243
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMTL",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMTL",
+      "name": "TULANCINGO  HGO.",
+      "latitude": 20.0842,
+      "longitude": -98.3572,
+      "elevationM": 2181,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMTL&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-tulancingo",
+        "nearestLaunchName": "Tulancingo",
+        "distanceKm": 8.83,
+        "bearingDeg": 219
+      },
+      "locator": {}
+    },
+    {
+      "uid": "iem:MX__ASOS:MMZP",
+      "vendor": "iem",
+      "nativeId": "MX__ASOS:MMZP",
+      "name": "Zapopan",
+      "latitude": 20.756,
+      "longitude": -103.465,
+      "elevationM": 1626,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMZP&network=MX__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
     },
     {
       "uid": "openwindmap:618",
@@ -81,9 +4418,14 @@
       },
       "samplingWindowSeconds": 240,
       "recommendedPollSeconds": 60,
-      "locator": {
-        "stationId": "618"
-      }
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "mx-valle-de-bravo-la-torre",
+        "nearestLaunchName": "Valle de Bravo — La Torre",
+        "distanceKm": 2.18,
+        "bearingDeg": 207
+      },
+      "locator": {}
     }
   ]
 }

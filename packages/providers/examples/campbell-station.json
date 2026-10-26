@@ -1,0 +1,27 @@
+{
+  "uid": "campbell:example-logger",
+  "vendor": "campbell",
+  "nativeId": "example-logger",
+  "name": "Example Campbell logger — replace before use",
+  "latitude": 49.2611,
+  "longitude": -121.8722,
+  "elevationM": 645,
+  "country": "CA",
+  "region": "BC",
+  "timeZone": "America/Vancouver",
+  "pageUrl": "https://example.com/stations/example-logger",
+  "capabilities": {
+    "gustLull": true,
+    "temperature": true,
+    "conditions": false,
+    "history": true
+  },
+  "samplingWindowSeconds": 3,
+  "recommendedPollSeconds": 15,
+  "locator": {
+    "baseUrl": "https://logger.example.com/example-logger",
+    "source": "example-logger",
+    "currentTable": "I3Sec",
+    "historyTable": "I5Min"
+  }
+}

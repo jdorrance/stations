@@ -1,0 +1,621 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "totalStations": 49133,
+  "unknownCountryStations": 6971,
+  "launchCorridorStations": 12633,
+  "launchesIndexed": 1293,
+  "countsByRegion": {
+    "US": 40979,
+    "CA": 1011,
+    "MX": 165,
+    "AM": 7
+  },
+  "countsByCategory": {
+    "mountain": 41342,
+    "synoptic": 4134,
+    "pws": 4,
+    "freeflight": 3072,
+    "marine": 581
+  },
+  "countsByVendor": {
+    "avalanche": 1,
+    "awc": 478,
+    "conagua": 97,
+    "cwop": 1,
+    "eccc": 844,
+    "ecowitt": 1,
+    "holfuy": 47,
+    "iem": 40492,
+    "ndbc": 581,
+    "openwindmap": 3,
+    "raws": 3179,
+    "realtime_txt": 2,
+    "snotel": 385,
+    "tempest": 2,
+    "weatherlink": 4,
+    "windguru": 1,
+    "windnerd": 4,
+    "windsmobi": 3011
+  },
+  "rawCrawledByVendor": {
+    "windnerd": 4,
+    "openwindmap": 3,
+    "holfuy": 47,
+    "windsmobi": 3108,
+    "windspion": 0,
+    "windguru": 1,
+    "weatherlink": 4,
+    "realtime_txt": 2,
+    "tempest": 2,
+    "ecowitt": 1,
+    "campbell": 0,
+    "raws": 3181,
+    "snotel": 385,
+    "avalanche": 1,
+    "eccc": 846,
+    "ndbc": 581,
+    "conagua": 97,
+    "iem": 41709,
+    "awc": 594,
+    "cwop": 1,
+    "windy": 0
+  },
+  "vendorRuns": {
+    "windnerd": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "openwindmap": {
+      "status": "partial",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": [
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        }
+      ]
+    },
+    "holfuy": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "windsmobi": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "windspion": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "windguru": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "weatherlink": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "realtime_txt": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "tempest": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "ecowitt": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "campbell": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "raws": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "snotel": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "avalanche": {
+      "status": "partial",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": [
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        }
+      ]
+    },
+    "eccc": {
+      "status": "partial",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "ndbc": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "conagua": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "iem": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "awc": {
+      "status": "partial",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": [
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        }
+      ]
+    },
+    "cwop": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    },
+    "windy": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-26T19:40:56.194Z",
+      "diagnostics": []
+    }
+  },
+  "artifacts": {
+    "vendors/windnerd.json": {
+      "stations": 4,
+      "bytes": 3616,
+      "sha256": "f17fa8fd60dbbc5300075e3ba273495bcb5ba38e715ef70c3562e301be5803a3"
+    },
+    "vendors/openwindmap.json": {
+      "stations": 3,
+      "bytes": 2206,
+      "sha256": "ddfa753b171f789205d66e04518a42897e1c6e47a5ede4d9d9c9c559c858a501"
+    },
+    "vendors/holfuy.json": {
+      "stations": 47,
+      "bytes": 29842,
+      "sha256": "e9b2fa7da1da945a0f8144ddb6b9174a7737b90153a19faecd08ed81ada9abcf"
+    },
+    "vendors/windsmobi.json": {
+      "stations": 3108,
+      "bytes": 2214785,
+      "sha256": "e17d34e127ca991a273a5e41fb952354da380c4fed074d88fb41bda594f536aa"
+    },
+    "vendors/windspion.json": {
+      "stations": 0,
+      "bytes": 186,
+      "sha256": "5b836581daf8a597a9e7ba0b19c974ef0766a75cf725829fbba1d273afd92b67"
+    },
+    "vendors/windguru.json": {
+      "stations": 1,
+      "bytes": 837,
+      "sha256": "4d7fd3037d08c92bc51b988b29b56e07add4fce246176fc95d31ea7b948ee0fd"
+    },
+    "vendors/weatherlink.json": {
+      "stations": 4,
+      "bytes": 3368,
+      "sha256": "3a2a7aedf058f163d2df498b5dba35860f23c659f3207c2bfbec80f4fde560be"
+    },
+    "vendors/realtime_txt.json": {
+      "stations": 2,
+      "bytes": 1775,
+      "sha256": "ff685bdcf76bb9afd8323ea88fb52ff227b246f16ca588216c1fa20798dc73a4"
+    },
+    "vendors/tempest.json": {
+      "stations": 2,
+      "bytes": 1420,
+      "sha256": "3aba8f11e03993d73a82c1d2755d5a6827b29ffb7763e33e06e7afdc64a04783"
+    },
+    "vendors/ecowitt.json": {
+      "stations": 1,
+      "bytes": 818,
+      "sha256": "0c54ac5ff6161f6e702dd53d72d7ce12ce9b3b36a9751752e916855861abbdc7"
+    },
+    "vendors/campbell.json": {
+      "stations": 0,
+      "bytes": 185,
+      "sha256": "48f987a98b97bbb3b567ffe824bd2a335a0d7bc1f16ccfe282e5f639860d62a2"
+    },
+    "vendors/raws.json": {
+      "stations": 3181,
+      "bytes": 1981392,
+      "sha256": "7ecb8b5ef0fbb552ec399b659636b64be8a87d3c41ac5e81dc2e081938a45587"
+    },
+    "vendors/snotel.json": {
+      "stations": 385,
+      "bytes": 254072,
+      "sha256": "f2dc71dee66114ee4fa7b3920828c272032ea4f3f66788889d8322f0c1abc805"
+    },
+    "vendors/avalanche.json": {
+      "stations": 1,
+      "bytes": 854,
+      "sha256": "d8b880460b57f0a9ae7e1dba506d84e958738892fc2a53ad983b9f7f0bc32305"
+    },
+    "vendors/eccc.json": {
+      "stations": 846,
+      "bytes": 522945,
+      "sha256": "3170d353e6176d8f88a404cb303feefda6c8e5e67eda48527aa909a343f04aee"
+    },
+    "vendors/ndbc.json": {
+      "stations": 581,
+      "bytes": 356898,
+      "sha256": "b64c108a139d03be9e35541af5c0d18cead377b135f370708b409919e1af3aa9"
+    },
+    "vendors/conagua.json": {
+      "stations": 97,
+      "bytes": 59570,
+      "sha256": "916ff3a21155811a43b4c61e1ccdce3e57b15027fa678f87b9d19163559f3513"
+    },
+    "vendors/iem.json": {
+      "stations": 41709,
+      "bytes": 27915896,
+      "sha256": "180cb41fdee062d4a66e909b41dc52b9cff3f3fb6e78bc67eb940d9fcb41a48c"
+    },
+    "vendors/awc.json": {
+      "stations": 594,
+      "bytes": 363069,
+      "sha256": "bb0775e50ee0605e308046f29a032cdd633e3890b8f6b1915d52f75ecf0174aa"
+    },
+    "vendors/cwop.json": {
+      "stations": 1,
+      "bytes": 817,
+      "sha256": "e2627ec88de198445a87ccfa6e9ba2dd101406822e3e290a203c0c2b237940a5"
+    },
+    "vendors/windy.json": {
+      "stations": 0,
+      "bytes": 182,
+      "sha256": "2a0dc70314e82d800507a61ac3f3fdd6299d79d7c1ef669a38090ebc1bb6c804"
+    },
+    "stations.json": {
+      "stations": 49133,
+      "bytes": 37516980,
+      "sha256": "1742e4752652ea2ff3c53ab7f1214ad9de4dc489647d8ff3f51d4bd277f270a6"
+    },
+    "stations.geojson": {
+      "bytes": 58645309,
+      "sha256": "aeb05e2d45081efe7a6e1985325c619a7b3305acfcdfadc649c006217d017aec"
+    },
+    "stations.ndjson.gz": {
+      "bytes": 2292228,
+      "sha256": "0079f25b762a512c8e381c18a91096a12ed9e8cf046b9890dd33df449359ab59"
+    },
+    "launch-corridors.json": {
+      "stations": 12633,
+      "bytes": 10582585,
+      "sha256": "5ed7bdec86ab15dd007d69844caa6b69afb901550fa32e4ebf2a49893da7fd25"
+    },
+    "launch-corridors.geojson": {
+      "bytes": 15247303,
+      "sha256": "1c06da59545d5cae030c25e555a90a230b337725757b356215102b4aab027952"
+    },
+    "regions/us.json": {
+      "bytes": 31384063,
+      "sha256": "5b7a8196d1f856f1cd818aaf898e3531159dfbb0644783c3ce0a772ee5e8cbd3"
+    },
+    "regions/us.ndjson.gz": {
+      "bytes": 1890970,
+      "sha256": "f16e969ca340e74614cbcb35216ff6c596cfdafa7d2e0e7fb355552a71c6e949"
+    },
+    "regions/ca.json": {
+      "bytes": 747587,
+      "sha256": "9ce432ae7d35d0165865e26f1691bec24013648bc80d6d205482070167087e73"
+    },
+    "regions/ca.ndjson.gz": {
+      "bytes": 51444,
+      "sha256": "36b62e26a34f423372a20573c3e9175730c568bb9dc8cc96364cf2fded2e660d"
+    },
+    "regions/mx.json": {
+      "bytes": 120616,
+      "sha256": "ff9bef0a27f4b663929f80b257247f114e892a84d126e1548e81db23b0c11a02"
+    },
+    "regions/mx.ndjson.gz": {
+      "bytes": 8105,
+      "sha256": "ddc13e18ff38f805b0f870a672dc91690c2c05333d4452f410e0eec1c90d8aea"
+    },
+    "regions/am.json": {
+      "bytes": 6198,
+      "sha256": "389b0430082d2071a2fcdf942007fada9fe719f47b2cb76c4cee755c9b2bc837"
+    },
+    "regions/am.ndjson.gz": {
+      "bytes": 1075,
+      "sha256": "8938bfce471a579b02a5b7837f19ab9485b294eb88c63bd5a0623cf1820e7338"
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T18:11:46.811Z",
+  "generatedAt": "2026-10-26T19:40:56.194Z",
   "regions": [
     "AM"
   ],
@@ -25,9 +25,17 @@
       },
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
-      "locator": {
-        "icaoId": "UDSG"
-      }
+      "category": "synoptic",
+      "aliases": [
+        "iem:AM__ASOS:UDSG"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 38.77,
+        "bearingDeg": 315
+      },
+      "locator": {}
     },
     {
       "uid": "awc:UDYZ",
@@ -49,18 +57,26 @@
       },
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
-      "locator": {
-        "icaoId": "UDYZ"
-      }
+      "category": "synoptic",
+      "aliases": [
+        "iem:AM__ASOS:UDYZ"
+      ],
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 20.88,
+        "bearingDeg": 118
+      },
+      "locator": {}
     },
     {
       "uid": "holfuy:1652",
       "vendor": "holfuy",
       "nativeId": "1652",
-      "name": "Hatis 300 Launch",
-      "latitude": 40.2727,
-      "longitude": 44.7074,
-      "elevationM": 1850,
+      "name": "s1652",
+      "latitude": 46.67133,
+      "longitude": 2.5293,
+      "elevationM": 0,
       "country": "AM",
       "region": "Kotayk",
       "timeZone": "Asia/Yerevan",
@@ -80,10 +96,38 @@
           "toDeg": 250
         }
       ],
-      "locator": {
-        "stationId": 1652,
-        "requiresPassword": false
-      }
+      "category": "freeflight",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "iem:AM__ASOS:UGEE",
+      "vendor": "iem",
+      "nativeId": "AM__ASOS:UGEE",
+      "name": "Yerevan",
+      "latitude": 40.2122,
+      "longitude": 44.5297,
+      "elevationM": 1225,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=UGEE&network=AM__ASOS",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 10.48,
+        "bearingDeg": 198
+      },
+      "locator": {}
     },
     {
       "uid": "openwindmap:904",
@@ -105,9 +149,49 @@
       },
       "samplingWindowSeconds": 240,
       "recommendedPollSeconds": 60,
-      "locator": {
-        "stationId": "904"
-      }
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lernaglukh",
+        "nearestLaunchName": "Lernaglukh",
+        "distanceKm": 0,
+        "bearingDeg": 0
+      },
+      "locator": {}
+    },
+    {
+      "uid": "openwindmap:919",
+      "vendor": "openwindmap",
+      "nativeId": "919",
+      "name": "Vedi / Nor Ughi Ridge",
+      "latitude": 39.9448,
+      "longitude": 44.6761,
+      "elevationM": 2167,
+      "country": "AM",
+      "region": "Ararat",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.openwindmap.org/PP919",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 150,
+          "toDeg": 240
+        }
+      ],
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-nor-ughi",
+        "nearestLaunchName": "Nor Ughi",
+        "distanceKm": 0,
+        "bearingDeg": 336
+      },
+      "locator": {}
     },
     {
       "uid": "windnerd:sevan-tsovagyugh",
@@ -138,10 +222,14 @@
           "toDeg": 220
         }
       ],
-      "locator": {
-        "stationKey": "sevan-tsovagyugh",
-        "locationId": 405
-      }
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-sevan-upper",
+        "nearestLaunchName": "Sevan Upper",
+        "distanceKm": 0,
+        "bearingDeg": 222
+      },
+      "locator": {}
     }
   ]
 }

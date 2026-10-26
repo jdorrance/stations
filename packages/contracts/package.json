@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "description": "Wire contracts for station catalogues, spatial GeoJSON snapshots, and @azohra/meteo.station feeds",
+  "description": "Wire contracts for station catalogues, spatial GeoJSON snapshots, NDJSON codecs, and @azohra/meteo.station feeds",
   "files": [
     "dist",
     "README.md",
@@ -19,16 +19,24 @@
       "types": "./dist/catalogue.d.ts",
       "import": "./dist/catalogue.js"
     },
+    "./public-catalogue": {
+      "types": "./dist/public-catalogue.d.ts",
+      "import": "./dist/public-catalogue.js"
+    },
     "./geojson": {
       "types": "./dist/geojson.d.ts",
       "import": "./dist/geojson.js"
+    },
+    "./ndjson": {
+      "types": "./dist/ndjson.d.ts",
+      "import": "./dist/ndjson.js"
     },
     "./build-inventory.json": "./dist/build-inventory.json"
   },
   "scripts": {
     "build": "node ../../scripts/build-packages.mjs @stations/contracts",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test test/*.test.mjs"
+    "test": "pnpm build && node --test test/*.test.mjs"
   },
   "dependencies": {
     "@azohra/meteo.core": "0.3.1",

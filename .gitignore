@@ -8,3 +8,5 @@ packages/*/dist/
 !.env.example
 !.env.*.example
 coverage/
+.cache/
+web/dist/

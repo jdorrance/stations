@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "realtime_txt",
+  "count": 2,
+  "stations": [
+    {
+      "uid": "realtime_txt:torrey-pines-gliderport",
+      "vendor": "realtime_txt",
+      "nativeId": "torrey-pines-gliderport",
+      "name": "Torrey Pines Gliderport Sonic Anemometer",
+      "latitude": 32.8897,
+      "longitude": -117.2528,
+      "elevationM": 105,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://www.flytorrey.com/weather/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 30,
+      "recommendedPollSeconds": 30,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 245,
+          "toDeg": 315
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "realtime_txt:henson-gap-tn",
+      "vendor": "realtime_txt",
+      "nativeId": "henson-gap-tn",
+      "name": "Henson Gap Sequatchie Valley Ramp Windtalker",
+      "latitude": 35.3522,
+      "longitude": -85.3986,
+      "elevationM": 640,
+      "country": "US",
+      "region": "TN",
+      "timeZone": "America/Chicago",
+      "pageUrl": "https://www.ttthpa.com/weather",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 30,
+      "recommendedPollSeconds": 30,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 95,
+          "toDeg": 165
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    }
+  ]
+}

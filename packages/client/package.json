@@ -20,7 +20,7 @@
   "scripts": {
     "build": "node ../../scripts/build-packages.mjs @stations/client",
     "check": "tsc -p tsconfig.json --noEmit",
-    "test": "node --test test/*.test.mjs"
+    "test": "pnpm build && node --test test/*.test.mjs"
   },
   "dependencies": {
     "@azohra/meteo.station": "0.7.0",

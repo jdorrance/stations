@@ -24,12 +24,14 @@ import {
 } from '@azohra/meteo.station/client';
 import {
   catalogueToGeoJson,
+  defaultCategoryForVendor,
   feedToGeoJson,
   parseStationCatalogueJson,
   parseStationCurrentJson,
   parseStationFeedJson,
   type CatalogueStation,
   type StationCatalogueDocument,
+  type StationCategory,
   type StationCurrent,
   type StationFeatureCollection,
   type StationFeed,
@@ -74,6 +76,9 @@ export type {
 export interface CatalogueQueryFilter {
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
+  readonly categories?: readonly StationCategory[];
+  readonly launchSlug?: string;
+  readonly maxLaunchDistanceKm?: number;
   readonly limit?: number;
 }
 
@@ -99,13 +104,31 @@ function applyCatalogueFilter(
   if (!filter) return [...stations];
   const countrySet = filter.countries?.length ? new Set(filter.countries) : null;
   const vendorSet = filter.vendors?.length ? new Set(filter.vendors) : null;
+  const categorySet = filter.categories?.length ? new Set(filter.categories) : null;
   let filtered = stations.filter(station => {
     if (countrySet && (station.country === null || !countrySet.has(station.country))) return false;
     if (vendorSet && !vendorSet.has(station.vendor)) return false;
+    if (
+      categorySet &&
+      !categorySet.has(station.category ?? defaultCategoryForVendor(station.vendor))
+    ) {
+      return false;
+    }
+    if (filter.launchSlug && station.launchContext?.nearestLaunchSlug !== filter.launchSlug) {
+      return false;
+    }
+    if (
+      filter.maxLaunchDistanceKm !== undefined &&
+      (!station.launchContext || station.launchContext.distanceKm > filter.maxLaunchDistanceKm)
+    ) {
+      return false;
+    }
     return true;
   });
-  if (filter.limit !== undefined && filter.limit > 0) {
-    filtered = filtered.slice(0, Math.floor(filter.limit));
+  if (filter.limit !== undefined) {
+    filtered = Number.isFinite(filter.limit) && filter.limit > 0
+      ? filtered.slice(0, Math.floor(filter.limit))
+      : [];
   }
   return filtered;
 }
@@ -115,6 +138,12 @@ export function createCatalogueIndex(document: StationCatalogueDocument): Catalo
   const byUidMap = new Map<string, CatalogueStation>(
     document.stations.map(station => [station.uid, station]),
   );
+  // Canonical UIDs win collisions; aliases resolve to the same retained station.
+  for (const station of document.stations) {
+    for (const alias of station.aliases ?? []) {
+      if (!byUidMap.has(alias)) byUidMap.set(alias, station);
+    }
+  }
 
   return {
     document,
@@ -136,16 +165,8 @@ export function createCatalogueIndex(document: StationCatalogueDocument): Catalo
     ): NearbyMatch<CatalogueStation>[] {
       const rawMatches = spatial.queryRadius(center, radiusKm);
       if (!filter) return rawMatches;
-      const countrySet = filter.countries?.length ? new Set(filter.countries) : null;
-      const vendorSet = filter.vendors?.length ? new Set(filter.vendors) : null;
-      const filtered = rawMatches.filter(({ item }) => {
-        if (countrySet && (item.country === null || !countrySet.has(item.country))) return false;
-        if (vendorSet && !vendorSet.has(item.vendor)) return false;
-        return true;
-      });
-      return filter.limit !== undefined && filter.limit > 0
-        ? filtered.slice(0, Math.floor(filter.limit))
-        : filtered;
+      const selected = new Set(applyCatalogueFilter(rawMatches.map(match => match.item), filter));
+      return rawMatches.filter(match => selected.has(match.item));
     },
     toGeoJson(stations: readonly CatalogueStation[] = document.stations): StationFeatureCollection {
       return catalogueToGeoJson(stations, document.generatedAt);
@@ -162,25 +183,57 @@ export interface SpatialQueryParams {
   };
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
+  readonly categories?: readonly StationCategory[];
+  readonly launch?: string;
   readonly limit?: number;
   readonly hours?: number;
+}
+
+export interface StationsRequestOptions {
+  readonly signal?: AbortSignal;
+  /** Milliseconds before cancelling the request. Set to 0 to disable the timeout. */
+  readonly timeoutMs?: number;
 }
 
 export interface StationsClientOptions {
   readonly baseUrl: string;
   readonly fetch?: typeof fetch;
+  /** Default timeout for requests, including response bodies. Defaults to 15 seconds. */
+  readonly timeoutMs?: number;
 }
+
+export interface StationsClientError {
+  readonly kind: 'http' | 'network' | 'parse' | 'aborted' | 'timeout' | 'unknown';
+  readonly message: string;
+  readonly status?: number;
+}
+
+export type StationsClientResult<T> =
+  | { readonly data: T; readonly error: null }
+  | { readonly data: null; readonly error: StationsClientError };
 
 export interface StationsClient {
   endpointUrl(route: 'catalogue' | 'feed' | 'current' | 'live' | 'history', query?: SpatialQueryParams): string;
-  loadCatalogue(query?: SpatialQueryParams): Promise<StationCatalogueDocument | null>;
-  loadCatalogueIndex(query?: SpatialQueryParams): Promise<CatalogueIndex | null>;
-  loadFeed(query?: SpatialQueryParams): Promise<StationFeed | null>;
+  loadCatalogue(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationCatalogueDocument | null>;
+  loadCatalogueIndex(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<CatalogueIndex | null>;
+  loadFeed(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationFeed | null>;
   loadGeoJsonFeed(
     query?: SpatialQueryParams,
     catalogueByUid?: ReadonlyMap<string, CatalogueStation>,
+    request?: StationsRequestOptions,
   ): Promise<StationFeatureCollection | null>;
-  loadCurrent(uid: string): Promise<StationCurrent | null>;
+  loadCurrent(uid: string, request?: StationsRequestOptions): Promise<StationCurrent | null>;
+  /** Optional for compatibility with custom clients implementing the nullable API. */
+  loadCatalogueResult?(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationsClientResult<StationCatalogueDocument>>;
+  loadFeedResult?(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationsClientResult<StationFeed>>;
+  loadCurrentResult?(uid: string, request?: StationsRequestOptions): Promise<StationsClientResult<StationCurrent>>;
+}
+
+/** Clients created by createStationsClient always expose detailed request results. */
+export interface StationsHttpClient extends StationsClient {
+  loadCatalogueResult(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationsClientResult<StationCatalogueDocument>>;
+  loadFeedResult(query?: SpatialQueryParams, request?: StationsRequestOptions): Promise<StationsClientResult<StationFeed>>;
+  loadCurrentResult(uid: string, request?: StationsRequestOptions): Promise<StationsClientResult<StationCurrent>>;
 }
 
 function buildQueryString(query?: SpatialQueryParams): string {
@@ -196,64 +249,147 @@ function buildQueryString(query?: SpatialQueryParams): string {
   }
   if (query.countries?.length) params.set('country', query.countries.join(','));
   if (query.vendors?.length) params.set('vendor', query.vendors.join(','));
+  if (query.categories?.length) params.set('category', query.categories.join(','));
+  if (query.launch) params.set('launch', query.launch);
   if (query.limit !== undefined) params.set('limit', String(query.limit));
   if (query.hours !== undefined) params.set('hours', String(query.hours));
   const qs = params.toString();
   return qs ? `?${qs}` : '';
 }
 
-export function createStationsClient(options: StationsClientOptions): StationsClient {
+export function createStationsClient(options: StationsClientOptions): StationsHttpClient {
   const base = options.baseUrl.endsWith('/') ? options.baseUrl.slice(0, -1) : options.baseUrl;
   const fetchImpl = options.fetch ?? globalThis.fetch.bind(globalThis);
+  const defaultTimeoutMs = options.timeoutMs ?? 15_000;
+  const validateTimeout = (timeoutMs: number): void => {
+    if (!Number.isFinite(timeoutMs) || timeoutMs < 0) {
+      throw new RangeError('timeoutMs must be a finite, non-negative number');
+    }
+  };
+  validateTimeout(defaultTimeoutMs);
 
   const endpointUrl = (
     route: 'catalogue' | 'feed' | 'current' | 'live' | 'history',
     query?: SpatialQueryParams,
   ): string => `${base}/${route}${buildQueryString(query)}`;
 
-  async function getText(url: string): Promise<string | null> {
-    try {
+  async function requestJson<T>(
+    url: string,
+    parse: (text: string) => T | null,
+    request: StationsRequestOptions = {},
+  ): Promise<StationsClientResult<T>> {
+    const timeoutMs = request.timeoutMs ?? defaultTimeoutMs;
+    validateTimeout(timeoutMs);
+    const controller = new AbortController();
+    let cancellation: StationsClientError | null = null;
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const abort = (kind: 'aborted' | 'timeout'): void => {
+      if (controller.signal.aborted) return;
+      cancellation = {
+        kind,
+        message: kind === 'timeout' ? 'Station request timed out' : 'Station request was cancelled',
+      };
+      controller.abort();
+    };
+    const onExternalAbort = (): void => abort('aborted');
+    let onAbort: () => void = () => {};
+    const cancelled = new Promise<never>((_resolve, reject) => {
+      onAbort = () => reject(new Error('Station request cancelled'));
+      controller.signal.addEventListener('abort', onAbort, { once: true });
+    });
+    request.signal?.addEventListener('abort', onExternalAbort, { once: true });
+    if (request.signal?.aborted) onExternalAbort();
+    if (timeoutMs > 0) timeout = setTimeout(() => abort('timeout'), timeoutMs);
+
+    const performRequest = async (): Promise<StationsClientResult<T>> => {
+      if (controller.signal.aborted) throw new Error('Station request cancelled');
       const response = await fetchImpl(url, {
         headers: { Accept: 'application/json' },
+        signal: controller.signal,
       });
-      if (!response.ok) return null;
-      return await response.text();
-    } catch {
-      return null;
+      if (!response.ok) {
+        return {
+          data: null,
+          error: { kind: 'http', message: `Station request failed with HTTP ${response.status}`, status: response.status },
+        };
+      }
+      const text = await response.text();
+      try {
+        const data = parse(text);
+        return data === null
+          ? { data: null, error: { kind: 'parse', message: 'Station response is not a valid document' } }
+          : { data, error: null };
+      } catch {
+        return { data: null, error: { kind: 'parse', message: 'Station response is not a valid document' } };
+      }
+    };
+
+    try {
+      // Racing cancellation also bounds injected fetch implementations that ignore AbortSignal.
+      return await Promise.race([performRequest(), cancelled]);
+    } catch (error) {
+      return {
+        data: null,
+        error: cancellation ?? {
+          kind: 'network',
+          message: error instanceof Error ? error.message : 'Station request failed',
+        },
+      };
+    } finally {
+      if (timeout !== undefined) clearTimeout(timeout);
+      request.signal?.removeEventListener('abort', onExternalAbort);
+      controller.signal.removeEventListener('abort', onAbort);
     }
   }
 
+  const loadCatalogueResult = (
+    query?: SpatialQueryParams,
+    request?: StationsRequestOptions,
+  ): Promise<StationsClientResult<StationCatalogueDocument>> =>
+    requestJson(endpointUrl('catalogue', query), parseStationCatalogueJson, request);
+  const loadFeedResult = (
+    query?: SpatialQueryParams,
+    request?: StationsRequestOptions,
+  ): Promise<StationsClientResult<StationFeed>> =>
+    requestJson(endpointUrl('feed', query), parseStationFeedJson, request);
+  const loadCurrentResult = (
+    uid: string,
+    request?: StationsRequestOptions,
+  ): Promise<StationsClientResult<StationCurrent>> =>
+    requestJson(`${base}/current?station=${encodeURIComponent(uid)}`, parseStationCurrentJson, request);
+
   return {
     endpointUrl,
-    async loadCatalogue(query?: SpatialQueryParams): Promise<StationCatalogueDocument | null> {
-      const text = await getText(endpointUrl('catalogue', query));
-      return text === null ? null : parseStationCatalogueJson(text);
+    loadCatalogueResult,
+    loadFeedResult,
+    loadCurrentResult,
+    async loadCatalogue(query, request) {
+      return (await loadCatalogueResult(query, request)).data;
     },
-    async loadCatalogueIndex(query?: SpatialQueryParams): Promise<CatalogueIndex | null> {
-      const doc = await this.loadCatalogue(query);
-      return doc === null ? null : createCatalogueIndex(doc);
+    async loadCatalogueIndex(query, request) {
+      const { data } = await loadCatalogueResult(query, request);
+      return data === null ? null : createCatalogueIndex(data);
     },
-    async loadFeed(query?: SpatialQueryParams): Promise<StationFeed | null> {
-      const text = await getText(endpointUrl('feed', query));
-      return text === null ? null : parseStationFeedJson(text);
+    async loadFeed(query, request) {
+      return (await loadFeedResult(query, request)).data;
     },
-    async loadGeoJsonFeed(
-      query?: SpatialQueryParams,
-      catalogueByUid?: ReadonlyMap<string, CatalogueStation>,
-    ): Promise<StationFeatureCollection | null> {
-      const feed = await this.loadFeed(query);
-      return feed === null ? null : feedToGeoJson(feed, catalogueByUid);
+    async loadGeoJsonFeed(query, catalogueByUid, request) {
+      const { data } = await loadFeedResult(query, request);
+      return data === null ? null : feedToGeoJson(data, catalogueByUid);
     },
-    async loadCurrent(uid: string): Promise<StationCurrent | null> {
-      const url = `${base}/current?station=${encodeURIComponent(uid)}`;
-      const text = await getText(url);
-      return text === null ? null : parseStationCurrentJson(text);
+    async loadCurrent(uid, request) {
+      return (await loadCurrentResult(uid, request)).data;
     },
   };
 }
 
 export interface ViewportStationSnapshot {
+  /** Most recently requested viewport. */
   readonly bounds: Bounds | null;
+  /** Viewport belonging to the retained feed and GeoJSON. */
+  readonly dataBounds: Bounds | null;
+  readonly stale: boolean;
+  readonly error: StationsClientError | null;
   readonly feed: StationFeed | null;
   readonly geojson: StationFeatureCollection | null;
   readonly loading: boolean;
@@ -265,8 +401,11 @@ export interface ViewportStationStoreOptions {
   readonly initialBounds?: Bounds;
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
+  readonly categories?: readonly StationCategory[];
+  readonly launch?: string;
   readonly limit?: number;
   readonly catalogueByUid?: ReadonlyMap<string, CatalogueStation>;
+  readonly timeoutMs?: number;
 }
 
 export interface ViewportStationStore {
@@ -281,12 +420,21 @@ export function createViewportStationStore(
 ): ViewportStationStore {
   const listeners = new Set<() => void>();
   let snapshot: ViewportStationSnapshot = {
-    bounds: options.initialBounds ?? null,
+    bounds: options.initialBounds ? [...options.initialBounds] : null,
+    dataBounds: null,
+    stale: false,
+    error: null,
     feed: null,
     geojson: null,
     loading: false,
     updatedAtMs: null,
   };
+  let generation = 0;
+  let active: {
+    bounds: Bounds;
+    controller: AbortController;
+    promise: Promise<ViewportStationSnapshot>;
+  } | null = null;
 
   const emit = (next: ViewportStationSnapshot): ViewportStationSnapshot => {
     snapshot = next;
@@ -294,23 +442,61 @@ export function createViewportStationStore(
     return snapshot;
   };
 
-  async function loadForBounds(bounds: Bounds | null): Promise<ViewportStationSnapshot> {
-    if (!bounds) return snapshot;
-    emit({ ...snapshot, bounds, loading: true });
-    const feed = await options.client.loadFeed({
-      bounds,
-      countries: options.countries,
-      vendors: options.vendors,
-      limit: options.limit,
+  function loadForBounds(requestedBounds: Bounds | null): Promise<ViewportStationSnapshot> {
+    if (!requestedBounds) return Promise.resolve(snapshot);
+    if (active && requestedBounds.every((coordinate, index) => coordinate === active?.bounds[index])) {
+      return active.promise;
+    }
+    const bounds: Bounds = [...requestedBounds];
+    const requestGeneration = ++generation;
+    active?.controller.abort();
+    const controller = new AbortController();
+    const promise = Promise.resolve().then(async (): Promise<ViewportStationSnapshot> => {
+      if (requestGeneration !== generation) return snapshot;
+      const query = {
+        bounds,
+        countries: options.countries,
+        vendors: options.vendors,
+        categories: options.categories,
+        launch: options.launch,
+        limit: options.limit,
+      };
+      const request = { signal: controller.signal, timeoutMs: options.timeoutMs };
+      let result: StationsClientResult<StationFeed>;
+      try {
+        if (options.client.loadFeedResult) {
+          result = await options.client.loadFeedResult(query, request);
+        } else {
+          const data = await options.client.loadFeed(query, request);
+          result = data === null
+            ? { data: null, error: { kind: 'unknown', message: 'Station client returned no feed' } }
+            : { data, error: null };
+        }
+      } catch (error) {
+        result = {
+          data: null,
+          error: { kind: 'unknown', message: error instanceof Error ? error.message : 'Station client failed' },
+        };
+      }
+      if (requestGeneration !== generation) return snapshot;
+      active = null;
+      if (result.error) {
+        return emit({ ...snapshot, bounds, loading: false, stale: snapshot.feed !== null, error: result.error });
+      }
+      return emit({
+        bounds,
+        dataBounds: bounds,
+        stale: false,
+        error: null,
+        feed: result.data,
+        geojson: feedToGeoJson(result.data, options.catalogueByUid),
+        loading: false,
+        updatedAtMs: Date.now(),
+      });
     });
-    const geojson = feed ? feedToGeoJson(feed, options.catalogueByUid) : snapshot.geojson;
-    return emit({
-      bounds,
-      feed: feed ?? snapshot.feed,
-      geojson,
-      loading: false,
-      updatedAtMs: feed ? Date.now() : snapshot.updatedAtMs,
-    });
+    active = { bounds, controller, promise };
+    emit({ ...snapshot, bounds, loading: true, stale: snapshot.feed !== null, error: null });
+    return promise;
   }
 
   return {

@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "openwindmap",
+  "count": 3,
+  "stations": [
+    {
+      "uid": "openwindmap:618",
+      "vendor": "openwindmap",
+      "nativeId": "618",
+      "name": "Monte Alto Launch (Valle de Bravo)",
+      "latitude": 19.1672,
+      "longitude": -100.1235,
+      "elevationM": 2150,
+      "country": "MX",
+      "region": "MEX",
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://www.openwindmap.org/PP618",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "openwindmap:904",
+      "vendor": "openwindmap",
+      "nativeId": "904",
+      "name": "Aparan / Lernaglukh Ridge",
+      "latitude": 40.5942,
+      "longitude": 44.4704,
+      "elevationM": 2380,
+      "country": "AM",
+      "region": "Aragatsotn",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.openwindmap.org/PP904",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "openwindmap:919",
+      "vendor": "openwindmap",
+      "nativeId": "919",
+      "name": "Vedi / Nor Ughi Ridge",
+      "latitude": 39.9448,
+      "longitude": 44.6761,
+      "elevationM": 2167,
+      "country": "AM",
+      "region": "Ararat",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.openwindmap.org/PP919",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 240,
+      "recommendedPollSeconds": 60,
+      "declaredFavorableDirections": [
+        {
+          "fromDeg": 150,
+          "toDeg": 240
+        }
+      ],
+      "category": "freeflight",
+      "locator": {}
+    }
+  ]
+}

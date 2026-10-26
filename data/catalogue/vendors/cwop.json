@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM"
+  ],
+  "vendor": "cwop",
+  "count": 1,
+  "stations": [
+    {
+      "uid": "cwop:EW4821",
+      "vendor": "cwop",
+      "nativeId": "EW4821",
+      "name": "Lookout Mountain Golden CWOP",
+      "latitude": 39.7347,
+      "longitude": -105.2422,
+      "elevationM": 2210,
+      "country": "US",
+      "region": "CO",
+      "timeZone": "America/Denver",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW4821",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    }
+  ]
+}
