@@ -128,7 +128,8 @@ from `wrangler.json` and type-checks the Worker; rerun it after changing binding
 2. `pnpm deploy:catalogue --upload` from a checkout with crawl checkpoints.
 3. Push to `main` and watch the Deploy workflow finish both jobs.
 4. Smoke test on the `workers.dev` URL:
-   - `GET /` renders the explorer.
+   - `GET /` renders the explorer with styles (`GET /dist/styles.css` is
+     `200`; `GET /app.ts` and `GET /styles.css` are `404`).
    - `GET /api/stations/catalogue` returns JSON with an `ETag`; repeating the
      request with `If-None-Match: <etag>` returns `304`.
    - `GET /api/stations/catalogue?format=geojson` returns a `FeatureCollection`.
