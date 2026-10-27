@@ -1,0 +1,573 @@
+#!/usr/bin/env node
+/**
+ * Deterministic friendly shortName generator for catalogue overrides.
+ *
+ * Purpose: turn long vendor names into XCTrack-friendly labels (≤11 chars),
+ * matching the curated Armenia style (place-first, noise stripped).
+ *
+ * Inputs: catalogue stations.json + existing overrides/stations.json
+ * Outputs: merges shortName overrides (default: every US state/territory region)
+ *
+ * State regions are processed in parallel chunks, then uniquified globally.
+ */
+import { readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { SHORT_NAME_MAX_LENGTH, parseStationOverrides } from '@stations/contracts';
+
+const root = fileURLToPath(new URL('..', import.meta.url));
+/** Sentinel: every station with country === 'US' (chunked by state region). */
+const ALL_US = 'US';
+
+const ABBREVIATIONS = [
+  [/\bNational Seashore\b/gi, 'NS'],
+  [/\bState Park\b/gi, 'SP'],
+  [/\bNational\b/gi, 'Natl'],
+  [/\bBattlefield\b/gi, 'Bfld'],
+  [/\bMountains?\b/gi, 'Mtn'],
+  [/\bTownship\b/gi, 'Twp'],
+  [/\bMemorial\b/gi, 'Mem'],
+  [/\bInternational\b/gi, 'Intl'],
+  [/\bMunicipal\b/gi, 'Muni'],
+  [/\bRegional\b/gi, 'Reg'],
+  [/\bExecutive\b/gi, 'Exec'],
+  [/\bUniversity\b/gi, 'Univ'],
+  [/\bInstitute\b/gi, 'Inst'],
+  [/\bResearch\b/gi, 'Res'],
+  [/\bCent(?:er|re)s?\b/gi, 'Ctr'],
+  [/\bStation\b/gi, 'Stn'],
+  [/\bAirport\b/gi, 'Apt'],
+  [/\bHeliport\b/gi, 'Heli'],
+  [/\bAirfield\b/gi, 'Fld'],
+  [/\bCounty\b/gi, 'Co'],
+  [/\bIslands?\b/gi, 'Is'],
+  [/\bBridge\b/gi, 'Br'],
+  [/\bCreek\b/gi, 'Crk'],
+  [/\bRiver\b/gi, 'Riv'],
+  [/\bValley\b/gi, 'Vly'],
+  [/\bSprings?\b/gi, 'Spg'],
+  [/\bHeights\b/gi, 'Hts'],
+  [/\bBeach\b/gi, 'Bch'],
+  [/\bPoint\b/gi, 'Pt'],
+  [/\bHarbou?r\b/gi, 'Hbr'],
+  [/\bLanding\b/gi, 'Lndg'],
+  [/\bPeninsula\b/gi, 'Pen'],
+  [/\bReservoir\b/gi, 'Rsvr'],
+  [/\bBranch\b/gi, 'Br'],
+  [/\bDrawbridge\b/gi, 'Drwbr'],
+  [/\bFoundation\b/gi, 'Fnd'],
+  [/\bHeadquarters\b/gi, 'Headqtrs'],
+  [/\bPrincess\b/gi, 'Pr'],
+  [/\bUpper\b/gi, 'U'],
+  [/\bLower\b/gi, 'L'],
+  [/\bGreater\b/gi, ''],
+  [/\bCollege\b/gi, 'Coll'],
+  [/\bPark\b/gi, 'Pk'],
+  [/\b(?:Saint|St\.?)\b/gi, 'St'],
+  [/\bMount\b/gi, 'Mt'],
+  [/\bFort\b/gi, 'Ft'],
+  [/(?<=[A-Za-z])fields?\b/gi, 'fld'],
+];
+
+const KEEP_UPPER = new Set([
+  'NB',
+  'SB',
+  'EB',
+  'WB',
+  'US',
+  'MD',
+  'VA',
+  'WV',
+  'NWS',
+  'AFB',
+  'AAF',
+  'RWIS',
+  'VT',
+  'UVA',
+  'SP',
+  'NS',
+  'NAS',
+  'NB',
+  'CR',
+  'SR',
+]);
+
+const GENERIC = new Set([
+  'the',
+  'near',
+  'at',
+  'on',
+  'of',
+  'site',
+  'us',
+  'md',
+  'va',
+  'wv',
+  'b',
+  'i',
+  'is',
+  'co',
+  'nb',
+  'and',
+  'raws',
+  'nws',
+]);
+
+const ROUTE_AT =
+  /^(I-\d+[A-Z]?|C-\d+|CR-\d+|SR-\d+|US\s*\d+|MD-\d+|VA-\d+|WV-\d+|CO-\d+|CA-\d+|NY-\d+|TX-\d+|MD\s+\d+|US\s+\d+|VA\s+\d+|WV\s+\d+|\d{1,3}(?:[ENSW]B)?)\b.*?(?:\bat\b|@|\bon\b)\s+(.+)$/i;
+
+/** "0.6 mi E of Frisco" / "1.4W OF MCCASLIN RD" / "2.4 N of WCR-34" */
+const DISTANCE_OF =
+  /^\d+(?:\.\d+)?\s*(?:mi(?:le)?s?)?\s*[NSEW]{1,3}\s+(?:of\s+)?(.+)$/i;
+
+export function titleCase(value) {
+  return value.replace(/[A-Za-z0-9']+/g, (word) => {
+    const upper = word.toUpperCase();
+    if (/^I-\d+[A-Z]?$/i.test(word)) return `I-${word.split('-')[1].toUpperCase()}`;
+    if (/^(US|MD|VA|WV)-\d+$/i.test(word)) {
+      const [a, b] = word.split('-');
+      return `${a.toUpperCase()}-${b}`;
+    }
+    if (KEEP_UPPER.has(upper)) return upper;
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+  });
+}
+
+function stripCallsign(name) {
+  return name
+    .replace(/^[A-Z]{1,2}\d[A-Z]{1,3}(?:-\d+)?\s+/i, '')
+    .replace(/^(?:GW|FW|DW|EW|CW|KW|KB|KN)\d+\s+/i, '')
+    .replace(/^\d{7}\s*-\s*/, '');
+}
+
+export function stripNoise(name) {
+  let n = name.trim().replace(/\s+/g, ' ');
+  n = stripCallsign(n);
+  n = n.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+  // Leading CoCoRaHS-style offset: "3 WNW WOFFORD HEIGHTS"
+  n = n.replace(/^\d+\s*[NSEW]{1,3}\s+/i, '');
+  // CDOT-style route sensor id: "070E217 US 6 LOVELAND PASS"
+  if (/^\d{2,3}[ENSW]\d{3,}\w*\s+/i.test(n)) {
+    n = n.replace(/^\d{2,3}[ENSW]\d{3,}\w*\s+/i, '');
+    // Drop a following highway designator only when no junction marker remains.
+    if (!/(?:\bat\b|@)/i.test(n)) {
+      n = n.replace(/^(?:US|SH|SR|CO|CA|NY|TX|MD|VA|WV|I)\s*-?\s*\d+[A-Z]?\s+/i, '');
+    }
+  }
+  n = n.replace(/\s+K[A-Z0-9]{3}$/i, '');
+  // Trailing FAA/club codes ("-8W2", "-RMPHA"), not pure numeric route suffixes ("I-65", "CR-82").
+  n = n.replace(/\s*-\s*(?=[A-Z0-9]*[A-Za-z])[A-Z0-9]{2,8}$/i, '');
+  // Trailing "MD US MDDOT" / "VA US" noise — require a real state code, not "at US-24".
+  n = n.replace(
+    /\s+(?:AL|AK|AZ|AR|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)\s+US(?:\s+[A-Z]+)?.*$/i,
+    '',
+  );
+  n = n.replace(/,\s*[A-Z]{2},\s*US$/i, '');
+  n = n.replace(/,\s*[A-Z]{2}$/i, '');
+  n = n.replace(/,\s*US$/i, '');
+  n = n.replace(/\s+MP\s*[\d.]+$/i, '');
+  n = n.replace(/\s+\d+\s*[NSEW]{1,3}$/i, '');
+  // Trailing pole/sensor numbers: "Pole 15"
+  n = n.replace(/\s+(?:Nb|Sb|Eb|Wb)?\s*Pole\s+\d+$/i, '');
+  return n.replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
+}
+
+function compressJunction(left, right) {
+  const a = left.replace(/\s+/g, '');
+  const b = right.replace(/\s+/g, '');
+  const compact = `${a}/${b}`;
+  if (compact.length <= SHORT_NAME_MAX_LENGTH) return compact;
+  // Prefer the non-Interstate landmark when one side must go.
+  if (/^I-\d+/i.test(a) && !/^I-\d+/i.test(b) && b.length <= SHORT_NAME_MAX_LENGTH) return b;
+  if (/^I-\d+/i.test(b) && !/^I-\d+/i.test(a) && a.length <= SHORT_NAME_MAX_LENGTH) return a;
+  return a.slice(0, SHORT_NAME_MAX_LENGTH);
+}
+
+function pickPlace(name) {
+  const distance = name.match(DISTANCE_OF);
+  if (distance) {
+    let landmark = distance[1].trim();
+    // "CO-91 Copper Mtn" → prefer the place words after a route id.
+    const afterRoute = landmark.match(
+      /^(?:I-\d+[A-Z]?|[A-Z]{1,2}-?\d+)\s+(.+)$/i,
+    );
+    if (afterRoute) landmark = afterRoute[1];
+    landmark = stripNoise(landmark);
+    if (!landmark) landmark = stripNoise(distance[1]);
+    return landmark;
+  }
+
+  const route = name.match(ROUTE_AT);
+  if (route) {
+    let landmark = route[2].trim();
+    // "I-17 @ MP-306: Stoneman Lake" / "277.9: Oxtail Draw"
+    landmark = landmark.replace(/^MP-?\d+(?:\.\d+)?:\s*/i, '');
+    landmark = landmark.replace(/^[\d.]+:\s*/, '');
+    landmark = stripNoise(landmark);
+    if (/^(I-\d+[A-Z]?|C-\d+|CR-\d+|SR-\d+|US\s*-?\d+|[A-Z]{2}-\d+)/i.test(landmark)) {
+      return compressJunction(route[1], landmark);
+    }
+    return landmark;
+  }
+  const nearMatches = [...name.matchAll(/\bNEAR\b\s+/gi)];
+  if (nearMatches.length > 0) {
+    const last = nearMatches[nearMatches.length - 1];
+    return stripNoise(name.slice(last.index + last[0].length));
+  }
+  // "Alaska Hwy @ Dot Lake MP …" — `@` is non-word so avoid \b around it.
+  const atOrOn = name.match(/(?:\bat\b|@)\s+(.+)$/i);
+  if (atOrOn && name.length > 18) {
+    return stripNoise(atOrOn[1].replace(/^[\d.]+:\s*/, ''));
+  }
+  return name;
+}
+
+function isAirportish(name) {
+  return /\b(Airport|Heliport|Airfield|Aerodrome|AAF|AFB|Joint Base|Muni|Arpt|Intl|Rgnl|NAS|Naval Air Facility|Air Facility)\b/i.test(
+    name,
+  );
+}
+
+function cleanAirport(name) {
+  let n = name.replace(/^Joint Base\s+/i, '');
+  n = n.replace(
+    /\b(Municipal|Regional|International|Memorial|Executive|Army Airfield|Air Force Base|Washington|Authority)\b/gi,
+    '',
+  );
+  n = n.replace(
+    /\b(Airport|Heliport|Airfield|Aerodrome|AAF|AFB|Muni|Arpt|Intl|Rgnl|NAS|Cnty|Naval Academy|Trapnell Field|Naval Air Facility|Air Facility)\b/gi,
+    '',
+  );
+  n = n.replace(/\bCounty\b/gi, '');
+  n = n.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
+  if (n.includes('/')) n = n.split('/')[0].trim();
+  if (n.includes(',')) n = n.split(',')[0].trim();
+  if (n.includes('-') && !/^[A-Z]{1,2}-\d+/i.test(n)) {
+    const left = n.split('-')[0].trim();
+    if (left.length >= 4) n = left;
+  }
+  return n;
+}
+
+export function fitLabel(label, { preferApt = false } = {}) {
+  let cur = titleCase(label.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, ''));
+  if (preferApt && !/\bApt\b/.test(cur) && cur.length <= 7) {
+    const withApt = `${cur} Apt`;
+    if (withApt.length <= SHORT_NAME_MAX_LENGTH) cur = withApt;
+  }
+  if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
+
+  for (const [pattern, replacement] of ABBREVIATIONS) {
+    const next = cur
+      .replace(pattern, replacement)
+      .replace(/\s+/g, ' ')
+      .replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
+    if (next.length < cur.length) {
+      cur = /\d/.test(next) ? next : titleCase(next);
+    }
+    if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
+  }
+
+  let words = cur.split(/\s+/).filter(Boolean);
+  while (words.join(' ').length > SHORT_NAME_MAX_LENGTH && words.length > 2) {
+    words.splice(1, 1);
+  }
+  cur = words.join(' ');
+  if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
+
+  while (words.join(' ').length > SHORT_NAME_MAX_LENGTH && words.length > 1) {
+    words =
+      words[0].length <= words[words.length - 1].length ? words.slice(1) : words.slice(0, -1);
+  }
+  cur = words.join(' ');
+  if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
+  return cur.slice(0, SHORT_NAME_MAX_LENGTH).replace(/[\s\-/]+$/g, '');
+}
+
+function fallbackFromName(name, nativeId) {
+  const tokens = (name.match(/[A-Za-z][A-Za-z']+/g) ?? []).filter(
+    (token) => !GENERIC.has(token.toLowerCase()),
+  );
+  if (tokens.length > 0) return fitLabel(tokens.slice(0, 2).join(' '));
+  return String(nativeId).slice(0, SHORT_NAME_MAX_LENGTH);
+}
+
+/** Derive a place-like shortName from a vendor station name (not yet uniquified). */
+export function deriveShortName(name, nativeId = 'station') {
+  let n = stripNoise(name);
+  if (isAirportish(n)) {
+    const cleaned = cleanAirport(n);
+    const label = fitLabel(cleaned, { preferApt: true });
+    // "Washington County Airport" can collapse to "Apt" after stripping County.
+    if (label.length >= 3 && !/^Apt$/i.test(label.trim())) return label;
+    return fallbackFromName(name, nativeId);
+  }
+
+  n = stripNoise(pickPlace(n));
+
+  if (n.includes('/')) {
+    const parts = n
+      .split('/')
+      .map((part) => part.trim())
+      .filter(Boolean);
+    const routePart = (value) =>
+      /^(I-\d+[A-Z]?|C-\d+|CR-\d+|SR-\d+|US\s*\d+|[A-Z]{2}-\d+)$/i.test(value);
+    // Keep compact junctions like I-94/I-65.
+    if (!(parts.length === 2 && parts.every(routePart))) {
+      parts.sort((a, b) => {
+        const score = (value) =>
+          /\b(Lake|Mount|Mt\.?|River|Gap|Ridge|Knob|Dam|Bridge|Park)\b/i.test(value) ? 0 : 1;
+        return score(a) - score(b) || a.length - b.length;
+      });
+      n = parts[0] ?? n;
+    }
+  }
+
+  n = n.replace(/^(?:USCRN|CB NERRS|NERRS)\b.*?\bAT\b\s+/i, '');
+  n = n.replace(/^(?:USCRN|CB NERRS)\s+SITE\s+/i, '');
+  n = n.replace(/\b(?:Env(?:ironmental)?)?\s*RAWS\b/gi, '');
+  n = n.replace(/\s+-\s+(?:Coop|Heliport|NWS).*$/i, '');
+  n = n.replace(/\s+-\s+.*$/, '');
+  n = n.replace(/\bAssateague Island(?: National Seashore)?\b/gi, 'Assateague');
+  n = n.replace(/\bCatoctin Mountain\b/gi, 'Catoctin');
+  n = n.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
+
+  let label = fitLabel(n);
+  if (!label || label.length < 3 || GENERIC.has(label.toLowerCase())) {
+    label = fallbackFromName(name, nativeId);
+  }
+  return label;
+}
+
+export function uniquifyShortNames(entries, reserved = new Set()) {
+  const used = new Set([...reserved].map((value) => value.toLowerCase()));
+  const out = [];
+  for (const entry of entries) {
+    const base = entry.shortName;
+    let label = base;
+    let n = 2;
+    while (used.has(label.toLowerCase())) {
+      const suffix = String(n);
+      label = `${base.slice(0, SHORT_NAME_MAX_LENGTH - suffix.length).replace(/[\s\-/]+$/g, '')}${suffix}`;
+      n += 1;
+    }
+    used.add(label.toLowerCase());
+    out.push({ ...entry, shortName: label });
+  }
+  return out;
+}
+
+function loadJson(path) {
+  return JSON.parse(readFileSync(path, 'utf8'));
+}
+
+function resolveTargetRegions(stations, regionsArg) {
+  if (regionsArg.length === 1 && regionsArg[0] === ALL_US) {
+    const found = new Set();
+    for (const station of stations) {
+      if (station.country === 'US' && station.region) found.add(station.region);
+    }
+    return [...found].sort();
+  }
+  return regionsArg;
+}
+
+function chunkStationsByRegion(stations, regions, { includeUnscoped = false } = {}) {
+  const wanted = new Set(regions);
+  const chunks = new Map(regions.map((region) => [region, []]));
+  if (includeUnscoped) chunks.set('_', []);
+  for (const station of stations) {
+    if (station.country !== 'US') continue;
+    if (!station.region) {
+      if (includeUnscoped) chunks.get('_').push(station);
+      continue;
+    }
+    if (!wanted.has(station.region)) continue;
+    if (!chunks.has(station.region)) chunks.set(station.region, []);
+    chunks.get(station.region).push(station);
+  }
+  if ((chunks.get('_') ?? []).length === 0) chunks.delete('_');
+  return chunks;
+}
+
+/** Generate shortName proposals for one region chunk (no global uniquify). */
+export function generateRegionChunk(stations) {
+  return stations
+    .slice()
+    .sort((a, b) => a.uid.localeCompare(b.uid))
+    .map((station) => ({
+      uid: station.uid,
+      region: station.region,
+      vendor: station.vendor,
+      name: station.name,
+      shortName: deriveShortName(station.name, station.nativeId),
+    }));
+}
+
+export async function generateShortNamesForRegions(
+  stations,
+  regions,
+  { concurrency = 8, includeUnscoped = false } = {},
+) {
+  const chunks = chunkStationsByRegion(stations, regions, { includeUnscoped });
+  const regionList = [...chunks.keys()];
+  const results = [];
+  for (let i = 0; i < regionList.length; i += concurrency) {
+    const batch = regionList.slice(i, i + concurrency);
+    const batchResults = await Promise.all(
+      batch.map(async (region) => {
+        // Yield so region chunks truly run concurrently under the event loop.
+        await Promise.resolve();
+        return generateRegionChunk(chunks.get(region) ?? []);
+      }),
+    );
+    for (const chunk of batchResults) results.push(...chunk);
+  }
+  results.sort((a, b) => a.uid.localeCompare(b.uid));
+  return results;
+}
+
+function mergeOverrides(existing, generated) {
+  const stations = { ...existing.stations };
+  for (const entry of generated) {
+    const prior = stations[entry.uid] ?? {};
+    stations[entry.uid] = { ...prior, shortName: entry.shortName };
+  }
+  return {
+    schemaVersion: existing.schemaVersion ?? 1,
+    stations,
+  };
+}
+
+function parseArgs(argv) {
+  const args = {
+    regions: [ALL_US],
+    catalogue: resolve(root, 'data/catalogue/stations.json'),
+    overrides: resolve(root, 'data/overrides/stations.json'),
+    samplesPath: resolve(root, '.cache/shortname-samples.json'),
+    write: true,
+    dryRun: false,
+  };
+  for (let i = 0; i < argv.length; i += 1) {
+    const arg = argv[i];
+    if (arg === '--regions') args.regions = argv[++i].split(',').map((v) => v.trim().toUpperCase());
+    else if (arg === '--catalogue') args.catalogue = resolve(argv[++i]);
+    else if (arg === '--overrides') args.overrides = resolve(argv[++i]);
+    else if (arg === '--dry-run') {
+      args.dryRun = true;
+      args.write = false;
+    } else if (arg === '--help') args.help = true;
+  }
+  return args;
+}
+
+function sampleReport(generated, { perRegion = 3, oddLimit = 40 } = {}) {
+  const byRegion = new Map();
+  const odd = [];
+  for (const row of generated) {
+    const list = byRegion.get(row.region) ?? [];
+    if (list.length < perRegion) {
+      list.push({ shortName: row.shortName, name: row.name, vendor: row.vendor });
+      byRegion.set(row.region, list);
+    }
+    if (
+      row.shortName.length < 3 ||
+      GENERIC.has(row.shortName.toLowerCase()) ||
+      !/[A-Za-z]{2}/.test(row.shortName) ||
+      /^\d/.test(row.shortName)
+    ) {
+      if (odd.length < oddLimit) odd.push(row);
+    }
+  }
+  return {
+    byRegion: Object.fromEntries(
+      [...byRegion.entries()].sort(([a], [b]) => String(a ?? '_').localeCompare(String(b ?? '_'))),
+    ),
+    numbered: generated.filter((row) => /\d+$/.test(row.shortName)).length,
+    odd: odd.map((row) => ({
+      uid: row.uid,
+      shortName: row.shortName,
+      name: row.name,
+      region: row.region,
+    })),
+  };
+}
+
+async function main() {
+  const args = parseArgs(process.argv.slice(2));
+  if (args.help) {
+    console.log(`Usage: node scripts/generate-shortnames.mjs [--regions US|VA,MD,WV] [--dry-run]
+Generates ≤${SHORT_NAME_MAX_LENGTH}-char shortNames and merges into overrides.
+Default --regions US covers every US state/territory region in the catalogue.`);
+    return;
+  }
+
+  const catalogue = loadJson(args.catalogue);
+  const stations = catalogue.stations ?? catalogue;
+  const existing = loadJson(args.overrides);
+  parseStationOverrides(existing);
+
+  const allUs = args.regions.length === 1 && args.regions[0] === ALL_US;
+  const targetRegions = resolveTargetRegions(stations, args.regions);
+  const proposed = await generateShortNamesForRegions(stations, targetRegions, {
+    includeUnscoped: allUs,
+  });
+  const targetUids = new Set(proposed.map((row) => row.uid));
+
+  const reserved = new Set(
+    Object.entries(existing.stations)
+      .filter(([uid]) => !targetUids.has(uid))
+      .map(([, value]) => value.shortName)
+      .filter(Boolean),
+  );
+
+  const generated = uniquifyShortNames(proposed, reserved);
+
+  for (const entry of generated) {
+    if (entry.shortName.length < 1 || entry.shortName.length > SHORT_NAME_MAX_LENGTH) {
+      throw new Error(`Invalid shortName for ${entry.uid}: ${entry.shortName}`);
+    }
+  }
+
+  const merged = mergeOverrides(existing, generated);
+  parseStationOverrides(merged);
+
+  const report = {
+    regions: allUs ? [ALL_US, ...targetRegions] : targetRegions,
+    generated: generated.length,
+    overridesTotal: Object.keys(merged.stations).length,
+    ...sampleReport(generated),
+  };
+  writeFileSync(args.samplesPath, `${JSON.stringify(report, null, 2)}\n`);
+
+  console.log(
+    JSON.stringify(
+      {
+        regions: report.regions.slice(0, allUs ? 1 : undefined),
+        stateCount: targetRegions.length,
+        generated: report.generated,
+        overridesTotal: report.overridesTotal,
+        numbered: report.numbered,
+        oddCount: report.odd.length,
+        samplesPath: args.samplesPath,
+        sampleStates: Object.fromEntries(Object.entries(report.byRegion).slice(0, 8)),
+        odd: report.odd.slice(0, 15),
+      },
+      null,
+      2,
+    ),
+  );
+
+  if (args.write) {
+    writeFileSync(args.overrides, `${JSON.stringify(merged, null, 2)}\n`);
+    console.error(`Wrote ${generated.length} shortNames → ${args.overrides}`);
+  }
+}
+
+const isMain = process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (isMain) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

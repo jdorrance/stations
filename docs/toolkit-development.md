@@ -39,7 +39,7 @@ pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
 | Path | Contents |
 | --- | --- |
 | `.cache/stations-crawl/` | Private checkpoints with full `locator` metadata (`0600`). Never deploy. |
-| `data/overrides/stations.json` | Curated short names, place, and fill-only elevation/region/position; applied after merge |
+| `data/overrides/stations.json` | Curated short names, place, and fill-only elevation/region/position; applied after merge. Bulk US labels: `pnpm shortnames:generate` |
 | `data/terrain/landforms.json` | DEM landform and `tpiM` per station; applied after merge |
 | `data/catalogue/stations.json` | Full public catalogue |
 | `data/catalogue/stations.geojson` | GeoJSON twin |
