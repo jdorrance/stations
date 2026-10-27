@@ -72,7 +72,8 @@ const FEED_RETRY_MS = 10_000;
 const FEED_TIMEOUT_MS = 45_000;
 /** A lost/stalled fix must not keep driving station distance and bearing. */
 const FIX_MAX_AGE_MS = 30_000;
-const VIEW_INTERVAL_MS = 1_000;
+/** Age chips, fix expiry, and tile fade — 10s is enough in flight. */
+const VIEW_INTERVAL_MS = 10_000;
 const DEFAULT_MAX_AGE_MIN = 120;
 const KM_PER_MILE = 1.609344;
 
@@ -193,6 +194,9 @@ const liveByUid = new Map<string, RetainedObservation>();
 let feedOnline: boolean | null = null;
 let geoError: string | null = null;
 let feedRetryTimer: number | null = null;
+let viewTimer: number | null = null;
+let feedTimer: number | null = null;
+let geoWatchId: number | null = null;
 let pollInFlight = false;
 let partialFailureCount = 0;
 let coverageLimited = false;
@@ -472,11 +476,12 @@ function startGeolocationFallback(): void {
   if (getParam('debug') !== null) return;
   if (readUrlPosition()) return;
   if (readXcTrackPosition().kind !== 'absent') return;
+  if (geoWatchId !== null) return;
   if (!navigator.geolocation) {
     geoError = 'geolocation unavailable';
     return;
   }
-  navigator.geolocation.watchPosition(
+  geoWatchId = navigator.geolocation.watchPosition(
     pos => {
       const hadFix = myPosition !== null;
       if (!validCoordinates(pos.coords.latitude, pos.coords.longitude)) {
@@ -511,6 +516,50 @@ function startGeolocationFallback(): void {
     },
     { enableHighAccuracy: true, maximumAge: 15_000, timeout: 15_000 },
   );
+}
+
+function clearFeedRetry(): void {
+  if (feedRetryTimer === null) return;
+  window.clearTimeout(feedRetryTimer);
+  feedRetryTimer = null;
+}
+
+function stopBrowserGeolocation(): void {
+  if (geoWatchId === null) return;
+  navigator.geolocation.clearWatch(geoWatchId);
+  geoWatchId = null;
+}
+
+function clearIntervalTimer(id: number | null): null {
+  if (id !== null) window.clearInterval(id);
+  return null;
+}
+
+/** Stop periodic bridge reads, feed polls, retries, and browser GPS. */
+function stopPolling(): void {
+  viewTimer = clearIntervalTimer(viewTimer);
+  feedTimer = clearIntervalTimer(feedTimer);
+  clearFeedRetry();
+  stopBrowserGeolocation();
+}
+
+/** Resume periodic work. No-op when already running. */
+function startPolling(): void {
+  if (viewTimer !== null) return;
+  // Fix expiry and observation age must advance even while a feed request hangs.
+  viewTimer = window.setInterval(() => {
+    const hadFix = myPosition !== null;
+    refreshPosition();
+    updateView();
+    if (!hadFix && myPosition !== null) void pollFeed();
+  }, VIEW_INTERVAL_MS);
+  feedTimer = window.setInterval(() => {
+    void pollFeed();
+  }, FEED_INTERVAL_MS);
+}
+
+function pageIsVisible(): boolean {
+  return document.visibilityState === 'visible';
 }
 
 function formatDistance(km: number, unit: DistanceUnit): string {
@@ -1024,21 +1073,29 @@ function clearTiles(): void {
 }
 
 function scheduleFeedRetry(): void {
-  if (feedRetryTimer !== null) return;
+  if (!pageIsVisible() || feedRetryTimer !== null) return;
   feedRetryTimer = window.setTimeout(() => {
     feedRetryTimer = null;
     void pollFeed();
   }, FEED_RETRY_MS);
 }
 
+function markFeedFailed(): void {
+  for (const entry of liveByUid.values()) entry.refreshFailed = true;
+  setOnlineState(false);
+  updateView();
+  scheduleFeedRetry();
+}
+
 async function pollFeed(): Promise<void> {
-  if (pollInFlight) return;
+  if (pollInFlight || !pageIsVisible()) return;
   refreshPosition(true);
   if (myPosition === null) {
     updateView();
     return;
   }
 
+  clearFeedRetry();
   pollInFlight = true;
   requestController = new AbortController();
   try {
@@ -1052,10 +1109,8 @@ async function pollFeed(): Promise<void> {
       { timeoutMs: FEED_TIMEOUT_MS, signal: requestController.signal },
     );
     if (result.catalogueError) {
-      for (const entry of liveByUid.values()) entry.refreshFailed = true;
-      setOnlineState(false);
-      updateView();
-      scheduleFeedRetry();
+      // Hidden: keep last good tiles; resume polls. Do not arm a background retry.
+      if (pageIsVisible()) markFeedFailed();
       return;
     }
     const candidates = new Set(result.candidateUids);
@@ -1077,16 +1132,11 @@ async function pollFeed(): Promise<void> {
     coverageLimited = result.coverageLimited;
     setOnlineState(result.feedErrors.length === 0);
     if (result.feedErrors.length > 0) scheduleFeedRetry();
-    else if (feedRetryTimer !== null) {
-      window.clearTimeout(feedRetryTimer);
-      feedRetryTimer = null;
-    }
     updateView();
   } catch {
-    for (const entry of liveByUid.values()) entry.refreshFailed = true;
-    setOnlineState(false);
-    updateView();
-    scheduleFeedRetry();
+    // pagehide abort (and any hard throw). Quiet if we are no longer on screen.
+    if (!pageIsVisible() || requestController?.signal.aborted) return;
+    markFeedFailed();
   } finally {
     requestController = null;
     pollInFlight = false;
@@ -1101,21 +1151,16 @@ async function bootstrap(): Promise<void> {
   startGeolocationFallback();
   refreshPosition();
   updateView();
-  // Location validity and observation age must continue while a request hangs.
-  window.setInterval(() => {
-    const hadFix = myPosition !== null;
-    refreshPosition();
-    updateView();
-    if (!hadFix && myPosition !== null) void pollFeed();
-  }, VIEW_INTERVAL_MS);
-  window.setInterval(() => {
-    void pollFeed();
-  }, FEED_INTERVAL_MS);
+  startPolling();
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
+    if (pageIsVisible()) {
+      startGeolocationFallback();
+      startPolling();
       refreshPosition();
       updateView();
       void pollFeed();
+    } else {
+      stopPolling();
     }
   });
   window.addEventListener('online', () => { void pollFeed(); });

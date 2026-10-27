@@ -207,11 +207,14 @@ async function browser({ search = '?lat=40.33&lng=44.73', native, wallTime = NOW
   document.ownerDocument = document;
   document.createElement = tag => new Element(tag, document);
   document.getElementById = id => document.querySelectorAll(`#${id}`)[0] ?? null;
+  document.visibilityState = 'visible';
+  document.hidden = false;
   parseHtml(widgetHtml, document);
   document.documentElement = document.querySelector('html');
   document.body = document.querySelector('body');
   let geoSuccess;
   let geoError;
+  let geoWatchId = 0;
   const schedule = (callback, delay, repeat) => {
     const id = ++timerId;
     timers.set(id, { callback, due: elapsed + delay, delay, repeat });
@@ -226,7 +229,21 @@ async function browser({ search = '?lat=40.33&lng=44.73', native, wallTime = NOW
       static now() { return wallTime + elapsed; }
     },
     performance: { now: () => elapsed },
-    navigator: { geolocation: { watchPosition(success, error) { geoSuccess = success; geoError = error; return 1; } } },
+    navigator: {
+      geolocation: {
+        watchPosition(success, error) {
+          geoSuccess = success;
+          geoError = error;
+          return ++geoWatchId;
+        },
+        clearWatch(id) {
+          if (id === geoWatchId) {
+            geoSuccess = undefined;
+            geoError = undefined;
+          }
+        },
+      },
+    },
     setTimeout: (callback, delay = 0) => schedule(callback, delay, false),
     clearTimeout: id => timers.delete(id),
     setInterval: (callback, delay = 0) => schedule(callback, delay, true),
@@ -247,7 +264,7 @@ async function browser({ search = '?lat=40.33&lng=44.73', native, wallTime = NOW
   const settle = async () => { await new Promise(setImmediate); await new Promise(setImmediate); };
   await settle();
   return {
-    document, requests,
+    document, requests, timers,
     get(id) { return document.getElementById(id); },
     tiles() { return document.querySelectorAll('.stationDetail'); },
     text() { return visibleText(document.body); },
@@ -260,6 +277,14 @@ async function browser({ search = '?lat=40.33&lng=44.73', native, wallTime = NOW
     async loseLocation() {
       assert.ok(geoError, 'widget started browser geolocation');
       geoError({ code: 2, PERMISSION_DENIED: 1 }); await settle();
+    },
+    async setVisibility(state) {
+      document.visibilityState = state;
+      document.hidden = state !== 'visible';
+      document.dispatchEvent({ type: 'visibilitychange' });
+      // Match the post-bootstrap settle so a resume pollFeed can finish.
+      await settle();
+      await settle();
     },
     async advance(ms) {
       const target = elapsed + ms;
@@ -314,7 +339,7 @@ test('XCTrack rejects invalid, out-of-range and recently-stale native fixes; alt
   assert.equal(page.tiles().length, 1);
   assert.equal(page.tiles()[0].classList.contains('peak'), false, 'station below altGps is a valley');
   page.setNative({ ...valid, isValid: false });
-  await page.advance(1000);
+  await page.advance(10_000);
   assert.equal(page.tiles().length, 0, 'native invalidation removes the previous fix tiles');
   assert.match(page.text(), /GPS fix unavailable/i);
 });
@@ -330,9 +355,9 @@ test('XCTrack accepts bridge quirks and ages only when the raw payload identity 
     await t.test(JSON.stringify(native), async () => {
       const page = await browser({ search: '', native });
       assert.equal(page.tiles().length, 1, 'quirky but in-range native fix is usable');
-      for (let step = 1; step <= 31; step += 1) {
+      for (let step = 1; step <= 4; step += 1) {
         page.setNative({ ...native, time: typeof native.time === 'number' ? native.time + step : step });
-        await page.advance(1_000);
+        await page.advance(10_000);
       }
       assert.equal(page.tiles().length, 1, 'changing raw time renews the fix clock');
     });
@@ -375,7 +400,7 @@ test('XCTrack an unchanged native timestamp expires despite repeated bridge read
   assert.equal(page.tiles().length, 1);
   await page.advance(30_000);
   assert.equal(page.tiles().length, 1, 'fix remains valid at the thirty-second limit');
-  await page.advance(1000);
+  await page.advance(10_000);
   assert.equal(page.tiles().length, 0, 'unchanged bridge timestamps cannot renew a stale fix');
   assert.match(page.text(), /GPS.*stale|stale.*GPS/i);
 });
@@ -385,9 +410,56 @@ test('XCTrack missing altitude in a new native fix clears the previous altitude'
   const page = await browser({ search: '', native });
   assert.equal(page.tiles()[0].classList.contains('peak'), false);
   const { altGps, ...withoutAltitude } = native;
-  page.setNative({ ...withoutAltitude, time: NOW + 1000 });
-  await page.advance(1000);
+  page.setNative({ ...withoutAltitude, time: NOW + 10_000 });
+  await page.advance(10_000);
   assert.equal(page.tiles()[0].classList.contains('peak'), true, 'unknown pilot altitude uses station elevation rather than the previous pilot fix');
+});
+
+test('XCTrack pauses timers while hidden and resumes on visible', async () => {
+  const page = await browser({
+    search: '', native: { isValid: true, lat: 40.33, lon: 44.73, time: NOW, altGps: 1200 },
+  });
+  assert.equal(page.tiles().length, 1);
+  const feedBeforeHide = page.requests.filter(url => url.pathname.endsWith('/feed')).length;
+  await page.setVisibility('hidden');
+  assert.equal(page.timers.size, 0, 'view and feed intervals stop when hidden');
+  await page.advance(120_000);
+  assert.equal(
+    page.requests.filter(url => url.pathname.endsWith('/feed')).length,
+    feedBeforeHide,
+    'no feed traffic while hidden',
+  );
+  // Bridge time must be current on resume or FIX_MAX_AGE rejects the fix.
+  page.setNative({ isValid: true, lat: 40.33, lon: 44.73, time: NOW + 120_000, altGps: 1200 });
+  await page.setVisibility('visible');
+  assert.ok(page.timers.size >= 2, 'view and feed intervals restart when visible');
+  const feedAfterResume = page.requests.filter(url => url.pathname.endsWith('/feed')).length;
+  assert.ok(feedAfterResume > feedBeforeHide, `resume triggers a feed poll (${feedAfterResume} vs ${feedBeforeHide})`);
+});
+
+test('XCTrack a poll that fails after hide does not arm a background retry', async () => {
+  const page = await browser({ search: '?lat=40.33&lng=44.73' });
+  assert.equal(page.tiles().length, 1);
+  let release;
+  const gate = new Promise(resolve => { release = resolve; });
+  page.setResponse(async () => {
+    await gate;
+    return new Response('offline', { status: 503 });
+  });
+  await page.advance(60_000);
+  await page.setVisibility('hidden');
+  const feedsWhenHidden = page.requests.filter(url => url.pathname.endsWith('/feed')).length;
+  release();
+  await new Promise(setImmediate);
+  await new Promise(setImmediate);
+  await new Promise(setImmediate);
+  await page.advance(30_000);
+  assert.equal(
+    page.requests.filter(url => url.pathname.endsWith('/feed')).length,
+    feedsWhenHidden,
+    'failed poll while hidden must not retry',
+  );
+  assert.equal(page.tiles().length, 1, 'last good tiles stay up');
 });
 
 test('XCTrack freshness uses server time despite device clock skew and ages retained data', async t => {
@@ -448,7 +520,8 @@ test('XCTrack expires a retained observation while network requests keep failing
   const page = await browser({ search: '?lat=40.33&lng=44.73&maxage=2' });
   assert.equal(page.tiles().length, 1);
   page.setResponse(() => new Response('offline', { status: 503 }));
-  await page.advance(61_000);
+  // Observation starts 1 min old; maxage=2 min. Need a view tick past the limit.
+  await page.advance(70_000);
   assert.equal(page.tiles().length, 0, 'maxage advances even without a successful refresh');
   assert.match(page.text(), /unavailable|offline|failed/i);
 });
