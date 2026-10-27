@@ -47,6 +47,7 @@ All routes accept `GET` and `HEAD`. Selection query params are shared:
 | `limit` | Max stations returned |
 | `format` | `geojson` on `/catalogue` and `/feed` |
 | `hours` | History window on `/feed` (validated against `maxHistoryHours`) |
+| `history` | `0` on `/feed` loads current readings only and returns `history: null`. `1` or absent keeps the history window |
 
 | Route | Response | Notes |
 | --- | --- | --- |

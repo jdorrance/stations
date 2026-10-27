@@ -117,7 +117,7 @@ export async function loadNearbyWind(
     const batch = candidates.slice(offset, offset + DISPLAY_LIMIT);
     const ids = batch.map(station => station.uid);
     checkedUids.push(...ids);
-    const result = await safeRequest(() => client.loadFeedResult({ ids, limit: DISPLAY_LIMIT }, {
+    const result = await safeRequest(() => client.loadFeedResult({ ids, limit: DISPLAY_LIMIT, history: false }, {
       ...request,
       ...(Number.isFinite(remainingMs) ? { timeoutMs: remainingMs } : {}),
     }));

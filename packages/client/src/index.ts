@@ -213,6 +213,8 @@ export interface SpatialQueryParams {
   readonly launch?: string;
   readonly limit?: number;
   readonly hours?: number;
+  /** `false` sends `history=0`: current readings, no history fetch. */
+  readonly history?: boolean;
 }
 
 export interface StationsRequestOptions {
@@ -279,6 +281,7 @@ function buildQueryString(query?: SpatialQueryParams): string {
   if (query.launch) params.set('launch', query.launch);
   if (query.limit !== undefined) params.set('limit', String(query.limit));
   if (query.hours !== undefined) params.set('hours', String(query.hours));
+  if (query.history === false) params.set('history', '0');
   const qs = params.toString();
   return qs ? `?${qs}` : '';
 }

@@ -27,9 +27,17 @@ export interface ProviderFetchOptions extends ProviderRateLimit {
 type Limit = Required<ProviderRateLimit>;
 type Ticket = {
   signal: AbortSignal;
+  enqueuedAt: number;
   abort: () => void;
   resolve: (release: () => void) => void;
   reject: (error: unknown) => void;
+  settled: boolean;
+  timer?: ReturnType<typeof setTimeout>;
+};
+type Admission = {
+  signal: AbortSignal;
+  admittedAt: number;
+  release: () => void;
 };
 type OriginState = {
   limit: Limit;
@@ -38,7 +46,7 @@ type OriginState = {
   nextStart: number;
   blockedUntil: number;
   queue: Ticket[];
-  timer?: ReturnType<typeof setTimeout>;
+  admissions: Set<Admission>;
 };
 
 const managedFetches = new WeakSet<typeof fetch>();
@@ -46,6 +54,8 @@ const defaultFetches = new WeakMap<typeof fetch, typeof fetch>();
 const nativeFetch: typeof fetch = (input, init) => globalThis.fetch(input, init);
 const RETRYABLE_STATUS = new Set([408, 429, 500, 502, 503, 504]);
 const MAX_TIMER_MS = 2_147_483_647;
+/** Waiters blocked behind an in-flight attempt recheck on their own timer. */
+const QUEUE_RECHECK_MS = 10;
 
 function numberOption(value: number, name: string, minimum: number, integer = false): number {
   if (!Number.isFinite(value) || value < minimum || (integer && !Number.isSafeInteger(value))) {
@@ -74,50 +84,99 @@ function retryAfterMs(value: string | null): number | null {
   return Number.isFinite(time) ? Math.max(0, time - Date.now()) : null;
 }
 
-function drain(state: OriginState): void {
-  clearTimeout(state.timer);
-  state.timer = undefined;
-  while (state.queue.length && state.active < state.limit.maxConcurrent) {
-    const delay = Math.max(state.nextStart, state.blockedUntil) - Date.now();
-    if (delay > 0) {
-      state.timer = setTimeout(() => drain(state), Math.min(delay, MAX_TIMER_MS));
-      return;
-    }
-    const ticket = state.queue.shift()!;
-    ticket.signal.removeEventListener('abort', ticket.abort);
-    if (ticket.signal.aborted) {
-      ticket.reject(ticket.signal.reason);
-      continue;
-    }
-    state.active += 1;
-    state.nextStart = Date.now() + state.limit.minIntervalMs;
-    let released = false;
-    ticket.resolve(() => {
-      if (released) return;
-      released = true;
-      state.active -= 1;
-      drain(state);
-    });
+function failQueued(ticket: Ticket, state: OriginState, reason: unknown): void {
+  if (ticket.settled) return;
+  ticket.settled = true;
+  clearTimeout(ticket.timer);
+  const index = state.queue.indexOf(ticket);
+  if (index !== -1) state.queue.splice(index, 1);
+  ticket.signal.removeEventListener('abort', ticket.abort);
+  ticket.reject(reason);
+}
+
+/**
+ * Drop permits and waiters whose request has ended. A Worker cancels the
+ * continuation that would have released them, so the next live request reaps.
+ */
+function reap(state: OriginState, now: number, maxInFlightMs: number): void {
+  for (const admission of state.admissions) {
+    if (admission.signal.aborted || now - admission.admittedAt > maxInFlightMs) admission.release();
+  }
+  while (state.queue[0] && (state.queue[0].signal.aborted || now - state.queue[0].enqueuedAt > maxInFlightMs)) {
+    const stale = state.queue[0];
+    failQueued(
+      stale,
+      state,
+      stale.signal.aborted
+        ? stale.signal.reason
+        : new DOMException('Provider request budget exceeded', 'TimeoutError'),
+    );
   }
 }
 
-function acquire(state: OriginState, signal: AbortSignal, maxQueueSize: number): Promise<() => void> {
+/**
+ * Each waiter arms its own timer and resolves only its own permit. One shared
+ * timer would resolve another request's promise; Workers then cancels that
+ * continuation and the permit leaks for the life of the isolate.
+ */
+function arm(ticket: Ticket, state: OriginState, maxInFlightMs: number): void {
+  if (ticket.settled) return;
+  clearTimeout(ticket.timer);
+  ticket.timer = undefined;
+  if (ticket.signal.aborted) {
+    failQueued(ticket, state, ticket.signal.reason);
+    return;
+  }
+  const now = Date.now();
+  reap(state, now, maxInFlightMs);
+  if (ticket.settled) return;
+  const delay = Math.max(0, Math.max(state.nextStart, state.blockedUntil) - now);
+  if (state.queue[0] === ticket && state.active < state.limit.maxConcurrent && delay <= 0) {
+    state.queue.shift();
+    ticket.signal.removeEventListener('abort', ticket.abort);
+    state.active += 1;
+    state.nextStart = now + state.limit.minIntervalMs;
+    let released = false;
+    let admission: Admission;
+    const release = () => {
+      if (released) return;
+      released = true;
+      state.admissions.delete(admission);
+      ticket.signal.removeEventListener('abort', release);
+      state.active -= 1;
+    };
+    admission = { signal: ticket.signal, admittedAt: now, release };
+    state.admissions.add(admission);
+    ticket.signal.addEventListener('abort', release, { once: true });
+    ticket.settled = true;
+    if (ticket.signal.aborted) {
+      release();
+      ticket.reject(ticket.signal.reason);
+      return;
+    }
+    ticket.resolve(release);
+    return;
+  }
+  const wait = state.queue[0] === ticket && delay > 0 ? delay : Math.max(delay, QUEUE_RECHECK_MS);
+  ticket.timer = setTimeout(() => arm(ticket, state, maxInFlightMs), Math.min(wait, MAX_TIMER_MS));
+}
+
+function acquire(
+  state: OriginState,
+  signal: AbortSignal,
+  maxQueueSize: number,
+  maxInFlightMs: number,
+): Promise<() => void> {
   signal.throwIfAborted();
   if (state.queue.length >= maxQueueSize) return Promise.reject(new Error('Provider request queue is full'));
   return new Promise((resolve, reject) => {
     const ticket: Ticket = {
-      signal, resolve, reject,
-      abort() {
-        const index = state.queue.indexOf(ticket);
-        if (index !== -1) state.queue.splice(index, 1);
-        signal.removeEventListener('abort', ticket.abort);
-        reject(signal.reason);
-        drain(state);
-      },
+      signal, resolve, reject, settled: false, enqueuedAt: Date.now(),
+      abort() { failQueued(ticket, state, signal.reason); },
     };
     signal.addEventListener('abort', ticket.abort, { once: true });
     state.queue.push(ticket);
-    drain(state);
+    arm(ticket, state, maxInFlightMs);
   });
 }
 
@@ -190,7 +249,10 @@ export function createProviderFetch(options: ProviderFetchOptions = {}): typeof 
         if (!candidate.callers && !candidate.active && !candidate.queue.length &&
             Math.max(candidate.nextStart, candidate.blockedUntil) <= Date.now()) states.delete(key);
       }
-      state = { limit: originLimits.get(origin) ?? limit, active: 0, callers: 0, nextStart: 0, blockedUntil: 0, queue: [] };
+      state = {
+        limit: originLimits.get(origin) ?? limit,
+        active: 0, callers: 0, nextStart: 0, blockedUntil: 0, queue: [], admissions: new Set(),
+      };
       states.set(origin, state);
     }
     const budget = new AbortController();
@@ -199,7 +261,7 @@ export function createProviderFetch(options: ProviderFetchOptions = {}): typeof 
     state.callers += 1;
     try {
       for (let attempt = 0; ; attempt += 1) {
-        const release = await acquire(state, signal, maxQueueSize);
+        const release = await acquire(state, signal, maxQueueSize, maxElapsedMs);
         const timeout = new AbortController();
         const timer = setTimeout(() => timeout.abort(new DOMException('Provider attempt timed out', 'TimeoutError')), attemptTimeoutMs);
         const attemptSignal = AbortSignal.any([signal, timeout.signal]);

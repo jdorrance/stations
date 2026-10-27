@@ -1,9 +1,22 @@
 import * as upstream from '@azohra/meteo.station/server';
 import { providerFetch } from './transport.ts';
 
+/**
+ * Upstream coalesces concurrent misses on the cache object's identity. A fresh
+ * object per resolve keeps that map inside one load: a Worker request canceled
+ * mid-fetch must not leave later requests awaiting its unsettled promise.
+ */
+function detachInFlightCache(cache: upstream.FeedCache): upstream.FeedCache {
+  return {
+    get: key => cache.get(key),
+    put: (key, value, ttlSeconds) => cache.put(key, value, ttlSeconds),
+  };
+}
+
 /** Preserve upstream environment contracts while sharing a managed transport. */
 export function resolveEnvironment(environment?: upstream.ServerEnvironment): upstream.ResolvedEnvironment {
-  return upstream.resolveEnvironment({ ...environment, fetch: providerFetch(environment?.fetch) });
+  const resolved = upstream.resolveEnvironment({ ...environment, fetch: providerFetch(environment?.fetch) });
+  return { ...resolved, cache: detachInFlightCache(resolved.cache) };
 }
 
 function withEnvironment<T extends { environment?: upstream.ServerEnvironment }>(options: T) {
