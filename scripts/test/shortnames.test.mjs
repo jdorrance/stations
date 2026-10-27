@@ -3,6 +3,7 @@ import test from 'node:test';
 import { SHORT_NAME_MAX_LENGTH } from '@stations/contracts';
 import {
   deriveShortName,
+  extractCompassHint,
   fitLabel,
   generateRegionChunk,
   uniquifyShortNames,
@@ -45,6 +46,30 @@ test('deriveShortName handles RWIS offsets and CDOT codes', () => {
   assert.equal(deriveShortName('Albany Intl, NY, US'), 'Albany Apt');
 });
 
+test('deriveShortName strips agency prefixes and keeps place pairs', () => {
+  assert.equal(deriveShortName('SCE Diamond Valley Lake'), 'Diamond Vly');
+  assert.equal(deriveShortName('FSWN Kissimmee Lakefront Park'), 'Kissimmee');
+  assert.equal(deriveShortName('LADDER BUTTE'), 'Ladder Bte');
+  assert.equal(deriveShortName('Hungry Horse RAWS'), 'Hungry Hrs');
+  assert.equal(deriveShortName('Desert Ridge'), 'Desert Rdg');
+  assert.equal(deriveShortName('T.H.52 - Cannon Falls - MP 90'), 'Cannon Fls');
+  assert.equal(deriveShortName('SR-99 - Fresno River'), 'Fresno Riv');
+  assert.equal(deriveShortName('I80 - Strouss Hill'), 'Strouss Hl');
+  assert.equal(deriveShortName('BLM Kidd'), 'Kidd');
+  assert.equal(deriveShortName('BELDING AG MESONET'), 'Belding');
+});
+
+test('uniquify prefers compass hints over bare numbers', () => {
+  assert.equal(extractCompassHint('Frederick 2N'), 'N');
+  assert.equal(extractCompassHint('Baltimore 3 NNE'), 'NNE');
+  const unique = uniquifyShortNames([
+    { uid: 'a', shortName: 'Baltimore', compassHint: 'NNE', name: 'Baltimore 3 NNE' },
+    { uid: 'b', shortName: 'Baltimore', compassHint: 'S', name: 'Baltimore 1 S' },
+  ]);
+  assert.equal(unique[0].shortName, 'Baltimore');
+  assert.equal(unique[1].shortName, 'Baltimore S');
+});
+
 test('fitLabel never exceeds SHORT_NAME_MAX_LENGTH', () => {
   const long = fitLabel('Anheuser Busch Coastal Research Center Near Cape Charles');
   assert.ok(long.length <= SHORT_NAME_MAX_LENGTH);
@@ -70,6 +95,6 @@ test('region chunks uniquify collisions deterministically', () => {
   ]);
   const unique = uniquifyShortNames(chunk);
   assert.equal(unique[0].shortName, 'Baltimore');
-  assert.equal(unique[1].shortName, 'Baltimore2');
+  assert.equal(unique[1].shortName, 'Baltimore S');
   assert.ok(unique.every((row) => row.shortName.length <= SHORT_NAME_MAX_LENGTH));
 });

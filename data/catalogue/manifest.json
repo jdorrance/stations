@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T16:31:37.345Z",
+  "generatedAt": "2026-10-27T16:39:26.898Z",
   "regions": [
     "US",
     "CA",
@@ -98,7 +98,7 @@
     },
     "openwindmap": {
       "status": "partial",
-      "sourceGeneratedAt": "2026-10-27T16:31:37.345Z",
+      "sourceGeneratedAt": "2026-10-27T16:39:26.898Z",
       "diagnostics": [
         {
           "level": "error",
@@ -417,7 +417,7 @@
     "vendors/openwindmap.json": {
       "stations": 0,
       "bytes": 188,
-      "sha256": "96dc0e3bb12abe9cbfeedd90b9df653c12e6eca8ee563da2084a8eeb0c2b5614"
+      "sha256": "174736013d8e438b1ed4e76aa6afd44587fa5323d03895535946794dc45b2c1b"
     },
     "vendors/holfuy.json": {
       "stations": 1193,
@@ -531,37 +531,37 @@
     },
     "stations.json": {
       "stations": 43544,
-      "bytes": 37030483,
-      "sha256": "cb70a653309124256d3b77379202cdb41640c5ba6ab1c8a44ebb13e977762a83"
+      "bytes": 37034033,
+      "sha256": "257ad042f13c5ec5dd93b9e418c8da6b26dfd31716f1174be54b2fc8eee2f60e"
     },
     "stations.geojson": {
-      "bytes": 55833991,
-      "sha256": "570f7a4572f52b74fd4b306e59902fbdb835b7bf2bd1f6222b3fb08c0b18a86a"
+      "bytes": 55837541,
+      "sha256": "34b7219b97dcf446c60d499ea612fc92cbdac6edb13a3bbf50df83210868f0a0"
     },
     "stations.ndjson.gz": {
-      "bytes": 2799531,
-      "sha256": "f0489e30390663c976a43a457ad778105cf55f1494fe512fe01af1c4d70442ff"
+      "bytes": 2801786,
+      "sha256": "e5644b13f5e177b7c87131994b6af3e2a6d943ff185c43486300ea7d916c5212"
     },
     "launch-corridors.json": {
       "stations": 15799,
-      "bytes": 14341807,
-      "sha256": "ab758e4008d200dc8cdd39cb65dffea1eef738351875f8f3cb5ae12b3c6e8ec3"
+      "bytes": 14342682,
+      "sha256": "e8f7bf2310d1ade74944201a2081fe817fbae7a7a5f056bc59f4df62fe9761cf"
     },
     "launch-corridors.geojson": {
-      "bytes": 20545731,
-      "sha256": "e6f1bd9838c2572a22b7f8589e9f0d6e137cff40f1ec65bb112f3d40d5aaa4b2"
+      "bytes": 20546606,
+      "sha256": "b3e2257ffa89629102808e33af93f96469e5789f9325a4870d087421c2bd372a"
     },
     "regions/us.json": {
-      "bytes": 31158686,
-      "sha256": "d0219fac020f78db5bba1109f47047ff170b63cd709d69023d82f3600020924b"
+      "bytes": 31162236,
+      "sha256": "54268229bd55d543d7b2768eabfe0ea171e6d2789f75f49a4608f34541fdefe2"
     },
     "regions/us.ndjson.gz": {
-      "bytes": 2317999,
-      "sha256": "73b52de3b3d8dd9421d18253ef6726ec9a34d92f746677c218fda5beb7eb48f6"
+      "bytes": 2320474,
+      "sha256": "80a49f15cfeef0e62362d3296eef701fe6c3bbebce1449df3eae8b08b78f49b7"
     },
     "regions/ca.json": {
       "bytes": 704131,
-      "sha256": "936fdf8f14f4e840afd7af0e1d23b0fe653619bb0386c5cd68a25fab9bd55f04"
+      "sha256": "b83c2ded5d9b754d3cfecbef49283deca5dd2da9560620291b009a3661b09406"
     },
     "regions/ca.ndjson.gz": {
       "bytes": 50052,
@@ -569,7 +569,7 @@
     },
     "regions/mx.json": {
       "bytes": 61127,
-      "sha256": "53eb9cb7478dd630f4a986c3f9f005438a1f39aadb883fbd71425abc7d758cc3"
+      "sha256": "13a6dc2d9157b7a46d7e1cfaee37ebf8eb7437b89f0c35a43a79437d3a4bd26b"
     },
     "regions/mx.ndjson.gz": {
       "bytes": 5160,
@@ -577,7 +577,7 @@
     },
     "regions/am.json": {
       "bytes": 62357,
-      "sha256": "0d7c58a84227ff30a849fac4bcff66e98990acf4a2ce914fa9ff94c41d497d02"
+      "sha256": "c43c7a6a5ed35b47d10314b4241e3a006775f197ee3a4ed52992a45d0738c767"
     },
     "regions/am.ndjson.gz": {
       "bytes": 5056,

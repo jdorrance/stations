@@ -45,6 +45,9 @@ const ABBREVIATIONS = [
   [/\bCreek\b/gi, 'Crk'],
   [/\bRiver\b/gi, 'Riv'],
   [/\bValley\b/gi, 'Vly'],
+  [/\bRidge\b/gi, 'Rdg'],
+  [/\bHills?\b/gi, 'Hl'],
+  [/\bLakes?\b/gi, 'Lk'],
   [/\bSprings?\b/gi, 'Spg'],
   [/\bHeights\b/gi, 'Hts'],
   [/\bBeach\b/gi, 'Bch'],
@@ -66,6 +69,14 @@ const ABBREVIATIONS = [
   [/\b(?:Saint|St\.?)\b/gi, 'St'],
   [/\bMount\b/gi, 'Mt'],
   [/\bFort\b/gi, 'Ft'],
+  [/\bButte\b/gi, 'Bte'],
+  [/\bRanch\b/gi, 'Rnch'],
+  [/\bHorse\b/gi, 'Hrs'],
+  [/\bFalls\b/gi, 'Fls'],
+  [/\bGlacier\b/gi, 'Glcr'],
+  [/\bComplex\b/gi, 'Cplx'],
+  [/\bCorners?\b/gi, 'Crn'],
+  [/\bLakefront\b/gi, 'Lkfr'],
   [/(?<=[A-Za-z])fields?\b/gi, 'fld'],
 ];
 
@@ -111,7 +122,22 @@ const GENERIC = new Set([
   'and',
   'raws',
   'nws',
+  'blm',
+  'usgs',
+  'sce',
+  'fswn',
+  'mesonet',
+  'hq',
+  'rt',
+  'pc',
+  'mi',
+  'cdf',
+  'nerrs',
+  'uscrn',
 ]);
+
+const AGENCY_PREFIX =
+  /^(?:SCE|FSWN|BLM|USGS|NERRS|USCRN|CDF|MESONET|ODOT|MDDOT|CDOT|INDOT|TxDOT)\s+/i;
 
 const ROUTE_AT =
   /^(I-\d+[A-Z]?|C-\d+|CR-\d+|SR-\d+|US\s*\d+|MD-\d+|VA-\d+|WV-\d+|CO-\d+|CA-\d+|NY-\d+|TX-\d+|MD\s+\d+|US\s+\d+|VA\s+\d+|WV\s+\d+|\d{1,3}(?:[ENSW]B)?)\b.*?(?:\bat\b|@|\bon\b)\s+(.+)$/i;
@@ -144,6 +170,7 @@ export function stripNoise(name) {
   let n = name.trim().replace(/\s+/g, ' ');
   n = stripCallsign(n);
   n = n.replace(/\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+  n = n.replace(AGENCY_PREFIX, '');
   // Leading CoCoRaHS-style offset: "3 WNW WOFFORD HEIGHTS"
   n = n.replace(/^\d+\s*[NSEW]{1,3}\s+/i, '');
   // CDOT-style route sensor id: "070E217 US 6 LOVELAND PASS"
@@ -165,11 +192,53 @@ export function stripNoise(name) {
   n = n.replace(/,\s*[A-Z]{2},\s*US$/i, '');
   n = n.replace(/,\s*[A-Z]{2}$/i, '');
   n = n.replace(/,\s*US$/i, '');
-  n = n.replace(/\s+MP\s*[\d.]+$/i, '');
-  n = n.replace(/\s+\d+\s*[NSEW]{1,3}$/i, '');
+  // "Gruver TX 8.25SW" / "Stinnett TX 1.75ESE"
+  n = n.replace(
+    /\s+(?:AL|AK|AZ|AR|CA|CO|CT|DC|DE|FL|GA|HI|IA|ID|IL|IN|KS|KY|LA|MA|MD|ME|MI|MN|MO|MS|MT|NC|ND|NE|NH|NJ|NM|NV|NY|OH|OK|OR|PA|RI|SC|SD|TN|TX|UT|VA|VT|WA|WI|WV|WY)\s+\d+(?:\.\d+)?\s*[NSEW]{1,3}$/i,
+    '',
+  );
+  // Drop trailing mileposts, including "@ MP 36" left after a place name.
+  n = n.replace(/\s*(?:at|@)?\s*MP\s*[\d.]+$/i, '');
+  n = n.replace(/\s+\d+(?:\.\d+)?\s*[NSEW]{1,3}$/i, '');
   // Trailing pole/sensor numbers: "Pole 15"
   n = n.replace(/\s+(?:Nb|Sb|Eb|Wb)?\s*Pole\s+\d+$/i, '');
+  // Trailing network noise: "CDF RAWS", "AG MESONET"
+  n = n.replace(/\s+(?:CDF\s+)?RAWS$/i, '');
+  n = n.replace(/\s+(?:AG\s+)?MESONET$/i, '');
+  n = n.replace(/\s+PORTABLE(?:\s+#?\d+)?$/i, '');
   return n.replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
+}
+
+/** Compass/offset token from the original name, used to disambiguate collisions. */
+export function extractCompassHint(name) {
+  const match = name.match(/\b(\d+(?:\.\d+)?)\s*([NSEW]{1,3})\b/i);
+  if (!match) return null;
+  const dir = match[2].toUpperCase();
+  if (!/^[NSEW]{1,3}$/.test(dir)) return null;
+  return dir;
+}
+
+function preferDashPlace(name) {
+  // Split on " - " only so route ids like SR-99 stay intact.
+  if (!/\s-\s/.test(name)) return null;
+  const parts = name
+    .split(/\s-\s/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+  if (parts.length < 2) return null;
+  const noisy = /^(?:CDF|RAWS|NWS|Coop|RTR|NB|SB|EB|WB|Median)\b/i;
+  const routeish = /^(?:I-?\d+|US-?\d+|SR-?\d+|T\.H\.|U\.S\.|N-\d+|MP\b)/i;
+  const candidates = parts.filter((part) => !noisy.test(part) && !/^MP\s*[\d.]+$/i.test(part));
+  if (candidates.length === 0) return null;
+  // Prefer a non-route place segment when the left side is a highway id.
+  if (routeish.test(candidates[0]) && candidates.length > 1) {
+    return candidates.find((part) => !routeish.test(part)) ?? candidates[1];
+  }
+  // Prefer a longer/more specific right-hand place over a short left town when present.
+  if (candidates.length >= 2 && candidates[0].length <= 10 && candidates[1].length >= 8) {
+    return candidates[1];
+  }
+  return null;
 }
 
 function compressJunction(left, right) {
@@ -200,8 +269,9 @@ function pickPlace(name) {
   const route = name.match(ROUTE_AT);
   if (route) {
     let landmark = route[2].trim();
-    // "I-17 @ MP-306: Stoneman Lake" / "277.9: Oxtail Draw"
+    // "I-17 @ MP-306: Stoneman Lake" / "277.9: Oxtail Draw" / "MP 386 Willie Spring"
     landmark = landmark.replace(/^MP-?\d+(?:\.\d+)?:\s*/i, '');
+    landmark = landmark.replace(/^MP\s*[\d.]+\s+/i, '');
     landmark = landmark.replace(/^[\d.]+:\s*/, '');
     landmark = stripNoise(landmark);
     if (/^(I-\d+[A-Z]?|C-\d+|CR-\d+|SR-\d+|US\s*-?\d+|[A-Z]{2}-\d+)/i.test(landmark)) {
@@ -217,7 +287,15 @@ function pickPlace(name) {
   // "Alaska Hwy @ Dot Lake MP …" — `@` is non-word so avoid \b around it.
   const atOrOn = name.match(/(?:\bat\b|@)\s+(.+)$/i);
   if (atOrOn && name.length > 18) {
-    return stripNoise(atOrOn[1].replace(/^[\d.]+:\s*/, ''));
+    let landmark = atOrOn[1].replace(/^[\d.]+:\s*/, '');
+    // "US-191 at MP 386 Willie Spring" → Willie Spring
+    landmark = landmark.replace(/^MP\s*[\d.]+\s+/i, '');
+    landmark = stripNoise(landmark);
+    // "Mountain Parkway @ MP 36" — milepost-only landmarks are not place names.
+    if (!landmark || /^MP\b/i.test(landmark) || /^[\d.]+$/.test(landmark)) {
+      return stripNoise(name.slice(0, atOrOn.index).replace(/\s*(?:at|@)\s*$/i, ''));
+    }
+    return landmark;
   }
   return name;
 }
@@ -231,14 +309,14 @@ function isAirportish(name) {
 function cleanAirport(name) {
   let n = name.replace(/^Joint Base\s+/i, '');
   n = n.replace(
-    /\b(Municipal|Regional|International|Memorial|Executive|Army Airfield|Air Force Base|Washington|Authority)\b/gi,
+    /\b(Municipal|Regional|International|Memorial|Executive|Army Airfield|Air Force Base|Washington|Authority|State)\b/gi,
     '',
   );
   n = n.replace(
     /\b(Airport|Heliport|Airfield|Aerodrome|AAF|AFB|Muni|Arpt|Intl|Rgnl|NAS|Cnty|Naval Academy|Trapnell Field|Naval Air Facility|Air Facility)\b/gi,
     '',
   );
-  n = n.replace(/\bCounty\b/gi, '');
+  n = n.replace(/\b(?:County|Region)\b/gi, '');
   n = n.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
   if (n.includes('/')) n = n.split('/')[0].trim();
   if (n.includes(',')) n = n.split(',')[0].trim();
@@ -251,7 +329,7 @@ function cleanAirport(name) {
 
 export function fitLabel(label, { preferApt = false } = {}) {
   let cur = titleCase(label.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, ''));
-  if (preferApt && !/\bApt\b/.test(cur) && cur.length <= 7) {
+  if (preferApt && !/\bApt\b/.test(cur) && cur.length <= 8) {
     const withApt = `${cur} Apt`;
     if (withApt.length <= SHORT_NAME_MAX_LENGTH) cur = withApt;
   }
@@ -269,15 +347,26 @@ export function fitLabel(label, { preferApt = false } = {}) {
   }
 
   let words = cur.split(/\s+/).filter(Boolean);
+  // Drop trailing generic landform last: keep "Diamond Vly" over "Diamond".
+  const trailingGeneric = /^(?:Lk|Riv|Crk|Pk|Spg|Hts|Bch|Pt|Hl|Bte|Rnch|Hrs|Fls|Glcr|Cplx|Rdg|Vly|Is|Br|Mtn)$/i;
   while (words.join(' ').length > SHORT_NAME_MAX_LENGTH && words.length > 2) {
-    words.splice(1, 1);
+    if (trailingGeneric.test(words[words.length - 1])) words.pop();
+    else words.splice(1, 1);
   }
   cur = words.join(' ');
   if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
 
+  // Prefer first+last over collapsing to a single opaque token.
+  if (words.length >= 2) {
+    const pair = `${words[0]} ${words[words.length - 1]}`;
+    if (pair.length <= SHORT_NAME_MAX_LENGTH) return pair;
+  }
+
   while (words.join(' ').length > SHORT_NAME_MAX_LENGTH && words.length > 1) {
-    words =
-      words[0].length <= words[words.length - 1].length ? words.slice(1) : words.slice(0, -1);
+    // Prefer dropping a trailing generic over the head place name.
+    if (trailingGeneric.test(words[words.length - 1])) words = words.slice(0, -1);
+    else if (words[0].length <= words[words.length - 1].length) words = words.slice(1);
+    else words = words.slice(0, -1);
   }
   cur = words.join(' ');
   if (cur.length <= SHORT_NAME_MAX_LENGTH) return cur;
@@ -294,9 +383,10 @@ function fallbackFromName(name, nativeId) {
 
 /** Derive a place-like shortName from a vendor station name (not yet uniquified). */
 export function deriveShortName(name, nativeId = 'station') {
-  let n = stripNoise(name);
-  if (isAirportish(n)) {
-    const cleaned = cleanAirport(n);
+  const dashPlace = preferDashPlace(name);
+  let n = stripNoise(dashPlace ?? name);
+  if (isAirportish(n) || isAirportish(name)) {
+    const cleaned = cleanAirport(stripNoise(name));
     const label = fitLabel(cleaned, { preferApt: true });
     // "Washington County Airport" can collapse to "Apt" after stripping County.
     if (label.length >= 3 && !/^Apt$/i.test(label.trim())) return label;
@@ -316,7 +406,11 @@ export function deriveShortName(name, nativeId = 'station') {
     if (!(parts.length === 2 && parts.every(routePart))) {
       parts.sort((a, b) => {
         const score = (value) =>
-          /\b(Lake|Mount|Mt\.?|River|Gap|Ridge|Knob|Dam|Bridge|Park)\b/i.test(value) ? 0 : 1;
+          /\b(Lake|Mount|Mt\.?|River|Gap|Ridge|Knob|Dam|Bridge|Park|Butte|Ranch|Horse)\b/i.test(
+            value,
+          )
+            ? 0
+            : 1;
         return score(a) - score(b) || a.length - b.length;
       });
       n = parts[0] ?? n;
@@ -326,10 +420,13 @@ export function deriveShortName(name, nativeId = 'station') {
   n = n.replace(/^(?:USCRN|CB NERRS|NERRS)\b.*?\bAT\b\s+/i, '');
   n = n.replace(/^(?:USCRN|CB NERRS)\s+SITE\s+/i, '');
   n = n.replace(/\b(?:Env(?:ironmental)?)?\s*RAWS\b/gi, '');
-  n = n.replace(/\s+-\s+(?:Coop|Heliport|NWS).*$/i, '');
-  n = n.replace(/\s+-\s+.*$/, '');
+  n = n.replace(/\s+(?:AG\s+)?MESONET\b/gi, '');
+  n = n.replace(/\s+-\s+(?:Coop|Heliport|NWS|CDF|RAWS).*$/i, '');
+  // Keep dash places already chosen; otherwise drop trailing dash noise.
+  if (!dashPlace) n = n.replace(/\s+-\s+.*$/, '');
   n = n.replace(/\bAssateague Island(?: National Seashore)?\b/gi, 'Assateague');
   n = n.replace(/\bCatoctin Mountain\b/gi, 'Catoctin');
+  n = n.replace(/\bVirginia Beach\b/gi, 'Va Beach');
   n = n.replace(/\s+/g, ' ').replace(/^[\s\-/ ,]+|[\s\-/ ,]+$/g, '');
 
   let label = fitLabel(n);
@@ -339,14 +436,28 @@ export function deriveShortName(name, nativeId = 'station') {
   return label;
 }
 
+function withCompass(base, compass) {
+  if (!compass) return null;
+  const room = SHORT_NAME_MAX_LENGTH - compass.length - 1;
+  if (room < 3) return null;
+  const head = base.slice(0, room).replace(/[\s\-/]+$/g, '');
+  if (head.length < 3) return null;
+  return `${head} ${compass}`;
+}
+
 export function uniquifyShortNames(entries, reserved = new Set()) {
   const used = new Set([...reserved].map((value) => value.toLowerCase()));
   const out = [];
   for (const entry of entries) {
     const base = entry.shortName;
+    const compass = entry.compassHint ? withCompass(base, entry.compassHint) : null;
     let label = base;
     let n = 2;
     while (used.has(label.toLowerCase())) {
+      if (n === 2 && compass && !used.has(compass.toLowerCase())) {
+        label = compass;
+        break;
+      }
       const suffix = String(n);
       label = `${base.slice(0, SHORT_NAME_MAX_LENGTH - suffix.length).replace(/[\s\-/]+$/g, '')}${suffix}`;
       n += 1;
@@ -401,6 +512,7 @@ export function generateRegionChunk(stations) {
       vendor: station.vendor,
       name: station.name,
       shortName: deriveShortName(station.name, station.nativeId),
+      compassHint: extractCompassHint(station.name),
     }));
 }
 
