@@ -683,6 +683,19 @@ test('createStationsApiHandler serves spatial /catalogue slices and live /feed i
   assert.ok(mountainJson.stations.length >= 3);
   assert.ok(mountainJson.stations.every(s => s.category === 'mountain'));
 
+  // 2b. Place filter (physical siting) and invalid token rejection
+  const airportRes = await handler(
+    new Request('https://stations.example/api/stations/catalogue?place=airport'),
+  );
+  assert.equal(airportRes.status, 200);
+  const airportJson = await airportRes.json();
+  assert.ok(airportJson.stations.length >= 1);
+  assert.ok(airportJson.stations.every(s => s.place === 'airport'));
+  const badPlaceRes = await handler(
+    new Request('https://stations.example/api/stations/catalogue?place=valley'),
+  );
+  assert.equal(badPlaceRes.status, 400);
+
   // 3. Live Azohra StationFeed for selected Armenia stations
   const feedRes = await handler(
     new Request('https://stations.example/api/stations/feed?ids=holfuy:1652,awc:UDYZ'),

@@ -13,6 +13,8 @@ import {
   type Position,
 } from '@stations/geography';
 import { REGION_CODES, type RegionCode } from '@stations/geography/regions';
+import type { Landform } from './terrain.ts';
+import { LANDFORMS } from './terrain.ts';
 
 /** Compact tile label for constrained UIs (XCTrack). At most 11 characters. */
 export const SHORT_NAME_MAX_LENGTH = 11;
@@ -62,6 +64,14 @@ export const STATION_CATEGORIES = [
 
 export type StationCategory = (typeof STATION_CATEGORIES)[number];
 
+/**
+ * Physical siting of the sensor. Orthogonal to {@link StationCategory}
+ * (network / application role). Omit or null when unknown.
+ */
+export const STATION_PLACES = ['airport', 'mountain'] as const;
+
+export type StationPlace = (typeof STATION_PLACES)[number];
+
 export type StationLocatorValue = string | number | boolean;
 export type StationLocator = Readonly<Record<string, StationLocatorValue>>;
 
@@ -99,6 +109,12 @@ export interface CatalogueStation {
   readonly recommendedPollSeconds: number;
   readonly declaredFavorableDirections?: readonly DirectionArc[] | null;
   readonly category?: StationCategory | null;
+  /** Aerodrome when inferred. `mountain` is an override only. */
+  readonly place?: StationPlace | null;
+  /** DEM landform at 1 km. See `LANDFORMS`. Null until terrain is applied. */
+  readonly landform?: Landform | null;
+  /** Center elevation minus the mean of the 1 km ring, in metres. */
+  readonly tpiM?: number | null;
   readonly aliases?: readonly string[] | null;
   readonly launchContext?: StationLaunchContext | null;
   readonly locator: StationLocator;
@@ -107,6 +123,7 @@ export interface CatalogueStation {
 /** Curated per-station fields applied after crawl merge. */
 export interface StationOverride {
   readonly shortName?: string;
+  readonly place?: StationPlace;
   readonly elevationM?: number;
   readonly region?: string;
   readonly latitude?: number;
@@ -138,6 +155,37 @@ export function isStationVendor(value: unknown): value is StationVendor {
 
 export function isStationCategory(value: unknown): value is StationCategory {
   return typeof value === 'string' && (STATION_CATEGORIES as readonly string[]).includes(value);
+}
+
+export function isStationPlace(value: unknown): value is StationPlace {
+  return typeof value === 'string' && (STATION_PLACES as readonly string[]).includes(value);
+}
+
+const AIRPORT_NAME_RE = /\b(?:airport|airfield|airstrip)\b/i;
+
+/**
+ * Infer an aerodrome when the network or the name says so. Does not assign
+ * `mountain`. Terrain class is a DEM landform, not an elevation cutoff.
+ */
+export function defaultPlaceForStation(
+  station: Pick<CatalogueStation, 'vendor' | 'name' | 'locator'>,
+): StationPlace | null {
+  const network =
+    typeof station.locator.network === 'string' ? station.locator.network : '';
+  const iemAsos =
+    station.vendor === 'iem' &&
+    network.length > 0 &&
+    !network.endsWith('_DCP') &&
+    !network.endsWith('_RWIS') &&
+    network !== 'USCRN';
+  if (
+    station.vendor === 'awc' ||
+    iemAsos ||
+    AIRPORT_NAME_RE.test(station.name)
+  ) {
+    return 'airport';
+  }
+  return null;
 }
 
 export function defaultCategoryForVendor(vendor: StationVendor): StationCategory {
@@ -225,6 +273,9 @@ export const catalogueStationSchema: z.ZodType<CatalogueStation> = z
     recommendedPollSeconds: z.number().finite().positive(),
     declaredFavorableDirections: z.array(directionArcSchema).nullish(),
     category: z.enum(STATION_CATEGORIES).nullish(),
+    place: z.enum(STATION_PLACES).nullish(),
+    landform: z.enum(LANDFORMS).nullish(),
+    tpiM: z.number().finite().nullable().optional(),
     aliases: z.array(z.string().refine(uid => {
       const parsed = parseStationUid(uid);
       return parsed !== null && uid === `${parsed.vendor}:${parsed.nativeId}`;
@@ -247,6 +298,7 @@ export const stationCatalogueSchema: z.ZodType<StationCatalogueDocument> = z.obj
 const stationOverrideSchema: z.ZodType<StationOverride> = z
   .object({
     shortName: shortNameSchema.optional(),
+    place: z.enum(STATION_PLACES).optional(),
     elevationM: z.number().finite().optional(),
     region: z.string().min(1).optional(),
     latitude: z.number().finite().min(-90).max(90).optional(),
@@ -285,6 +337,9 @@ function applyOneOverride(
   if (override.shortName !== undefined) {
     next = { ...next, shortName: override.shortName };
   }
+  if (override.place !== undefined) {
+    next = { ...next, place: override.place };
+  }
   if (override.elevationM !== undefined && next.elevationM === null) {
     next = { ...next, elevationM: override.elevationM };
   }
@@ -303,9 +358,9 @@ function applyOneOverride(
 }
 
 /**
- * Stamps curated short names and fill-only place fields onto merged catalogue
- * stations. Direct UID wins over aliases. Unmatched keys and disagreeing alias
- * hits are reported through the optional callbacks.
+ * Stamps curated short names, place, and fill-only elevation/region/position
+ * onto merged catalogue stations. Direct UID wins over aliases. Unmatched keys
+ * and disagreeing alias hits are reported through the optional callbacks.
  */
 export function applyStationOverrides(
   stations: readonly CatalogueStation[],
@@ -386,6 +441,7 @@ function mergeTwoStations(
   const launchContext =
     primary.launchContext ?? (sameSite ? secondary.launchContext : null) ?? undefined;
   const category = primary.category ?? secondary.category ?? undefined;
+  const place = primary.place ?? secondary.place ?? undefined;
   const shortName = primary.shortName ?? secondary.shortName ?? undefined;
 
   return {
@@ -397,6 +453,7 @@ function mergeTwoStations(
     timeZone: primary.timeZone ?? (sameSite ? secondary.timeZone : null),
     pageUrl: primary.pageUrl ?? secondary.pageUrl,
     ...(category !== undefined ? { category } : {}),
+    ...(place !== undefined ? { place } : {}),
     ...(shortName !== undefined ? { shortName } : {}),
     ...(declaredFavorableDirections !== undefined ? { declaredFavorableDirections } : {}),
     ...(launchContext !== undefined ? { launchContext } : {}),
@@ -590,7 +647,15 @@ export function deduplicateCatalogueStations(
     merged.set(identity, primary ? mergeTwoStations(primary, candidate) : candidate);
   }
   return [...merged.values()]
-    .map(station => ({ ...station, category: station.category ?? defaultCategoryForVendor(station.vendor) }))
+    .map(station => {
+      const category = station.category ?? defaultCategoryForVendor(station.vendor);
+      const place = station.place ?? defaultPlaceForStation(station) ?? undefined;
+      return {
+        ...station,
+        category,
+        ...(place !== undefined ? { place } : {}),
+      };
+    })
     .sort((a, b) => compareAscii(a.uid, b.uid));
 }
 

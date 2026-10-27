@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:07:16.339Z",
+  "generatedAt": "2026-10-27T13:50:14.652Z",
   "regions": [
     "US",
     "CA",
@@ -8,7 +8,7 @@
     "AM"
   ],
   "vendor": "awc",
-  "count": 357,
+  "count": 349,
   "stations": [
     {
       "uid": "awc:CWCT",
@@ -31,6 +31,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -54,6 +55,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -77,6 +79,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -100,6 +103,31 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:CWGZ",
+      "vendor": "awc",
+      "nativeId": "CWGZ",
+      "name": "Grise Fiord Arpt, NU, CA",
+      "latitude": 76.423,
+      "longitude": -82.902,
+      "elevationM": 24,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=CWGZ",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -123,6 +151,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -146,6 +175,31 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:CWJU",
+      "vendor": "awc",
+      "nativeId": "CWJU",
+      "name": "Langara, BC, CA",
+      "latitude": 54.255,
+      "longitude": -133.058,
+      "elevationM": 47,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=CWJU",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -169,6 +223,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -192,6 +247,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -215,6 +271,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -238,6 +295,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -261,6 +319,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -284,6 +343,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -307,6 +367,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -330,6 +391,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -353,6 +415,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -376,6 +439,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -399,6 +463,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -422,6 +487,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -445,29 +511,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:CYBB",
-      "vendor": "awc",
-      "nativeId": "CYBB",
-      "name": "Pelly Bay/Kugaaruk Arpt, NU, CA",
-      "latitude": 68.536,
-      "longitude": -89.792,
-      "elevationM": 13,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYBB",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -491,6 +535,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -514,6 +559,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -537,6 +583,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -560,6 +607,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -583,29 +631,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:CYDA",
-      "vendor": "awc",
-      "nativeId": "CYDA",
-      "name": "Dawson Arpt, YT, CA",
-      "latitude": 64.044,
-      "longitude": -139.127,
-      "elevationM": 338,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYDA",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -629,6 +655,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -652,6 +679,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -675,6 +703,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -698,6 +727,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -721,6 +751,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -744,6 +775,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -767,6 +799,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -790,6 +823,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -813,6 +847,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -836,52 +871,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:CYGX",
-      "vendor": "awc",
-      "nativeId": "CYGX",
-      "name": "Gillam Arpt, MB, CA",
-      "latitude": 56.359,
-      "longitude": -94.704,
-      "elevationM": 145,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYGX",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:CYHI",
-      "vendor": "awc",
-      "nativeId": "CYHI",
-      "name": "Ulukhaktok/Holman Arpt, NT, CA",
-      "latitude": 70.761,
-      "longitude": -117.8,
-      "elevationM": 33,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYHI",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -905,6 +895,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -928,6 +919,31 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:CYKG",
+      "vendor": "awc",
+      "nativeId": "CYKG",
+      "name": "Kangiqsujuaq Arpt, QC, CA",
+      "latitude": 61.591,
+      "longitude": -71.932,
+      "elevationM": 134,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=CYKG",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -951,6 +967,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -974,6 +991,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -997,6 +1015,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1020,6 +1039,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1043,6 +1063,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1066,6 +1087,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1089,6 +1111,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1112,6 +1135,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1135,6 +1159,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1158,6 +1183,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1181,6 +1207,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1204,6 +1231,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1227,6 +1255,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1250,6 +1279,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1273,6 +1303,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1296,6 +1327,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1319,6 +1351,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1342,6 +1375,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1365,6 +1399,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1388,6 +1423,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1411,6 +1447,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1434,6 +1471,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1457,6 +1495,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1480,6 +1519,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1503,6 +1543,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1526,6 +1567,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1549,6 +1591,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1572,6 +1615,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1595,6 +1639,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1618,6 +1663,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1641,6 +1687,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1664,6 +1711,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1687,6 +1735,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1710,6 +1759,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1733,6 +1783,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1756,6 +1807,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1779,6 +1831,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1802,6 +1855,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1825,6 +1879,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1848,6 +1903,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1871,6 +1927,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1894,6 +1951,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1917,6 +1975,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1940,6 +1999,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1963,6 +2023,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1986,6 +2047,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2009,6 +2071,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2032,6 +2095,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2055,6 +2119,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2078,6 +2143,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2101,6 +2167,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2124,6 +2191,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2147,6 +2215,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2170,6 +2239,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2193,6 +2263,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2216,29 +2287,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:CZFA",
-      "vendor": "awc",
-      "nativeId": "CZFA",
-      "name": "Faro Arpt, YT, CA",
-      "latitude": 62.211,
-      "longitude": -133.385,
-      "elevationM": 702,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CZFA",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2262,6 +2311,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2285,6 +2335,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2308,6 +2359,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2331,6 +2383,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2354,6 +2407,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2377,6 +2431,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2400,6 +2455,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2423,6 +2479,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2446,6 +2503,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2469,6 +2527,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2492,6 +2551,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2515,6 +2575,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2538,6 +2599,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2561,6 +2623,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2584,6 +2647,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2607,6 +2671,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2630,6 +2695,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2653,6 +2719,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2676,6 +2743,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2699,6 +2767,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2722,6 +2791,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2745,6 +2815,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2768,6 +2839,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2791,6 +2863,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2814,6 +2887,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2837,6 +2911,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2860,6 +2935,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2883,6 +2959,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2906,6 +2983,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2929,6 +3007,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2952,6 +3031,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2975,6 +3055,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2998,6 +3079,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3021,6 +3103,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3044,6 +3127,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3067,6 +3151,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3090,6 +3175,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3113,6 +3199,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3136,6 +3223,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3159,6 +3247,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3182,6 +3271,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3205,6 +3295,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3228,6 +3319,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3251,6 +3343,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3274,6 +3367,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3297,6 +3391,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3320,6 +3415,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3343,6 +3439,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3366,6 +3463,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3389,6 +3487,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3412,6 +3511,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3435,6 +3535,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3458,6 +3559,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3481,6 +3583,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3504,6 +3607,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3527,6 +3631,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3550,6 +3655,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3573,6 +3679,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3596,6 +3703,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3619,6 +3727,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3642,6 +3751,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3665,6 +3775,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3688,6 +3799,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3711,6 +3823,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3734,6 +3847,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3757,6 +3871,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3780,6 +3895,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3803,6 +3919,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3826,6 +3943,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3849,6 +3967,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3872,6 +3991,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3895,6 +4015,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3918,6 +4039,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3941,6 +4063,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3964,6 +4087,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3987,6 +4111,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4010,6 +4135,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4033,6 +4159,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4056,6 +4183,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4079,6 +4207,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4102,6 +4231,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4125,6 +4255,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4148,6 +4279,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4171,6 +4303,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4194,6 +4327,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4217,6 +4351,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4240,6 +4375,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4263,6 +4399,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4286,29 +4423,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:KT89",
-      "vendor": "awc",
-      "nativeId": "KT89",
-      "name": "Lajitas Intl, TX, US",
-      "latitude": 29.2774,
-      "longitude": -103.6912,
-      "elevationM": 801,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=KT89",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4332,6 +4447,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4355,6 +4471,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4378,6 +4495,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4401,6 +4519,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4424,6 +4543,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4447,6 +4567,31 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:LTCT",
+      "vendor": "awc",
+      "nativeId": "LTCT",
+      "name": "Iğdır Arpt, IG, TR",
+      "latitude": 39.977,
+      "longitude": 43.878,
+      "elevationM": 936,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=LTCT",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4470,6 +4615,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4493,6 +4639,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4516,6 +4663,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4539,6 +4687,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4562,29 +4711,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MHLC",
-      "vendor": "awc",
-      "nativeId": "MHLC",
-      "name": "La Ceiba/Goloson Intl, AT, HN",
-      "latitude": 15.737,
-      "longitude": -86.864,
-      "elevationM": 13,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MHLC",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4608,29 +4735,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MHSR",
-      "vendor": "awc",
-      "nativeId": "MHSR",
-      "name": "Santa Rosa de Copan, CP, HN",
-      "latitude": 14.783,
-      "longitude": -88.783,
-      "elevationM": 1087,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MHSR",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4654,6 +4759,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4677,6 +4783,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4700,6 +4807,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4723,6 +4831,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4746,6 +4855,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4769,6 +4879,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4792,6 +4903,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4815,52 +4927,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MMCT",
-      "vendor": "awc",
-      "nativeId": "MMCT",
-      "name": "Chichén Itzá Intl, YU, MX",
-      "latitude": 20.641,
-      "longitude": -88.446,
-      "elevationM": 29,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCT",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MMCU",
-      "vendor": "awc",
-      "nativeId": "MMCU",
-      "name": "Chihuahua Intl, CH, MX",
-      "latitude": 28.701,
-      "longitude": -105.965,
-      "elevationM": 1349,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCU",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4884,6 +4951,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4907,6 +4975,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4930,6 +4999,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4953,6 +5023,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4976,6 +5047,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4999,6 +5071,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5022,6 +5095,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5045,6 +5119,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5068,6 +5143,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5091,6 +5167,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5114,6 +5191,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5137,6 +5215,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5160,6 +5239,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5183,6 +5263,31 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMMV",
+      "vendor": "awc",
+      "nativeId": "MMMV",
+      "name": "Monclova/Carranza Intl, CO, MX",
+      "latitude": 26.956,
+      "longitude": -101.47,
+      "elevationM": 567,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMMV",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5206,6 +5311,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5229,6 +5335,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5252,6 +5359,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5275,29 +5383,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MMPE",
-      "vendor": "awc",
-      "nativeId": "MMPE",
-      "name": "Puerto Peñasco Intl, SO, MX",
-      "latitude": 31.354,
-      "longitude": -113.519,
-      "elevationM": 9,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPE",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5321,6 +5407,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5344,6 +5431,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5367,29 +5455,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:MMSL",
-      "vendor": "awc",
-      "nativeId": "MMSL",
-      "name": "Cabo San Lucas Intl, BS, MX",
-      "latitude": 22.948,
-      "longitude": -109.936,
-      "elevationM": 205,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMSL",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5413,6 +5479,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5436,6 +5503,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5459,6 +5527,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5482,6 +5551,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5505,6 +5575,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5528,6 +5599,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5551,6 +5623,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5574,6 +5647,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5597,6 +5671,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5620,6 +5695,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5643,6 +5719,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5666,6 +5743,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5689,6 +5767,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5712,6 +5791,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5735,6 +5815,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5758,6 +5839,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5781,6 +5863,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5804,6 +5887,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5827,6 +5911,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5850,6 +5935,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5873,6 +5959,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5896,6 +5983,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5919,6 +6007,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5942,6 +6031,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5965,6 +6055,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -5988,6 +6079,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6011,6 +6103,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6034,6 +6127,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6057,6 +6151,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6080,6 +6175,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6103,6 +6199,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6126,6 +6223,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6149,6 +6247,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6172,6 +6271,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6195,6 +6295,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6218,6 +6319,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6241,6 +6343,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6264,6 +6367,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6287,6 +6391,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6310,6 +6415,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6333,6 +6439,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6356,6 +6463,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6379,6 +6487,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6402,6 +6511,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6425,6 +6535,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6448,6 +6559,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6471,6 +6583,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6494,6 +6607,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6517,6 +6631,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6540,6 +6655,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6563,6 +6679,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6586,6 +6703,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6609,6 +6727,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6632,6 +6751,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6655,6 +6775,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6678,6 +6799,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6701,6 +6823,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6724,6 +6847,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6747,6 +6871,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6770,6 +6895,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6793,6 +6919,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6816,6 +6943,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6839,6 +6967,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6862,6 +6991,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6885,6 +7015,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6908,6 +7039,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6931,6 +7063,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6954,6 +7087,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -6977,29 +7111,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:PAPH",
-      "vendor": "awc",
-      "nativeId": "PAPH",
-      "name": "Port Heiden Arpt, AK, US",
-      "latitude": 56.959,
-      "longitude": -158.631,
-      "elevationM": 29,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=PAPH",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7023,6 +7135,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7046,29 +7159,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:PAPT",
-      "vendor": "awc",
-      "nativeId": "PAPT",
-      "name": "Puntilla Lake Arpt, AK, US",
-      "latitude": 62.087,
-      "longitude": -152.722,
-      "elevationM": 577,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=PAPT",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7092,6 +7183,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7115,6 +7207,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7138,6 +7231,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7161,6 +7255,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7184,6 +7279,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7207,6 +7303,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7230,6 +7327,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7253,6 +7351,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7276,6 +7375,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7299,6 +7399,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7322,6 +7423,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7345,6 +7447,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7368,6 +7471,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7391,6 +7495,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7414,6 +7519,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7437,6 +7543,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7460,6 +7567,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7483,6 +7591,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7506,6 +7615,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7529,6 +7639,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7552,6 +7663,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7575,6 +7687,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7598,6 +7711,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7621,6 +7735,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7644,6 +7759,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7667,6 +7783,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7690,6 +7807,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7713,6 +7831,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7736,6 +7855,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7759,6 +7879,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7782,6 +7903,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7805,6 +7927,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7828,6 +7951,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7851,6 +7975,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7874,6 +7999,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7897,6 +8023,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7920,6 +8047,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7943,6 +8071,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7966,6 +8095,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7989,6 +8119,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8012,6 +8143,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8035,6 +8167,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8058,6 +8191,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8081,6 +8215,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8104,52 +8239,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:TJNR",
-      "vendor": "awc",
-      "nativeId": "TJNR",
-      "name": "Roosevelt Roads Arpt, , PR",
-      "latitude": 18.253,
-      "longitude": -65.638,
-      "elevationM": 7,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=TJNR",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "awc:TJPS",
-      "vendor": "awc",
-      "nativeId": "TJPS",
-      "name": "Ponce/Mercedita Arpt, , PR",
-      "latitude": 18.011,
-      "longitude": -66.567,
-      "elevationM": 12,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=TJPS",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8173,16 +8263,89 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:UBBG",
+      "vendor": "awc",
+      "nativeId": "UBBG",
+      "name": "Gyanca Intl, GY, AZ",
+      "latitude": 40.738,
+      "longitude": 46.318,
+      "elevationM": 333,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UBBG",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:UBBN",
+      "vendor": "awc",
+      "nativeId": "UBBN",
+      "name": "Nakhchivan Arpt, NX, AZ",
+      "latitude": 39.189,
+      "longitude": 45.458,
+      "elevationM": 857,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UBBN",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
+      "locator": {}
+    },
+    {
+      "uid": "awc:UBLC",
+      "vendor": "awc",
+      "nativeId": "UBLC",
+      "name": "Lachin Intl, LAC, AZ",
+      "latitude": 39.886,
+      "longitude": 46.354,
+      "elevationM": 1587,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=UBLC",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
       "uid": "awc:UDSG",
       "vendor": "awc",
       "nativeId": "UDSG",
-      "name": "Gyumri Shirak Airport",
+      "name": "Gyumri/Shirak Intl, SH, AM",
       "latitude": 40.75,
       "longitude": 43.859,
-      "elevationM": 1524,
+      "elevationM": 1515,
       "country": "AM",
       "region": "Shirak",
       "timeZone": "Asia/Yerevan",
@@ -8196,16 +8359,17 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
       "uid": "awc:UDYZ",
       "vendor": "awc",
       "nativeId": "UDYZ",
-      "name": "Yerevan Zvartnots International",
+      "name": "Yerevan/Zvartnots Intl, ER, AM",
       "latitude": 40.147,
       "longitude": 44.396,
-      "elevationM": 865,
+      "elevationM": 851,
       "country": "AM",
       "region": "Yerevan",
       "timeZone": "Asia/Yerevan",
@@ -8219,6 +8383,7 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     }
   ]

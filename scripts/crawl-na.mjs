@@ -6,9 +6,11 @@ import { parseArgs } from 'node:util';
 import { gzipSync } from 'node:zlib';
 import {
   CATALOGUE_SCHEMA_VERSION,
+  applyLandforms,
   applyStationOverrides,
   catalogueToGeoJson,
   defaultCategoryForVendor,
+  defaultPlaceForStation,
   enrichStationsWithLaunches,
   parseCatalogueStation,
   parseStationOverrides,
@@ -40,6 +42,7 @@ import { loadDotEnv } from './workspace.mjs';
 loadDotEnv();
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
 const DEFAULT_STATION_OVERRIDES_PATH = resolve(repositoryRoot, 'data/overrides/stations.json');
+const DEFAULT_LANDFORMS_PATH = resolve(repositoryRoot, 'data/terrain/landforms.json');
 
 function loadStationOverrides(path = DEFAULT_STATION_OVERRIDES_PATH) {
   if (!existsSync(path)) return null;
@@ -324,7 +327,13 @@ export async function crawlCatalogue(options = {}) {
     const scoped = isGlobalHolfuy ? discovered : filterCatalogueStations(discovered, { regions });
     const stations = scoped.map(station => {
       const unwrapped = unwrapAggregatorStation(station);
-      return { ...unwrapped, category: unwrapped.category ?? defaultCategoryForVendor(unwrapped.vendor) };
+      const category = unwrapped.category ?? defaultCategoryForVendor(unwrapped.vendor);
+      const place = unwrapped.place ?? defaultPlaceForStation(unwrapped) ?? undefined;
+      return {
+        ...unwrapped,
+        category,
+        ...(place !== undefined ? { place } : {}),
+      };
     });
     // Keep source identity until all providers are merged, so direct metadata
     // takes precedence over an aggregator regardless of crawl order.
@@ -338,9 +347,15 @@ export async function crawlCatalogue(options = {}) {
     log(`[${status}] ${vendor}: ${stations.length} stations`);
   }
 
-  let stations = mergeDiscoveredStations(vendorBatches.flat(), true).map(station => ({
-    ...station, category: station.category ?? defaultCategoryForVendor(station.vendor),
-  }));
+  let stations = mergeDiscoveredStations(vendorBatches.flat(), true).map(station => {
+    const category = station.category ?? defaultCategoryForVendor(station.vendor);
+    const place = station.place ?? defaultPlaceForStation(station) ?? undefined;
+    return {
+      ...station,
+      category,
+      ...(place !== undefined ? { place } : {}),
+    };
+  });
   if (!options.offline && !options.providers && !options.environment) {
     stations = stations.filter(station => station.vendor !== 'nws' || (station.aliases?.length ?? 0) > 0);
   }
@@ -355,6 +370,12 @@ export async function crawlCatalogue(options = {}) {
       onUnmatched: uid => log(`override unmatched: ${uid}`),
       onConflict: (uid, keys) => log(`override conflict for ${uid}: ${keys.join(', ')}`),
     });
+  }
+  if (existsSync(DEFAULT_LANDFORMS_PATH)) {
+    const saved = JSON.parse(readFileSync(DEFAULT_LANDFORMS_PATH, 'utf8'));
+    if (saved?.schemaVersion === 1 && saved.stations) {
+      stations = applyLandforms(stations, saved.stations);
+    }
   }
   const publicStations = stations.map(toPublicCatalogueStation);
   const document = toPublicStationCatalogue({ schemaVersion: CATALOGUE_SCHEMA_VERSION,
@@ -379,17 +400,21 @@ export async function crawlCatalogue(options = {}) {
     publish(`regions/${region.toLowerCase()}.ndjson.gz`, gzipSync(Buffer.from(serializeCatalogueNdjson(regionalStations))));
   }
   const categoryCounts = {};
+  const placeCounts = {};
   const finalVendorCounts = {};
   for (const station of publicStations) {
     const category = station.category ?? defaultCategoryForVendor(station.vendor);
     categoryCounts[category] = (categoryCounts[category] ?? 0) + 1;
+    const place = station.place ?? defaultPlaceForStation(station);
+    if (place !== null) placeCounts[place] = (placeCounts[place] ?? 0) + 1;
     finalVendorCounts[station.vendor] = (finalVendorCounts[station.vendor] ?? 0) + 1;
   }
   const manifest = {
     schemaVersion: 1, generatedAt, regions, totalStations: publicStations.length,
     unknownCountryStations: publicStations.filter(station => station.country === null).length,
     launchCorridorStations: corridorStations.length, launchesIndexed: launches.length,
-    countsByRegion: regionCounts, countsByCategory: categoryCounts, countsByVendor: finalVendorCounts,
+    countsByRegion: regionCounts, countsByCategory: categoryCounts, countsByPlace: placeCounts,
+    countsByVendor: finalVendorCounts,
     rawCrawledByVendor: vendorCounts, vendorRuns, artifacts,
   };
   writeAtomic(resolve(outDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);

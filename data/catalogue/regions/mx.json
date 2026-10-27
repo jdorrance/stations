@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T11:28:47.114Z",
+  "generatedAt": "2026-10-27T14:49:20.979Z",
   "regions": [
     "MX"
   ],
@@ -26,6 +26,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMAA",
         "windsmobi:metar-MMAA"
@@ -54,6 +57,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMAN",
         "windsmobi:metar-MMAN"
@@ -87,6 +93,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMBT",
         "windsmobi:metar-MMBT"
@@ -115,6 +124,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMCE",
         "windsmobi:metar-MMCE"
@@ -143,6 +155,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMCM",
         "windsmobi:metar-MMCM"
@@ -171,6 +186,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMCN",
         "windsmobi:metar-MMCN"
@@ -199,6 +217,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -5,
       "aliases": [
         "iem:MX__ASOS:MMCP",
         "windsmobi:metar-MMCP"
@@ -232,6 +253,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMCS",
         "windsmobi:metar-MMCS"
@@ -248,23 +272,26 @@
       "uid": "awc:MMCT",
       "vendor": "awc",
       "nativeId": "MMCT",
-      "name": "Chichén Itzá Intl, YU, MX",
+      "name": "Aeropuerto Internacional de Chichén Itzá",
       "latitude": 20.641,
       "longitude": -88.446,
       "elevationM": 29,
       "country": "MX",
       "region": null,
       "timeZone": "America/Merida",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCT",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMCT&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMCT",
         "windsmobi:metar-MMCT"
@@ -276,23 +303,26 @@
       "uid": "awc:MMCU",
       "vendor": "awc",
       "nativeId": "MMCU",
-      "name": "Chihuahua Intl, CH, MX",
+      "name": "Aeropuerto Internacional de Chihuahua General Roberto Fierro Villalobos",
       "latitude": 28.701,
       "longitude": -105.965,
       "elevationM": 1349,
       "country": "MX",
       "region": null,
       "timeZone": "America/Chihuahua",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCU",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMCU&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMCU",
         "windsmobi:metar-MMCU"
@@ -321,6 +351,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMCV",
         "windsmobi:metar-MMCV"
@@ -349,6 +382,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMCZ",
         "windsmobi:metar-MMCZ"
@@ -377,6 +413,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMDO",
         "windsmobi:metar-MMDO"
@@ -410,6 +449,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMGL",
         "windsmobi:metar-MMGL"
@@ -443,6 +485,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -7,
       "aliases": [
         "iem:MX__ASOS:MMGM",
         "windsmobi:metar-MMGM"
@@ -471,6 +516,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMHO",
         "windsmobi:metar-MMHO"
@@ -504,6 +552,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 11,
       "aliases": [
         "iem:MX__ASOS:MMIA",
         "windsmobi:metar-MMIA"
@@ -537,6 +588,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 8,
       "aliases": [
         "iem:MX__ASOS:MMIO",
         "windsmobi:metar-MMIO"
@@ -570,6 +624,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 4,
       "aliases": [
         "iem:MX__ASOS:MMLM",
         "windsmobi:metar-MMLM"
@@ -598,6 +655,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMLO",
         "windsmobi:metar-MMLO"
@@ -631,6 +691,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 4,
       "aliases": [
         "iem:MX__ASOS:MMLP",
         "windsmobi:metar-MMLP"
@@ -659,6 +722,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMLT",
         "windsmobi:metar-MMLT"
@@ -687,6 +753,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMMA",
         "windsmobi:metar-MMMA"
@@ -715,6 +784,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMMD",
         "windsmobi:metar-MMMD"
@@ -743,6 +815,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 2,
       "aliases": [
         "iem:MX__ASOS:MMML",
         "windsmobi:metar-MMML"
@@ -771,6 +846,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMMM",
         "windsmobi:metar-MMMM"
@@ -804,6 +882,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 2,
       "aliases": [
         "iem:MX__ASOS:MMMT",
         "windsmobi:metar-MMMT"
@@ -832,6 +913,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 2,
       "aliases": [
         "iem:MX__ASOS:MMMX",
         "windsmobi:metar-MMMX"
@@ -865,6 +949,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMMY",
         "windsmobi:metar-MMMY"
@@ -898,6 +985,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMMZ",
         "windsmobi:metar-MMMZ"
@@ -926,6 +1016,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "ridge",
+      "tpiM": 28,
       "aliases": [
         "iem:MX__ASOS:MMPA",
         "windsmobi:metar-MMPA"
@@ -937,23 +1030,26 @@
       "uid": "awc:MMPE",
       "vendor": "awc",
       "nativeId": "MMPE",
-      "name": "Puerto Peñasco Intl, SO, MX",
+      "name": "Puerto Peñasco Intl",
       "latitude": 31.354,
       "longitude": -113.519,
       "elevationM": 9,
       "country": "MX",
       "region": null,
       "timeZone": "America/Hermosillo",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPE",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMPE&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMPE",
         "windsmobi:metar-MMPE"
@@ -982,6 +1078,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMPN",
         "windsmobi:metar-MMPN"
@@ -1015,6 +1114,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -7,
       "aliases": [
         "iem:MX__ASOS:MMPQ",
         "windsmobi:metar-MMPQ"
@@ -1043,6 +1145,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMPR",
         "windsmobi:metar-MMPR"
@@ -1076,6 +1181,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 14,
       "aliases": [
         "iem:MX__ASOS:MMPS",
         "windsmobi:metar-MMPS"
@@ -1104,6 +1212,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "aliases": [
         "iem:MX__ASOS:MMRX",
         "windsmobi:metar-MMRX"
@@ -1132,6 +1243,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -3,
       "aliases": [
         "iem:MX__ASOS:MMSD",
         "windsmobi:metar-MMSD"
@@ -1143,23 +1257,26 @@
       "uid": "awc:MMSL",
       "vendor": "awc",
       "nativeId": "MMSL",
-      "name": "Cabo San Lucas Intl, BS, MX",
+      "name": "Aeropuerto Cabo San Lucas Internacional",
       "latitude": 22.948,
       "longitude": -109.936,
       "elevationM": 205,
       "country": "MX",
       "region": null,
       "timeZone": "America/Mazatlan",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMSL",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMSL&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 10,
       "aliases": [
         "iem:MX__ASOS:MMSL",
         "windsmobi:metar-MMSL"
@@ -1188,6 +1305,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -3,
       "aliases": [
         "iem:MX__ASOS:MMSM",
         "windsmobi:metar-MMSM"
@@ -1216,6 +1336,9 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 60,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 7,
       "aliases": [
         "iem:MX__ASOS:MMTJ",
         "windsmobi:metar-MMTJ"
@@ -1249,6 +1372,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -4,
       "aliases": [
         "iem:MX__ASOS:MMTM",
         "windsmobi:metar-MMTM"
@@ -1277,6 +1403,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMTO",
         "windsmobi:metar-MMTO"
@@ -1310,6 +1439,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMTP",
         "windsmobi:metar-MMTP"
@@ -1338,6 +1470,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 6,
       "aliases": [
         "iem:MX__ASOS:MMUN",
         "windsmobi:metar-MMUN"
@@ -1366,6 +1501,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMVA",
         "windsmobi:metar-MMVA"
@@ -1394,6 +1532,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 3,
       "aliases": [
         "iem:MX__ASOS:MMVR",
         "windsmobi:metar-MMVR"
@@ -1422,6 +1563,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "ridge",
+      "tpiM": 7,
       "aliases": [
         "iem:MX__ASOS:MMZO",
         "windsmobi:metar-MMZO"
@@ -1457,6 +1601,8 @@
         }
       ],
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": 206,
       "aliases": [
         "windsmobi:holfuy-609"
       ],
@@ -1489,6 +1635,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "mx-picacho",
         "nearestLaunchName": "Picacho",
@@ -1518,6 +1667,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "valley",
+      "tpiM": -23,
       "launchContext": {
         "nearestLaunchSlug": "mx-tepoztlan",
         "nearestLaunchName": "Tepoztlán",
@@ -1547,6 +1699,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": -3,
       "launchContext": null,
       "locator": {}
     },
@@ -1571,6 +1726,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "mx-tecuitata",
         "nearestLaunchName": "Tecuitata",
@@ -1600,6 +1758,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": 8,
       "launchContext": null,
       "locator": {}
     },
@@ -1624,6 +1785,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "launchContext": null,
       "locator": {}
     },
@@ -1648,6 +1812,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -8,
       "launchContext": {
         "nearestLaunchSlug": "mx-zaachila",
         "nearestLaunchName": "Zaachila",
@@ -1677,6 +1844,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -7,
       "launchContext": {
         "nearestLaunchSlug": "mx-chalchihuapan-puebla",
         "nearestLaunchName": "Chalchihuapan — Puebla",
@@ -1706,6 +1876,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 3,
       "launchContext": null,
       "locator": {}
     },
@@ -1730,6 +1903,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "mx-el-tangano",
         "nearestLaunchName": "El Tángano",
@@ -1759,6 +1935,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "flat",
+      "tpiM": 3,
       "launchContext": {
         "nearestLaunchSlug": "mx-el-piedrero-san-luis-potosi",
         "nearestLaunchName": "El Piedrero — San Luis Potosí",
@@ -1788,6 +1967,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "valley",
+      "tpiM": -26,
       "launchContext": {
         "nearestLaunchSlug": "mx-helipuerto",
         "nearestLaunchName": "Helipuerto",
@@ -1817,6 +1999,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "slope",
+      "tpiM": -16,
       "launchContext": {
         "nearestLaunchSlug": "mx-fly-in-chiapas",
         "nearestLaunchName": "Fly In Chiapas",
@@ -1846,6 +2031,9 @@
       "samplingWindowSeconds": 120,
       "recommendedPollSeconds": 120,
       "category": "synoptic",
+      "place": "airport",
+      "landform": "summit",
+      "tpiM": 39,
       "launchContext": {
         "nearestLaunchSlug": "mx-tulancingo",
         "nearestLaunchName": "Tulancingo",
@@ -1875,6 +2063,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": 206,
       "launchContext": {
         "nearestLaunchSlug": "mx-valle-de-bravo-el-penon",
         "nearestLaunchName": "Valle de Bravo — El Peñón",
@@ -1904,6 +2094,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": 8,
       "launchContext": {
         "nearestLaunchSlug": "mx-tuxpan",
         "nearestLaunchName": "Tuxpan",
@@ -1933,6 +2125,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": -1,
       "launchContext": null,
       "locator": {}
     },
@@ -1957,6 +2151,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": -4,
       "launchContext": null,
       "locator": {}
     },
@@ -1981,6 +2177,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": -18,
       "launchContext": null,
       "locator": {}
     },
@@ -2005,6 +2203,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "slope",
+      "tpiM": 0,
       "launchContext": {
         "nearestLaunchSlug": "mx-la-cementera",
         "nearestLaunchName": "La Cementera",
@@ -2034,6 +2234,8 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 60,
       "category": "freeflight",
+      "landform": "flat",
+      "tpiM": 7,
       "launchContext": null,
       "locator": {}
     }

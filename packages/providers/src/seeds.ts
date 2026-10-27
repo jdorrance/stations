@@ -437,6 +437,7 @@ export const INITIAL_SEED_STATIONS: readonly CatalogueStation[] = [
     region: 'Yerevan',
     timeZone: 'Asia/Yerevan',
     pageUrl: 'https://aviationweather.gov/data/metar/?id=UDYZ',
+    place: 'airport',
     capabilities: {
       gustLull: true,
       temperature: true,
@@ -461,6 +462,7 @@ export const INITIAL_SEED_STATIONS: readonly CatalogueStation[] = [
     region: 'Shirak',
     timeZone: 'Asia/Yerevan',
     pageUrl: 'https://aviationweather.gov/data/metar/?id=UDSG',
+    place: 'airport',
     capabilities: {
       gustLull: true,
       temperature: true,

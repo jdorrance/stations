@@ -149,6 +149,9 @@ test('catalogueToGeoJson and feedToGeoJson emit valid GeoJSON FeatureCollections
   assert.deepEqual(catalogueGeo.features[0].geometry.coordinates, [-122.009, 47.4995, 730]);
   assert.equal(catalogueGeo.features[0].properties.status, 'catalogue');
   assert.equal(catalogueGeo.features[0].properties.category, 'freeflight');
+  assert.equal(catalogueGeo.features[0].properties.place, null);
+  assert.equal(catalogueGeo.features[0].properties.landform, null);
+  assert.equal(catalogueGeo.features[0].properties.tpiM, null);
   assert.equal(catalogueGeo.features[0].properties.name, 'Tiger Mountain North');
   assert.equal(catalogueGeo.features[0].properties.shortName, 'Tiger N');
 

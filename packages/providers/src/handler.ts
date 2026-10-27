@@ -10,14 +10,19 @@ import {
 import {
   catalogueToGeoJson,
   defaultCategoryForVendor,
+  defaultPlaceForStation,
   feedToGeoJson,
   isStationCategory,
+  isLandform,
+  isStationPlace,
   isStationVendor,
   parseStationFeedJson,
   toPublicCatalogueStation,
   type CatalogueStation,
   type StationCatalogueDocument,
   type StationCategory,
+  type Landform,
+  type StationPlace,
   type StationVendor,
 } from '@stations/contracts';
 import {
@@ -388,6 +393,8 @@ export function createStationsApiHandler(
       !url.searchParams.has('country') &&
       !url.searchParams.has('vendor') &&
       !url.searchParams.has('category') &&
+      !url.searchParams.has('place') &&
+      !url.searchParams.has('landform') &&
       !url.searchParams.has('launch');
 
     if (isUnfilteredCatalogueQuery) {
@@ -478,6 +485,22 @@ export function createStationsApiHandler(
         return { error: 'invalid category filter' };
       }
 
+      const places = parseStrictCsvFilter<StationPlace>(
+        url.searchParams.get('place'),
+        isStationPlace,
+      );
+      if (places === 'invalid') {
+        return { error: 'invalid place filter' };
+      }
+
+      const landforms = parseStrictCsvFilter<Landform>(
+        url.searchParams.get('landform'),
+        isLandform,
+      );
+      if (landforms === 'invalid') {
+        return { error: 'invalid landform filter' };
+      }
+
       let candidates: readonly CatalogueStation[];
       if (stationParam) {
         const hit = byUid.get(stationParam.trim());
@@ -521,6 +544,17 @@ export function createStationsApiHandler(
         candidates = candidates.filter(s =>
           categories.has(s.category ?? defaultCategoryForVendor(s.vendor)),
         );
+      }
+
+      if (places) {
+        candidates = candidates.filter(s => {
+          const place = s.place ?? defaultPlaceForStation(s);
+          return place !== null && places.has(place);
+        });
+      }
+
+      if (landforms) {
+        candidates = candidates.filter(s => s.landform !== null && s.landform !== undefined && landforms.has(s.landform));
       }
 
       const launchSlug = url.searchParams.get('launch');

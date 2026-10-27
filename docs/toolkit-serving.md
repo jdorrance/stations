@@ -43,6 +43,8 @@ All routes accept `GET` and `HEAD`. Selection query params are shared:
 | `country` | CSV of `US` / `CA` / `MX` / `AM` |
 | `vendor` | CSV of vendor ids |
 | `category` | CSV of `freeflight` / `mountain` / `synoptic` / `marine` / `pws` |
+| `place` | CSV of `airport` / `mountain` (physical siting; unknown stations excluded) |
+| `landform` | CSV of `summit` / `ridge` / `slope` / `valley` / `flat` |
 | `launch` | Nearest-launch slug |
 | `limit` | Max stations returned |
 | `format` | `geojson` on `/catalogue` and `/feed` |
