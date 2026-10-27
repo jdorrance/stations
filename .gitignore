@@ -10,3 +10,7 @@ packages/*/dist/
 coverage/
 .cache/
 web/dist/
+.dev.vars
+.dev.vars.*
+.wrangler/
+deploy/worker/worker-configuration.d.ts

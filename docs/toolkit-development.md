@@ -64,6 +64,10 @@ pnpm dev
 `stations.json` by default) and serves the map at http://localhost:4331.
 Pass `--corridors` to serve the launch-corridor shard instead.
 
+Production runs the same handler in a Cloudflare Worker; see the
+[deployment guide](deploy.md) for the Worker entry, catalogue upload and
+secrets flow.
+
 ## Build and checks
 
 Library code uses strict TypeScript. Package builds compile dependencies in

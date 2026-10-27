@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "stations",
+  "main": "deploy/worker/index.ts",
+  "compatibility_date": "2026-10-27",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "./web",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  },
+  "r2_buckets": [
+    {
+      "binding": "CATALOGUE",
+      "bucket_name": "stations-catalogue-private"
+    }
+  ],
+  "vars": {
+    "CORS_ORIGIN": "*",
+    "CATALOGUE_PREFIX": "catalogue/stations"
+  }
+}

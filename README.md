@@ -19,7 +19,8 @@ server. See [Serving stations](docs/toolkit-serving.md).
 
 ## Quick start
 
-Node 20+ and the pnpm version in [package.json](package.json):
+The Node version in [.nvmrc](.nvmrc) and the pnpm version in
+[package.json](package.json):
 
 ```sh
 pnpm install --frozen-lockfile
@@ -48,6 +49,7 @@ Read in this order; each layer owns one set of facts:
 | [Serving](docs/toolkit-serving.md) | HTTP routes, auth, cache, batching, deploy |
 | [Contracts](docs/toolkit-contracts.md) | Units, absence, freshness, terminology |
 | [Development](docs/toolkit-development.md) | Providers, crawl, explorer, checks |
+| [Deploy](docs/deploy.md) | Cloudflare Worker, R2 catalogue, secrets, pipelines |
 
 Package READMEs: [`geography`](packages/geography/README.md) ·
 [`contracts`](packages/contracts/README.md) ·

@@ -1,8 +1,18 @@
+import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { createRequire } from 'node:module';
+import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
+
+/** Runs the workspace's pinned wrangler CLI with the current process env. */
+export function wrangler(args, options = {}) {
+  const require = createRequire(resolve(root, 'package.json'));
+  const manifestPath = require.resolve('wrangler/package.json');
+  const bin = resolve(dirname(manifestPath), require(manifestPath).bin.wrangler);
+  return spawnSync(process.execPath, [bin, ...args], { cwd: root, env: process.env, stdio: 'inherit', ...options });
+}
 
 export function loadDotEnv(path = resolve(root, '.env')) {
   if (!existsSync(path)) return;

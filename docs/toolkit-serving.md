@@ -116,6 +116,9 @@ Underground, WeatherLink or Holfuy directly.
 
 ## Deploy sketch (Cloudflare Worker)
 
+This repository's own Worker, catalogue upload and secrets pipeline are
+documented in [deploy.md](deploy.md). Any other host follows the same shape:
+
 1. Build packages (`pnpm build:packages`).
 2. Crawl or copy a public catalogue artifact into the Worker bundle or R2/KV.
 3. Set secrets (`SYNOPTIC_API_KEY`, `WU_API_KEY`, `HOLFUY_API_KEY`, …).

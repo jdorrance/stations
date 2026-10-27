@@ -1,0 +1,58 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
+  deploy:
+    name: Deploy Worker
+    needs: verify
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build packages and explorer assets
+        run: pnpm build
+      - name: Deploy Worker and static assets
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.153.0"
+          packageManager: pnpm
+      # GitHub Actions secrets are the only place provider keys are edited.
+      # Names listed in deploy/worker/credentials.ts are mirrored onto the
+      # Worker: non-empty values are set, names removed here are removed there.
+      - name: Sync provider secrets from GitHub to the Worker
+        run: node scripts/sync-worker-secrets.mjs
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          HOLFUY_API_KEY: ${{ secrets.HOLFUY_API_KEY }}
+          TEMPEST_TOKEN: ${{ secrets.TEMPEST_TOKEN }}
+          WU_API_KEY: ${{ secrets.WU_API_KEY }}
+          SYNOPTIC_TOKEN: ${{ secrets.SYNOPTIC_TOKEN }}
+          SYNOPTIC_API_KEY: ${{ secrets.SYNOPTIC_API_KEY }}
+          ECOWITT_APP_KEY: ${{ secrets.ECOWITT_APP_KEY }}
+          ECOWITT_API_KEY: ${{ secrets.ECOWITT_API_KEY }}
+          AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
+          AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
