@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T14:49:20.979Z",
+  "generatedAt": "2026-10-27T15:59:47.846Z",
   "regions": [
     "AM"
   ],
@@ -28,7 +28,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 1,
       "aliases": [
         "iem:AM__ASOS:UDSG"
@@ -64,7 +64,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "aliases": [
         "iem:AM__ASOS:UDYZ"
@@ -190,7 +190,7 @@
       "samplingWindowSeconds": 900,
       "recommendedPollSeconds": 300,
       "category": "pws",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -20,
       "launchContext": {
         "nearestLaunchSlug": "am-arzni",
@@ -798,7 +798,7 @@
       "samplingWindowSeconds": 900,
       "recommendedPollSeconds": 300,
       "category": "pws",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "am-aygezard",
@@ -985,7 +985,7 @@
       "samplingWindowSeconds": 900,
       "recommendedPollSeconds": 300,
       "category": "mountain",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "am-sevan-upper",
@@ -1044,7 +1044,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 900,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "am-lalvar",
@@ -1391,7 +1391,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 900,
       "category": "mountain",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "am-artanish",
@@ -1770,7 +1770,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "launchContext": {
         "nearestLaunchSlug": "am-aragatsotn-2",
@@ -1898,7 +1898,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -58,
       "launchContext": {
         "nearestLaunchSlug": "am-hatis-summit",
@@ -1994,7 +1994,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -4,
       "launchContext": {
         "nearestLaunchSlug": "am-arzni",
@@ -2122,7 +2122,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -164,
       "launchContext": {
         "nearestLaunchSlug": "am-tsovagyugh",
@@ -2154,7 +2154,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -22,
       "launchContext": {
         "nearestLaunchSlug": "am-arzni",
@@ -2218,7 +2218,7 @@
       "samplingWindowSeconds": 60,
       "recommendedPollSeconds": 120,
       "category": "pws",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -23,
       "launchContext": {
         "nearestLaunchSlug": "am-arzni",

@@ -94,6 +94,7 @@ export {
 
 export {
   LANDFORMS,
+  TERRAIN_CONTEXT_RADIUS_M,
   TERRAIN_RADIUS_M,
   applyLandforms,
   classifyLandform,

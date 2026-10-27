@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T14:49:20.979Z",
+  "generatedAt": "2026-10-27T15:59:47.846Z",
   "regions": [
     "MX"
   ],
@@ -187,7 +187,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "iem:MX__ASOS:MMCN",
@@ -383,7 +383,7 @@
       "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMCZ",
@@ -486,7 +486,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -7,
       "aliases": [
         "iem:MX__ASOS:MMGM",
@@ -723,7 +723,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMLT",
@@ -847,7 +847,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMMM",
@@ -1079,7 +1079,7 @@
       "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "aliases": [
         "iem:MX__ASOS:MMPN",
@@ -1146,7 +1146,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -1,
       "aliases": [
         "iem:MX__ASOS:MMPR",
@@ -1636,7 +1636,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "mx-picacho",
@@ -1904,7 +1904,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "mx-el-tangano",
@@ -1936,7 +1936,7 @@
       "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "launchContext": {
         "nearestLaunchSlug": "mx-el-piedrero-san-luis-potosi",

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T14:49:20.979Z",
+  "generatedAt": "2026-10-27T15:59:47.846Z",
   "regions": [
     "CA"
   ],
@@ -156,7 +156,7 @@
       "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -3,
       "aliases": [
         "iem:CA_NF_ASOS:CWWU",
@@ -280,7 +280,7 @@
       "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 8,
       "aliases": [
         "iem:CA_NT_ASOS:CYVL",
@@ -367,7 +367,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -13,
       "launchContext": {
         "nearestLaunchSlug": "ca-half-island",
@@ -398,7 +398,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": null,
       "locator": {}
@@ -637,7 +637,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 7,
       "launchContext": null,
       "locator": {}
@@ -1184,7 +1184,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "ca-greenhill-provincial-park",
@@ -1272,7 +1272,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "launchContext": {
         "nearestLaunchSlug": "ca-west-bay",
@@ -1329,7 +1329,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 1,
       "launchContext": {
         "nearestLaunchSlug": "ca-cliffton",
@@ -1807,7 +1807,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": null,
       "locator": {}
@@ -2007,7 +2007,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "ca-saint-fulgence",
@@ -2278,7 +2278,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "launchContext": {
         "nearestLaunchSlug": "ca-carleton",
@@ -2393,7 +2393,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -7,
       "launchContext": null,
       "locator": {}
@@ -2512,7 +2512,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -13,
       "launchContext": null,
       "locator": {}
@@ -2726,7 +2726,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 4,
       "launchContext": null,
       "locator": {}
@@ -3319,7 +3319,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "launchContext": null,
       "locator": {}
@@ -3449,7 +3449,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -10,
       "launchContext": null,
       "locator": {}
@@ -3506,7 +3506,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 5,
       "launchContext": null,
       "locator": {}
@@ -3667,7 +3667,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 7,
       "launchContext": null,
       "locator": {}
@@ -4063,7 +4063,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "launchContext": {
         "nearestLaunchSlug": "ca-north-battleford",
@@ -4361,7 +4361,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": null,
       "locator": {}
@@ -4617,7 +4617,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -18,
       "launchContext": null,
       "locator": {}
@@ -4816,7 +4816,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -7,
       "launchContext": {
         "nearestLaunchSlug": "ca-high-perspective-tow",
@@ -5078,7 +5078,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "launchContext": null,
       "locator": {}
@@ -5754,7 +5754,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 2,
       "launchContext": null,
       "locator": {}
@@ -5927,7 +5927,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -3,
       "launchContext": null,
       "locator": {}
@@ -5985,7 +5985,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "ca-padella-peak",
@@ -6017,7 +6017,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 6,
       "launchContext": null,
       "locator": {}
@@ -6044,7 +6044,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 6,
       "launchContext": null,
       "locator": {}
@@ -6138,7 +6138,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 20,
       "launchContext": null,
       "locator": {}
@@ -6165,7 +6165,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 12,
       "aliases": [
         "awc:CWAR",
@@ -6196,7 +6196,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "launchContext": {
         "nearestLaunchSlug": "ca-tunnel-bluff",
@@ -6228,7 +6228,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "aliases": [
         "awc:CWAV",
@@ -6688,7 +6688,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -15,
       "launchContext": null,
       "locator": {}
@@ -6816,7 +6816,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CWDA",
@@ -6998,7 +6998,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "aliases": [
         "awc:CWDM",
@@ -7402,7 +7402,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -7,
       "aliases": [
         "awc:CWEF",
@@ -7491,7 +7491,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "iem:CA_BC_ASOS:CWEK"
@@ -7520,7 +7520,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "iem:CA_BC_ASOS:CWEL"
@@ -7733,7 +7733,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "iem:CA_BC_ASOS:CWEZ"
@@ -7857,7 +7857,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "aliases": [
         "awc:CWFJ",
@@ -8008,7 +8008,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 8,
       "launchContext": null,
       "locator": {}
@@ -8601,7 +8601,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -3,
       "aliases": [
         "awc:CWHQ",
@@ -9197,7 +9197,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -11,
       "aliases": [
         "awc:CWJH",
@@ -9260,7 +9260,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -3,
       "launchContext": null,
       "locator": {}
@@ -9527,7 +9527,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -49,
       "launchContext": {
         "nearestLaunchSlug": "ca-hugh-s-brook",
@@ -9558,7 +9558,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -7,
       "launchContext": null,
       "locator": {}
@@ -9835,7 +9835,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "aliases": [
         "awc:CWLE",
@@ -10295,7 +10295,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -3,
       "launchContext": null,
       "locator": {}
@@ -10354,7 +10354,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "awc:CWNC",
@@ -11122,7 +11122,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "iem:CA_BC_ASOS:CWPF"
@@ -11428,7 +11428,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "launchContext": {
         "nearestLaunchSlug": "ca-cap-sante",
@@ -12194,7 +12194,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 10,
       "aliases": [
         "iem:CA_BC_ASOS:CWRU"
@@ -12287,7 +12287,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CWRZ",
@@ -12424,7 +12424,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CWSG",
@@ -12491,7 +12491,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -6,
       "aliases": [
         "awc:CWSL",
@@ -12878,7 +12878,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "launchContext": null,
       "locator": {}
@@ -12905,7 +12905,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "aliases": [
         "awc:CWTG",
@@ -13345,7 +13345,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "launchContext": null,
       "locator": {}
@@ -14102,7 +14102,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "aliases": [
         "awc:CWXC",
@@ -14685,7 +14685,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -5,
       "aliases": [
         "iem:CA_BC_ASOS:CWZL"
@@ -14746,7 +14746,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "aliases": [
         "iem:CA_BC_ASOS:CWZO"
@@ -14864,7 +14864,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -16,
       "launchContext": {
         "nearestLaunchSlug": "ca-half-island",
@@ -14896,7 +14896,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 26,
       "aliases": [
         "awc:CWZV",
@@ -14962,7 +14962,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "iem:CA_NF_ASOS:CWZZ"
@@ -15076,7 +15076,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -4,
       "aliases": [
         "awc:CXBI",
@@ -15166,7 +15166,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "aliases": [
         "awc:CXBO",
@@ -15229,7 +15229,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -6,
       "aliases": [
         "awc:CXCA",
@@ -15419,7 +15419,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -3,
       "aliases": [
         "awc:CXDW",
@@ -15609,7 +15609,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "launchContext": {
         "nearestLaunchSlug": "ca-kitchener",
@@ -15693,7 +15693,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 5,
       "launchContext": null,
       "locator": {}
@@ -15809,7 +15809,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": null,
       "locator": {}
@@ -15973,7 +15973,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -12,
       "launchContext": null,
       "locator": {}
@@ -16069,7 +16069,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -7,
       "aliases": [
         "awc:CXLL",
@@ -16100,7 +16100,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "ca-saint-fulgence",
@@ -16164,7 +16164,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "awc:CXMI",
@@ -16263,7 +16263,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -19,
       "launchContext": null,
       "locator": {}
@@ -16525,7 +16525,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "launchContext": null,
       "locator": {}
@@ -16785,7 +16785,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "launchContext": {
         "nearestLaunchSlug": "ca-riverdale-park",
@@ -16944,7 +16944,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "aliases": [
         "awc:CXWB",
@@ -17070,7 +17070,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -5,
       "aliases": [
         "awc:CXYH",
@@ -17352,7 +17352,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYAW",
@@ -17543,7 +17543,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "aliases": [
         "awc:CYBG",
@@ -17611,7 +17611,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -3,
       "aliases": [
         "iem:CA_BC_ASOS:CYBL"
@@ -17774,7 +17774,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYBW",
@@ -17906,7 +17906,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "aliases": [
         "iem:CA_BC_ASOS:CYCD"
@@ -18246,7 +18246,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -5,
       "aliases": [
         "awc:CYDB",
@@ -18444,7 +18444,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CYDQ",
@@ -19513,7 +19513,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 4,
       "aliases": [
         "awc:CYHZ",
@@ -19741,7 +19741,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "aliases": [
         "awc:CYKA",
@@ -19911,7 +19911,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "aliases": [
         "awc:CYKL",
@@ -20396,7 +20396,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CYMA",
@@ -20432,7 +20432,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -10,
       "aliases": [
         "awc:CYMH",
@@ -20708,7 +20708,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "aliases": [
         "awc:CYND",
@@ -20930,7 +20930,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYOO",
@@ -21004,7 +21004,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -4,
       "aliases": [
         "awc:CYOY",
@@ -21137,7 +21137,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "aliases": [
         "awc:CYPE",
@@ -21457,7 +21457,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "valley",
+      "landform": "slope",
       "tpiM": -9,
       "aliases": [
         "awc:CYPY",
@@ -21521,7 +21521,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYQB",
@@ -21654,7 +21654,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 2,
       "aliases": [
         "awc:CYQH",
@@ -21817,7 +21817,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 9,
       "aliases": [
         "iem:CA_BC_ASOS:CYQQ"
@@ -21980,7 +21980,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -2,
       "aliases": [
         "awc:CYQW",
@@ -22404,7 +22404,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 7,
       "aliases": [
         "awc:CYSC",
@@ -22775,7 +22775,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -6,
       "aliases": [
         "awc:CYTQ",
@@ -23164,7 +23164,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "awc:CYVQ",
@@ -23195,7 +23195,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "aliases": [
         "awc:CYVR",
@@ -23430,7 +23430,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 2,
       "aliases": [
         "awc:CYWJ",
@@ -23494,7 +23494,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 5,
       "aliases": [
         "awc:CYWL",
@@ -23664,7 +23664,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYXJ",
@@ -23791,7 +23791,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "aliases": [
         "iem:CA_YT_ASOS:CYXQ"
@@ -23853,7 +23853,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": -2,
       "aliases": [
         "awc:CYXS",
@@ -23884,7 +23884,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "aliases": [
         "iem:CA_BC_ASOS:CYXT"
@@ -23946,7 +23946,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -1,
       "aliases": [
         "awc:CYXX",
@@ -24051,7 +24051,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 3,
       "aliases": [
         "awc:CYYB",
@@ -24722,7 +24722,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 4,
       "aliases": [
         "awc:CYZH",
@@ -24754,7 +24754,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 7,
       "aliases": [
         "awc:CYZP",
@@ -24917,7 +24917,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 0,
       "aliases": [
         "awc:CYZV",
@@ -24983,7 +24983,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "aliases": [
         "awc:CYZX",
@@ -25020,7 +25020,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 4,
       "aliases": [
         "awc:CYZY",
@@ -25156,7 +25156,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 0,
       "launchContext": null,
       "locator": {}
@@ -25183,7 +25183,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -3,
       "aliases": [
         "awc:CZDB",
@@ -25705,7 +25705,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 3,
       "aliases": [
         "iem:CA_BC_ASOS:CZMT"
@@ -25761,7 +25761,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "slope",
       "tpiM": 7,
       "aliases": [
         "awc:CZPC",
@@ -25792,7 +25792,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 1,
       "launchContext": null,
       "locator": {}
@@ -25818,7 +25818,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": -2,
       "aliases": [
         "iem:CA_NU_ASOS:CZRP"
@@ -25948,7 +25948,7 @@
       "recommendedPollSeconds": 300,
       "category": "synoptic",
       "place": "airport",
-      "landform": "flat",
+      "landform": "valley",
       "tpiM": 4,
       "aliases": [
         "awc:CZTB",

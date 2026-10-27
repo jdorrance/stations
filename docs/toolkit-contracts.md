@@ -73,9 +73,11 @@ Pilot thresholds by category:
 - **Place** — optional `'airport' | 'mountain'`. `airport` is inferred for
   METAR/ASOS sites and names containing airport/airfield/airstrip. `mountain`
   is an override only. A `place` override always replaces.
-- **Landform** — `'summit' | 'ridge' | 'slope' | 'valley' | 'flat'` from a 1 km
-  DEM ring (8 directions). `tpiM` is center elevation minus the ring mean.
-  Flat means the ring spans under 30 m (DEM noise), not “low elevation”.
+- **Landform** — `'summit' | 'ridge' | 'slope' | 'valley' | 'flat'`. The 1 km
+  ring is the local shape. The 5 km ring decides whether a local low is a
+  valley floor or a slope under higher ground. `tpiM` is the 1 km value:
+  center elevation minus that ring's mean. Flat means both rings barely
+  change height, not “low elevation”.
   Owned by [`data/terrain/landforms.json`](../data/terrain/landforms.json),
   applied after crawl merge.
 - **Short name** — optional curated label on a catalogue station, at most 11
