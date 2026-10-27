@@ -67,8 +67,10 @@ export type {
 
 export {
   CATALOGUE_SCHEMA_VERSION,
+  SHORT_NAME_MAX_LENGTH,
   STATION_CATEGORIES,
   STATION_VENDORS,
+  applyStationOverrides,
   catalogueStationSchema,
   deduplicateCatalogueStations,
   defaultCategoryForVendor,
@@ -80,12 +82,15 @@ export {
   parseCatalogueStation,
   parseStationCatalogue,
   parseStationCatalogueJson,
+  parseStationOverrides,
   parseStationUid,
   stationCatalogueSchema,
   stationLaunchContextSchema,
+  stationOverridesSchema,
 } from './catalogue.ts';
 
 export type {
+  ApplyStationOverridesOptions,
   CatalogueStation,
   LaunchSite,
   StationCatalogueDocument,
@@ -93,6 +98,8 @@ export type {
   StationLaunchContext,
   StationLocator,
   StationLocatorValue,
+  StationOverride,
+  StationOverridesDocument,
   StationVendor,
 } from './catalogue.ts';
 

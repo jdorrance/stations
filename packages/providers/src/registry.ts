@@ -127,24 +127,31 @@ export function toStationConfig(
   station: CatalogueStation,
   credentials?: ProviderCredentials,
 ): StationConfigInput {
-  const provider = providerForVendor(station.vendor);
+  // Adapters copy `station.name` into the meteo config (including closures), so
+  // the short label must be on the station passed in. The catalogue record is
+  // not mutated.
+  const feedStation =
+    station.shortName && station.shortName !== station.name
+      ? { ...station, name: station.shortName }
+      : station;
+  const provider = providerForVendor(feedStation.vendor);
   if (!provider) {
-    const meta = stationMetaFromCatalogue(station, station.vendor);
+    const meta = stationMetaFromCatalogue(feedStation, feedStation.vendor);
     return {
       vendor: 'custom',
-      id: station.uid,
-      name: station.name,
-      latitude: station.latitude,
-      longitude: station.longitude,
-      elevationM: station.elevationM,
-      timeZone: station.timeZone,
-      pageUrl: station.pageUrl,
+      id: feedStation.uid,
+      name: feedStation.name,
+      latitude: feedStation.latitude,
+      longitude: feedStation.longitude,
+      elevationM: feedStation.elevationM,
+      timeZone: feedStation.timeZone,
+      pageUrl: feedStation.pageUrl,
       async load() {
         return unavailableStation(meta, 'not_configured');
       },
     };
   }
-  return provider.toStationConfig(station, credentials);
+  return provider.toStationConfig(feedStation, credentials);
 }
 
 export function toStationConfigs(

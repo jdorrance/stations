@@ -69,6 +69,15 @@ Pilot thresholds by category:
 - **Station UID** — `<vendor>:<nativeId>` (for example `holfuy:1652` or
   `raws:TT029`). Cross-network duplicates keep secondary UIDs in `aliases`.
 - **Category** — `'freeflight' | 'mountain' | 'synoptic' | 'marine' | 'pws'`.
+- **Short name** — optional curated label on a catalogue station, at most 11
+  characters. When present, live feeds use it as `Station.name` so compact UIs
+  (XCTrack tiles) can show it without a second field. Catalogue `name` stays
+  the upstream name.
+- **Station overrides** — curated fields in
+  [`data/overrides/stations.json`](../data/overrides/stations.json), applied
+  after crawl merge. `shortName` always replaces the display label.
+  `elevationM`, `region`, and a latitude/longitude pair fill only when that
+  field is missing on the merged station. A crawl cannot overwrite the file.
 - **Launch context** — distance and forward bearing from the nearest known
   free-flight launch within the configured search radius.
 - **Feed** — an `@azohra/meteo.station` `StationFeed` with current readings and

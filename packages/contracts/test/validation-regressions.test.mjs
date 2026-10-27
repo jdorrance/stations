@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  applyStationOverrides,
   catalogueStationSchema, parseCatalogueStation, parseStationCatalogue,
+  parseStationOverrides,
   serializeCatalogueNdjson, toPublicCatalogueStation, toPublicStationCatalogue,
   deduplicateCatalogueStations, enrichStationsWithLaunches, parseCatalogueNdjson,
+  SHORT_NAME_MAX_LENGTH,
 } from '../dist/index.js';
 
 const station = {
@@ -103,6 +106,138 @@ test('schema validates ISO timestamps and canonical alias IDs; NDJSON skips malf
   assert.deepEqual(parseCatalogueNdjson(`\n${valid}\r\n{\n{}\n${JSON.stringify({ ...station, latitude: 95 })}\n`), [station]);
 });
 
+
+test('shortName accepts eleven characters and rejects blank or overlong values', () => {
+  const eleven = 'A'.repeat(SHORT_NAME_MAX_LENGTH);
+  assert.equal(parseCatalogueStation({ ...station, shortName: eleven })?.shortName, eleven);
+  assert.ok(parseCatalogueStation(station));
+  assert.equal(parseCatalogueStation({ ...station, shortName: '' }), null);
+  assert.equal(parseCatalogueStation({ ...station, shortName: ' ' }), null);
+  assert.equal(parseCatalogueStation({ ...station, shortName: eleven + 'x' }), null);
+});
+
+test('applyStationOverrides stamps short names and fills only missing place fields', () => {
+  const primary = {
+    ...station,
+    uid: 'wunderground:IHATIS1',
+    vendor: 'wunderground',
+    nativeId: 'IHATIS1',
+    name: 'Hatis (IHATIS1)',
+    elevationM: null,
+    region: null,
+    aliases: ['custom:hatis-alias'],
+  };
+  const withElev = {
+    ...station,
+    uid: 'climatenet:1',
+    vendor: 'climatenet',
+    nativeId: '1',
+    name: 'Maralik (TUMO ClimateNet)',
+    elevationM: 1689,
+    region: 'Shirak',
+  };
+  const overrides = parseStationOverrides({
+    schemaVersion: 1,
+    stations: {
+      'wunderground:IHATIS1': {
+        shortName: 'Hatis',
+        elevationM: 2529,
+        region: 'Kotayk',
+        latitude: 40.3,
+        longitude: 44.7,
+      },
+      'custom:hatis-alias': { shortName: 'HatisAlt' },
+      'climatenet:1': {
+        shortName: 'Maralik',
+        elevationM: 1,
+        region: 'Elsewhere',
+      },
+      'custom:gone': { shortName: 'Gone' },
+    },
+  });
+
+  const unmatched = [];
+  const conflicts = [];
+  const applied = applyStationOverrides([primary, withElev], overrides, {
+    onUnmatched: uid => unmatched.push(uid),
+    onConflict: (uid, keys) => conflicts.push({ uid, keys: [...keys] }),
+  });
+
+  assert.equal(applied[0].shortName, 'Hatis');
+  assert.equal(applied[0].name, 'Hatis (IHATIS1)');
+  assert.equal(applied[0].elevationM, 2529);
+  assert.equal(applied[0].region, 'Kotayk');
+  assert.equal(applied[0].latitude, primary.latitude);
+  assert.equal(applied[0].longitude, primary.longitude);
+
+  assert.equal(applied[1].shortName, 'Maralik');
+  assert.equal(applied[1].elevationM, 1689);
+  assert.equal(applied[1].region, 'Shirak');
+
+  assert.deepEqual(unmatched, ['custom:hatis-alias', 'custom:gone']);
+  assert.deepEqual(conflicts, []);
+
+  const aliasOnly = applyStationOverrides(
+    [{ ...primary, uid: 'holfuy:1', vendor: 'holfuy', nativeId: '1', aliases: ['custom:hatis-alias'] }],
+    parseStationOverrides({
+      schemaVersion: 1,
+      stations: { 'custom:hatis-alias': { shortName: 'AliasHit' } },
+    }),
+  );
+  assert.equal(aliasOnly[0].shortName, 'AliasHit');
+
+  // Crawl discovery never carries shortName; removing an override clears it on
+  // the next publish because apply starts from upstream records.
+  assert.equal(
+    applyStationOverrides(
+      [primary],
+      parseStationOverrides({ schemaVersion: 1, stations: {} }),
+    )[0].shortName,
+    undefined,
+  );
+
+  assert.throws(() => parseStationOverrides({ schemaVersion: 1, stations: { bad: { shortName: 'X' } } }));
+  assert.throws(() => parseStationOverrides({
+    schemaVersion: 1,
+    stations: { 'custom:x': { latitude: 40 } },
+  }));
+  assert.throws(() => parseStationOverrides({
+    schemaVersion: 1,
+    stations: { 'custom:x': { shortName: 'TooLongLabel!' } },
+  }));
+
+  const publicRoundTrip = toPublicCatalogueStation({
+    ...applied[0],
+    locator: { token: 'secret' },
+  });
+  assert.equal(publicRoundTrip.shortName, 'Hatis');
+  assert.equal(publicRoundTrip.elevationM, 2529);
+  assert.deepEqual(publicRoundTrip.locator, {});
+});
+
+test('disagreeing alias overrides are skipped', () => {
+  const stationWithAliases = {
+    ...station,
+    uid: 'holfuy:1',
+    vendor: 'holfuy',
+    nativeId: '1',
+    aliases: ['custom:a', 'custom:b'],
+  };
+  const conflicts = [];
+  const [result] = applyStationOverrides(
+    [stationWithAliases],
+    parseStationOverrides({
+      schemaVersion: 1,
+      stations: {
+        'custom:a': { shortName: 'One' },
+        'custom:b': { shortName: 'Two' },
+      },
+    }),
+    { onConflict: (uid, keys) => conflicts.push({ uid, keys: [...keys] }) },
+  );
+  assert.equal(result.shortName, undefined);
+  assert.deepEqual(conflicts, [{ uid: 'holfuy:1', keys: ['custom:a', 'custom:b'] }]);
+});
 
 test('network-qualified IEM airport IDs still deduplicate with direct aviation providers', () => {
   const awc = record('awc', 'KSEA', { country: 'US', locator: { icaoId: 'KSEA' } });

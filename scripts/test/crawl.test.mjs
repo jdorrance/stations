@@ -30,6 +30,50 @@ function setup(t, discover) {
 }
 const json = path => JSON.parse(readFileSync(path, 'utf8'));
 
+test('crawl applies curated short names and fill-only place fields from the overrides file', async t => {
+  const options = setup(t, async () => [
+    station('hatis', 'AM', {
+      name: 'Hatis (IHATIS1)',
+      elevationM: null,
+      region: null,
+      latitude: 40.3347,
+      longitude: 44.73241,
+    }),
+    station('elevated', 'AM', {
+      name: 'Already Elevated',
+      elevationM: 1689,
+      region: 'Shirak',
+    }),
+  ]);
+  options.regions = ['AM'];
+  options.overrides = join(options.output, '..', 'overrides.json');
+  writeFileSync(options.overrides, `${JSON.stringify({
+    schemaVersion: 1,
+    stations: {
+      'windnerd:hatis': { shortName: 'Hatis', elevationM: 2529, region: 'Kotayk' },
+      'windnerd:elevated': { shortName: 'Maralik', elevationM: 1, region: 'Elsewhere' },
+    },
+  }, null, 2)}\n`);
+  await crawlCatalogue(options);
+  const output = json(join(options.output, 'stations.json'));
+  const hatis = output.stations.find(item => item.uid === 'windnerd:hatis');
+  const elevated = output.stations.find(item => item.uid === 'windnerd:elevated');
+  assert.equal(hatis.shortName, 'Hatis');
+  assert.equal(hatis.name, 'Hatis (IHATIS1)');
+  assert.equal(hatis.elevationM, 2529);
+  assert.equal(hatis.region, 'Kotayk');
+  assert.equal(elevated.shortName, 'Maralik');
+  assert.equal(elevated.elevationM, 1689);
+  assert.equal(elevated.region, 'Shirak');
+
+  options.overrides = join(options.output, '..', 'bad-overrides.json');
+  writeFileSync(options.overrides, `${JSON.stringify({
+    schemaVersion: 1,
+    stations: { bad: { shortName: 'X' } },
+  })}\n`);
+  await assert.rejects(() => crawlCatalogue(options), /Invalid station overrides/);
+});
+
 test('crawl preserves unknown countries, keeps private locators outside public output, and hashes all artifacts', async t => {
   const secret = 'TEST_PRIVATE_LOCATOR';
   const options = setup(t, async () => [

@@ -39,6 +39,7 @@ pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
 | Path | Contents |
 | --- | --- |
 | `.cache/stations-crawl/` | Private checkpoints with full `locator` metadata (`0600`). Never deploy. |
+| `data/overrides/stations.json` | Curated short names and fill-only place fields; applied after merge |
 | `data/catalogue/stations.json` | Full public catalogue |
 | `data/catalogue/stations.geojson` | GeoJSON twin |
 | `data/catalogue/stations.ndjson.gz` | Compressed NDJSON |
@@ -48,7 +49,9 @@ pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
 | `data/catalogue/manifest.json` | Counts, hashes, vendor run status |
 
 Public files are sanitized through `toPublicCatalogueStation`. Counts and
-hashes have one owner: `manifest.json`.
+hashes have one owner: `manifest.json`. Override semantics (11-character
+`shortName`, fill-only elevation/region/position) are owned by
+[Contracts](toolkit-contracts.md).
 
 Optional API keys for live discovery and the explorer live in `.env`
 ([`.env.example`](../.env.example)).

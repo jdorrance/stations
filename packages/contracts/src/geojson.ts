@@ -73,6 +73,7 @@ export interface StationFeatureProperties {
   readonly vendor: StationVendor | 'unknown';
   readonly category: StationCategory;
   readonly name: string;
+  readonly shortName: string | null;
   readonly sourceLabel: string;
   readonly elevationM: number | null;
   readonly country: RegionCode | null;
@@ -137,6 +138,7 @@ export function catalogueToGeoJson(
       vendor: station.vendor,
       category: station.category ?? defaultCategoryForVendor(station.vendor),
       name: station.name,
+      shortName: station.shortName ?? null,
       sourceLabel: station.vendor,
       elevationM: station.elevationM,
       country: station.country,
@@ -195,6 +197,7 @@ function stationToFeature(
         vendor,
         category,
         name: station.name,
+        shortName: catalogueEntry?.shortName ?? null,
         sourceLabel: station.sourceLabel,
         elevationM,
         country: catalogueEntry?.country ?? null,
@@ -244,6 +247,7 @@ function stationToFeature(
       vendor,
       category,
       name: station.name,
+      shortName: catalogueEntry?.shortName ?? null,
       sourceLabel: station.sourceLabel,
       elevationM,
       country: catalogueEntry?.country ?? null,

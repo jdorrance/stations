@@ -145,6 +145,18 @@ test('remote discovery preserves seed country and timezone without inventing eit
   assert.deepEqual(filterCatalogueStations([yerevan], { regions: ['US'] }), []);
 });
 
+test('toStationConfig uses shortName as the feed label without mutating the catalogue station', () => {
+  const catalogueStation = {
+    ...holfuy,
+    name: 'Hatis 300 Launch',
+    shortName: 'Hatis',
+  };
+  const config = toStationConfig(catalogueStation);
+  assert.equal(config.name, 'Hatis');
+  assert.equal(catalogueStation.name, 'Hatis 300 Launch');
+  assert.equal(catalogueStation.shortName, 'Hatis');
+});
+
 test('catalogue secrets never become upstream credentials', async () => {
   const legacyTempest = { ...tempest, locator: { ...tempest.locator, token: 'catalogue-secret' } };
   const unconfiguredTempest = toStationConfig(legacyTempest);
