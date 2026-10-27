@@ -14,6 +14,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { SHORT_NAME_MAX_LENGTH, parseStationOverrides } from '@stations/contracts';
+import { REGIONS, coversPoint } from '@stations/geography';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 /** Sentinel: every station with country === 'US' (chunked by state region). */
@@ -77,6 +78,7 @@ const ABBREVIATIONS = [
   [/\bComplex\b/gi, 'Cplx'],
   [/\bCorners?\b/gi, 'Crn'],
   [/\bLakefront\b/gi, 'Lkfr'],
+  [/\bFountains?\b/gi, 'Fount'],
   [/(?<=[A-Za-z])fields?\b/gi, 'fld'],
 ];
 
@@ -161,9 +163,19 @@ export function titleCase(value) {
 
 function stripCallsign(name) {
   return name
+    .replace(/^CWOP\s+/i, '')
     .replace(/^[A-Z]{1,2}\d[A-Z]{1,3}(?:-\d+)?\s+/i, '')
     .replace(/^(?:GW|FW|DW|EW|CW|KW|KB|KN)\d+\s+/i, '')
     .replace(/^\d{7}\s*-\s*/, '');
+}
+
+function callsignOnlyLabel(name) {
+  const trimmed = name.trim();
+  // "CWOP GW5845" / bare APRS ids — keep the callsign, not "Cwop".
+  const fromCwop = trimmed.match(/^CWOP\s+([A-Z0-9-]{3,11})$/i);
+  if (fromCwop) return fromCwop[1].toUpperCase();
+  if (/^[A-Z]{1,2}\d[A-Z0-9-]{1,8}$/i.test(trimmed)) return trimmed.toUpperCase().slice(0, SHORT_NAME_MAX_LENGTH);
+  return null;
 }
 
 export function stripNoise(name) {
@@ -363,9 +375,9 @@ export function fitLabel(label, { preferApt = false } = {}) {
   }
 
   while (words.join(' ').length > SHORT_NAME_MAX_LENGTH && words.length > 1) {
-    // Prefer dropping a trailing generic over the head place name.
+    // Prefer dropping a trailing generic over the head place name; otherwise
+    // keep the leading place token (Seven Fountains → keep Seven…).
     if (trailingGeneric.test(words[words.length - 1])) words = words.slice(0, -1);
-    else if (words[0].length <= words[words.length - 1].length) words = words.slice(1);
     else words = words.slice(0, -1);
   }
   cur = words.join(' ');
@@ -383,6 +395,9 @@ function fallbackFromName(name, nativeId) {
 
 /** Derive a place-like shortName from a vendor station name (not yet uniquified). */
 export function deriveShortName(name, nativeId = 'station') {
+  const callsign = callsignOnlyLabel(name);
+  if (callsign) return callsign;
+
   const dashPlace = preferDashPlace(name);
   let n = stripNoise(dashPlace ?? name);
   if (isAirportish(n) || isAirportish(name)) {
@@ -483,14 +498,31 @@ function resolveTargetRegions(stations, regionsArg) {
   return regionsArg;
 }
 
+function isUsStation(station, { includeUnscoped = false } = {}) {
+  if (station.country === 'US') return true;
+  // WU/CWOP/WeatherLink often ship with null country; include by US coverage.
+  if (!includeUnscoped) return false;
+  if (station.country != null && station.country !== 'US') return false;
+  return coversPoint(REGIONS.US.coverage, {
+    latitude: station.latitude,
+    longitude: station.longitude,
+  });
+}
+
 function chunkStationsByRegion(stations, regions, { includeUnscoped = false } = {}) {
   const wanted = new Set(regions);
   const chunks = new Map(regions.map((region) => [region, []]));
   if (includeUnscoped) chunks.set('_', []);
   for (const station of stations) {
-    if (station.country !== 'US') continue;
+    if (!isUsStation(station, { includeUnscoped })) continue;
     if (!station.region) {
       if (includeUnscoped) chunks.get('_').push(station);
+      continue;
+    }
+    if (station.country === 'US' && !wanted.has(station.region)) continue;
+    // Unscoped-but-in-US-coverage stations may carry a region from another pass; keep them.
+    if (station.country == null && !wanted.has(station.region) && includeUnscoped) {
+      chunks.get('_').push(station);
       continue;
     }
     if (!wanted.has(station.region)) continue;

@@ -14,6 +14,10 @@ test('deriveShortName strips CoCoRaHS offsets and callsigns', () => {
   assert.equal(deriveShortName('KB3HHA-13 Germantown'), 'Germantown');
   assert.equal(deriveShortName('FW3803 Chesterfield'), 'Chesterfld');
   assert.equal(deriveShortName('8631044 - Wachapreague, VA'), 'Wachapreagu');
+  assert.equal(deriveShortName('Woodstock (KVAWOODS74)'), 'Woodstock');
+  assert.equal(deriveShortName('CWOP GW5845'), 'GW5845');
+  assert.equal(deriveShortName('CWOP KG4QXL-1'), 'KG4QXL-1');
+  assert.equal(deriveShortName('Seven Fountains (KVASEVEN1)'), 'Seven Fount');
 });
 
 test('deriveShortName keeps airport place labels under eleven chars', () => {
