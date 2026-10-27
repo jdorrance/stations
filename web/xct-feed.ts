@@ -7,6 +7,7 @@ import type {
 } from '@stations/client';
 import {
   defaultCategoryForVendor,
+  type Landform,
   type Station,
   type StationCategory,
 } from '@stations/contracts';
@@ -20,6 +21,7 @@ export interface NearbyWindObservation {
   readonly category: StationCategory;
   /** Vendor defaults apply only when the catalogue does not declare a category. */
   readonly categorySource: 'catalogue' | 'vendor-default';
+  readonly landform: Landform | null;
   readonly servedAt: string;
   /** Monotonic performance.now() clock, never the device's calendar clock. */
   readonly receivedAtMs: number;
@@ -138,6 +140,7 @@ export async function loadNearbyWind(
         station,
         category: candidate.category ?? defaultCategoryForVendor(candidate.vendor),
         categorySource: candidate.category == null ? 'vendor-default' : 'catalogue',
+        landform: candidate.landform ?? null,
         servedAt: result.data.servedAt,
         receivedAtMs,
       });
