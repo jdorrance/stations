@@ -121,9 +121,9 @@ const DIAL_TICK_LEN = 3.2;
 
 const COMPASS_8 = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const;
 
-/** Place ring in the 80×84 tile, centred on the rose (name 13, footer 14). */
+/** Place ring in the 80×84 tile, centred on the rose (name 13, footer 16). */
 const ORBIT_CX = 40;
-const ORBIT_CY = 41.5;
+const ORBIT_CY = 40.5;
 const ORBIT_R = 28;
 /** Solid arc, degrees, centred on the bearing to the station. */
 const ORBIT_SPAN = 34;
@@ -595,10 +595,10 @@ function windDialSvg(tile: TileModel, units: DisplayUnits): string {
   const avg = roundSpeed(tile.windAvgMps, units.speed);
   const gust = displayedGust(tile.windGustMps, units.speed);
   if (gust === null) {
-    parts.push(`<text class="dialAvg" x="${DIAL_C}" y="28">${avg}</text>`);
+    parts.push(`<text class="dialAvg" font-size="14" x="${DIAL_C}" y="28">${avg}</text>`);
   } else {
-    parts.push(`<text class="dialAvg" x="${DIAL_C}" y="23">${avg}</text>`);
-    parts.push(`<text class="dialGust" x="${DIAL_C}" y="35">${gust}</text>`);
+    parts.push(`<text class="dialAvg" font-size="14" x="${DIAL_C}" y="23">${avg}</text>`);
+    parts.push(`<text class="dialGust" font-size="9.8" x="${DIAL_C}" y="35">${gust}</text>`);
   }
 
   return `<svg class="dial" viewBox="0 0 48 48" aria-hidden="true">${parts.join('')}</svg>`;
@@ -738,7 +738,7 @@ function placeOrbitSvg(bearingDeg: number): string {
   const start = orbitPoint(bearingDeg - ORBIT_SPAN / 2);
   const end = orbitPoint(bearingDeg + ORBIT_SPAN / 2);
   return (
-    `<svg class="orbit" viewBox="0 0 80 84" aria-hidden="true">` +
+    `<svg class="orbit" viewBox="0 0 80 84" preserveAspectRatio="xMidYMid meet" aria-hidden="true">` +
     `<circle class="orbitDash" cx="${ORBIT_CX}" cy="${ORBIT_CY}" r="${ORBIT_R}"/>` +
     `<path class="orbitMark" d="M${svgNum(start.x)} ${svgNum(start.y)} A${ORBIT_R} ${ORBIT_R} 0 0 1 ${svgNum(end.x)} ${svgNum(end.y)}"/>` +
     `</svg>`

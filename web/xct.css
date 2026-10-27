@@ -32,6 +32,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
+html {
+  container-type: inline-size;
+}
+
 html,
 body {
   width: 100%;
@@ -39,6 +43,17 @@ body {
   background: var(--bg);
   color: var(--fg);
   overflow: hidden;
+}
+
+body {
+  --bar-s: var(--size-factor);
+}
+
+@supports (width: 1cqi) {
+  body {
+    /* Altitude bar. Stays readable in a narrow XCTrack column. */
+    --bar-s: calc(var(--size-factor) * min(1, max(0.8, 100cqi / 320px)));
+  }
 }
 
 .stationList {
@@ -50,6 +65,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   align-content: flex-start;
+  container-type: inline-size;
 }
 
 .emptyState {
@@ -61,24 +77,38 @@ body {
 }
 
 .stationDetail {
+  /* One scale for the whole tile. --fit shrinks it only when a single tile
+   * cannot fit the widget, so a narrow column does not squash the width. */
+  --s: var(--size-factor);
+}
+
+@supports (width: 1cqi) {
+  .stationDetail {
+    --fit: min(1, 100cqi / (94px * var(--size-factor)));
+    --s: calc(var(--size-factor) * var(--fit));
+  }
+}
+
+.stationDetail {
   position: relative;
   display: flex;
+  flex: none;
   flex-direction: column;
-  width: calc(80px * var(--size-factor));
-  height: calc(84px * var(--size-factor));
-  max-width: 100%;
-  margin: calc(5px * var(--size-factor));
+  width: calc(80px * var(--s));
+  height: calc(84px * var(--s));
+  margin: calc(5px * var(--s));
   padding: 0;
   background-color: var(--tile);
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  border-radius: 3px;
+  border-radius: calc(3px * var(--s));
   color: var(--fg);
   overflow: hidden;
+  font-size: calc(16px * var(--s));
 }
 
 body.has-alt .stationList {
-  bottom: 32px;
+  bottom: calc(28px * var(--bar-s));
 }
 
 /* Wind colour on the arrow and the numbers. Past trim also tints the tile. */
@@ -120,7 +150,7 @@ body.has-alt .stationList {
   top: 1px;
   right: 2px;
   z-index: 3;
-  font-size: calc(0.5em * var(--size-factor));
+  font-size: 0.5em;
   font-weight: bold;
   line-height: 1.15;
   padding: 0 2px;
@@ -175,9 +205,9 @@ body.has-alt .stationList {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: calc(13px * var(--size-factor));
-  font-size: calc(0.68em * var(--size-factor));
-  line-height: calc(13px * var(--size-factor));
+  height: calc(13px * var(--s));
+  font-size: 0.68em;
+  line-height: calc(13px * var(--s));
   padding: 0 2px;
   color: var(--fg);
 }
@@ -185,7 +215,7 @@ body.has-alt .stationList {
 .stationDetail.has-age .name {
   text-align: left;
   padding-left: 3px;
-  padding-right: calc(28px * var(--size-factor));
+  padding-right: calc(28px * var(--s));
 }
 
 .stationDetail .dialWrap {
@@ -252,20 +282,14 @@ body.has-alt .stationList {
   font-weight: bold;
 }
 
-.dialAvg {
-  font-size: 16.5px;
-}
-
-.dialGust {
-  font-size: 11.5px;
-}
+/* Sizes are viewBox units on the text elements, so they follow the rose. */
 
 /* Metres and distance share the footer, under the rose. The step down in
  * type is what lets both fit in 80 px. No height: distance stays centered. */
 .elevNum {
   display: inline-flex;
   align-items: center;
-  gap: calc(1px * var(--size-factor));
+  gap: calc(1px * var(--s));
   min-width: 0;
   font-variant-numeric: tabular-nums;
 }
@@ -285,21 +309,21 @@ body.has-alt .stationList {
 .elevNum .caret.down {
   width: 0;
   height: 0;
-  border-right: calc(3px * var(--size-factor)) solid transparent;
-  border-left: calc(3px * var(--size-factor)) solid transparent;
+  border-right: calc(3px * var(--s)) solid transparent;
+  border-left: calc(3px * var(--s)) solid transparent;
 }
 
 .elevNum .caret.up {
-  border-bottom: calc(4px * var(--size-factor)) solid currentColor;
+  border-bottom: calc(4px * var(--s)) solid currentColor;
 }
 
 .elevNum .caret.down {
-  border-top: calc(4px * var(--size-factor)) solid currentColor;
+  border-top: calc(4px * var(--s)) solid currentColor;
 }
 
 .elevNum .caret.level {
-  width: calc(6px * var(--size-factor));
-  height: calc(2px * var(--size-factor));
+  width: calc(6px * var(--s));
+  height: calc(2px * var(--s));
   background: currentColor;
 }
 
@@ -307,17 +331,17 @@ body.has-alt .stationList {
 .elevRail {
   position: absolute;
   z-index: 5;
-  top: calc(16px * var(--size-factor));
-  bottom: calc(16px * var(--size-factor));
-  left: calc(5px * var(--size-factor));
-  width: calc(4px * var(--size-factor));
+  top: calc(14px * var(--s));
+  bottom: calc(18px * var(--s));
+  left: calc(4px * var(--s));
+  width: calc(4px * var(--s));
   pointer-events: none;
 }
 
 .elevTrack {
   position: absolute;
   inset: 0;
-  border-radius: calc(2px * var(--size-factor));
+  border-radius: calc(2px * var(--s));
   background: var(--elev-track);
 }
 
@@ -338,22 +362,22 @@ body.has-alt .stationList {
 
 .elevYou {
   z-index: 1;
-  left: calc(-5px * var(--size-factor));
-  width: calc(9px * var(--size-factor));
-  height: calc(2px * var(--size-factor));
+  left: calc(-5px * var(--s));
+  width: calc(9px * var(--s));
+  height: calc(2px * var(--s));
 }
 
 .elevBead {
   z-index: 2;
-  left: calc(-2px * var(--size-factor));
-  width: calc(8px * var(--size-factor));
-  height: calc(4px * var(--size-factor));
+  left: calc(-2px * var(--s));
+  width: calc(8px * var(--s));
+  height: calc(4px * var(--s));
   outline: 1px solid var(--tile);
 }
 
 .elevYou.off-high,
 .elevYou.off-low {
-  left: calc(-2px * var(--size-factor));
+  left: calc(-2px * var(--s));
   width: 0;
   height: 0;
   background: transparent;
@@ -365,16 +389,16 @@ body.has-alt .stationList {
 .elevYou.off-high {
   top: -1px;
   bottom: auto;
-  border-right: calc(4px * var(--size-factor)) solid transparent;
-  border-bottom: calc(5px * var(--size-factor)) solid var(--elev-ink);
-  border-left: calc(4px * var(--size-factor)) solid transparent;
+  border-right: calc(4px * var(--s)) solid transparent;
+  border-bottom: calc(5px * var(--s)) solid var(--elev-ink);
+  border-left: calc(4px * var(--s)) solid transparent;
 }
 
 .elevYou.off-low {
   bottom: -1px;
-  border-top: calc(5px * var(--size-factor)) solid var(--elev-ink);
-  border-right: calc(4px * var(--size-factor)) solid transparent;
-  border-left: calc(4px * var(--size-factor)) solid transparent;
+  border-top: calc(5px * var(--s)) solid var(--elev-ink);
+  border-right: calc(4px * var(--s)) solid transparent;
+  border-left: calc(4px * var(--s)) solid transparent;
 }
 
 .altBar {
@@ -385,14 +409,24 @@ body.has-alt .stationList {
   left: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  height: 32px;
-  padding: 0 10px;
+  gap: calc(6px * var(--bar-s));
+  height: calc(28px * var(--bar-s));
+  padding: 0 calc(8px * var(--bar-s));
   background: var(--bg);
   color: var(--fg);
-  font-size: 12px;
+  font-size: calc(13px * var(--bar-s));
   font-weight: bold;
   white-space: nowrap;
+}
+
+@container (max-width: 220px) {
+  .altLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
 }
 
 .altBar[hidden] {
@@ -404,15 +438,15 @@ body.has-alt .stationList {
 }
 
 .altSlider {
-  flex: 1;
-  min-width: 0;
+  flex: 1 1 auto;
+  min-width: calc(36px * var(--bar-s));
   margin: 0;
   accent-color: var(--fg);
 }
 
 .altReadout {
   flex: none;
-  min-width: 4.6em;
+  min-width: 3.4em;
   font-variant-numeric: tabular-nums;
   text-align: right;
 }
@@ -425,10 +459,11 @@ body.has-alt .stationList {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(14px * var(--size-factor));
-  padding: 0 2px;
-  font-size: calc(0.68em * var(--size-factor));
-  line-height: calc(14px * var(--size-factor));
+  height: calc(16px * var(--s));
+  min-height: 0;
+  padding: 0 calc(3px * var(--s));
+  font-size: 0.68em;
+  line-height: 1;
   font-weight: bold;
   color: var(--fg);
   white-space: nowrap;
@@ -437,9 +472,8 @@ body.has-alt .stationList {
 
 .stationDetail .meta.has-elev {
   justify-content: space-between;
-  gap: 2px;
-  padding: 0 calc(2px * var(--size-factor));
-  font-size: calc(0.58em * var(--size-factor));
+  gap: calc(3px * var(--s));
+  font-size: 0.56em;
 }
 
 .stationDetail .meta .dist {
