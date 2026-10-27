@@ -12,6 +12,11 @@
     <div class="stationList" id="station-list" role="list">
       <p class="emptyState" id="empty-state">loading…</p>
     </div>
+    <div class="altBar" id="alt-bar" hidden>
+      <label class="altLabel" for="alt-slider">Your altitude</label>
+      <input id="alt-slider" class="altSlider" type="range" min="0" max="4000" step="1" value="0">
+      <output id="alt-readout" class="altReadout" for="alt-slider">—</output>
+    </div>
     <script type="module" src="/dist/xct.js"></script>
   </body>
 </html>

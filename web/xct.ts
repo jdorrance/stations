@@ -3,14 +3,22 @@
  *
  * One tile per station, nearest first. Each tile answers six questions at a
  * glance: wind strength + gust (dial centre), wind direction (rim arrow,
- * flying with the wind), peak or not (mountain background), where the
- * station is from me (a solid arc on the faint circle outside the rose, and
- * the distance in the footer), which station (name), and how fresh the reading
- * is. The feed name is the curated short label when the catalogue has one
- * (at most 11 characters). No chip means live. After that the chip uses one
- * of three fixed pairs — amber, dark brown, then black — so the digits stay
- * readable. The tile fades with age. Stale readings draw an outline arrow. A
- * station with no reading is omitted.
+ * flying with the wind), where the station is from me (a solid arc on the
+ * faint circle outside the rose, and the distance in the footer), which
+ * station (name), how fresh the reading is, and how high it is. Height is a
+ * rail on the left. The stations on screen are the top and bottom, the bead
+ * is this station, and the tick is your altitude. The footer holds the
+ * metres on the left and the distance on the right, under the rose. With no
+ * altitude yet, the metres are the station's own and the tick is absent.
+ * With no station height, the distance stays centered. The window is
+ * at least 400 m, so a flat screen stays flat. Past either end the tick is
+ * an arrow and the bar stops. The altitude slider is shown only when this
+ * screen has a station height and a pilot altitude (a fix or `alt`). The
+ * feed name is the curated short label when the catalogue has one (at most
+ * 11 characters). No chip means live. After that the chip uses one of three
+ * fixed pairs — amber, dark brown, then
+ * black — so the digits stay readable. The tile fades with age. Stale
+ * readings draw an outline arrow. A station with no reading is omitted.
  *
  * URL parameters (all optional):
  *
@@ -20,7 +28,7 @@
  * | `size`       | 2…100 → tiles scale by `1 + size/100`    | 0 (80 px tiles)  |
  * | `mode`       | `dark`                                   | light            |
  * | `lat`,`lng`  | fixed position (`lon` accepted)          | XCTrack / GPS    |
- * | `alt`        | pilot altitude m MSL (peak vs valley)    | XCTrack / GPS    |
+ * | `alt`        | pilot altitude m MSL; the rail tick      | XCTrack / GPS    |
  * | `maxage`     | hide readings older than N minutes       | 120              |
  * | `category`   | csv of station categories                | all wind-capable |
  * | `debug`      | any value → Mt Hatis fix, drifts slowly  | off              |
@@ -75,6 +83,15 @@ const KM_PER_MILE = 1.609344;
 const PEAK_ELEVATION_M = 1000;
 /** Station this many metres above the pilot counts as peak terrain. */
 const PEAK_ABOVE_PILOT_M = 80;
+/**
+ * Shortest height window for the rails, metres. A screen tighter than this
+ * is widened around its midpoint so small differences do not fill the tile.
+ */
+const ELEV_WINDOW_M = 400;
+/** Within this many metres of you, the height number reads level. */
+const ELEV_LEVEL_M = 15;
+/** Room past the station window so the slider can sit above or below it. */
+const ELEV_SLIDER_PAD_M = 400;
 
 /**
  * Wind colour in km/h, on the rounded average the tile shows.
@@ -104,9 +121,9 @@ const DIAL_TICK_LEN = 3.2;
 
 const COMPASS_8 = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const;
 
-/** Place ring in the 80×84 tile, centred on the rose and clear of the name. */
+/** Place ring in the 80×84 tile, centred on the rose (name 13, footer 14). */
 const ORBIT_CX = 40;
-const ORBIT_CY = 42;
+const ORBIT_CY = 41.5;
 const ORBIT_R = 28;
 /** Solid arc, degrees, centred on the bearing to the station. */
 const ORBIT_SPAN = 34;
@@ -154,10 +171,22 @@ const client = createStationsClient({ baseUrl: '/api/stations' });
 
 const listEl = document.getElementById('station-list') as HTMLElement;
 const emptyEl = document.getElementById('empty-state') as HTMLElement;
+const altBarEl = document.getElementById('alt-bar') as HTMLElement;
+const altSliderEl = document.getElementById('alt-slider') as HTMLInputElement;
+const altReadoutEl = document.getElementById('alt-readout') as HTMLElement;
 
 let myPosition: Position | null = null;
 /** Pilot altitude MSL metres when known (XCTrack / ?alt=). */
 let myAltitudeM: number | null = null;
+/**
+ * Altitude chosen on the slider. It wins over the fix for this page load.
+ * Absent until the slider moves, so a missing fix is not invented.
+ */
+let altOverrideM: number | null = null;
+/** True while a pointer is down on the slider, so a fix cannot move the thumb. */
+let altDragging = false;
+/** True while the slider's min, max, or value are being written from code. */
+let altSyncing = false;
 let debugPosition: Position | null = null;
 type RetainedObservation = NearbyWindObservation & { refreshFailed: boolean };
 const liveByUid = new Map<string, RetainedObservation>();
@@ -716,6 +745,156 @@ function placeOrbitSvg(bearingDeg: number): string {
   );
 }
 
+/** Altitude the rails use: the slider once it has moved, otherwise the fix. */
+function railAltitudeM(): number | null {
+  return altOverrideM ?? myAltitudeM;
+}
+
+interface ElevWindow {
+  readonly lo: number;
+  readonly hi: number;
+}
+
+/**
+ * Lowest and highest station on screen. Fewer than {@link ELEV_WINDOW_M}
+ * metres between them is widened around the midpoint.
+ */
+function elevationWindow(tiles: readonly TileModel[]): ElevWindow | null {
+  let lo = Infinity;
+  let hi = -Infinity;
+  for (const tile of tiles) {
+    if (tile.elevationM === null) continue;
+    lo = Math.min(lo, tile.elevationM);
+    hi = Math.max(hi, tile.elevationM);
+  }
+  if (!Number.isFinite(lo)) return null;
+  if (hi - lo < ELEV_WINDOW_M) {
+    const mid = (lo + hi) / 2;
+    lo = mid - ELEV_WINDOW_M / 2;
+    hi = mid + ELEV_WINDOW_M / 2;
+  }
+  return { lo, hi };
+}
+
+/** One decimal percent, so a 1 m GPS wobble does not rebuild the tile. */
+function elevPct(t: number): string {
+  return (Math.round(t * 1000) / 10).toFixed(1);
+}
+
+function elevShare(bounds: ElevWindow, metres: number): number {
+  return (metres - bounds.lo) / (bounds.hi - bounds.lo);
+}
+
+interface ElevFace {
+  readonly text: string;
+  /** Empty when altitude is unknown and the number is absolute metres. */
+  readonly caret: '' | 'up' | 'down' | 'level';
+  /** Words for the tile title. Empty when altitude is unknown. */
+  readonly phrase: string;
+}
+
+function elevFace(elevM: number, youM: number | null): ElevFace {
+  if (youM === null) return { text: `${Math.round(elevM)}m`, caret: '', phrase: '' };
+  const delta = Math.round(elevM - youM);
+  if (Math.abs(delta) < ELEV_LEVEL_M) {
+    return { text: '0m', caret: 'level', phrase: 'level with you' };
+  }
+  if (delta > 0) {
+    return { text: `+${delta}m`, caret: 'up', phrase: `${delta} m above you` };
+  }
+  const below = Math.abs(delta);
+  return { text: `\u2212${below}m`, caret: 'down', phrase: `${below} m below you` };
+}
+
+/**
+ * Rail for one station. Bottom of the track is the low end of `bounds`,
+ * top is the high end. The bead is this station. The tick is you, and the
+ * fill is the gap. Outside the window the tick is an arrow and the fill
+ * is omitted. No elevation: nothing.
+ */
+function elevRailHtml(elevM: number | null, bounds: ElevWindow | null, youM: number | null): string {
+  if (elevM === null || bounds === null) return '';
+  const stationT = Math.min(1, Math.max(0, elevShare(bounds, elevM)));
+  let youMark = '';
+  let fill = '';
+  if (youM !== null) {
+    if (youM > bounds.hi) {
+      youMark = '<div class="elevYou off-high"></div>';
+    } else if (youM < bounds.lo) {
+      youMark = '<div class="elevYou off-low"></div>';
+    } else {
+      const youT = elevShare(bounds, youM);
+      youMark = `<div class="elevYou" style="bottom:${elevPct(youT)}%"></div>`;
+      const gap = Math.abs(elevM - youM);
+      if (gap >= ELEV_LEVEL_M) {
+        const lo = Math.min(stationT, youT);
+        const hi = Math.max(stationT, youT);
+        fill = `<div class="elevFill" style="bottom:${elevPct(lo)}%;height:${elevPct(hi - lo)}%"></div>`;
+      }
+    }
+  }
+  return (
+    '<div class="elevRail" aria-hidden="true">' +
+    `<div class="elevTrack">${fill}</div>${youMark}` +
+    `<div class="elevBead" style="bottom:${elevPct(stationT)}%"></div>` +
+    '</div>'
+  );
+}
+
+/** Metres on the left, distance on the right, both under the rose. */
+function footerHtml(distance: string, elevM: number | null, youM: number | null): string {
+  const dist = `<span class="dist">~${escapeHtml(distance)}</span>`;
+  if (elevM === null) return `<div class="meta">${dist}</div>`;
+  const face = elevFace(elevM, youM);
+  const caret = face.caret === '' ? '' : `<span class="caret ${face.caret}" aria-hidden="true"></span>`;
+  return `<div class="meta has-elev"><span class="elevNum">${caret}${face.text}</span>${dist}</div>`;
+}
+
+/**
+ * The slider is the pilot altitude already in hand. It stays hidden when
+ * this screen has no station height, and when no fix, `alt`, or prior drag
+ * has an altitude. Programmatic writes are ignored so a clamped range
+ * cannot invent one.
+ */
+function syncAltBar(bounds: ElevWindow | null): void {
+  const you = railAltitudeM();
+  const show = bounds !== null && you !== null;
+  altBarEl.hidden = !show;
+  document.body.classList.toggle('has-alt', show);
+  if (bounds === null || you === null) return;
+
+  const min = Math.min(bounds.lo - ELEV_SLIDER_PAD_M, you - 50);
+  const max = Math.max(bounds.hi + ELEV_SLIDER_PAD_M, you + 50);
+  altSyncing = true;
+  try {
+    altSliderEl.min = String(Math.round(min));
+    altSliderEl.max = String(Math.round(max));
+    altSliderEl.step = '1';
+    if (!altDragging) altSliderEl.value = String(Math.round(you));
+  } finally {
+    altSyncing = false;
+  }
+  altReadoutEl.textContent = `${Math.round(you)} m`;
+}
+
+function bindAltSlider(): void {
+  const stopDrag = (): void => {
+    altDragging = false;
+  };
+  altSliderEl.addEventListener('pointerdown', () => {
+    altDragging = true;
+  });
+  altSliderEl.addEventListener('pointerup', stopDrag);
+  altSliderEl.addEventListener('pointercancel', stopDrag);
+  altSliderEl.addEventListener('input', event => {
+    if (altSyncing || event.isTrusted === false) return;
+    const next = Number(altSliderEl.value);
+    if (!Number.isFinite(next)) return;
+    altOverrideM = next;
+    updateView();
+  });
+}
+
 /** Compact age for the corner chip: `14m`, `1h`, `1h05`. */
 function formatAgeChip(minutes: number): string {
   if (minutes < 1) return '<1m';
@@ -725,7 +904,13 @@ function formatAgeChip(minutes: number): string {
   return rest === 0 ? `${hours}h` : `${hours}h${String(rest).padStart(2, '0')}`;
 }
 
-function patchTile(node: HTMLElement, tile: TileModel, units: DisplayUnits): void {
+function patchTile(
+  node: HTMLElement,
+  tile: TileModel,
+  units: DisplayUnits,
+  elevWindow: ElevWindow | null,
+  youM: number | null,
+): void {
   const distance = formatDistance(tile.distanceKm, units.distance);
   const where = `${compass8(tile.bearingDeg)} ${distance}`;
   // No chip while live. Aging and stale use one of three fixed colour pairs.
@@ -733,17 +918,13 @@ function patchTile(node: HTMLElement, tile: TileModel, units: DisplayUnits): voi
     tile.freshness === 'live'
       ? ''
       : `<span class="ageChip age-${ageChipStep(tile)}">${escapeHtml(formatAgeChip(tile.ageMinutes))}</span>`;
-  const elevLabel =
-    tile.elevationM === null
-      ? ''
-      : `<div class="elev">${Math.round(tile.elevationM)}m</div>`;
   const markup =
     placeOrbitSvg(tile.bearingDeg) +
+    elevRailHtml(tile.elevationM, elevWindow, youM) +
     chip +
     `<div class="name">${escapeHtml(tile.name)}</div>` +
     `<div class="dialWrap">${windDialSvg(tile, units)}</div>` +
-    elevLabel +
-    `<div class="meta">~${escapeHtml(distance)}</div>`;
+    footerHtml(distance, tile.elevationM, youM);
   // SVG serialization expands self-closing tags; comparing innerHTML would
   // recreate every dial on every tick even when no visible value changed.
   if (tileMarkup.get(node) !== markup) {
@@ -769,7 +950,11 @@ function patchTile(node: HTMLElement, tile: TileModel, units: DisplayUnits): voi
   node.style.setProperty('--vis', vis.toFixed(3));
 
   const age = tile.ageMinutes < 1 ? 'just now' : `${tile.ageMinutes} min ago`;
-  const elev = tile.elevationM !== null ? ` · ${Math.round(tile.elevationM)} m` : '';
+  const elevM = tile.elevationM;
+  const face = elevM === null ? null : elevFace(elevM, youM);
+  const elev = elevM === null || face === null
+    ? ''
+    : ` · ${Math.round(elevM)} m${face.phrase === '' ? '' : ` · ${face.phrase}`}`;
   const avg = roundSpeed(tile.windAvgMps, units.speed);
   const shownGust = displayedGust(tile.windGustMps, units.speed);
   const gust = shownGust === null ? '–' : String(shownGust);
@@ -794,17 +979,21 @@ function updateView(): void {
   if (myPosition === null) {
     clearTiles();
     setEmpty(geoError ?? 'wait for position');
+    syncAltBar(null);
     return;
   }
 
   const units = parseDisplayUnits();
   const tiles = buildTileModels(myPosition, performance.now());
+  const elevWindow = elevationWindow(tiles);
+  const youM = railAltitudeM();
+  syncAltBar(elevWindow);
   const keep = new Set<string>();
 
   for (const [index, tile] of tiles.entries()) {
     keep.add(tile.uid);
     const node = ensureTileNode(tile.uid);
-    patchTile(node, tile, units);
+    patchTile(node, tile, units, elevWindow, youM);
     const atIndex = listEl.querySelectorAll('.stationDetail')[index];
     if (atIndex !== node) listEl.insertBefore(node, atIndex ?? null);
   }
@@ -907,6 +1096,7 @@ async function pollFeed(): Promise<void> {
 async function bootstrap(): Promise<void> {
   applySizeFactor();
   applyDarkMode();
+  bindAltSlider();
   setOnlineState(null);
   startGeolocationFallback();
   refreshPosition();

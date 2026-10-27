@@ -475,3 +475,92 @@ test('XCTrack preserves three-digit speeds in the dial and station title', async
   assert.equal(tile.querySelector('.dialGust').textContent, '162');
   assert.match(tile.title, /average 108, gust 162 km\/h/);
 });
+
+function stylePercent(element, name) {
+  const style = element.getAttribute('style') ?? '';
+  const match = style.match(new RegExp(`${name}:\\s*([0-9.]+)%`));
+  assert.ok(match, `${name} in ${style}`);
+  return Number(match[1]);
+}
+
+test('XCTrack elevation rail uses the stations on screen and the slider as your altitude', async () => {
+  const hatis = station({
+    id: 'holfuy:1', name: 'Hatis', latitude: 40.335, longitude: 44.732, elevationM: 2019,
+  });
+  const ijevan = station({
+    id: 'holfuy:2', name: 'Ijevan', latitude: 40.879, longitude: 45.157, elevationM: 733,
+  });
+  const unknown = station({
+    id: 'holfuy:3', name: 'No elev', latitude: 40.4, longitude: 44.8, elevationM: null,
+  });
+  const open = search => browser({ search, stations: [hatis, ijevan, unknown] });
+
+  const unfixed = await open('?lat=40.33&lng=44.73');
+  const high = unfixed.tiles().find(tile => tile.querySelector('.name').textContent === 'Hatis');
+  const low = unfixed.tiles().find(tile => tile.querySelector('.name').textContent === 'Ijevan');
+  const missing = unfixed.tiles().find(tile => tile.querySelector('.name').textContent === 'No elev');
+  assert.equal(high.querySelector('.elevYou'), null, 'no altitude means no tick');
+  assert.equal(high.querySelector('.elevNum').textContent, '2019m');
+  assert.equal(low.querySelector('.elevNum').textContent, '733m');
+  assert.equal(stylePercent(high.querySelector('.elevBead'), 'bottom'), 100);
+  assert.equal(stylePercent(low.querySelector('.elevBead'), 'bottom'), 0);
+  assert.equal(missing.querySelector('.elevRail'), null);
+  assert.equal(missing.querySelector('.elev'), null);
+  assert.equal(unfixed.get('alt-bar').hidden, true, 'no pilot altitude hides the slider');
+  const noStationElev = await browser({
+    search: '?lat=40.33&lng=44.73&alt=1500',
+    stations: [station({ elevationM: null })],
+  });
+  assert.equal(noStationElev.get('alt-bar').hidden, true, 'no station height hides the slider');
+  assert.match(high.title, /2019 m/);
+  assert.doesNotMatch(high.title, /above you|below you/);
+
+  const placed = await open('?lat=40.33&lng=44.73&alt=1500');
+  const placedHigh = placed.tiles().find(tile => tile.querySelector('.name').textContent === 'Hatis');
+  const placedLow = placed.tiles().find(tile => tile.querySelector('.name').textContent === 'Ijevan');
+  assert.equal(placedHigh.querySelector('.elevNum').textContent, '+519m');
+  assert.equal(placedHigh.querySelector('.caret').className, 'caret up');
+  assert.equal(placedLow.querySelector('.elevNum').textContent, '\u2212767m');
+  assert.equal(placedLow.querySelector('.caret').className, 'caret down');
+  assert.ok(placedHigh.querySelector('.elevFill'));
+  assert.equal(placedHigh.querySelector('.elevYou').classList.contains('off-high'), false);
+  assert.equal(stylePercent(placedHigh.querySelector('.elevYou'), 'bottom'), 59.6);
+  assert.match(placedHigh.title, /2019 m/);
+  assert.match(placedHigh.title, /519 m above you/);
+  assert.equal(placed.get('alt-readout').textContent, '1500 m');
+
+  const above = await open('?lat=40.33&lng=44.73&alt=2500');
+  const aboveHigh = above.tiles().find(tile => tile.querySelector('.name').textContent === 'Hatis');
+  assert.equal(aboveHigh.querySelector('.elevYou').classList.contains('off-high'), true);
+  assert.equal(aboveHigh.querySelector('.elevFill'), null, 'the bar stops once you are past the screen');
+  assert.equal(aboveHigh.querySelector('.elevNum').textContent, '\u2212481m');
+
+  const flat = await browser({
+    search: '?lat=40.33&lng=44.73',
+    stations: [
+      station({ id: 'holfuy:1', name: 'Low', latitude: 40.335, longitude: 44.732, elevationM: 1000 }),
+      station({ id: 'holfuy:2', name: 'High', latitude: 40.4, longitude: 44.8, elevationM: 1020 }),
+    ],
+  });
+  for (const tile of flat.tiles()) {
+    const bottom = stylePercent(tile.querySelector('.elevBead'), 'bottom');
+    assert.ok(bottom > 40 && bottom < 60, `a 20 m screen stays near the middle, was ${bottom}`);
+  }
+});
+
+test('XCTrack keeps a slider altitude when a later fix reports a different one', async () => {
+  const page = await browser({ search: '' });
+  await page.locate({ latitude: 40.33, longitude: 44.73, altitude: 1000 });
+  const tile = page.tiles()[0];
+  assert.equal(tile.querySelector('.elevNum').textContent, '+100m');
+  assert.equal(page.get('alt-readout').textContent, '1000 m');
+  const slider = page.get('alt-slider');
+  slider.value = '2000';
+  slider.dispatchEvent({ type: 'input', isTrusted: true });
+  assert.equal(tile.querySelector('.elevNum').textContent, '\u2212900m');
+  assert.equal(tile.querySelector('.elevYou').classList.contains('off-high'), true);
+  assert.equal(page.get('alt-readout').textContent, '2000 m');
+  await page.locate({ latitude: 40.33, longitude: 44.73, altitude: 800 });
+  assert.equal(tile.querySelector('.elevNum').textContent, '\u2212900m', 'the slider keeps this session');
+  assert.equal(page.get('alt-readout').textContent, '2000 m');
+});
