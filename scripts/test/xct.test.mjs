@@ -253,9 +253,9 @@ async function browser({ search = '?lat=40.33&lng=44.73', native, wallTime = NOW
     text() { return visibleText(document.body); },
     setNative(value) { bridge = value; },
     setResponse(callback) { nextResponse = callback; },
-    async locate(coords = { latitude: 40.33, longitude: 44.73, altitude: null }) {
+    async locate(coords = { latitude: 40.33, longitude: 44.73, altitude: null }, timestamp = wallTime + elapsed) {
       assert.ok(geoSuccess, 'widget started browser geolocation');
-      geoSuccess({ coords, timestamp: wallTime + elapsed }); await settle();
+      geoSuccess({ coords, timestamp }); await settle();
     },
     async loseLocation() {
       assert.ok(geoError, 'widget started browser geolocation');
@@ -300,13 +300,14 @@ test('XCTrack clears tiles when a browser fix is lost and restores them on recov
   assert.equal(page.tiles().length, 1);
 });
 
-test('XCTrack rejects invalid, out-of-range and old native fixes; altGps controls terrain', async t => {
+test('XCTrack rejects invalid, out-of-range and recently-stale native fixes; altGps controls terrain', async t => {
   const valid = { isValid: true, lat: 40.33, lon: 44.73, time: NOW, altGps: 1200 };
-  for (const patch of [{ isValid: false }, { lat: 91 }, { lon: 181 }, { time: NOW - 120_000 }, { time: null }, { time: NOW + 120_000 }]) {
+  for (const patch of [{ isValid: false }, { isValid: 0 }, { lat: 91 }, { lon: 181 }, { time: NOW - 120_000 }]) {
     await t.test(JSON.stringify(patch), async () => {
       const page = await browser({ search: '', native: { ...valid, ...patch } });
       assert.equal(page.tiles().length, 0);
       assert.equal(page.requests.filter(url => url.pathname.endsWith('/feed')).length, 0);
+      assert.match(page.text(), patch.time === NOW - 120_000 ? /GPS fix stale/i : /GPS fix unavailable/i);
     });
   }
   const page = await browser({ search: '', native: valid });
@@ -315,6 +316,38 @@ test('XCTrack rejects invalid, out-of-range and old native fixes; altGps control
   page.setNative({ ...valid, isValid: false });
   await page.advance(1000);
   assert.equal(page.tiles().length, 0, 'native invalidation removes the previous fix tiles');
+  assert.match(page.text(), /GPS fix unavailable/i);
+});
+
+test('XCTrack accepts bridge quirks and ages only when the raw payload identity changes', async t => {
+  const accepted = [
+    { isValid: 1, lat: '40.33', lon: '44.73', time: null, altGps: 1200 },
+    { lat: 40.33, lon: 44.73, time: 43_200, altGps: 1200 },
+    { isValid: 'true', lat: 40.33, lon: 44.73, time: NOW - 3 * 3600_000, altGps: 1200 },
+    { isValid: true, lat: 40.33, lon: 44.73, time: NOW + 120_000, altGps: 1200 },
+  ];
+  for (const native of accepted) {
+    await t.test(JSON.stringify(native), async () => {
+      const page = await browser({ search: '', native });
+      assert.equal(page.tiles().length, 1, 'quirky but in-range native fix is usable');
+      for (let step = 1; step <= 31; step += 1) {
+        page.setNative({ ...native, time: typeof native.time === 'number' ? native.time + step : step });
+        await page.advance(1_000);
+      }
+      assert.equal(page.tiles().length, 1, 'changing raw time renews the fix clock');
+    });
+  }
+});
+
+test('XCTrack browser GPS accepts a non-unix timestamp and rejects a real stale unix time', async () => {
+  const oddStamp = await browser({ search: '' });
+  await oddStamp.locate({ latitude: 40.33, longitude: 44.73, altitude: null }, 0);
+  assert.equal(oddStamp.tiles().length, 1, 'timestamp 0 still yields tiles when coordinates are valid');
+
+  const stale = await browser({ search: '' });
+  await stale.locate({ latitude: 40.33, longitude: 44.73, altitude: null }, NOW - 120_000);
+  assert.equal(stale.tiles().length, 0);
+  assert.match(stale.text(), /GPS fix stale/i);
 });
 
 test('XCTrack explicit fixed position overrides both invalid and different native fixes', async t => {
