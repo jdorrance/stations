@@ -11,8 +11,9 @@ provider API keys are Worker secrets mirrored from GitHub on every deploy.
 | Worker code | [`deploy/worker/`](../deploy/worker/index.ts) | Routing in `router.ts`, R2 access in `catalogue.ts`, secrets in `credentials.ts` |
 | Explorer assets | `web/` (`index.html`, built `dist/`) | `pnpm build`; `web/.assetsignore` keeps sources out |
 | Catalogue objects | [`scripts/export-deploy-catalogue.mjs`](../scripts/export-deploy-catalogue.mjs) | Three objects under `vars.CATALOGUE_PREFIX` |
+| Crawl checkpoints | [`scripts/sync-crawl-checkpoints.mjs`](../scripts/sync-crawl-checkpoints.mjs) | Private tarball in the same bucket |
 | Secrets | GitHub Actions secrets | Synced by [`scripts/sync-worker-secrets.mjs`](../scripts/sync-worker-secrets.mjs) |
-| Pipelines | [`.github/workflows/`](../.github/workflows/) | `ci.yml` verifies, `deploy.yml` ships `main` |
+| Pipelines | [`.github/workflows/`](../.github/workflows/) | `ci.yml` verifies, `deploy.yml` ships `main`, `catalogue.yml` refreshes data |
 
 Node follows [`.nvmrc`](../.nvmrc); the Worker tests and deploy scripts import
 TypeScript directly, which needs Node 24.
@@ -29,10 +30,10 @@ TypeScript directly, which needs Node 24.
 
 | Secret | Required | Used by |
 |--------|----------|---------|
-| `CLOUDFLARE_API_TOKEN` | yes | deploy, secret sync, catalogue upload |
+| `CLOUDFLARE_API_TOKEN` | yes | deploy, secret sync, catalogue and checkpoint upload |
 | `CLOUDFLARE_ACCOUNT_ID` | yes | Wrangler account selection |
-| `SYNOPTIC_API_KEY`, `SYNOPTIC_TOKEN`, `WU_API_KEY` | per network | mirrored to the Worker |
-| `HOLFUY_API_KEY`, `TEMPEST_TOKEN`, `ECOWITT_APP_KEY`, `ECOWITT_API_KEY`, `AMBIENT_API_KEY`, `AMBIENT_APP_KEY` | per network | mirrored to the Worker |
+| `SYNOPTIC_API_KEY`, `SYNOPTIC_TOKEN`, `WU_API_KEY` | per network | mirrored to the Worker; used by the scheduled crawl |
+| `HOLFUY_API_KEY`, `TEMPEST_TOKEN`, `ECOWITT_APP_KEY`, `ECOWITT_API_KEY`, `AMBIENT_API_KEY`, `AMBIENT_APP_KEY` | per network | mirrored to the Worker; used by the scheduled crawl |
 
 Provider names are the keys of `PROVIDER_SECRET_FIELDS` in
 [`deploy/worker/credentials.ts`](../deploy/worker/credentials.ts) and match
@@ -103,9 +104,31 @@ The Worker validates only the document envelope of the hydrated object. Its
 stations are trusted because the export script derives them from the already
 validated catalogue; keep the bucket private and upload only through the script.
 
-To refresh the catalogue itself, run `pnpm catalogue:crawl` locally and upload
-again. A scheduled crawl workflow is a planned follow-up; it needs the sibling
-`windgrams` and `flyingsites` checkouts that `crawl-na.mjs` reads launches from.
+## Scheduled catalogue refresh
+
+[`catalogue.yml`](../.github/workflows/catalogue.yml) re-crawls every network
+weekly (Sunday 06:00 UTC) and on manual dispatch, then publishes to R2. It
+never deploys the Worker or commits to git; `data/catalogue/` in git is
+refreshed by local crawls only. Steps, all run from a `stations/` checkout
+with the public `jdorrance/windgrams` and `jdorrance/pg-flying-sites`
+repositories beside it (that is where `crawl-na.mjs` reads launches):
+
+1. `node scripts/sync-crawl-checkpoints.mjs --restore` downloads
+   `checkpoints/stations-crawl.tar.gz` from the bucket into
+   `.cache/stations-crawl/`. The first run finds nothing and starts clean.
+2. `pnpm catalogue:crawl --regions=US,CA,MX,AM` with the provider secrets.
+3. `pnpm deploy:catalogue --upload --min-stations=<90% of the committed
+   manifest's totalStations>`: a crawl that shrank by more than a tenth is not
+   published and production keeps the previous objects.
+4. `node scripts/sync-crawl-checkpoints.mjs --upload` saves the refreshed
+   checkpoints, also after a failed or timed-out crawl.
+
+The dispatch input `resume` passes `--resume`, which reuses every valid
+checkpoint instead of calling upstream. Use it to finish an interrupted run or
+to republish; it refreshes nothing. Scheduled runs never resume.
+
+Locally, the same two scripts upload or restore your own checkpoints; a
+restored set lets `pnpm deploy:catalogue` hydrate locators on a fresh clone.
 
 ## Local Worker
 
@@ -130,6 +153,8 @@ from `wrangler.json` and type-checks the Worker; rerun it after changing binding
 4. Smoke test on the `workers.dev` URL:
    - `GET /` renders the explorer with styles (`GET /dist/styles.css` is
      `200`; `GET /app.ts` and `GET /styles.css` are `404`).
+   - `GET /xct` renders the XCTrack widget (`GET /dist/xct.js` and
+     `/dist/xct.css` are `200`; `GET /xct.ts` is `404`).
    - `GET /api/stations/catalogue` returns JSON with an `ETag`; repeating the
      request with `If-None-Match: <etag>` returns `304`.
    - `GET /api/stations/catalogue?format=geojson` returns a `FeatureCollection`.

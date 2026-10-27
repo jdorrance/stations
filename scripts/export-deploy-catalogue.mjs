@@ -9,16 +9,16 @@
  * and, with `--upload` (remote R2) or `--local` (wrangler dev storage), the
  * same objects under the keys in `deploy/worker/catalogue.ts`.
  *
- * Usage: node scripts/export-deploy-catalogue.mjs [--upload | --local] [--out <dir>]
+ * Usage: node scripts/export-deploy-catalogue.mjs [--upload | --local] [--out <dir>] [--min-stations <n>]
  */
-import { chmodSync, mkdirSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
+import { chmodSync, mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 import { catalogueToGeoJson, toPublicStationCatalogue } from '@stations/contracts';
 import { catalogueKeys } from '../deploy/worker/catalogue.ts';
 import { loadExplorerCatalogue } from './serve-explorer.mjs';
-import { root, wrangler } from './workspace.mjs';
+import { readWorkerConfig, root, wrangler } from './workspace.mjs';
 
 /** Above this the isolate's memory headroom shrinks; shard by region instead of raising it. */
 export const MAX_HYDRATED_BYTES = 40 * 1024 * 1024;
@@ -35,25 +35,19 @@ const FILE_NAMES = {
   geojson: 'stations.public.geojson',
 };
 
-/** Reads the deploy target from `wrangler.json`, the single owner of these names. */
-export function readWorkerConfig(path = resolve(root, 'wrangler.json')) {
-  const config = JSON.parse(readFileSync(path, 'utf8'));
-  const bucket = config.r2_buckets?.find(binding => binding.binding === 'CATALOGUE')?.bucket_name;
-  const prefix = config.vars?.CATALOGUE_PREFIX;
-  if (typeof config.name !== 'string' || typeof bucket !== 'string' || typeof prefix !== 'string') {
-    throw new Error('wrangler.json must define name, the CATALOGUE R2 bucket and vars.CATALOGUE_PREFIX');
-  }
-  return { name: config.name, bucket, prefix };
-}
-
 /**
  * Serializes one hydrated catalogue into the three deploy artifacts. The public
  * documents are produced by the same contract functions the crawler and the API
  * handler use, so the Worker streams bytes identical to a handler response.
+ * `minStations` lets a caller refuse to publish a crawl that shrank.
  */
-export function buildDeployArtifacts(catalogue, { maxHydratedBytes = MAX_HYDRATED_BYTES } = {}) {
-  if (!Array.isArray(catalogue.stations) || catalogue.stations.length === 0) {
+export function buildDeployArtifacts(catalogue, { maxHydratedBytes = MAX_HYDRATED_BYTES, minStations = 1 } = {}) {
+  const count = Array.isArray(catalogue.stations) ? catalogue.stations.length : 0;
+  if (count === 0) {
     throw new Error('Catalogue has no stations; run pnpm catalogue:crawl or catalogue:build first');
+  }
+  if (count < minStations) {
+    throw new Error(`Catalogue has ${count} stations, below the required ${minStations}; a degraded crawl is not published`);
   }
   const hydratedCount = catalogue.stations.filter(station => Object.keys(station.locator ?? {}).length > 0).length;
   if (hydratedCount === 0) {
@@ -108,10 +102,12 @@ function putObject({ bucket, key, file, contentType, mode }) {
   if (result.status !== 0) throw new Error(`wrangler r2 object put failed for ${bucket}/${key}`);
 }
 
-export function exportDeployCatalogue({ outDir = resolve(root, '.cache/stations-deploy'), mode = null, log = console.log } = {}) {
+export function exportDeployCatalogue({
+  outDir = resolve(root, '.cache/stations-deploy'), mode = null, minStations = 1, log = console.log,
+} = {}) {
   const target = readWorkerConfig();
   const keys = catalogueKeys(target.prefix);
-  const built = buildDeployArtifacts(loadExplorerCatalogue({ full: true }));
+  const built = buildDeployArtifacts(loadExplorerCatalogue({ full: true }), { minStations });
   mkdirSync(outDir, { recursive: true, mode: 0o700 });
   log(`Catalogue ${built.generatedAt}: ${built.stations} stations, ${built.hydratedStations} with private locators`);
   const written = [];
@@ -136,11 +132,15 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
       upload: { type: 'boolean', default: false },
       local: { type: 'boolean', default: false },
       out: { type: 'string' },
+      'min-stations': { type: 'string', default: '1' },
     },
   });
   if (values.upload && values.local) throw new Error('Choose one of --upload (remote R2) or --local (wrangler dev storage)');
+  const minStations = Number(values['min-stations']);
+  if (!Number.isInteger(minStations) || minStations < 1) throw new Error('--min-stations must be a positive integer');
   exportDeployCatalogue({
     outDir: values.out ? resolve(values.out) : undefined,
     mode: values.upload ? 'remote' : values.local ? 'local' : null,
+    minStations,
   });
 }

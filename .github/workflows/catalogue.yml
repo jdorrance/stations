@@ -1,0 +1,84 @@
+name: Catalogue
+
+# Refreshes the station catalogue from upstream networks and publishes it to
+# R2. Running Worker isolates pick the new objects up within five minutes; no
+# deploy and no git commit happen here. data/catalogue/ in git is refreshed by
+# local crawls only.
+
+on:
+  schedule:
+    - cron: "0 6 * * 0"
+  workflow_dispatch:
+    inputs:
+      resume:
+        description: Reuse the checkpoints stored in R2 instead of re-crawling every network (continues an interrupted run; nothing upstream is refreshed)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: catalogue
+  cancel-in-progress: false
+
+jobs:
+  crawl:
+    name: Crawl and publish
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 300
+    defaults:
+      run:
+        working-directory: stations
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      # scripts/crawl-na.mjs reads launches from ../windgrams and ../flyingsites,
+      # so the three public repositories are checked out side by side.
+      - uses: actions/checkout@v6
+        with:
+          path: stations
+      - uses: actions/checkout@v6
+        with:
+          repository: jdorrance/windgrams
+          path: windgrams
+      - uses: actions/checkout@v6
+        with:
+          repository: jdorrance/pg-flying-sites
+          path: flyingsites
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: stations/package.json
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: stations/.nvmrc
+          cache: pnpm
+          cache-dependency-path: stations/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - name: Record the committed catalogue size
+        run: echo "BASELINE_STATIONS=$(node -p 'require("./data/catalogue/manifest.json").totalStations')" >> "$GITHUB_ENV"
+      - name: Restore crawl checkpoints from R2
+        run: node scripts/sync-crawl-checkpoints.mjs --restore
+      - name: Crawl upstream networks
+        run: pnpm catalogue:crawl --regions=US,CA,MX,AM ${{ inputs.resume == true && '--resume' || '' }}
+        env:
+          HOLFUY_API_KEY: ${{ secrets.HOLFUY_API_KEY }}
+          TEMPEST_TOKEN: ${{ secrets.TEMPEST_TOKEN }}
+          WU_API_KEY: ${{ secrets.WU_API_KEY }}
+          SYNOPTIC_TOKEN: ${{ secrets.SYNOPTIC_TOKEN }}
+          SYNOPTIC_API_KEY: ${{ secrets.SYNOPTIC_API_KEY }}
+          ECOWITT_APP_KEY: ${{ secrets.ECOWITT_APP_KEY }}
+          ECOWITT_API_KEY: ${{ secrets.ECOWITT_API_KEY }}
+          AMBIENT_API_KEY: ${{ secrets.AMBIENT_API_KEY }}
+          AMBIENT_APP_KEY: ${{ secrets.AMBIENT_APP_KEY }}
+      # A crawl that lost more than a tenth of the committed catalogue is not
+      # published; production keeps serving the previous objects.
+      - name: Export and upload catalogue objects
+        run: pnpm deploy:catalogue --upload --min-stations=$(( BASELINE_STATIONS * 9 / 10 ))
+      # Saved even after a failed or timed-out crawl so a `resume` run continues
+      # from the networks that completed.
+      - name: Upload refreshed checkpoints to R2
+        if: always()
+        run: node scripts/sync-crawl-checkpoints.mjs --upload

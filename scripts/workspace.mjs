@@ -6,6 +6,17 @@ import { fileURLToPath } from 'node:url';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
 
+/** Reads the deploy target from `wrangler.json`, the single owner of these names. */
+export function readWorkerConfig(path = resolve(root, 'wrangler.json')) {
+  const config = JSON.parse(readFileSync(path, 'utf8'));
+  const bucket = config.r2_buckets?.find(binding => binding.binding === 'CATALOGUE')?.bucket_name;
+  const prefix = config.vars?.CATALOGUE_PREFIX;
+  if (typeof config.name !== 'string' || typeof bucket !== 'string' || typeof prefix !== 'string') {
+    throw new Error('wrangler.json must define name, the CATALOGUE R2 bucket and vars.CATALOGUE_PREFIX');
+  }
+  return { name: config.name, bucket, prefix };
+}
+
 /** Runs the workspace's pinned wrangler CLI with the current process env. */
 export function wrangler(args, options = {}) {
   const require = createRequire(resolve(root, 'package.json'));
