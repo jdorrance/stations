@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { createStationsApiHandler } from '../dist/index.js';
+import { createStationsApiHandler, memoryCache } from '../dist/index.js';
 
 function station(id, overrides = {}) {
   return {
@@ -110,6 +110,56 @@ test('GeoJSON and JSON feeds apply the same history-window validation', async ()
     }
     assert.equal((await handler(request(`feed?hours=1${suffix}`))).status, 200);
   }
+});
+
+test('history=0 skips the history fetch and returns a current reading', async () => {
+  const latest = JSON.stringify([
+    { time: '2026-10-26T22:00:00', speed: 3.4, direction: 'SW', temperature: 8.5 },
+  ]);
+  const graph = JSON.stringify([
+    { time_interval: '2026-10-26T21:45:00', speed: 2.1, direction: 'W' },
+    { time_interval: '2026-10-26T22:00:00', speed: 3.4, direction: 'SW' },
+  ]);
+  const catalogueDoc = catalogue([station('17', {
+    uid: 'climatenet:17', vendor: 'climatenet', nativeId: '17', timeZone: 'Asia/Yerevan',
+  })]);
+  const handlerFor = () => {
+    const urls = [];
+    const handler = createStationsApiHandler({
+      catalogue: catalogueDoc,
+      basePath: '/api/stations',
+      environment: {
+        fetch: async input => {
+          const url = String(input instanceof Request ? input.url : input);
+          urls.push(url);
+          return new Response(url.includes('/graph/') ? graph : latest, {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        },
+        cache: memoryCache(),
+        logger: () => {},
+      },
+    });
+    return { handler, urls };
+  };
+
+  const full = handlerFor();
+  const fullBody = await (await full.handler(request('feed?ids=climatenet:17'))).json();
+  assert.equal(fullBody.stations[0].status, 'ok');
+  assert.equal(fullBody.stations[0].history.points.length, 2);
+  assert.equal(full.urls.some(url => url.includes('/graph/')), true);
+
+  const current = handlerFor();
+  const currentResponse = await current.handler(request('feed?ids=climatenet:17&history=0'));
+  assert.equal(currentResponse.status, 200);
+  const currentBody = await currentResponse.json();
+  assert.equal(currentBody.stations[0].status, 'ok');
+  assert.equal(currentBody.stations[0].reading.windAvgMps, 3.4);
+  assert.equal(currentBody.stations[0].history, null);
+  assert.equal(current.urls.some(url => url.includes('/latest/')), true);
+  assert.equal(current.urls.some(url => url.includes('/graph/')), false);
+  assert.equal((await current.handler(request('feed?history=maybe'))).status, 400);
 });
 
 test('invalid limits and incomplete near parameters cannot broaden expensive feed requests', async () => {

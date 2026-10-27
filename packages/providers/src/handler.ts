@@ -1,6 +1,7 @@
 import {
   fetchUpstreamText,
   type ServerEnvironment,
+  type StationConfigInput,
 } from '@azohra/meteo.station/server';
 import {
   createStationFeedHandler,
@@ -57,6 +58,28 @@ function parseNearParam(
   const [latitude, longitude, radiusKm] = parts as [number, number, number];
   if (!validPosition({ latitude, longitude }) || radiusKm <= 0) return null;
   return { latitude, longitude, radiusKm };
+}
+
+/** Absent and `1` keep history. `0` asks adapters for the current reading only. */
+function parseFeedHistory(raw: string | null): boolean | 'invalid' {
+  if (raw === null || raw === '1') return true;
+  if (raw === '0') return false;
+  return 'invalid';
+}
+
+function currentOnlyConfigs(configs: readonly StationConfigInput[]): StationConfigInput[] {
+  return configs.map(config => {
+    if (config.vendor !== 'custom') return config;
+    const load = config.load;
+    return {
+      ...config,
+      load: async context => {
+        const station = await load({ ...context, mode: 'current' });
+        if (station.status !== 'ok') return station;
+        return { ...station, history: null };
+      },
+    };
+  });
 }
 
 function parseLimitParam(raw: string | null, fallback?: number): number | undefined {
@@ -548,7 +571,14 @@ export function createStationsApiHandler(
     if (isFeedRoute && capped.length >= 2) {
       await prewarmBatchFeedCache(capped, options.credentials, options.environment);
     }
-    const stationConfigs = toStationConfigs(capped, options.credentials);
+    const includeHistory = isFeedRoute ? parseFeedHistory(url.searchParams.get('history')) : true;
+    if (includeHistory === 'invalid') {
+      return jsonResponse({ error: 'invalid history: expected 0 or 1' }, 400, corsOrigin, isHead);
+    }
+    if (includeHistory === false) url.searchParams.delete('history');
+    const stationConfigs = includeHistory === false
+      ? currentOnlyConfigs(toStationConfigs(capped, options.credentials))
+      : toStationConfigs(capped, options.credentials);
 
     const delegate = createStationFeedHandler({
       stations: stationConfigs,

@@ -220,6 +220,42 @@ test('origin overrides and invalid configuration are handled before network acce
   assert.ok(starts[1] - starts[0] < 500);
 });
 
+test('an aborted in-flight permit does not block the next request', async () => {
+  let calls = 0;
+  const fetch = createProviderFetch({ minIntervalMs: 0, maxConcurrent: 1, maxAttempts: 1,
+    fetch: async () => {
+      calls += 1;
+      if (calls === 1) return new Promise(() => {});
+      return new Response('ok');
+    },
+  });
+  await assert.rejects(fetch('https://weather.test/stuck', { signal: AbortSignal.timeout(30) }), { name: 'TimeoutError' });
+  assert.equal(await (await fetch('https://weather.test/next')).text(), 'ok');
+  assert.equal(calls, 2);
+});
+
+test('in-flight upstream loads do not cross environment resolves', async () => {
+  let release = () => {};
+  let calls = 0;
+  const fetch = fast(async () => {
+    calls += 1;
+    if (calls === 1) await new Promise(resolve => { release = resolve; });
+    return new Response('ok');
+  });
+  const cache = memoryCache();
+  const request = {
+    url: 'https://weather.test/a', cacheKey: 'same', cacheTtlSeconds: 30, subject: 'a',
+  };
+  const first = fetchUpstreamText(resolveEnvironment({ fetch, cache, ...quiet }), request);
+  await pause(0);
+  const second = fetchUpstreamText(resolveEnvironment({ fetch, cache, ...quiet }), request);
+  await pause(0);
+  assert.equal(calls, 2);
+  release();
+  assert.equal(await first, 'ok');
+  assert.equal(await second, 'ok');
+});
+
 test('environment defaults share limiter state, and explicit transports are not wrapped again', async () => {
   const mock = async () => new Response('ok');
   assert.equal(resolveEnvironment({ fetch: mock }).fetch, resolveEnvironment({ fetch: mock }).fetch);

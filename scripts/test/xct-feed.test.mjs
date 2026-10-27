@@ -96,6 +96,7 @@ test('reports the bounded search when 90 candidates cannot fill the display', as
   )));
   const result = await loadNearbyWind(client, query);
   assert.equal(calls.length, 4);
+  assert.equal(calls.filter(url => url.pathname.endsWith('/feed')).every(url => url.searchParams.get('history') === '0'), true);
   assert.equal(result.checkedUids.length, 90);
   assert.equal(result.failedUids.length, 90);
   assert.equal(result.checkedUids.includes('custom:91'), false);

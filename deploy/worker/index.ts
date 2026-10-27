@@ -8,7 +8,7 @@
  * the `CORS_ORIGIN` and `CATALOGUE_PREFIX` vars, plus the provider secrets in
  * `credentials.ts`. Operations are documented in `docs/deploy.md`.
  */
-import { createProviderFetch } from '@stations/providers';
+import { createProviderFetch, memoryCache, workersCache, type FeedCache } from '@stations/providers';
 import { catalogueKeys, createHydratedCatalogueLoader, getPublicCatalogueObject } from './catalogue.ts';
 import { credentialsFromEnv, type ProviderSecretEnv } from './credentials.ts';
 import { createWorkerRouter } from './router.ts';
@@ -18,6 +18,23 @@ type WorkerEnv = Env & ProviderSecretEnv;
 
 // Construction performs no I/O, so the shared transport may live at module scope.
 const providerFetch = createProviderFetch({ maxConcurrent: 6, minIntervalMs: 100 });
+
+let durableCache: FeedCache | undefined;
+
+/**
+ * `caches.default` survives across isolates. The object passed into the router
+ * is stable; `resolveEnvironment` wraps it per load so in-flight misses are not.
+ * Resolved on the first request — `caches` may be absent while the module evaluates.
+ */
+const observationCache: FeedCache = {
+  get: key => sharedObservationCache().get(key),
+  put: (key, value, ttlSeconds) => sharedObservationCache().put(key, value, ttlSeconds),
+};
+
+function sharedObservationCache(): FeedCache {
+  durableCache ??= workersCache() ?? memoryCache();
+  return durableCache;
+}
 
 let router: ((request: Request) => Promise<Response>) | null = null;
 
@@ -31,7 +48,7 @@ function routerFor(env: WorkerEnv): (request: Request) => Promise<Response> {
     assetsFetch: request => env.ASSETS.fetch(request),
     credentials: credentialsFromEnv(env),
     corsOrigin: env.CORS_ORIGIN,
-    environment: { fetch: providerFetch },
+    environment: { fetch: providerFetch, cache: observationCache },
   });
   return router;
 }
