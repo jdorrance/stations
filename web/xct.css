@@ -14,7 +14,6 @@
   --tile-nogo: #f6d9d4;
   --empty: #666666;
   --ring: #9a9a9a;
-  --fav: #62c484;
   /* Wind colour. Steps through the usual 5–15 km/h range; red is past trim. */
   --wind-light: #2a6fbf;
   --wind-easy: #1b7a36;
@@ -264,14 +263,6 @@ body.has-alt .stationList {
   stroke-linecap: round;
 }
 
-/* Declared favourable launch directions, as a band on the ring. */
-.dialFav {
-  fill: none;
-  stroke: var(--fav);
-  stroke-width: 6;
-  stroke-linecap: butt;
-}
-
 /* Arrow sits on the rim at the FROM bearing and flies with the wind. */
 .dialArrow {
   fill: currentColor;
@@ -505,7 +496,6 @@ body.dark {
   --tile-nogo: #3a2220;
   --empty: #aaaaaa;
   --ring: #8c8c8c;
-  --fav: #2f8f55;
   --wind-light: #7eb6ff;
   --wind-easy: #3dcc8c;
   --wind-active: #f0c14a;

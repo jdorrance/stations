@@ -39,7 +39,6 @@
 import { createStationsClient } from '@stations/client';
 import {
   compassDirection,
-  declaredFavorableDirections,
   isCalm,
   isStationCategory,
   pilotFreshness,
@@ -133,7 +132,6 @@ const ORBIT_SPAN = 34;
 type DistanceUnit = 'km' | 'mi';
 type WindBand = (typeof WIND_BANDS)[number];
 type TerrainKind = 'peak' | 'valley';
-type DirectionArc = NonNullable<ReturnType<typeof declaredFavorableDirections>>[number];
 
 interface DisplayUnits {
   readonly speed: SpeedUnit;
@@ -150,7 +148,6 @@ interface TileModel {
   readonly windGustMps: number | null;
   readonly windDirectionDeg: number | null;
   readonly calm: boolean;
-  readonly favorable: readonly DirectionArc[] | null;
   readonly distanceKm: number;
   /** Bearing from the pilot to the station, degrees true. */
   readonly bearingDeg: number;
@@ -595,33 +592,16 @@ function svgNum(n: number): string {
   return n.toFixed(1);
 }
 
-/** Clockwise ring arc from `fromDeg` to `toDeg`; empty for a single bearing. */
-function ringArcPath(arc: DirectionArc): string {
-  const span = (((arc.toDeg - arc.fromDeg) % 360) + 360) % 360;
-  if (span === 0) return '';
-  const a = dialPoint(DIAL_R, arc.fromDeg);
-  const b = dialPoint(DIAL_R, arc.toDeg);
-  const large = span > 180 ? 1 : 0;
-  return `M${svgNum(a.x)} ${svgNum(a.y)} A${DIAL_R} ${DIAL_R} 0 ${large} 1 ${svgNum(b.x)} ${svgNum(b.y)}`;
-}
-
 /**
- * Compass dial: ring with cardinal ticks, optional favourable-direction band,
- * an arrow on the rim at the FROM bearing pointing inward (it flies with the
- * wind), and the average speed in the centre with the gust beneath it.
- * Colour comes from the tile's wind band via `currentColor`.
+ * Compass dial: ring with cardinal ticks, an arrow on the rim at the FROM
+ * bearing pointing inward (it flies with the wind), and the average speed in
+ * the centre with the gust beneath it. Colour comes from the tile's wind band
+ * via `currentColor`.
  */
 function windDialSvg(tile: TileModel, units: DisplayUnits): string {
-  const parts: string[] = [];
-
-  if (tile.favorable) {
-    for (const arc of tile.favorable) {
-      const d = ringArcPath(arc);
-      if (d) parts.push(`<path class="dialFav" d="${d}"/>`);
-    }
-  }
-
-  parts.push(`<circle class="dialRing" cx="${DIAL_C}" cy="${DIAL_C}" r="${DIAL_R}"/>`);
+  const parts: string[] = [
+    `<circle class="dialRing" cx="${DIAL_C}" cy="${DIAL_C}" r="${DIAL_R}"/>`,
+  ];
   for (const deg of [0, 90, 180, 270]) {
     const outer = dialPoint(DIAL_R, deg);
     const inner = dialPoint(DIAL_R - DIAL_TICK_LEN, deg);
@@ -750,7 +730,6 @@ function buildTileModels(center: Position, nowMs: number): TileModel[] {
       windGustMps: reading.windGustMps,
       windDirectionDeg: reading.windDirectionDeg,
       calm: isCalm(reading.windAvgMps),
-      favorable: declaredFavorableDirections(station),
       distanceKm: km,
       bearingDeg: bearingDeg(center, here),
       freshness,
