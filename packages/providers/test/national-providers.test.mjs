@@ -1,13 +1,13 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
-  awcProvider, conaguaProvider, ecccProvider, nwsProvider, loadEcccStation, loadIemStation,
+  awcProvider, conaguaProvider, createProviderFetch, ecccProvider, nwsProvider, loadClimateNetStation, loadEcccStation, loadHydrometAmStation, loadIemStation,
   loadNdbcStation, loadRawsStation, loadSnotelStation, loadWuPwsStation, loadSynopticStation, loadAmbientStation, memoryCache,
   parseAmbientDeviceObservation, parseAprsWxPacket, parseAvalancheCanadaMeasurements,
-  parseAwcMetarEntry, parseConaguaEmaObservation, parseEcccSwobRealtime,
+  parseAwcMetarEntry, parseClimateNetDeviceList, parseClimateNetGraph, parseClimateNetLatest, parseConaguaEmaObservation, parseEcccSwobRealtime,
   parseEcccSwobStations, parseIemCurrentRow, parseIemNetworkGeoJson,
   parseNdbcLatestObs, parseNdbcRealtime2, parseNwsLatestObservation,
-  parseNwsStationsCollection, parseRawsFeature, parseSnotelDataResponse,
+  parseNwsStationsCollection, parseOgimetSynopBatch, parseOgimetSynopLine, parseRawsFeature, parseSnotelDataResponse,
   parseSnotelStationsList, parseSynopticLatest, parseWindyPwsResponse,
   parseWuPwsCurrent, synopticProvider, wundergroundProvider, ambientProvider,
 } from '../dist/index.js';
@@ -22,11 +22,15 @@ const station = (vendor, nativeId = 'TEST', locator = {}) => ({
 });
 const environment = (payload, requests = [], logs = []) => ({
   now: () => new Date(now), cache: memoryCache(), logger: event => logs.push(event),
-  fetch: async input => {
-    requests.push(String(input));
-    const body = typeof payload === 'function' ? payload(new URL(input)) : payload;
-    return new Response(typeof body === 'string' ? body : JSON.stringify(body));
-  },
+  fetch: createProviderFetch({
+    minIntervalMs: 0,
+    baseDelayMs: 0,
+    fetch: async input => {
+      requests.push(String(input));
+      const body = typeof payload === 'function' ? payload(new URL(input)) : payload;
+      return new Response(typeof body === 'string' ? body : JSON.stringify(body));
+    },
+  }),
 });
 const collection = properties => ({ features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [-122, 47] }, properties }] });
 
@@ -226,6 +230,7 @@ test('authenticated PWS caches do not reuse another credential scope', async () 
 test('national catalogue discovery follows pagination instead of silently dropping stations', async () => {
   const canadian = await ecccProvider.discover({ regions: ['CA'], includeRemoteDiscovery: true,
     environment: environment(url => {
+      if (url.pathname.includes('swob-realtime')) return { features: [] };
       const second = url.searchParams.has('offset');
       return { ...collection({ iata_id: second ? 'CWBB' : 'CWAA' }),
         links: second ? [] : [{ rel: 'next', href: '?f=json&offset=1' }] };
@@ -251,4 +256,65 @@ test('AWC subdivides capped responses without dropping the initial partial resul
   });
   assert.equal(requests.length, 3);
   assert.equal(result.length, 1);
+});
+
+test('Armenia ClimateNet and Hydromet WMO SYNOP parsers and adapters normalize observations and history', async () => {
+  const devices = parseClimateNetDeviceList(JSON.stringify([
+    { generated_id: 9, location_en: 'Sevan', region_en: 'Gegharkunik', latitude: '40.5426', longitude: '44.9579', altitude: 1888, Status: 'online', Wind: 'valid' },
+    { generated_id: 2, location_en: 'Panik', region_en: 'Shirak', latitude: '40.659', longitude: '43.972', altitude: 1674, Status: 'offline', Wind: 'nodata' },
+  ]));
+  assert.equal(devices.length, 1);
+  assert.equal(devices[0].uid, 'climatenet:9');
+  assert.equal(devices[0].country, 'AM');
+  assert.equal(devices[0].category, 'mountain');
+
+  const latest = parseClimateNetLatest(JSON.stringify([
+    { time: '2026-10-26T22:00:00', speed: 3.4, direction: 'SW', temperature: 8.5, humidity: 72, pressure: 816, uv: 1, rain: 0.2 },
+  ]), 'Asia/Yerevan');
+  assert.equal(latest.observedAt, '2026-10-26T18:00:00.000Z');
+  assert.equal(latest.windAvgMps, 3.4);
+  assert.equal(latest.windDirectionDeg, 225);
+  assert.equal(latest.temperatureC, 8.5);
+  assert.equal(latest.conditions.seaLevelPressureHpa, 816);
+
+  const graph = parseClimateNetGraph(JSON.stringify([
+    { time_interval: '2026-10-26T21:45:00', speed: 2.1, direction: 'W', temperature: 8.2, pressure: 815 },
+    { time_interval: '2026-10-26T22:00:00', speed: 3.4, direction: 'SW', temperature: 8.5, pressure: 816 },
+  ]), 'Asia/Yerevan');
+  assert.equal(graph.points.length, 2);
+
+  const loadedCn = await loadClimateNetStation({ station: devices[0] }, {
+    mode: 'full',
+    environment: environment(url => url.pathname.includes('/graph/')
+      ? [{ time_interval: '2026-10-26T21:45:00', speed: 2.1 }, { time_interval: '2026-10-26T22:00:00', speed: 3.4 }]
+      : [{ time: '2026-10-26T22:00:00', speed: 3.4, direction: 'SW', temperature: 8.5 }]),
+  });
+  assert.equal(loadedCn.status, 'ok');
+  assert.equal(loadedCn.reading.windAvgMps, 3.4);
+  assert.equal(loadedCn.history.points.length, 2);
+
+  const synopLines = [
+    '37699,2026,10,26,15,00,AAXX 26151 37699 326// 31804 10084 20060 38154 40182 54000 333 91109=',
+    '37699,2026,10,26,18,00,AAXX 26181 37699 329// 22706 11015 21032 38157 40195 52003 333 91112=',
+  ].join('\n');
+  const firstSynop = parseOgimetSynopLine(synopLines.split('\n')[0]);
+  assert.equal(firstSynop.wmoId, '37699');
+  assert.equal(firstSynop.reading.windAvgMps, 4);
+  assert.equal(firstSynop.reading.windGustMps, 9);
+  assert.equal(firstSynop.reading.windDirectionDeg, 180);
+  assert.equal(firstSynop.reading.temperatureC, 8.4);
+  assert.equal(firstSynop.reading.conditions.seaLevelPressureHpa, 1018.2);
+
+  const batch = parseOgimetSynopBatch(synopLines, '37699');
+  assert.equal(batch.reading.windAvgMps, 6);
+  assert.equal(batch.reading.windGustMps, 12);
+  assert.equal(batch.reading.temperatureC, -1.5);
+  assert.equal(batch.history.points.length, 2);
+
+  const loadedSynop = await loadHydrometAmStation(
+    { station: { ...station('hydromet_am', '37699'), country: 'AM', timeZone: 'Asia/Yerevan' } },
+    { environment: environment(synopLines) },
+  );
+  assert.equal(loadedSynop.status, 'ok');
+  assert.equal(loadedSynop.reading.windAvgMps, 6);
 });

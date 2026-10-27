@@ -1,4 +1,10 @@
-import { utcPartsMs, windDirection, optionalWindMps, validTemperatureC } from './observation-values.ts';
+import {
+  isRecentObservation,
+  optionalWindMps,
+  utcPartsMs,
+  validTemperatureC,
+  windDirection,
+} from './observation-values.ts';
 import { plausibleWindMps } from '@azohra/meteo.core';
 import {
   emptyConditions,
@@ -313,7 +319,12 @@ export const ndbcProvider: StationNetworkProvider = {
           subject: 'NDBC latest observations table',
           limitBytes: 2 * 1024 * 1024,
         });
-        batches.push(parseNdbcLatestObs(text).map(row => row.station));
+        const nowMs = environment.now().getTime();
+        batches.push(
+          parseNdbcLatestObs(text)
+            .filter(row => isRecentObservation(row.reading.observedAt, nowMs))
+            .map(row => row.station),
+        );
       } catch (error) {
         logUpstreamFailure(environment, 'NDBC discovery failed', error);
         // Fallback to seeds

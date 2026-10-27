@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "generatedAt": "2026-10-26T20:46:59.676Z",
   "regions": [
     "US",
     "CA",
@@ -8,7 +8,7 @@
     "AM"
   ],
   "vendor": "snotel",
-  "count": 385,
+  "count": 354,
   "stations": [
     {
       "uid": "snotel:1005:CO:SNTL",
@@ -114,29 +114,6 @@
       "region": "WY",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WY/Sage%20Creek%20Basin.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1016:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1016:ID:SNTL",
-      "name": "Long Valley",
-      "latitude": 44.78835,
-      "longitude": -116.08878,
-      "elevationM": 1490,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Long%20Valley.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -333,29 +310,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:1068:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1068:WA:SNTL",
-      "name": "Sawmill Ridge",
-      "latitude": 47.15992,
-      "longitude": -121.42172,
-      "elevationM": 1414,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Sawmill%20Ridge.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:1070:AK:SNTL",
       "vendor": "snotel",
       "nativeId": "1070:AK:SNTL",
@@ -448,75 +402,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:1080:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1080:WA:SNTL",
-      "name": "Brown Top",
-      "latitude": 48.92753,
-      "longitude": -121.19717,
-      "elevationM": 1783,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Brown%20Top.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1081:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1081:ID:SNTL",
-      "name": "Ragged Mountain",
-      "latitude": 47.85583,
-      "longitude": -117.03667,
-      "elevationM": 1283,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Ragged%20Mountain.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1082:WY:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1082:WY:SNTL",
-      "name": "Grand Targhee",
-      "latitude": 43.77933,
-      "longitude": -110.92783,
-      "elevationM": 2822,
-      "country": null,
-      "region": "WY",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WY/Grand%20Targhee.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:1083:NM:SNTL",
       "vendor": "snotel",
       "nativeId": "1083:NM:SNTL",
@@ -528,29 +413,6 @@
       "region": "NM",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NM/Tres%20Ritos.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1084:OR:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1084:OR:SNTL",
-      "name": "Miller Woods",
-      "latitude": 45.24755,
-      "longitude": -123.27563,
-      "elevationM": 128,
-      "country": null,
-      "region": "OR",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/OR/Miller%20Woods.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -689,29 +551,6 @@
       "region": "MT",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/MT/East%20Boulder%20Mine.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1110:NV:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1110:NV:SNTL",
-      "name": "Rainbow Canyon",
-      "latitude": 36.2493,
-      "longitude": -115.62972,
-      "elevationM": 2390,
-      "country": null,
-      "region": "NV",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NV/Rainbow%20Canyon.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -873,29 +712,6 @@
       "region": "MT",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/MT/Blacktail%20Mtn.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1159:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1159:WA:SNTL",
-      "name": "Gold Axe Camp",
-      "latitude": 48.9516,
-      "longitude": -118.9864,
-      "elevationM": 1640,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Gold%20Axe%20Camp.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -1115,29 +931,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:1285:AK:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1285:AK:SNTL",
-      "name": "Flower Mountain",
-      "latitude": 59.39617,
-      "longitude": -136.28123,
-      "elevationM": 774,
-      "country": null,
-      "region": "AK",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/AK/Flower%20Mountain.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:1286:MT:SNTL",
       "vendor": "snotel",
       "nativeId": "1286:MT:SNTL",
@@ -1172,29 +965,6 @@
       "region": "UT",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/UT/Powder%20Mountain.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:1303:AK:SNTL",
-      "vendor": "snotel",
-      "nativeId": "1303:AK:SNTL",
-      "name": "Dahl Creek",
-      "latitude": 66.94517,
-      "longitude": -156.90318,
-      "elevationM": 76,
-      "country": null,
-      "region": "AK",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/AK/Dahl%20Creek.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -2495,29 +2265,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:2060:MO:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2060:MO:SCAN",
-      "name": "Mt Vernon",
-      "latitude": 37.073,
-      "longitude": -93.88158,
-      "elevationM": 375,
-      "country": null,
-      "region": "MO",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/MO/Mt%20Vernon.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:2061:MO:SCAN",
       "vendor": "snotel",
       "nativeId": "2061:MO:SCAN",
@@ -2621,29 +2368,6 @@
       "region": "AK",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/AK/Aniak.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:2066:PR:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2066:PR:SCAN",
-      "name": "Combate",
-      "latitude": 17.97937,
-      "longitude": -67.16888,
-      "elevationM": 12,
-      "country": null,
-      "region": "PR",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/PR/Combate.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -3173,29 +2897,6 @@
       "region": "KS",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/KS/Centralia%20Lake.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:2096:HI:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2096:HI:SCAN",
-      "name": "Kainaliu",
-      "latitude": 19.53322,
-      "longitude": -155.92914,
-      "elevationM": 411,
-      "country": null,
-      "region": "HI",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/HI/Kainaliu.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4162,52 +3863,6 @@
       "region": "NV",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NV/Pine%20Nut.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:2145:NV:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2145:NV:SCAN",
-      "name": "Charkiln",
-      "latitude": 36.36651,
-      "longitude": -115.82047,
-      "elevationM": 2042,
-      "country": null,
-      "region": "NV",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NV/Charkiln.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:2146:NV:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2146:NV:SCAN",
-      "name": "Lovell Summit",
-      "latitude": 36.16555,
-      "longitude": -115.61195,
-      "elevationM": 2012,
-      "country": null,
-      "region": "NV",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NV/Lovell%20Summit.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -5439,29 +5094,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:2201:TX:SCAN",
-      "vendor": "snotel",
-      "nativeId": "2201:TX:SCAN",
-      "name": "Knox City",
-      "latitude": 33.44635,
-      "longitude": -99.86657,
-      "elevationM": 445,
-      "country": null,
-      "region": "TX",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/TX/Knox%20City.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:2202:TX:SCAN",
       "vendor": "snotel",
       "nativeId": "2202:TX:SCAN",
@@ -5588,29 +5220,6 @@
       "region": "TX",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/TX/Beaumont.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:2210:AK:SNTL",
-      "vendor": "snotel",
-      "nativeId": "2210:AK:SNTL",
-      "name": "Hozatka Lake",
-      "latitude": 65.19405,
-      "longitude": -156.64113,
-      "elevationM": 67,
-      "country": null,
-      "region": "AK",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/AK/Hozatka%20Lake.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -6359,29 +5968,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:344:OR:SNTL",
-      "vendor": "snotel",
-      "nativeId": "344:OR:SNTL",
-      "name": "Billie Creek Divide",
-      "latitude": 42.40717,
-      "longitude": -122.26617,
-      "elevationM": 1609,
-      "country": null,
-      "region": "OR",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/OR/Billie%20Creek%20Divide.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:347:MT:SNTL",
       "vendor": "snotel",
       "nativeId": "347:MT:SNTL",
@@ -6485,29 +6071,6 @@
       "region": "NM",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NM/Chamita.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:395:OR:SNTL",
-      "vendor": "snotel",
-      "nativeId": "395:OR:SNTL",
-      "name": "Chemult Alternate",
-      "latitude": 43.22625,
-      "longitude": -121.80662,
-      "elevationM": 1478,
-      "country": null,
-      "region": "OR",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/OR/Chemult%20Alternate.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -6727,29 +6290,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:460:WY:SNTL",
-      "vendor": "snotel",
-      "nativeId": "460:WY:SNTL",
-      "name": "East Rim Divide",
-      "latitude": 43.13097,
-      "longitude": -110.2023,
-      "elevationM": 2441,
-      "country": null,
-      "region": "WY",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WY/East%20Rim%20Divide.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:465:CO:SNTL",
       "vendor": "snotel",
       "nativeId": "465:CO:SNTL",
@@ -6830,52 +6370,6 @@
       "region": "NM",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NM/Gallegos%20Peak.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:496:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "496:ID:SNTL",
-      "name": "Graham Guard Sta.",
-      "latitude": 43.9538,
-      "longitude": -115.27387,
-      "elevationM": 1734,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Graham%20Guard%20Sta..html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:507:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "507:WA:SNTL",
-      "name": "Grouse Camp",
-      "latitude": 47.28107,
-      "longitude": -120.48771,
-      "elevationM": 1643,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Grouse%20Camp.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7210,29 +6704,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:588:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "588:ID:SNTL",
-      "name": "Lolo Pass",
-      "latitude": 46.63448,
-      "longitude": -114.58072,
-      "elevationM": 1609,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Lolo%20Pass.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:599:WA:SNTL",
       "vendor": "snotel",
       "nativeId": "599:WA:SNTL",
@@ -7244,29 +6715,6 @@
       "region": "WA",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Lost%20Horse.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:608:OR:SNTL",
-      "vendor": "snotel",
-      "nativeId": "608:OR:SNTL",
-      "name": "Madison Butte",
-      "latitude": 45.10513,
-      "longitude": -119.49585,
-      "elevationM": 1570,
-      "country": null,
-      "region": "OR",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/OR/Madison%20Butte.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7382,29 +6830,6 @@
       "region": "MT",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/MT/Noisy%20Basin.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:665:NM:SNTL",
-      "vendor": "snotel",
-      "nativeId": "665:NM:SNTL",
-      "name": "North Costilla",
-      "latitude": 36.99396,
-      "longitude": -105.25988,
-      "elevationM": 3222,
-      "country": null,
-      "region": "NM",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/NM/North%20Costilla.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7601,29 +7026,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:734:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "734:WA:SNTL",
-      "name": "Sasse Ridge",
-      "latitude": 47.38485,
-      "longitude": -121.06323,
-      "elevationM": 1323,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Sasse%20Ridge.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:737:CO:SNTL",
       "vendor": "snotel",
       "nativeId": "737:CO:SNTL",
@@ -7635,29 +7037,6 @@
       "region": "CO",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/CO/Schofield%20Pass.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:738:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "738:ID:SNTL",
-      "name": "Schweitzer Basin",
-      "latitude": 48.37428,
-      "longitude": -116.63917,
-      "elevationM": 1856,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Schweitzer%20Basin.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -8199,29 +7578,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:910:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "910:WA:SNTL",
-      "name": "Elbow Lake",
-      "latitude": 48.69092,
-      "longitude": -121.90893,
-      "elevationM": 930,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Elbow%20Lake.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:911:WA:SNTL",
       "vendor": "snotel",
       "nativeId": "911:WA:SNTL",
@@ -8314,29 +7670,6 @@
       "locator": {}
     },
     {
-      "uid": "snotel:926:ID:SNTL",
-      "vendor": "snotel",
-      "nativeId": "926:ID:SNTL",
-      "name": "Smiley Mountain",
-      "latitude": 43.72718,
-      "longitude": -113.83402,
-      "elevationM": 2908,
-      "country": null,
-      "region": "ID",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/ID/Smiley%20Mountain.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "snotel:927:AZ:SNTL",
       "vendor": "snotel",
       "nativeId": "927:AZ:SNTL",
@@ -8394,29 +7727,6 @@
       "region": "CO",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/CO/Michigan%20Creek.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:942:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "942:WA:SNTL",
-      "name": "Burnt Mountain",
-      "latitude": 47.0444,
-      "longitude": -121.94032,
-      "elevationM": 1268,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Burnt%20Mountain.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -8831,29 +8141,6 @@
       "region": "AK",
       "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/AK/Port%20Graham.html",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": false
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 600,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "snotel:991:WA:SNTL",
-      "vendor": "snotel",
-      "nativeId": "991:WA:SNTL",
-      "name": "Hozomeen Camp",
-      "latitude": 48.98075,
-      "longitude": -121.07976,
-      "elevationM": 512,
-      "country": null,
-      "region": "WA",
-      "timeZone": null,
-      "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/WA/Hozomeen%20Camp.html",
       "capabilities": {
         "gustLull": true,
         "temperature": true,

@@ -246,7 +246,43 @@ export const snotelProvider: StationNetworkProvider = {
           timeoutMs: 12_000,
           limitBytes: 6 * 1024 * 1024,
         });
-        batches.push(parseSnotelStationsList(text));
+        const candidates = parseSnotelStationsList(text);
+        try {
+          const activeTriplets = new Set<string>();
+          const chunkSize = 50;
+          for (let index = 0; index < candidates.length; index += chunkSize) {
+            const slice = candidates.slice(index, index + chunkSize);
+            const dataUrl = new URL(AWDB_DATA_URL);
+            dataUrl.searchParams.set('stationTriplets', slice.map(station => station.nativeId).join(','));
+            dataUrl.searchParams.set('elements', 'WSPDV,WSPD');
+            dataUrl.searchParams.set('duration', 'HOURLY');
+            dataUrl.searchParams.set('beginDate', '-72');
+            dataUrl.searchParams.set('endDate', '0');
+            const dataText = await fetchUpstreamText(environment, {
+              url: dataUrl,
+              cacheKey: `snotel/active/${index}`,
+              cacheTtlSeconds: 1_800,
+              subject: `USDA AWDB SNOTEL active wind check ${index}`,
+              timeoutMs: 12_000,
+              limitBytes: 6 * 1024 * 1024,
+            });
+            const rows: unknown = JSON.parse(dataText);
+            if (!Array.isArray(rows)) continue;
+            for (const row of rows) {
+              if (!isRecord(row) || typeof row.stationTriplet !== 'string' || !Array.isArray(row.data)) continue;
+              const hasValue = row.data.some(
+                el =>
+                  isRecord(el) &&
+                  Array.isArray(el.values) &&
+                  el.values.some(val => isRecord(val) && finiteNumber(val.value) !== null && finiteNumber(val.value)! >= 0),
+              );
+              if (hasValue) activeTriplets.add(row.stationTriplet.trim());
+            }
+          }
+          batches.push(activeTriplets.size > 0 ? candidates.filter(station => activeTriplets.has(station.nativeId)) : candidates);
+        } catch {
+          batches.push(candidates);
+        }
       } catch (error) {
         logUpstreamFailure(environment, 'SNOTEL discovery failed', error);
         // Fallback to seeds

@@ -29,6 +29,7 @@ import {
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
 import {
   finiteNumber,
+  isRecentObservation,
   isRecord,
   observationTimeMs,
   optionalWindMps,
@@ -224,22 +225,33 @@ export const windSpionProvider: StationNetworkProvider = {
     const batches: CatalogueStation[][] = [seeds];
     if (options.includeRemoteDiscovery !== false) {
       const environment = resolveEnvironment(options.environment);
-      for (const hub of REGIONAL_HUBS) {
-        try {
-          const url = new URL(WINDSPION_NEAR_URL);
-          url.searchParams.set('a', String(hub.latitude));
-          url.searchParams.set('o', String(hub.longitude));
-          url.searchParams.set('count', '600');
-          const text = await fetchUpstreamText(environment, {
-            url,
-            cacheKey: `windspion/hub/${hub.latitude},${hub.longitude}`,
-            cacheTtlSeconds: 600,
-            subject: `WindSpion hub (${hub.latitude}, ${hub.longitude})`,
-          });
-          batches.push(parseWindSpionList(text).map(entry => entry.station));
-        } catch {
-          // Best-effort sweep
-        }
+      const nowMs = environment.now().getTime();
+      const concurrency = 6;
+      for (let i = 0; i < REGIONAL_HUBS.length; i += concurrency) {
+        const slice = REGIONAL_HUBS.slice(i, i + concurrency);
+        const hubBatches = await Promise.all(
+          slice.map(async hub => {
+            try {
+              const url = new URL(WINDSPION_NEAR_URL);
+              url.searchParams.set('a', String(hub.latitude));
+              url.searchParams.set('o', String(hub.longitude));
+              url.searchParams.set('count', '600');
+              const text = await fetchUpstreamText(environment, {
+                url,
+                cacheKey: `windspion/hub/${hub.latitude},${hub.longitude}`,
+                cacheTtlSeconds: 600,
+                subject: `WindSpion hub (${hub.latitude}, ${hub.longitude})`,
+                timeoutMs: 4_000,
+              });
+              return parseWindSpionList(text)
+                .filter(entry => entry.reading !== null && isRecentObservation(entry.reading.observedAt, nowMs))
+                .map(entry => entry.station);
+            } catch {
+              return [];
+            }
+          }),
+        );
+        for (const batch of hubBatches) batches.push(batch);
       }
     }
     return filterCatalogueStations(mergeCatalogueStations(batches), {

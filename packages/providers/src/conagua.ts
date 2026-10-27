@@ -62,6 +62,7 @@ export function parseConaguaEmasCatalogue(text: string): CatalogueStation[] {
   const stations: CatalogueStation[] = [];
   for (const row of data) {
     if (!isRecord(row)) continue;
+    if (typeof row.icono === 'string' && /error|inactiv|fuera/i.test(row.icono)) continue;
     const idRaw = row.id_estacion ?? row.id;
     if (typeof idRaw !== 'string' && typeof idRaw !== 'number') continue;
     const nativeId = String(idRaw).trim();

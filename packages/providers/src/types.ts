@@ -1,5 +1,5 @@
 import type { ServerEnvironment, StationConfigInput } from '@azohra/meteo.station/server';
-import type { CatalogueStation, StationVendor } from '@stations/contracts';
+import type { CatalogueStation, LaunchSite, StationVendor } from '@stations/contracts';
 import type { Bounds, Coverage, RegionCode } from '@stations/geography';
 
 export interface ProviderCredentials {
@@ -19,6 +19,7 @@ export interface DiscoverOptions {
   readonly regions?: readonly RegionCode[];
   readonly bounds?: Bounds;
   readonly seeds?: readonly CatalogueStation[];
+  readonly launches?: readonly LaunchSite[];
   readonly includeRemoteDiscovery?: boolean;
   readonly environment?: ServerEnvironment;
 }

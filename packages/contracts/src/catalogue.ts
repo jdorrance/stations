@@ -41,6 +41,8 @@ export const STATION_VENDORS = [
   'wunderground',
   'synoptic',
   'ambient',
+  'climatenet',
+  'hydromet_am',
   'custom',
 ] as const;
 
@@ -130,6 +132,7 @@ export function defaultCategoryForVendor(vendor: StationVendor): StationCategory
     case 'nws':
     case 'eccc':
     case 'conagua':
+    case 'hydromet_am':
     case 'synoptic':
       return 'synoptic';
     case 'tempest':
@@ -139,6 +142,7 @@ export function defaultCategoryForVendor(vendor: StationVendor): StationCategory
     case 'cwop':
     case 'wunderground':
     case 'ambient':
+    case 'climatenet':
     case 'custom':
       return 'pws';
   }
@@ -299,9 +303,11 @@ const VENDOR_PRIORITY: Readonly<Record<StationVendor, number>> = {
   ndbc: 78,
   eccc: 76,
   conagua: 74,
+  hydromet_am: 73,
   awc: 72,
   iem: 70,
   nws: 68,
+  climatenet: 66,
   cwop: 64,
   windy: 62,
   wunderground: 60,

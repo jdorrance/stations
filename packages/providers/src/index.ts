@@ -72,6 +72,7 @@ export {
   loadHolfuyStation,
   parseHolfuyObservation,
   parseHolfuyStationsList,
+  parseHolfuyWeatherPageHtml,
   parseHolfuyWidgetJson,
   type HolfuyAdapterOptions,
   type HolfuyObservation,
@@ -117,6 +118,7 @@ export {
   WINDGURU_IAPI_URL,
   loadWindGuruStation,
   parseWindGuruCurrent,
+  parseWindGuruStationsList,
   windGuruProvider,
   type WindGuruAdapterOptions,
   type WindGuruStationConfig,
@@ -159,10 +161,13 @@ export {
 
 export {
   AVALANCHE_CA_STATIONS_URL,
+  SNOWOBS_CURRENT_URL,
+  SNOWOBS_TIMESERIES_URL,
   avalancheProvider,
   loadAvalancheStation,
   parseAvalancheCanadaMeasurements,
   parseAvalancheCanadaStations,
+  parseSnowObsCurrentGeoJson,
   type AvalancheAdapterOptions,
   type AvalancheStationConfig,
 } from './avalanche.ts';
@@ -248,6 +253,27 @@ export {
   wundergroundProvider,
 } from './cwop.ts';
 
+export {
+  ARMENIA_WMO_SYNOP_STATIONS,
+  CLIMATENET_DEVICE_BASE_URL,
+  CLIMATENET_LIST_URL,
+  OGIMET_GETSYNOP_URL,
+  climatenetProvider,
+  hydrometAmProvider,
+  loadClimateNetStation,
+  loadHydrometAmStation,
+  parseClimateNetDeviceList,
+  parseClimateNetGraph,
+  parseClimateNetLatest,
+  parseOgimetSynopBatch,
+  parseOgimetSynopLine,
+  type ClimateNetAdapterOptions,
+  type ClimateNetStationConfig,
+  type HydrometAmAdapterOptions,
+  type HydrometAmStationConfig,
+  type HydrometAmStationMeta,
+} from './armenia.ts';
+
 export { INITIAL_SEED_STATIONS } from './seeds.ts';
 
 export {
@@ -267,5 +293,12 @@ export {
   createStationsApiHandler,
   type StationsApiHandlerOptions,
 } from './handler.ts';
+
+export {
+  MAX_OBSERVATION_AGE_DAYS,
+  MAX_OBSERVATION_AGE_MS,
+  MAX_OBSERVATION_AGE_SECONDS,
+  isRecentObservation,
+} from './observation-values.ts';
 
 export { createProviderFetch, type ProviderFetchOptions, type ProviderRateLimit } from './transport.ts';

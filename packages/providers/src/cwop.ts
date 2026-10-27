@@ -3,6 +3,7 @@ import {
   MPH_TO_MPS,
   fahrenheitToCelsius,
   finiteNumber,
+  isRecentObservation,
   isRecord,
   observationTimeMs,
   optionalWindMps,
@@ -28,13 +29,25 @@ import {
 } from '@azohra/meteo.station/server';
 import {
   defineStationAdapter,
+  resolveEnvironment,
 } from './server.ts';
 import { fetchUpstreamText } from '@azohra/meteo.station/server';
-import type { CatalogueStation } from '@stations/contracts';
-import type { Coverage } from '@stations/geography';
+import {
+  formatStationUid,
+  mergeCatalogueStations,
+  type CatalogueStation,
+} from '@stations/contracts';
+import {
+  INITIAL_SCOPE_REGIONS,
+  inferRegionCode,
+  validPosition,
+  type Coverage,
+  type Position,
+} from '@stations/geography';
 import {
   createSeededProvider,
   customStationConfig,
+  filterCatalogueStations,
   stationMetaFromCatalogue,
   unconfiguredCustomStation,
 } from './azohra-vendors.ts';
@@ -44,7 +57,8 @@ import type {
   StationNetworkProvider,
 } from './types.ts';
 
-export const FINDU_RAW_WX_URL = 'http://wx.findu.com/cgi-bin/raw.cgi';
+export const FINDU_RAW_WX_URL = 'http://www.findu.com/cgi-bin/rawwx.cgi';
+export const FINDU_NEAR_WX_URL = 'http://www.findu.com/cgi-bin/wxnear.cgi';
 export const WINDY_PWS_URL = 'https://node.windy.com/obs/measurement/v3/pws';
 export const WU_PWS_CURRENT_URL = 'https://api.weather.com/v2/pws/observations/current';
 export const SYNOPTIC_LATEST_URL = 'https://api.synopticdata.com/v2/stations/latest';
@@ -517,13 +531,208 @@ export const loadAmbientStation = defineStationAdapter<
   },
 });
 
-export const cwopProvider: StationNetworkProvider = createSeededProvider(
-  'cwop',
-  station =>
-    customStationConfig(station, ({ environment, historyHours, mode }) =>
+const CWOP_HUBS: readonly Position[] = [
+  { latitude: 48.61, longitude: -122.43 },
+  { latitude: 47.5, longitude: -122.01 },
+  { latitude: 47.8, longitude: -120.04 },
+  { latitude: 45.7, longitude: -121.88 },
+  { latitude: 42.23, longitude: -123.0 },
+  { latitude: 49.2, longitude: -121.9 },
+  { latitude: 50.3, longitude: -122.74 },
+  { latitude: 51.27, longitude: -116.9 },
+  { latitude: 43.8, longitude: -113.38 },
+  { latitude: 43.59, longitude: -110.83 },
+  { latitude: 40.45, longitude: -111.9 },
+  { latitude: 38.54, longitude: -112.07 },
+  { latitude: 40.06, longitude: -105.3 },
+  { latitude: 39.74, longitude: -105.24 },
+  { latitude: 35.21, longitude: -106.45 },
+  { latitude: 39.31, longitude: -119.88 },
+  { latitude: 37.8, longitude: -122.46 },
+  { latitude: 37.38, longitude: -118.4 },
+  { latitude: 34.45, longitude: -119.7 },
+  { latitude: 34.22, longitude: -117.3 },
+  { latitude: 32.89, longitude: -117.25 },
+  { latitude: 38.87, longitude: -78.45 },
+  { latitude: 36.3, longitude: -81.72 },
+  { latitude: 35.35, longitude: -85.4 },
+  { latitude: 34.89, longitude: -85.46 },
+  { latitude: 43.37, longitude: -72.36 },
+];
+
+function parseAprsPosition(rawText: string, expectedCallsign: string): Position | null {
+  const lines = rawText
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .trim()
+    .split(/\r?\n/);
+  const clean =
+    lines.find(
+      line =>
+        /_/.test(line) &&
+        line.match(/([A-Z0-9-]+)>[^:]*:/i)?.[1]?.toUpperCase() ===
+          expectedCallsign.toUpperCase(),
+    ) ?? '';
+  const match = clean.match(/(\d{2})(\d{2}\.\d{2})([NS])[/\\](\d{3})(\d{2}\.\d{2})([EW])/i);
+  if (!match) return null;
+  const latDeg = Number(match[1]);
+  const latMin = Number(match[2]);
+  const latSign = match[3]!.toUpperCase() === 'S' ? -1 : 1;
+  const lonDeg = Number(match[4]);
+  const lonMin = Number(match[5]);
+  const lonSign = match[6]!.toUpperCase() === 'W' ? -1 : 1;
+  const latitude = Math.round((latDeg + latMin / 60) * latSign * 1e5) / 1e5;
+  const longitude = Math.round((lonDeg + lonMin / 60) * lonSign * 1e5) / 1e5;
+  return validPosition({ latitude, longitude }) ? { latitude, longitude } : null;
+}
+
+function parseFinduNearCalls(html: string): string[] {
+  const calls: string[] = [];
+  const rows = [...html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)].map(m => m[1]!);
+  for (const row of rows) {
+    const callMatch = row.match(/wxpage\.cgi\?call=([A-Z0-9-]+)/i);
+    if (!callMatch) continue;
+    const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map(m =>
+      m[1]!.replace(/<[^>]+>/g, '').trim(),
+    );
+    // Column 5 is wind speed; skip stations with blank wind speed
+    if (cells.length >= 6 && cells[5] !== '' && Number.isFinite(Number(cells[5]))) {
+      calls.push(callMatch[1]!.toUpperCase());
+    }
+  }
+  return calls;
+}
+
+const cwopCoverage: Coverage = { kind: 'global' };
+
+export const cwopProvider: StationNetworkProvider = {
+  vendor: 'cwop',
+  coverage: cwopCoverage,
+  async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
+    const seeds = (options.seeds ?? []).filter(station => station.vendor === 'cwop');
+    const batches: CatalogueStation[][] = [seeds];
+
+    if (options.includeRemoteDiscovery !== false) {
+      const environment = resolveEnvironment(options.environment);
+      const nowMs = environment.now().getTime();
+      try {
+        // Probe first hub via environment.fetch so offline unit tests fail closed without external calls
+        const firstHub = CWOP_HUBS[0]!;
+        const firstUrl = new URL(FINDU_NEAR_WX_URL);
+        firstUrl.searchParams.set('lat', String(firstHub.latitude));
+        firstUrl.searchParams.set('lon', String(firstHub.longitude));
+        firstUrl.searchParams.set('cnt', '12');
+        const firstHtml = await fetchUpstreamText(environment, {
+          url: firstUrl,
+          accept: 'text/html,text/plain',
+          cacheKey: `cwop/near/${firstHub.latitude},${firstHub.longitude}`,
+          cacheTtlSeconds: 1_800,
+          subject: `CWOP near (${firstHub.latitude}, ${firstHub.longitude})`,
+        });
+
+        const callsigns = new Set<string>(parseFinduNearCalls(firstHtml));
+        const remainingHubs = CWOP_HUBS.slice(1);
+        const concurrency = 6;
+        for (let i = 0; i < remainingHubs.length; i += concurrency) {
+          const slice = remainingHubs.slice(i, i + concurrency);
+          const hubCalls = await Promise.all(
+            slice.map(async hub => {
+              try {
+                const url = new URL(FINDU_NEAR_WX_URL);
+                url.searchParams.set('lat', String(hub.latitude));
+                url.searchParams.set('lon', String(hub.longitude));
+                url.searchParams.set('cnt', '12');
+                const html = await fetchUpstreamText(environment, {
+                  url,
+                  accept: 'text/html,text/plain',
+                  cacheKey: `cwop/near/${hub.latitude},${hub.longitude}`,
+                  cacheTtlSeconds: 1_800,
+                  subject: `CWOP near (${hub.latitude}, ${hub.longitude})`,
+                  timeoutMs: 5_000,
+                });
+                return parseFinduNearCalls(html);
+              } catch {
+                return [];
+              }
+            }),
+          );
+          for (const list of hubCalls) {
+            for (const c of list) callsigns.add(c);
+          }
+        }
+
+        const allCalls = [...callsigns];
+        const discovered: CatalogueStation[] = [];
+        const probeConcurrency = 15;
+        for (let i = 0; i < allCalls.length; i += probeConcurrency) {
+          const slice = allCalls.slice(i, i + probeConcurrency);
+          const probed = await Promise.all(
+            slice.map(async call => {
+              try {
+                const res = await fetch(
+                  `${FINDU_RAW_WX_URL}?call=${encodeURIComponent(call)}&start=1&length=1`,
+                  {
+                    headers: { 'User-Agent': environment.userAgent },
+                    signal: AbortSignal.timeout(5_000),
+                  },
+                );
+                if (!res.ok) return null;
+                const rawText = await res.text();
+                const pos = parseAprsPosition(rawText, call);
+                if (!pos) return null;
+                const reading = parseAprsWxPacket(rawText, nowMs, call);
+                if (!isRecentObservation(reading.observedAt, nowMs)) return null;
+                return {
+                  uid: formatStationUid('cwop', call),
+                  vendor: 'cwop' as const,
+                  nativeId: call,
+                  name: `CWOP ${call}`,
+                  latitude: pos.latitude,
+                  longitude: pos.longitude,
+                  elevationM: null,
+                  country: inferRegionCode(pos),
+                  region: null,
+                  timeZone: null,
+                  pageUrl: `http://www.findu.com/cgi-bin/wxpage.cgi?call=${encodeURIComponent(call)}`,
+                  category: 'pws' as const,
+                  capabilities: {
+                    gustLull: true,
+                    temperature: true,
+                    conditions: true,
+                    history: false,
+                  },
+                  samplingWindowSeconds: 300,
+                  recommendedPollSeconds: CACHE_TTL_SECONDS,
+                  locator: {
+                    callsign: call,
+                  },
+                } satisfies CatalogueStation;
+              } catch {
+                return null;
+              }
+            }),
+          );
+          for (const st of probed) {
+            if (st) discovered.push(st);
+          }
+        }
+        batches.push(discovered);
+      } catch {
+        // Offline or unmocked environment
+      }
+    }
+
+    return filterCatalogueStations(mergeCatalogueStations(batches), {
+      ...options,
+      regions: options.regions ?? INITIAL_SCOPE_REGIONS,
+    });
+  },
+  toStationConfig(station: CatalogueStation): StationConfigInput {
+    return customStationConfig(station, ({ environment, historyHours, mode }) =>
       loadCwopStation({ station }, { environment, historyHours, mode }),
-    ),
-);
+    );
+  },
+};
 
 export const windyProvider: StationNetworkProvider = createSeededProvider(
   'windy',

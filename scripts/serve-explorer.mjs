@@ -12,6 +12,7 @@ import {
 import { INITIAL_SCOPE_REGIONS } from '@stations/geography';
 import {
   INITIAL_SEED_STATIONS,
+  createProviderFetch,
   createStationsApiHandler,
   mergeDiscoveredStations,
 } from '@stations/providers';
@@ -82,7 +83,7 @@ export function loadExplorerCatalogue(options = {}) {
 
   const baseStations = publicDoc?.stations ?? INITIAL_SEED_STATIONS;
   const hydrated = mergeCatalogueStations([
-    INITIAL_SEED_STATIONS,
+    ...(publicDoc ? [] : [INITIAL_SEED_STATIONS]),
     baseStations.map(station => ({
       ...station,
       locator: locatorByUid.get(station.uid) ?? station.locator,
@@ -99,11 +100,17 @@ export function loadExplorerCatalogue(options = {}) {
 
 export function createExplorerRequestHandler(options = {}) {
   const catalogue = options.catalogue ?? loadExplorerCatalogue(options);
+  const environment = options.environment ?? {
+    fetch: createProviderFetch({
+      maxConcurrent: 6,
+      minIntervalMs: 100,
+    }),
+  };
   const apiHandler = createStationsApiHandler({
     catalogue,
     basePath: '/api/stations',
     maxFeedStations: options.maxFeedStations ?? 30,
-    environment: options.environment,
+    environment,
     credentials: {
       tempestToken: process.env.TEMPEST_TOKEN,
       ecowittApplicationKey: process.env.ECOWITT_APP_KEY,

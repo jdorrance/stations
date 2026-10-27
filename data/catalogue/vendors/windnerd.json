@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "generatedAt": "2026-10-26T21:27:07.700Z",
   "regions": [
     "US",
     "CA",
@@ -8,84 +8,20 @@
     "AM"
   ],
   "vendor": "windnerd",
-  "count": 4,
+  "count": 1,
   "stations": [
     {
-      "uid": "windnerd:blanchard-mountain",
+      "uid": "windnerd:bridal-lz",
       "vendor": "windnerd",
-      "nativeId": "blanchard-mountain",
-      "name": "Samish Overlook (Blanchard)",
-      "latitude": 48.6097,
-      "longitude": -122.426,
-      "elevationM": 460,
-      "country": "US",
-      "region": "WA",
-      "timeZone": "America/Los_Angeles",
-      "pageUrl": "https://windnerd.net/stations/blanchard-mountain",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": false,
-        "history": true,
-        "live": true,
-        "battery": true,
-        "recentSummaries": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 180,
-          "toDeg": 285
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "windnerd:mount-7-golden",
-      "vendor": "windnerd",
-      "nativeId": "mount-7-golden",
-      "name": "Mount 7 Launch (Golden)",
-      "latitude": 51.2718,
-      "longitude": -116.9062,
-      "elevationM": 1945,
+      "nativeId": "bridal-lz",
+      "name": "Bridal LZ",
+      "latitude": 49.28,
+      "longitude": -123.12,
+      "elevationM": 3,
       "country": "CA",
       "region": "BC",
       "timeZone": "America/Vancouver",
-      "pageUrl": "https://windnerd.net/stations/mount-7-golden",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true,
-        "live": true,
-        "battery": true,
-        "recentSummaries": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 210,
-          "toDeg": 300
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "windnerd:sevan-tsovagyugh",
-      "vendor": "windnerd",
-      "nativeId": "sevan-tsovagyugh",
-      "name": "Sevan Upper / Tsovagyugh",
-      "latitude": 40.5891,
-      "longitude": 44.9515,
-      "elevationM": 2290,
-      "country": "AM",
-      "region": "Gegharkunik",
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://windnerd.net/stations/sevan-tsovagyugh",
+      "pageUrl": "https://windnerd.net/en/bridal-lz",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -100,39 +36,7 @@
       "declaredFavorableDirections": [
         {
           "fromDeg": 140,
-          "toDeg": 220
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "windnerd:tiger-mountain",
-      "vendor": "windnerd",
-      "nativeId": "tiger-mountain",
-      "name": "Tiger Mountain North Launch",
-      "latitude": 47.4995,
-      "longitude": -122.009,
-      "elevationM": 730,
-      "country": "US",
-      "region": "WA",
-      "timeZone": "America/Los_Angeles",
-      "pageUrl": "https://windnerd.net/stations/tiger-mountain",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true,
-        "live": true,
-        "battery": true,
-        "recentSummaries": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 290,
-          "toDeg": 20
+          "toDeg": 359
         }
       ],
       "category": "freeflight",

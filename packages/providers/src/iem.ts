@@ -2,6 +2,7 @@ import {
   KNOTS_TO_MPS,
   fahrenheitToCelsius,
   finiteNumber,
+  isRecentObservation,
   isRecord,
   optionalWindMps,
   pressureHpa,
@@ -71,9 +72,13 @@ export function iemNetworksForRegions(
   const networks: string[] = [];
   for (const code of regions) {
     if (code === 'US') {
+      if (includeDcp) networks.push('USCRN');
       for (const st of US_STATE_CODES) {
         networks.push(`${st}_ASOS`);
-        if (includeDcp) networks.push(`${st}_DCP`);
+        if (includeDcp) {
+          networks.push(`${st}_DCP`);
+          networks.push(`${st}_RWIS`);
+        }
       }
     } else if (code === 'CA') {
       for (const prov of CA_PROVINCE_CODES) {
@@ -117,6 +122,8 @@ export function parseIemNetworkGeoJson(text: string, fallbackNetwork?: string): 
 
     const idRaw = feature.id ?? props.sid ?? props.id;
     if (typeof idRaw !== 'string' && typeof idRaw !== 'number') continue;
+    if (props.online === false) continue;
+    if (typeof props.archive_end === 'string' && props.archive_end.trim() !== '') continue;
     const stationId = String(idRaw).trim().toUpperCase();
     if (!stationId) continue;
     const network =
@@ -140,7 +147,7 @@ export function parseIemNetworkGeoJson(text: string, fallbackNetwork?: string): 
       typeof props.sname === 'string' && props.sname.trim()
         ? props.sname.trim()
         : `IEM ${stationId}`;
-    const isDcp = network.endsWith('_DCP');
+    const isDcp = network.endsWith('_DCP') || network.endsWith('_RWIS') || network === 'USCRN';
 
     stations.push({
       uid: formatStationUid('iem', nativeId),
@@ -308,7 +315,35 @@ export const iemProvider: StationNetworkProvider = {
                 timeoutMs: 8_000,
                 limitBytes: 4 * 1024 * 1024,
               });
-              return parseIemNetworkGeoJson(text, network);
+              const candidates = parseIemNetworkGeoJson(text, network);
+              if (candidates.length === 0) return [];
+              try {
+                const currentsUrl = new URL(IEM_CURRENTS_URL);
+                currentsUrl.searchParams.set('network', network);
+                const currentsText = await fetchUpstreamText(environment, {
+                  url: currentsUrl,
+                  cacheKey: `iem/network-currents/${network}`,
+                  cacheTtlSeconds: 600,
+                  subject: `IEM currents ${network}`,
+                  timeoutMs: 10_000,
+                  limitBytes: 6 * 1024 * 1024,
+                });
+                const currents = parseIemCurrentsResponse(currentsText);
+                const nowMs = environment.now().getTime();
+                return candidates.filter(station => {
+                  const sid =
+                    typeof station.locator.stationId === 'string'
+                      ? station.locator.stationId.toUpperCase()
+                      : station.nativeId.split(':').at(-1)!.toUpperCase();
+                  const reading = currents.get(sid);
+                  return (
+                    reading !== undefined &&
+                    isRecentObservation(reading.observedAt, nowMs)
+                  );
+                });
+              } catch {
+                return candidates;
+              }
             } catch (error) {
               logUpstreamFailure(environment, 'IEM discovery failed', error);
               return [];

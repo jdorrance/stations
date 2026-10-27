@@ -37,6 +37,8 @@ import {
 } from './azohra-vendors.ts';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
 import {
+  MAX_OBSERVATION_AGE_SECONDS,
+  isRecentObservation,
   isRecord,
   observationTimeMs,
   optionalWindMps,
@@ -68,6 +70,7 @@ function nativeAliasForWindsMobi(pvCode: string | null, pvId: string | null): st
   if (code === 'holfuy') return formatStationUid('holfuy', id);
   if (code === 'pioupiou' || code === 'openwindmap') return formatStationUid('openwindmap', id);
   if (code === 'windguru' || code === 'wg') return formatStationUid('windguru', id);
+  if (code === 'metar') return formatStationUid('awc', id.toUpperCase());
   if (code === 'wu' || code === 'wunderground') return formatStationUid('wunderground', id);
   return null;
 }
@@ -287,6 +290,7 @@ function buildWindsMobiBoxUrl(baseUrl: string, bounds: Bounds): URL {
   url.searchParams.set('within-pt1-lon', String(east));
   url.searchParams.set('within-pt2-lat', String(south));
   url.searchParams.set('within-pt2-lon', String(west));
+  url.searchParams.set('last-measure', String(MAX_OBSERVATION_AGE_SECONDS));
   url.searchParams.set('limit', '500');
   for (const key of [
     'short',
@@ -330,37 +334,93 @@ export const windsMobiProvider: StationNetworkProvider = {
             return tileBounds(env, 12, 18);
           });
 
+      const nowMs = environment.now().getTime();
       const queue: { bounds: Bounds; depth: number }[] = envelopes.map(bounds => ({
         bounds,
         depth: 0,
       }));
 
-      for (let requests = 0; queue.length > 0 && requests < 60; requests += 1) {
-        const { bounds: box, depth } = queue.shift()!;
+      const concurrency = 6;
+      let requests = 0;
+      while (queue.length > 0 && requests < 60) {
+        const slice = queue.splice(0, Math.min(concurrency, 60 - requests));
+        requests += slice.length;
+        const tileBatches = await Promise.all(
+          slice.map(async ({ bounds: box, depth }) => {
+            try {
+              const url = buildWindsMobiBoxUrl(WINDSMOBI_STATIONS_URL, box);
+              const text = await fetchUpstreamText(environment, {
+                url,
+                cacheKey: `windsmobi/bbox/${box.join(',')}`,
+                cacheTtlSeconds: 600,
+                subject: `Winds.mobi bbox [${box.join(', ')}]`,
+                limitBytes: 2 * 1024 * 1024,
+              });
+              const parsed = parseWindsMobiList(text);
+              const active = parsed.filter(
+                entry =>
+                  entry.reading !== null &&
+                  isRecentObservation(entry.reading.observedAt, nowMs),
+              );
+              if (parsed.length >= 500 && depth < 3) {
+                const [west, south, east, north] = box;
+                const midLon = (west + east) / 2;
+                const midLat = (south + north) / 2;
+                queue.push(
+                  { bounds: [west, south, midLon, midLat], depth: depth + 1 },
+                  { bounds: [midLon, south, east, midLat], depth: depth + 1 },
+                  { bounds: [west, midLat, midLon, north], depth: depth + 1 },
+                  { bounds: [midLon, midLat, east, north], depth: depth + 1 },
+                );
+              }
+              return active.map(entry => entry.station);
+            } catch {
+              return [];
+            }
+          }),
+        );
+        for (const batch of tileBatches) batches.push(batch);
+      }
+      for (const providerCode of ['holfuy', 'pioupiou']) {
         try {
-          const url = buildWindsMobiBoxUrl(WINDSMOBI_STATIONS_URL, box);
+          const url = new URL(WINDSMOBI_STATIONS_URL);
+          url.searchParams.set('provider', providerCode);
+          url.searchParams.set('last-measure', String(MAX_OBSERVATION_AGE_SECONDS));
+          for (const key of [
+            'short',
+            'name',
+            'loc',
+            'status',
+            'pv-code',
+            'pv-id',
+            'pv-name',
+            'alt',
+            'peak',
+            'tz',
+            'url',
+            'last._id',
+            'last.w-dir',
+            'last.w-avg',
+            'last.w-max',
+            'last.temp',
+          ]) {
+            url.searchParams.append('keys', key);
+          }
           const text = await fetchUpstreamText(environment, {
             url,
-            cacheKey: `windsmobi/bbox/${box.join(',')}`,
+            cacheKey: `windsmobi/provider/${providerCode}`,
             cacheTtlSeconds: 600,
-            subject: `Winds.mobi bbox [${box.join(', ')}]`,
+            subject: `Winds.mobi provider ${providerCode}`,
             limitBytes: 2 * 1024 * 1024,
           });
-          const parsed = parseWindsMobiList(text);
+          const parsed = parseWindsMobiList(text).filter(
+            entry =>
+              entry.reading !== null &&
+              isRecentObservation(entry.reading.observedAt, nowMs),
+          );
           batches.push(parsed.map(entry => entry.station));
-          if (parsed.length >= 500 && depth < 3) {
-            const [west, south, east, north] = box;
-            const midLon = (west + east) / 2;
-            const midLat = (south + north) / 2;
-            queue.push(
-              { bounds: [west, south, midLon, midLat], depth: depth + 1 },
-              { bounds: [midLon, south, east, midLat], depth: depth + 1 },
-              { bounds: [west, midLat, midLon, north], depth: depth + 1 },
-              { bounds: [midLon, midLat, east, north], depth: depth + 1 },
-            );
-          }
         } catch {
-          // Individual tile failure does not abort full regional sweep
+          // Best-effort provider sweep
         }
       }
     }

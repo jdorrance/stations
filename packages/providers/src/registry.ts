@@ -25,6 +25,7 @@ import {
   type RegionCode,
 } from '@stations/geography';
 import { avalancheProvider } from './avalanche.ts';
+import { climatenetProvider, hydrometAmProvider } from './armenia.ts';
 import { awcProvider } from './awc.ts';
 import {
   campbellProvider,
@@ -87,6 +88,8 @@ export const PROVIDERS: Readonly<Record<Exclude<StationVendor, 'custom'>, Statio
   wunderground: wundergroundProvider,
   synoptic: synopticProvider,
   ambient: ambientProvider,
+  climatenet: climatenetProvider,
+  hydromet_am: hydrometAmProvider,
 };
 
 export const DEFAULT_DISCOVERY_VENDORS: readonly Exclude<StationVendor, 'custom'>[] = [
@@ -111,6 +114,8 @@ export const DEFAULT_DISCOVERY_VENDORS: readonly Exclude<StationVendor, 'custom'
   'wunderground',
   'synoptic',
   'ambient',
+  'climatenet',
+  'hydromet_am',
 ];
 
 export function providerForVendor(vendor: StationVendor): StationNetworkProvider | null {
@@ -160,21 +165,28 @@ export function unwrapAggregatorStation(station: CatalogueStation): CatalogueSta
   if (!pvCode || !pvId) return station;
 
   let targetVendor: StationVendor | null = null;
+  let normalizedId = pvId;
   if (pvCode === 'holfuy') targetVendor = 'holfuy';
   else if (pvCode === 'pioupiou' || pvCode === 'openwindmap') targetVendor = 'openwindmap';
   else if (pvCode === 'windguru' || pvCode === 'wg') targetVendor = 'windguru';
+  else if (pvCode === 'metar') {
+    targetVendor = 'awc';
+    normalizedId = pvId.toUpperCase();
+  }
   if (!targetVendor) return station;
 
-  const uid = formatStationUid(targetVendor, pvId);
+  const uid = formatStationUid(targetVendor, normalizedId);
   return {
     ...station,
     uid,
     vendor: targetVendor,
-    nativeId: pvId,
+    nativeId: normalizedId,
+    ...(targetVendor === 'awc' ? { category: 'synoptic' as const } : {}),
     aliases: [...new Set([station.uid, ...(station.aliases ?? [])])].filter(alias => alias !== uid),
-    locator: {
-      stationId: pvId,
-    },
+    locator:
+      targetVendor === 'awc'
+        ? { icaoId: normalizedId }
+        : { stationId: normalizedId },
   };
 }
 
@@ -220,6 +232,7 @@ export async function discoverStations(
     regions,
     bounds: options.bounds,
     seeds,
+    launches: options.launches,
     includeRemoteDiscovery: options.includeRemoteDiscovery ?? false,
     environment,
   };

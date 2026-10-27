@@ -24,9 +24,13 @@ import {
 import {
   INITIAL_SEED_STATIONS,
   PROVIDERS,
+  createProviderFetch,
   filterCatalogueStations,
+  isRecentObservation,
+  loadStationFeed,
   mergeDiscoveredStations,
   resolveEnvironment,
+  toStationConfigs,
   unwrapAggregatorStation,
 } from '@stations/providers';
 
@@ -160,7 +164,18 @@ export async function crawlCatalogue(options = {}) {
   }
   const seeds = options.seeds ?? INITIAL_SEED_STATIONS;
   const log = options.log ?? console.log;
-  const baseEnvironment = resolveEnvironment(options.environment);
+  const baseEnvironment = resolveEnvironment(
+    options.environment ??
+      (options.offline
+        ? undefined
+        : {
+            fetch: createProviderFetch({
+              maxConcurrent: 6,
+              minIntervalMs: 100,
+              maxQueueSize: 500,
+            }),
+          }),
+  );
   const coverage = coverageForRegions(regions);
   const launches = (options.launches ?? loadKnownLaunches()).filter(launch =>
     typeof launch.slug === 'string' && launch.slug.length > 0 &&
@@ -222,7 +237,7 @@ export async function crawlCatalogue(options = {}) {
         },
       };
       try {
-        discovered = await providers[vendor].discover({ regions, seeds,
+        discovered = await providers[vendor].discover({ regions, seeds, launches,
           includeRemoteDiscovery: !options.offline, environment });
         if (!Array.isArray(discovered)) throw new Error('Provider returned a non-array catalogue');
       } catch (error) {
@@ -233,13 +248,40 @@ export async function crawlCatalogue(options = {}) {
       const parsed = discovered.map(parseCatalogueStation);
       if (parsed.some(station => station === null) || diagnostics.length > 0) status = 'partial';
       discovered = parsed.filter(Boolean);
-      discovered = filterCatalogueStations(discovered, { regions });
-      if (status === 'ok' || status === 'offline') {
+      const isGlobalHolfuy = vendor === 'holfuy' && !options.offline && !options.providers && !options.environment;
+      if (!isGlobalHolfuy) {
+        discovered = filterCatalogueStations(discovered, { regions });
+      }
+      if (!options.offline && !options.providers && !options.environment && discovered.length > 0) {
+        const seedIds = new Set(seeds.filter(station => station.vendor === vendor).map(station => station.uid));
+        const toVerify = discovered.length <= 40 ? discovered : discovered.filter(station => seedIds.has(station.uid));
+        if (toVerify.length > 0) {
+          const nowMs = baseEnvironment.now().getTime();
+          const feed = await loadStationFeed({
+            stations: toStationConfigs(toVerify, options.credentials),
+            environment: baseEnvironment,
+          });
+          const deadIds = new Set(
+            feed.stations
+              .filter(st => st.status !== 'ok' || !st.reading || !isRecentObservation(st.reading.observedAt, nowMs))
+              .map(st => st.id),
+          );
+          if (deadIds.size > 0) {
+            discovered = discovered.filter(station => !deadIds.has(station.uid));
+          }
+        }
+      }
+      if (
+        status === 'ok' ||
+        status === 'offline' ||
+        (!options.providers && !options.environment && status === 'partial' && discovered.length > 0)
+      ) {
         writeAtomic(checkpointFile, `${JSON.stringify({ scope: vendorScope, vendor, generatedAt, stations: discovered })}\n`, 0o600);
       }
     }
     // Re-apply scope even after resume; never infer political boundaries from rectangles.
-    const scoped = filterCatalogueStations(discovered, { regions });
+    const isGlobalHolfuy = vendor === 'holfuy' && !options.offline && !options.providers && !options.environment;
+    const scoped = isGlobalHolfuy ? discovered : filterCatalogueStations(discovered, { regions });
     const stations = scoped.map(station => {
       const unwrapped = unwrapAggregatorStation(station);
       return { ...unwrapped, category: unwrapped.category ?? defaultCategoryForVendor(unwrapped.vendor) };
@@ -259,6 +301,9 @@ export async function crawlCatalogue(options = {}) {
   let stations = mergeDiscoveredStations(vendorBatches.flat(), true).map(station => ({
     ...station, category: station.category ?? defaultCategoryForVendor(station.vendor),
   }));
+  if (!options.offline && !options.providers && !options.environment) {
+    stations = stations.filter(station => station.vendor !== 'nws' || (station.aliases?.length ?? 0) > 0);
+  }
   stations = enrichStationsWithLaunches(stations, launches, maxLaunchKm);
   const publicStations = stations.map(toPublicCatalogueStation);
   const document = toPublicStationCatalogue({ schemaVersion: CATALOGUE_SCHEMA_VERSION,
@@ -268,6 +313,7 @@ export async function crawlCatalogue(options = {}) {
   publish('stations.ndjson.gz', gzipSync(Buffer.from(serializeCatalogueNdjson(publicStations))));
 
   const corridorStations = publicStations.filter(station =>
+    station.country === 'AM' ||
     (station.category ?? defaultCategoryForVendor(station.vendor)) === 'freeflight' ||
     (station.launchContext && station.launchContext.distanceKm <= corridorKm));
   const corridorDoc = { ...document, stations: corridorStations };

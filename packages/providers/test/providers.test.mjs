@@ -3,6 +3,7 @@ import test from 'node:test';
 import { memoryCache } from '@azohra/meteo.station/server';
 import {
   INITIAL_SEED_STATIONS,
+  createProviderFetch,
   createStationsApiHandler,
   discoverStations,
   loadAwcStation,
@@ -560,13 +561,17 @@ test('discoverStations aggregates US, CA, MX, and AM stations and filters out ou
     now: () => new Date('2026-10-26T18:05:00Z'),
     cache: memoryCache(),
     logger: () => {},
-    fetch: async input => {
-      const url = String(input);
-      if (url.includes('pioupiou.fr')) {
-        return new Response(openWindMapFixture, { status: 200 });
-      }
-      return new Response('offline', { status: 502 });
-    },
+    fetch: createProviderFetch({
+      minIntervalMs: 0,
+      baseDelayMs: 0,
+      fetch: async input => {
+        const url = String(input);
+        if (url.includes('pioupiou.fr')) {
+          return new Response(openWindMapFixture, { status: 200 });
+        }
+        return new Response('offline', { status: 404 });
+      },
+    }),
   };
 
   const catalogue = await discoverStations({

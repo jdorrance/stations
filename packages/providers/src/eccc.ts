@@ -1,5 +1,6 @@
 import {
   finiteNumber,
+  isRecentObservation,
   isRecord,
   observationTimeMs,
   optionalWindMps,
@@ -269,6 +270,7 @@ export const ecccProvider: StationNetworkProvider = {
         if (options.bounds) {
           url.searchParams.set('bbox', options.bounds.join(','));
         }
+        const candidateBatches: CatalogueStation[][] = [];
         let nextUrl: URL | null = url;
         for (let page = 0; nextUrl && page < 20; page += 1) {
           const currentUrl: URL = nextUrl;
@@ -276,7 +278,7 @@ export const ecccProvider: StationNetworkProvider = {
             url: currentUrl, cacheKey: `eccc/swob-stations/${currentUrl.search}`, cacheTtlSeconds: 3_600,
             subject: 'ECCC SWOB stations catalogue', timeoutMs: 12_000, limitBytes: 6 * 1024 * 1024,
           });
-          batches.push(parseEcccSwobStations(text));
+          candidateBatches.push(parseEcccSwobStations(text));
           const root: unknown = JSON.parse(text);
           const next = isRecord(root) && Array.isArray(root.links)
             ? root.links.find(link => isRecord(link) && link.rel === 'next') : null;
@@ -284,6 +286,54 @@ export const ecccProvider: StationNetworkProvider = {
           if (nextUrl && nextUrl.origin !== url.origin) throw new Error('ECCC pagination returned an unexpected origin');
         }
         if (nextUrl) logUpstreamFailure(environment, 'ECCC discovery incomplete', new Error('Pagination limit reached'));
+        const candidates = candidateBatches.flat();
+        try {
+          const nowMs = environment.now().getTime();
+          const topOfHourIso = new Date(Math.floor((nowMs - 15 * 60_000) / 3_600_000) * 3_600_000).toISOString();
+          const activeIds = new Set<string>();
+          for (const queryUrl of [
+            `${ECCC_SWOB_REALTIME_URL}?f=json&limit=2500&datetime=${encodeURIComponent(topOfHourIso)}`,
+            `${ECCC_SWOB_REALTIME_URL}?f=json&limit=2500&sortby=-date_tm-value`,
+          ]) {
+            const rtText = await fetchUpstreamText(environment, {
+              url: queryUrl,
+              cacheKey: `eccc/swob-active/${queryUrl}`,
+              cacheTtlSeconds: 600,
+              subject: 'ECCC SWOB active wind stations',
+              timeoutMs: 12_000,
+              limitBytes: 12 * 1024 * 1024,
+            });
+            const rtData: unknown = JSON.parse(rtText);
+            const features = isRecord(rtData) && Array.isArray(rtData.features) ? rtData.features : [];
+            for (const feature of features) {
+              if (!isRecord(feature) || !isRecord(feature.properties)) continue;
+              const p = feature.properties;
+              const dtStr = typeof p['date_tm-value'] === 'string' ? p['date_tm-value'] : typeof p.date_tm === 'string' ? p.date_tm : null;
+              if (!dtStr || !isRecentObservation(dtStr, nowMs) || swobWind(p, SWOB_AVERAGE_KEYS) === null) continue;
+              for (const rawId of [p['msc_id-value'], p['tc_id-value'], p['icao_stn_id-value']]) {
+                if (typeof rawId === 'string' || typeof rawId === 'number') {
+                  const id = String(rawId).trim().toUpperCase();
+                  if (id) {
+                    activeIds.add(id);
+                    if (id.length === 3) activeIds.add(`C${id}`);
+                  }
+                }
+              }
+            }
+          }
+          batches.push(
+            activeIds.size > 0
+              ? candidates.filter(
+                  station =>
+                    activeIds.has(station.nativeId.toUpperCase()) ||
+                    (typeof station.locator.mscId === 'string' && activeIds.has(station.locator.mscId.toUpperCase())) ||
+                    (typeof station.locator.icaoId === 'string' && activeIds.has(station.locator.icaoId.toUpperCase())),
+                )
+              : candidates,
+          );
+        } catch {
+          batches.push(candidates);
+        }
       } catch (error) {
         logUpstreamFailure(environment, 'ECCC discovery failed', error);
         // Fallback to seeds

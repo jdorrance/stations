@@ -32,7 +32,12 @@ import {
   stationMetaFromCatalogue,
 } from './azohra-vendors.ts';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
-import { isRecord, strictNumber as finiteNumber, windDirection } from './observation-values.ts';
+import {
+  isRecentObservation,
+  isRecord,
+  strictNumber as finiteNumber,
+  windDirection,
+} from './observation-values.ts';
 
 export const OPENWINDMAP_ARCHIVE_URL = 'https://api.pioupiou.fr/v1/live-with-meta/all';
 export const OPENWINDMAP_STATION_URL = 'https://api.pioupiou.fr/v1/live-with-meta';
@@ -213,9 +218,12 @@ export const openWindMapProvider: StationNetworkProvider = {
         subject: 'OpenWindMap station archive',
         limitBytes: 4 * 1024 * 1024,
       });
+      const nowMs = environment.now().getTime();
       const discovered = parseOpenWindMapArchive(text, (error, index) => {
         logUpstreamFailure(environment, 'Skipped invalid OpenWindMap discovery entry', error, { index });
-      }).map(entry => entry.station);
+      })
+        .filter(entry => isRecentObservation(entry.reading.observedAt, nowMs))
+        .map(entry => entry.station);
       batches.push(discovered);
     }
     return filterCatalogueStations(mergeCatalogueStations(batches), {

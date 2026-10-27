@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "generatedAt": "2026-10-26T22:29:15.849Z",
   "regions": [
     "AM"
   ],
@@ -70,6 +70,837 @@
       "locator": {}
     },
     {
+      "uid": "climatenet:1",
+      "vendor": "climatenet",
+      "nativeId": "1",
+      "name": "Maralik (TUMO ClimateNet)",
+      "latitude": 40.580711,
+      "longitude": 43.869261,
+      "elevationM": 1689,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/1/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arteni",
+        "nearestLaunchName": "Arteni",
+        "distanceKm": 23.71,
+        "bearingDeg": 17
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:11",
+      "vendor": "climatenet",
+      "nativeId": "11",
+      "name": "Amasia (TUMO ClimateNet)",
+      "latitude": 40.952267,
+      "longitude": 43.786408,
+      "elevationM": 2648,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/11/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:13",
+      "vendor": "climatenet",
+      "nativeId": "13",
+      "name": "Artsvaberd (TUMO ClimateNet)",
+      "latitude": 40.841126,
+      "longitude": 45.470587,
+      "elevationM": 1195,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/13/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-mrghuz",
+        "nearestLaunchName": "Mrghuz",
+        "distanceKm": 23.39,
+        "bearingDeg": 50
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:14",
+      "vendor": "climatenet",
+      "nativeId": "14",
+      "name": "TUMO (TUMO ClimateNet)",
+      "latitude": 40.197641,
+      "longitude": 44.479521,
+      "elevationM": 1041,
+      "country": "AM",
+      "region": "Yerevan",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/14/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 13.82,
+        "bearingDeg": 213
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:15",
+      "vendor": "climatenet",
+      "nativeId": "15",
+      "name": "Ijevan (TUMO ClimateNet)",
+      "latitude": 40.879216,
+      "longitude": 45.157368,
+      "elevationM": 733,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/15/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-enokavan",
+        "nearestLaunchName": "Enokavan",
+        "distanceKm": 6.37,
+        "bearingDeg": 131
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:16",
+      "vendor": "climatenet",
+      "nativeId": "16",
+      "name": "Berd (TUMO ClimateNet)",
+      "latitude": 40.881753,
+      "longitude": 45.395091,
+      "elevationM": 901,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/16/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-mrghuz",
+        "nearestLaunchName": "Mrghuz",
+        "distanceKm": 22.76,
+        "bearingDeg": 30
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:17",
+      "vendor": "climatenet",
+      "nativeId": "17",
+      "name": "Chambarak (TUMO ClimateNet)",
+      "latitude": 40.596135,
+      "longitude": 45.352558,
+      "elevationM": 1848,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/17/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aghberk",
+        "nearestLaunchName": "Aghberk",
+        "distanceKm": 8.12,
+        "bearingDeg": 35
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:18",
+      "vendor": "climatenet",
+      "nativeId": "18",
+      "name": "Azatamut (TUMO ClimateNet)",
+      "latitude": 40.989997,
+      "longitude": 45.2083,
+      "elevationM": 492,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/18/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-enokavan",
+        "nearestLaunchName": "Enokavan",
+        "distanceKm": 12.21,
+        "bearingDeg": 48
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:19",
+      "vendor": "climatenet",
+      "nativeId": "19",
+      "name": "Spitak (TUMO ClimateNet)",
+      "latitude": 40.83184,
+      "longitude": 44.279795,
+      "elevationM": 1482,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/19/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-miraq",
+        "nearestLaunchName": "Miraq",
+        "distanceKm": 22.87,
+        "bearingDeg": 345
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:20",
+      "vendor": "climatenet",
+      "nativeId": "20",
+      "name": "Stepanavan (TUMO ClimateNet)",
+      "latitude": 41.02031,
+      "longitude": 44.38221,
+      "elevationM": 1385,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/20/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 25.31,
+        "bearingDeg": 233
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:21",
+      "vendor": "climatenet",
+      "nativeId": "21",
+      "name": "Vayk (TUMO ClimateNet)",
+      "latitude": 39.689995,
+      "longitude": 45.466546,
+      "elevationM": 1216,
+      "country": "AM",
+      "region": "Vayots Dzor",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/21/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 26.08,
+        "bearingDeg": 125
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:22",
+      "vendor": "climatenet",
+      "nativeId": "22",
+      "name": "Areni (TUMO ClimateNet)",
+      "latitude": 39.71826,
+      "longitude": 45.177451,
+      "elevationM": 967,
+      "country": "AM",
+      "region": "Vayots Dzor",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/22/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur-12015",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 12.05,
+        "bearingDeg": 194
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:23",
+      "vendor": "climatenet",
+      "nativeId": "23",
+      "name": "Jermuk (TUMO ClimateNet)",
+      "latitude": 39.813374,
+      "longitude": 45.671145,
+      "elevationM": 2002,
+      "country": "AM",
+      "region": "Vayots Dzor",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/23/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 38.92,
+        "bearingDeg": 92
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:25",
+      "vendor": "climatenet",
+      "nativeId": "25",
+      "name": "Alaverdi (TUMO ClimateNet)",
+      "latitude": 41.092513,
+      "longitude": 44.657109,
+      "elevationM": 951,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/25/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 7.91,
+        "bearingDeg": 158
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:27",
+      "vendor": "climatenet",
+      "nativeId": "27",
+      "name": "Odzun (TUMO ClimateNet)",
+      "latitude": 41.049429,
+      "longitude": 44.618191,
+      "elevationM": 1056,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/27/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 12.14,
+        "bearingDeg": 182
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:28",
+      "vendor": "climatenet",
+      "nativeId": "28",
+      "name": "Dsegh (TUMO ClimateNet)",
+      "latitude": 40.965779,
+      "longitude": 44.654578,
+      "elevationM": 1187,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/28/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 21.61,
+        "bearingDeg": 173
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:29",
+      "vendor": "climatenet",
+      "nativeId": "29",
+      "name": "Shnogh (TUMO ClimateNet)",
+      "latitude": 41.150359,
+      "longitude": 44.84154,
+      "elevationM": 609,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/29/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 18.39,
+        "bearingDeg": 93
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:3",
+      "vendor": "climatenet",
+      "nativeId": "3",
+      "name": "Azatan (TUMO ClimateNet)",
+      "latitude": 40.724777,
+      "longitude": 43.829406,
+      "elevationM": 1478,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/3/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 38.74,
+        "bearingDeg": 310
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:30",
+      "vendor": "climatenet",
+      "nativeId": "30",
+      "name": "Koghb (TUMO ClimateNet)",
+      "latitude": 41.186532,
+      "longitude": 44.981241,
+      "elevationM": 2071,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/30/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 30.22,
+        "bearingDeg": 84
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:31",
+      "vendor": "climatenet",
+      "nativeId": "31",
+      "name": "Gyumri (TUMO ClimateNet)",
+      "latitude": 40.785778,
+      "longitude": 43.836609,
+      "elevationM": 1509,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/31/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 42.93,
+        "bearingDeg": 317
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:33",
+      "vendor": "climatenet",
+      "nativeId": "33",
+      "name": "Dilijan (TUMO ClimateNet)",
+      "latitude": 40.743527,
+      "longitude": 44.872349,
+      "elevationM": 1391,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/33/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-fioletovo",
+        "nearestLaunchName": "Fioletovo",
+        "distanceKm": 10.33,
+        "bearingDeg": 81
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:4",
+      "vendor": "climatenet",
+      "nativeId": "4",
+      "name": "Artik (TUMO ClimateNet)",
+      "latitude": 40.625502,
+      "longitude": 43.95791,
+      "elevationM": 1715,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/4/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 23.42,
+        "bearingDeg": 305
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:48",
+      "vendor": "climatenet",
+      "nativeId": "48",
+      "name": "Mkhchyan (TUMO ClimateNet)",
+      "latitude": 40.022674,
+      "longitude": 44.486736,
+      "elevationM": 840,
+      "country": "AM",
+      "region": "Ararat",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/48/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aygezard",
+        "nearestLaunchName": "Aygezard",
+        "distanceKm": 17.2,
+        "bearingDeg": 303
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:5",
+      "vendor": "climatenet",
+      "nativeId": "5",
+      "name": "Ashotsk (TUMO ClimateNet)",
+      "latitude": 41.038679,
+      "longitude": 43.857348,
+      "elevationM": 1948,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/5/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:56",
+      "vendor": "climatenet",
+      "nativeId": "56",
+      "name": "Tsaghkunk Glkhatun (TUMO ClimateNet)",
+      "latitude": 40.578409,
+      "longitude": 44.877296,
+      "elevationM": null,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/56/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-maydan-range",
+        "nearestLaunchName": "Maydan Range",
+        "distanceKm": 3.22,
+        "bearingDeg": 155
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:6",
+      "vendor": "climatenet",
+      "nativeId": "6",
+      "name": "Gavar (TUMO ClimateNet)",
+      "latitude": 40.345572,
+      "longitude": 45.1257,
+      "elevationM": 1923,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/6/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-artanish",
+        "nearestLaunchName": "Artanish",
+        "distanceKm": 21.58,
+        "bearingDeg": 226
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:7",
+      "vendor": "climatenet",
+      "nativeId": "7",
+      "name": "Akhuryan (TUMO ClimateNet)",
+      "latitude": 40.780987,
+      "longitude": 43.886296,
+      "elevationM": 1528,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/7/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 39.77,
+        "bearingDeg": 321
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:8",
+      "vendor": "climatenet",
+      "nativeId": "8",
+      "name": "V. Sargsyan (TUMO ClimateNet)",
+      "latitude": 40.185285,
+      "longitude": 44.56002,
+      "elevationM": 1322,
+      "country": "AM",
+      "region": "Yerevan",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/8/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 12.95,
+        "bearingDeg": 183
+      },
+      "locator": {}
+    },
+    {
+      "uid": "climatenet:9",
+      "vendor": "climatenet",
+      "nativeId": "9",
+      "name": "Sevan (TUMO ClimateNet)",
+      "latitude": 40.542608,
+      "longitude": 44.957909,
+      "elevationM": 1888,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://climatenet.am/en/device/9/",
+      "capabilities": {
+        "gustLull": false,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 900,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-sevan-upper",
+        "nearestLaunchName": "Sevan Upper",
+        "distanceKm": 5.2,
+        "bearingDeg": 174
+      },
+      "locator": {}
+    },
+    {
       "uid": "holfuy:1652",
       "vendor": "holfuy",
       "nativeId": "1652",
@@ -101,133 +932,915 @@
       "locator": {}
     },
     {
-      "uid": "iem:AM__ASOS:UGEE",
-      "vendor": "iem",
-      "nativeId": "AM__ASOS:UGEE",
-      "name": "Yerevan",
-      "latitude": 40.2122,
-      "longitude": 44.5297,
-      "elevationM": 1225,
+      "uid": "hydromet_am:37609",
+      "vendor": "hydromet_am",
+      "nativeId": "37609",
+      "name": "Ashotsk North (Bavra) (ArmHydromet WMO 37609)",
+      "latitude": 41.0292,
+      "longitude": 43.8764,
+      "elevationM": 2012,
       "country": "AM",
-      "region": null,
+      "region": "Shirak",
       "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=UGEE&network=AM__ASOS",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37609&decoded=yes&ndays=2",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37618",
+      "vendor": "hydromet_am",
+      "nativeId": "37618",
+      "name": "Tashir (ArmHydromet WMO 37618)",
+      "latitude": 41.1164,
+      "longitude": 44.2789,
+      "elevationM": 1507,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37618&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
       "category": "synoptic",
       "launchContext": {
-        "nearestLaunchSlug": "am-arzni",
-        "nearestLaunchName": "Arzni",
-        "distanceKm": 10.48,
-        "bearingDeg": 198
+        "nearestLaunchSlug": "am-lalvar",
+        "nearestLaunchName": "Lalvar",
+        "distanceKm": 29.12,
+        "bearingDeg": 261
       },
       "locator": {}
     },
     {
-      "uid": "openwindmap:904",
-      "vendor": "openwindmap",
-      "nativeId": "904",
-      "name": "Aparan / Lernaglukh Ridge",
+      "uid": "hydromet_am:37682",
+      "vendor": "hydromet_am",
+      "nativeId": "37682",
+      "name": "Ashotsk (ArmHydromet WMO 37682)",
+      "latitude": 40.95,
+      "longitude": 43.7833,
+      "elevationM": 1876,
+      "country": "AM",
+      "region": "Shirak",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37682&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37699",
+      "vendor": "hydromet_am",
+      "nativeId": "37699",
+      "name": "Aparan (ArmHydromet WMO 37699)",
       "latitude": 40.5942,
-      "longitude": 44.4704,
-      "elevationM": 2380,
+      "longitude": 44.3636,
+      "elevationM": 1889,
       "country": "AM",
       "region": "Aragatsotn",
       "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.openwindmap.org/PP904",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": false,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 240,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-lernaglukh",
-        "nearestLaunchName": "Lernaglukh",
-        "distanceKm": 0,
-        "bearingDeg": 0
-      },
-      "locator": {}
-    },
-    {
-      "uid": "openwindmap:919",
-      "vendor": "openwindmap",
-      "nativeId": "919",
-      "name": "Vedi / Nor Ughi Ridge",
-      "latitude": 39.9448,
-      "longitude": 44.6761,
-      "elevationM": 2167,
-      "country": "AM",
-      "region": "Ararat",
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.openwindmap.org/PP919",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": false,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 240,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 150,
-          "toDeg": 240
-        }
-      ],
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-nor-ughi",
-        "nearestLaunchName": "Nor Ughi",
-        "distanceKm": 0,
-        "bearingDeg": 336
-      },
-      "locator": {}
-    },
-    {
-      "uid": "windnerd:sevan-tsovagyugh",
-      "vendor": "windnerd",
-      "nativeId": "sevan-tsovagyugh",
-      "name": "Sevan Upper / Tsovagyugh",
-      "latitude": 40.5891,
-      "longitude": 44.9515,
-      "elevationM": 2290,
-      "country": "AM",
-      "region": "Gegharkunik",
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://windnerd.net/stations/sevan-tsovagyugh",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37699&decoded=yes&ndays=2",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": true,
-        "live": true,
-        "battery": true,
-        "recentSummaries": true
+        "history": true
       },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 140,
-          "toDeg": 220
-        }
-      ],
-      "category": "freeflight",
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-miraq",
+        "nearestLaunchName": "Miraq",
+        "distanceKm": 4.49,
+        "bearingDeg": 167
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37704",
+      "vendor": "hydromet_am",
+      "nativeId": "37704",
+      "name": "Vanadzor (ArmHydromet WMO 37704)",
+      "latitude": 40.8386,
+      "longitude": 44.4342,
+      "elevationM": 1376,
+      "country": "AM",
+      "region": "Lori",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37704&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-miraq",
+        "nearestLaunchName": "Miraq",
+        "distanceKm": 23.85,
+        "bearingDeg": 17
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37711",
+      "vendor": "hydromet_am",
+      "nativeId": "37711",
+      "name": "Ijevan (ArmHydromet WMO 37711)",
+      "latitude": 40.8714,
+      "longitude": 45.1469,
+      "elevationM": 732,
+      "country": "AM",
+      "region": "Tavush",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37711&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-enokavan",
+        "nearestLaunchName": "Enokavan",
+        "distanceKm": 6.39,
+        "bearingDeg": 142
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37717",
+      "vendor": "hydromet_am",
+      "nativeId": "37717",
+      "name": "Lake Sevan (Peninsula) (ArmHydromet WMO 37717)",
+      "latitude": 40.565,
+      "longitude": 45.0081,
+      "elevationM": 1917,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37717&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
       "launchContext": {
         "nearestLaunchSlug": "am-sevan-upper",
         "nearestLaunchName": "Sevan Upper",
-        "distanceKm": 0,
-        "bearingDeg": 222
+        "distanceKm": 5.48,
+        "bearingDeg": 119
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37772",
+      "vendor": "hydromet_am",
+      "nativeId": "37772",
+      "name": "Talin (ArmHydromet WMO 37772)",
+      "latitude": 40.3861,
+      "longitude": 43.8928,
+      "elevationM": 1637,
+      "country": "AM",
+      "region": "Aragatsotn",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37772&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arteni",
+        "nearestLaunchName": "Arteni",
+        "distanceKm": 9.14,
+        "bearingDeg": 84
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37785",
+      "vendor": "hydromet_am",
+      "nativeId": "37785",
+      "name": "Ashtarak (ArmHydromet WMO 37785)",
+      "latitude": 40.2942,
+      "longitude": 44.3425,
+      "elevationM": 1090,
+      "country": "AM",
+      "region": "Aragatsotn",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37785&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 15.23,
+        "bearingDeg": 65
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37787",
+      "vendor": "hydromet_am",
+      "nativeId": "37787",
+      "name": "Armavir (ArmHydromet WMO 37787)",
+      "latitude": 40.1369,
+      "longitude": 44.0472,
+      "elevationM": 861,
+      "country": "AM",
+      "region": "Armavir",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37787&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 15.78,
+        "bearingDeg": 226
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37792",
+      "vendor": "hydromet_am",
+      "nativeId": "37792",
+      "name": "Hrazdan (ArmHydromet WMO 37792)",
+      "latitude": 40.4925,
+      "longitude": 44.7608,
+      "elevationM": 1765,
+      "country": "AM",
+      "region": "Kotayk",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37792&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-tsaghkadzor",
+        "nearestLaunchName": "Tsaghkadzor",
+        "distanceKm": 10.02,
+        "bearingDeg": 112
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37801",
+      "vendor": "hydromet_am",
+      "nativeId": "37801",
+      "name": "Gavar (Kamo) (ArmHydromet WMO 37801)",
+      "latitude": 40.3483,
+      "longitude": 45.1256,
+      "elevationM": 1960,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37801&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-artanish",
+        "nearestLaunchName": "Artanish",
+        "distanceKm": 21.38,
+        "bearingDeg": 227
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37815",
+      "vendor": "hydromet_am",
+      "nativeId": "37815",
+      "name": "Masrik (Mets Mazra) (ArmHydromet WMO 37815)",
+      "latitude": 40.2075,
+      "longitude": 45.7642,
+      "elevationM": 1939,
+      "country": "AM",
+      "region": "Gegharkunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37815&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-artanish",
+        "nearestLaunchName": "Artanish",
+        "distanceKm": 49.1,
+        "bearingDeg": 128
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37871",
+      "vendor": "hydromet_am",
+      "nativeId": "37871",
+      "name": "Artashat (ArmHydromet WMO 37871)",
+      "latitude": 39.9583,
+      "longitude": 44.5472,
+      "elevationM": 829,
+      "country": "AM",
+      "region": "Ararat",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37871&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aygezard",
+        "nearestLaunchName": "Aygezard",
+        "distanceKm": 9.52,
+        "bearingDeg": 284
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37880",
+      "vendor": "hydromet_am",
+      "nativeId": "37880",
+      "name": "Vorotan Pass (ArmHydromet WMO 37880)",
+      "latitude": 39.6928,
+      "longitude": 45.7114,
+      "elevationM": 2387,
+      "country": "AM",
+      "region": "Syunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37880&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 44.8,
+        "bearingDeg": 109
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37882",
+      "vendor": "hydromet_am",
+      "nativeId": "37882",
+      "name": "Jermuk (ArmHydromet WMO 37882)",
+      "latitude": 39.8336,
+      "longitude": 45.6708,
+      "elevationM": 2064,
+      "country": "AM",
+      "region": "Vayots Dzor",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37882&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "mountain",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 38.88,
+        "bearingDeg": 88
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37897",
+      "vendor": "hydromet_am",
+      "nativeId": "37897",
+      "name": "Sisian (ArmHydromet WMO 37897)",
+      "latitude": 39.52,
+      "longitude": 46.0294,
+      "elevationM": 1580,
+      "country": "AM",
+      "region": "Syunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37897&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-tatevi-vank",
+        "nearestLaunchName": "Tatevi Vank",
+        "distanceKm": 26.5,
+        "bearingDeg": 315
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37953",
+      "vendor": "hydromet_am",
+      "nativeId": "37953",
+      "name": "Goris (ArmHydromet WMO 37953)",
+      "latitude": 39.5178,
+      "longitude": 46.3381,
+      "elevationM": 1550,
+      "country": "AM",
+      "region": "Syunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37953&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": {
+        "nearestLaunchSlug": "am-tatevi-vank",
+        "nearestLaunchName": "Tatevi Vank",
+        "distanceKm": 20.13,
+        "bearingDeg": 23
+      },
+      "locator": {}
+    },
+    {
+      "uid": "hydromet_am:37958",
+      "vendor": "hydromet_am",
+      "nativeId": "37958",
+      "name": "Meghri (ArmHydromet WMO 37958)",
+      "latitude": 38.8975,
+      "longitude": 46.2422,
+      "elevationM": 627,
+      "country": "AM",
+      "region": "Syunik",
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=37958&decoded=yes&ndays=2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 900,
+      "category": "synoptic",
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:0c17db8c-9d65-4bdb-8684-dc4280f9a531",
+      "vendor": "weatherlink",
+      "nativeId": "0c17db8c-9d65-4bdb-8684-dc4280f9a531",
+      "name": "Karen Mkhitaryan",
+      "latitude": 39.76656519778066,
+      "longitude": 45.25896956149821,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/0c17db8c-9d65-4bdb-8684-dc4280f9a531",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-ulgyur",
+        "nearestLaunchName": "Ulgyur",
+        "distanceKm": 7.33,
+        "bearingDeg": 150
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:16227daf-3436-427b-b305-c3e1659a74f5",
+      "vendor": "weatherlink",
+      "nativeId": "16227daf-3436-427b-b305-c3e1659a74f5",
+      "name": "Yerevan",
+      "latitude": 40.18827,
+      "longitude": 44.48328,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/16227daf-3436-427b-b305-c3e1659a74f5",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 14.54,
+        "bearingDeg": 210
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:1d792314-b4b6-43ab-a8bd-d604fadc501d",
+      "vendor": "weatherlink",
+      "nativeId": "1d792314-b4b6-43ab-a8bd-d604fadc501d",
+      "name": "2'000 m. MeteoStation/01",
+      "latitude": 40.48528376434469,
+      "longitude": 44.33944668620825,
+      "elevationM": 2000,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/1d792314-b4b6-43ab-a8bd-d604fadc501d",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 13.29,
+        "bearingDeg": 99
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:1ff03fe3-1e26-4b84-8738-b8f8338928cc",
+      "vendor": "weatherlink",
+      "nativeId": "1ff03fe3-1e26-4b84-8738-b8f8338928cc",
+      "name": "2'600 m. MeteoStation/03",
+      "latitude": 40.4742902,
+      "longitude": 44.2864651,
+      "elevationM": 2600,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/1ff03fe3-1e26-4b84-8738-b8f8338928cc",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 9.25,
+        "bearingDeg": 111
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
+      "vendor": "weatherlink",
+      "nativeId": "2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
+      "name": "ASEC at Nor-Amberd",
+      "latitude": 40.374887488155,
+      "longitude": 44.263980388641,
+      "elevationM": 2000,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-mikearmenia",
+        "nearestLaunchName": "MikeArmenia",
+        "distanceKm": 9.17,
+        "bearingDeg": 62
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
+      "vendor": "weatherlink",
+      "nativeId": "6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
+      "name": "WalnutFarms",
+      "latitude": 40.066327374972985,
+      "longitude": 43.842346780580186,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 34.35,
+        "bearingDeg": 237
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
+      "vendor": "weatherlink",
+      "nativeId": "ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
+      "name": "Ip Vr",
+      "latitude": 40.2135094,
+      "longitude": 44.5250121,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 10.47,
+        "bearingDeg": 201
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:e1ad0062-2016-4ef0-b0b5-b4249132ac75",
+      "vendor": "weatherlink",
+      "nativeId": "e1ad0062-2016-4ef0-b0b5-b4249132ac75",
+      "name": "Meteo",
+      "latitude": 39.51598963685731,
+      "longitude": 46.03202157049972,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/e1ad0062-2016-4ef0-b0b5-b4249132ac75",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-tatevi-vank",
+        "nearestLaunchName": "Tatevi Vank",
+        "distanceKm": 26.03,
+        "bearingDeg": 315
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:e677fd82-5eca-431d-96e3-23751d1e5fc3",
+      "vendor": "weatherlink",
+      "nativeId": "e677fd82-5eca-431d-96e3-23751d1e5fc3",
+      "name": "Agroweather",
+      "latitude": 40.09825924222545,
+      "longitude": 43.869147596466235,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/e677fd82-5eca-431d-96e3-23751d1e5fc3",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 30.53,
+        "bearingDeg": 240
+      },
+      "locator": {}
+    },
+    {
+      "uid": "weatherlink:ed65a984-6b48-4ac7-8a6d-f64dfaded104",
+      "vendor": "weatherlink",
+      "nativeId": "ed65a984-6b48-4ac7-8a6d-f64dfaded104",
+      "name": "2'400m. MeteoStation/02",
+      "latitude": 40.48170600259809,
+      "longitude": 44.30168719546969,
+      "elevationM": 2400,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.weatherlink.com/map/ed65a984-6b48-4ac7-8a6d-f64dfaded104",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragats-south-summit",
+        "nearestLaunchName": "Aragats South Summit",
+        "distanceKm": 10.24,
+        "bearingDeg": 104
+      },
+      "locator": {}
+    },
+    {
+      "uid": "windguru:15245",
+      "vendor": "windguru",
+      "nativeId": "15245",
+      "name": "Armenia Sevan Wishup (1chip.ru weather station) - Wishup",
+      "latitude": 40.50442,
+      "longitude": 45.24932,
+      "elevationM": 1905,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.windguru.cz/station/15245",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aghberk",
+        "nearestLaunchName": "Aghberk",
+        "distanceKm": 5.39,
+        "bearingDeg": 229
+      },
+      "locator": {}
+    },
+    {
+      "uid": "windguru:15518",
+      "vendor": "windguru",
+      "nativeId": "15518",
+      "name": "Armenia, Wishup Shore",
+      "latitude": 40.505644,
+      "longitude": 45.248698,
+      "elevationM": 1915,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.windguru.cz/station/15518",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aghberk",
+        "nearestLaunchName": "Aghberk",
+        "distanceKm": 5.34,
+        "bearingDeg": 230
+      },
+      "locator": {}
+    },
+    {
+      "uid": "windguru:4155",
+      "vendor": "windguru",
+      "nativeId": "4155",
+      "name": "Armenian Camp",
+      "latitude": 40.485413,
+      "longitude": 45.365779,
+      "elevationM": 1935,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Etc/GMT",
+      "pageUrl": "https://www.windguru.cz/station/4155",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "launchContext": {
+        "nearestLaunchSlug": "am-artanish",
+        "nearestLaunchName": "Artanish",
+        "distanceKm": 4.84,
+        "bearingDeg": 84
       },
       "locator": {}
     }

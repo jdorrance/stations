@@ -40,7 +40,9 @@ const PRESETS: Record<string, { center: [number, number]; zoom: number }> = {
   appalachia: { center: [-80.5, 37.2], zoom: 6.8 },
   mexico: { center: [-100.12, 19.15], zoom: 8.5 },
   armenia: { center: [44.65, 40.35], zoom: 8.5 },
+  alps: { center: [9.5, 46.8], zoom: 6.5 },
   na: { center: [-100.0, 42.0], zoom: 3.3 },
+  world: { center: [10.0, 35.0], zoom: 2.0 },
 };
 
 const BASEMAPS: { id: BasemapId; label: string }[] = [
@@ -585,9 +587,11 @@ map.on('load', async () => {
   updateMapSource();
   renderStationsTable();
 
-  // Select Tiger Mountain or the first visible free-flight station by default
+  // Select the first live free-flight station in view or in the catalogue by default
   const initialStation =
-    catalogueIndex.byUid('windnerd:tiger-mountain') ??
+    catalogueIndex.byUid('windguru:2041') ??
+    catalogueIndex.byUid('holfuy:1104') ??
+    catalogueIndex.byUid('windnerd:bridal-lz') ??
     stationsInCurrentView()[0] ??
     catalogueIndex.all()[0];
   if (initialStation) {

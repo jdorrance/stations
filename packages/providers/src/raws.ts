@@ -3,6 +3,7 @@ import {
   MPH_TO_MPS,
   fahrenheitToCelsius,
   finiteNumber,
+  isRecentObservation,
   isRecord,
   observationTimeMs,
   optionalWindMps,
@@ -95,6 +96,7 @@ export function parseRawsFeature(raw: unknown): RawsParsedFeature | null {
     'NESDIS',
     'NESDIS_ID',
     'NESSID',
+    'MesoWestStationID',
     'StationID',
     'STAID',
     'WIMS_ID',
@@ -135,6 +137,7 @@ export function parseRawsFeature(raw: unknown): RawsParsedFeature | null {
 
   const nwsId = pickField(attrs, ['NWSID', 'NWS_ID']);
   const nesdisId = pickField(attrs, ['NESDIS', 'NESDIS_ID', 'NESSID']);
+  const mesoWestId = pickField(attrs, ['MesoWestStationID', 'MESOWEST_ID']);
 
   const station: CatalogueStation = {
     uid: formatStationUid('raws', nativeId),
@@ -165,6 +168,9 @@ export function parseRawsFeature(raw: unknown): RawsParsedFeature | null {
       ...(typeof nwsId === 'string' && nwsId.trim() ? { nwsId: nwsId.trim().toUpperCase() } : {}),
       ...(typeof nesdisId === 'string' && nesdisId.trim()
         ? { nesdisId: nesdisId.trim().toUpperCase() }
+        : {}),
+      ...(typeof mesoWestId === 'string' && mesoWestId.trim()
+        ? { mesoWestId: mesoWestId.trim().toUpperCase() }
         : {}),
     },
   };
@@ -270,8 +276,14 @@ export const loadRawsStation = defineStationAdapter<RawsStationConfig, RawsAdapt
     });
 
     const features = parseRawsFeatureCollection(text);
-    const match =
-      features.find(f => f.station.nativeId === station.nativeId.toUpperCase());
+    const targetId = station.nativeId.toUpperCase();
+    const match = features.find(
+      f =>
+        f.station.nativeId === targetId ||
+        (typeof f.station.locator.nwsId === 'string' && f.station.locator.nwsId.toUpperCase() === targetId) ||
+        (typeof f.station.locator.nesdisId === 'string' && f.station.locator.nesdisId.toUpperCase() === targetId) ||
+        (typeof f.station.locator.mesoWestId === 'string' && f.station.locator.mesoWestId.toUpperCase() === targetId),
+    );
     if (!match || !match.reading) {
       throw new Error(`RAWS returned no active observation for ${station.nativeId}`);
     }
@@ -319,7 +331,10 @@ export const rawsProvider: StationNetworkProvider = {
             timeoutMs: 12_000,
             limitBytes: 8 * 1024 * 1024,
           });
-          const parsed = parseRawsFeatureCollection(text);
+          const nowMs = environment.now().getTime();
+          const parsed = parseRawsFeatureCollection(text).filter(
+            entry => entry.reading !== null && isRecentObservation(entry.reading.observedAt, nowMs),
+          );
           batches.push(parsed.map(entry => entry.station));
           const page: unknown = JSON.parse(text);
           if (isRecord(page) && Array.isArray(page.features) && page.features.length < pageSize && page.exceededTransferLimit !== true) break;

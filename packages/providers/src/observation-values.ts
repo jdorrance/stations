@@ -2,6 +2,20 @@ export const KNOTS_TO_MPS = 0.5144444444444445;
 export const MPH_TO_MPS = 0.44704;
 export const FEET_TO_METERS = 0.3048;
 export const INHG_TO_HPA = 33.863886666667;
+export const MAX_OBSERVATION_AGE_DAYS = 30;
+export const MAX_OBSERVATION_AGE_SECONDS = MAX_OBSERVATION_AGE_DAYS * 86_400;
+export const MAX_OBSERVATION_AGE_MS = MAX_OBSERVATION_AGE_SECONDS * 1_000;
+
+export function isRecentObservation(
+  observedAt: string | number | null | undefined,
+  nowMs = Date.now(),
+  maxAgeMs = MAX_OBSERVATION_AGE_MS,
+): boolean {
+  const obsMs = typeof observedAt === 'number' ? observedAt : observationTimeMs(observedAt);
+  if (!Number.isFinite(obsMs) || !Number.isFinite(nowMs)) return false;
+  const ageMs = nowMs - obsMs;
+  return ageMs <= maxAgeMs && ageMs >= -86_400_000;
+}
 
 /** External JSON stays unknown until an adapter checks its required fields. */
 export function isRecord(value: unknown): value is Record<string, unknown> {

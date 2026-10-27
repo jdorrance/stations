@@ -38,8 +38,10 @@ import type {
   StationNetworkProvider,
 } from './types.ts';
 import { credentialScopedEnvironment } from './freeflight-observations.ts';
+import { isRecentObservation, isRecord } from './observation-values.ts';
 
 export const WINDNERD_DIRECTORY_URL = 'https://windnerd.net/en/stations';
+export const WINDNERD_LOCATIONS_URL = 'https://windnerd.net/api/locations';
 export const WINDNERD_LIVE_BASE_URL = 'https://windnerd.net/api/live-url';
 
 export function filterCatalogueStations(
@@ -276,10 +278,41 @@ export function parseWindnerdDirectoryHtml(
   return [...found.values()];
 }
 
+export function parseWindnerdLocationsJson(
+  text: string,
+): { stationKey: string; name?: string; countryHint?: string; locationId?: number }[] {
+  const data: unknown = JSON.parse(text);
+  if (!Array.isArray(data)) return [];
+  const results: {
+    stationKey: string;
+    name?: string;
+    countryHint?: string;
+    locationId?: number;
+  }[] = [];
+  for (const row of data) {
+    if (!isRecord(row)) continue;
+    if (row.maintenance_mode === true) continue;
+    const key = typeof row.url === 'string' ? row.url.trim().toLowerCase() : '';
+    if (!key) continue;
+    const name = typeof row.name === 'string' && row.name.trim() ? row.name.trim() : undefined;
+    const countryHint =
+      typeof row.country_code === 'string' && row.country_code.trim()
+        ? row.country_code.trim().toUpperCase()
+        : undefined;
+    const locationId =
+      typeof row.id === 'number' && Number.isSafeInteger(row.id) && row.id > 0
+        ? row.id
+        : undefined;
+    results.push({ stationKey: key, name, countryHint, locationId });
+  }
+  return results;
+}
+
 async function probeWindnerdStationInit(
   environment: ResolvedEnvironment,
   stationKey: string,
   nameFallback?: string,
+  countryHint?: string,
 ): Promise<CatalogueStation | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 5_000);
@@ -313,12 +346,23 @@ async function probeWindnerdStationInit(
         const rawJson = JSON.parse(jsonText) as {
           type?: string;
           location?: { id?: number; name?: string };
+          digest?: { recent?: { date_utc?: string } };
         };
         if (rawJson.type !== 'INIT' && !/^event:\s*INIT\s*$/m.test(frame)) continue;
+        const recentDateUtc = rawJson.digest?.recent?.date_utc;
+        if (
+          typeof recentDateUtc === 'string' &&
+          !isRecentObservation(recentDateUtc, environment.now().getTime())
+        ) {
+          return null;
+        }
         const loc = parseWindnerdLiveLocation(rawJson.location);
         if (!loc || loc.latitude === null || loc.longitude === null) return null;
         if (!validPosition({ latitude: loc.latitude, longitude: loc.longitude })) return null;
-        const country = inferRegionCode({ latitude: loc.latitude, longitude: loc.longitude });
+        const country = inferRegionCode(
+          { latitude: loc.latitude, longitude: loc.longitude },
+          countryHint,
+        );
         const locationId = rawJson.location?.id;
         if (typeof locationId !== 'number' || !Number.isSafeInteger(locationId) || locationId <= 0) return null;
         const name =
@@ -394,6 +438,10 @@ export const windnerdProvider: StationNetworkProvider = {
     const batches: CatalogueStation[][] = [seeds];
     if (options.includeRemoteDiscovery !== false) {
       const environment = resolveEnvironment(options.environment);
+      const entriesByKey = new Map<
+        string,
+        { stationKey: string; name?: string; countryHint?: string }
+      >();
       try {
         const html = await fetchUpstreamText(environment, {
           url: WINDNERD_DIRECTORY_URL,
@@ -402,20 +450,47 @@ export const windnerdProvider: StationNetworkProvider = {
           cacheTtlSeconds: 3_600,
           subject: 'WindNerd public stations directory',
         });
-        const entries = parseWindnerdDirectoryHtml(html);
-        const discovered: CatalogueStation[] = [];
-        for (const entry of entries) {
-          const station = await probeWindnerdStationInit(
-            environment,
-            entry.stationKey,
-            entry.name,
-          );
+        for (const entry of parseWindnerdDirectoryHtml(html)) {
+          entriesByKey.set(entry.stationKey, entry);
+        }
+      } catch {
+        // Fallback to /api/locations or seeds when HTML directory is unreachable
+      }
+      if (entriesByKey.size === 0) {
+        try {
+          const jsonText = await fetchUpstreamText(environment, {
+            url: WINDNERD_LOCATIONS_URL,
+            cacheKey: 'windnerd/locations/api',
+            cacheTtlSeconds: 3_600,
+            subject: 'WindNerd public locations API',
+          });
+          for (const entry of parseWindnerdLocationsJson(jsonText)) {
+            entriesByKey.set(entry.stationKey, entry);
+          }
+        } catch {
+          // Fallback to seeds when directory or stream probe is unreachable
+        }
+      }
+      const entries = [...entriesByKey.values()];
+      const discovered: CatalogueStation[] = [];
+      const concurrency = 8;
+      for (let index = 0; index < entries.length; index += concurrency) {
+        const slice = entries.slice(index, index + concurrency);
+        const probed = await Promise.all(
+          slice.map(entry =>
+            probeWindnerdStationInit(
+              environment,
+              entry.stationKey,
+              entry.name,
+              entry.countryHint,
+            ),
+          ),
+        );
+        for (const station of probed) {
           if (station) discovered.push(station);
         }
-        batches.push(discovered);
-      } catch {
-        // Fallback to seeds when directory or stream probe is unreachable
       }
+      batches.push(discovered);
     }
     return filterCatalogueStations(mergeCatalogueStations(batches), {
       ...options,

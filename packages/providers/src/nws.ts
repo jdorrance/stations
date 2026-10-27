@@ -114,6 +114,12 @@ export function parseNwsStationsCollection(text: string, stateHint?: string): Ca
 
     const idRaw = props.stationIdentifier;
     if (typeof idRaw !== 'string' || !idRaw.trim()) continue;
+    if (typeof props.provider === 'string') {
+      const providerRaw = props.provider.trim().toUpperCase();
+      if (!/^(?:ASOS|AWOS)\b/.test(providerRaw)) {
+        continue;
+      }
+    }
     const nativeId = idRaw.trim().toUpperCase();
 
     const country = inferRegionCode({ latitude, longitude }, 'US');
@@ -250,11 +256,17 @@ export const nwsProvider: StationNetworkProvider = {
                   cacheKey: `nws/stations/${state}/${currentUrl.search}`, cacheTtlSeconds: 3_600,
                   subject: `NWS stations ${state}`, timeoutMs: 8_000, limitBytes: 4 * 1024 * 1024,
                 });
-                stations.push(...parseNwsStationsCollection(text, state));
                 const root: unknown = JSON.parse(text);
+                const rawFeatures = isRecord(root) && Array.isArray(root.features) ? root.features : [];
+                if (rawFeatures.length === 0) {
+                  nextUrl = null;
+                  break;
+                }
+                stations.push(...parseNwsStationsCollection(text, state));
                 const pagination = isRecord(root) && isRecord(root.pagination) ? root.pagination : null;
-                nextUrl = typeof pagination?.next === 'string' ? new URL(pagination.next, currentUrl) : null;
-                if (nextUrl && nextUrl.origin !== url.origin) throw new Error('NWS pagination returned an unexpected origin');
+                const candidateNext = typeof pagination?.next === 'string' ? new URL(pagination.next, currentUrl) : null;
+                if (candidateNext && candidateNext.origin !== url.origin) throw new Error('NWS pagination returned an unexpected origin');
+                nextUrl = candidateNext && candidateNext.href !== currentUrl.href ? candidateNext : null;
               }
               if (nextUrl) logUpstreamFailure(environment, 'NWS discovery incomplete', new Error('Pagination limit reached'));
               return stations;

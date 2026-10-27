@@ -40,7 +40,9 @@ import type {
 } from './types.ts';
 import { credentialCacheScope, observationTimeIso } from './freeflight-observations.ts';
 import {
+  FEET_TO_METERS,
   finiteNumber,
+  isRecentObservation,
   isRecord,
   utcObservationTimeMs,
   windDirection,
@@ -147,14 +149,42 @@ export function parseHolfuyObservation(text: string, expectedStationId: string):
   };
 }
 
+function parseHolfuyRelativeUpdatedIso(updated: unknown, referenceNowMs?: number): string | null {
+  if (typeof updated !== 'string' || referenceNowMs === undefined || !Number.isFinite(referenceNowMs)) {
+    return null;
+  }
+  const clean = updated.replace(/<[^>]+>/g, ' ').trim();
+  const match = clean.match(/^(\d+)\s*(sec|second|min|minute|hour|hr|day)s?\.?\s*ago$/i);
+  if (!match) return null;
+  const amount = Number(match[1]);
+  const unit = match[2]!.toLowerCase();
+  const multiplierMs =
+    unit.startsWith('sec')
+      ? 1_000
+      : unit.startsWith('min')
+        ? 60_000
+        : unit.startsWith('h')
+          ? 3_600_000
+          : 86_400_000;
+  return new Date(referenceNowMs - amount * multiplierMs).toISOString();
+}
+
 /**
  * Parses Holfuy's public keyless widget endpoint (`https://holfuy.com/puget/mjso.php?k={id}`).
  * Speeds from `mjso.php` default to km/h unless `su` / `unit` states otherwise.
  */
-export function parseHolfuyWidgetJson(text: string, _legacyNowMs?: number): HolfuyObservation {
+export function parseHolfuyWidgetJson(text: string, referenceNowMs?: number): HolfuyObservation {
   const data: unknown = JSON.parse(text);
   if (!isRecord(data)) throw new Error('Holfuy widget returned non-object payload');
-  const observedAt = observationTimeIso(data.timestamp ?? data.ts ?? data.dateTime ?? data.time);
+  if (data.valid === false || (typeof data.valid === 'string' && data.valid !== 'ok')) {
+    throw new Error('Holfuy widget reported no active station data');
+  }
+  if (data.s !== undefined && data.timestamp === undefined && data.ts === undefined) {
+    throw new Error('Holfuy widget returned session decoy payload');
+  }
+  const observedAt =
+    observationTimeIso(data.timestamp ?? data.ts ?? data.dateTime ?? data.time) ??
+    parseHolfuyRelativeUpdatedIso(data.updated, referenceNowMs);
   if (!observedAt) throw new Error('Holfuy widget is missing an observation timestamp');
   const speedUnit = typeof data.su === 'string' ? data.su : typeof data.unit === 'string' ? data.unit : 'km/h';
   const windAvgMps = parseHolfuySpeedMps(data.speed ?? data.wind_speed, speedUnit);
@@ -193,6 +223,68 @@ export function parseHolfuyWidgetJson(text: string, _legacyNowMs?: number): Holf
   };
 }
 
+function normalizeHolfuyCountry(raw: unknown): string | null {
+  if (typeof raw !== 'string') return null;
+  const code = raw.trim().toUpperCase();
+  if (['US', 'U1', 'UM', 'UE'].includes(code)) return 'US';
+  if (['CA', 'C1', 'C2', 'C3'].includes(code)) return 'CA';
+  if (code === 'MX') return 'MX';
+  if (code === 'AM') return 'AM';
+  return code || null;
+}
+
+function decodeHtmlText(raw: string): string {
+  return raw
+    .replace(/&amp;/gi, '&')
+    .replace(/&period;/gi, '.')
+    .replace(/&comma;/gi, ',')
+    .replace(/&apos;|&#0?39;/gi, "'")
+    .replace(/&quot;/gi, '"')
+    .replace(/&oslash;/gi, 'ø')
+    .replace(/&aring;/gi, 'å')
+    .replace(/&auml;/gi, 'ä')
+    .replace(/&ouml;/gi, 'ö')
+    .replace(/&uuml;/gi, 'ü')
+    .replace(/&eacute;/gi, 'é')
+    .replace(/&egrave;/gi, 'è')
+    .replace(/&ntilde;/gi, 'ñ')
+    .replace(/&oacute;/gi, 'ó')
+    .replace(/&aacute;/gi, 'á')
+    .replace(/&iacute;/gi, 'í')
+    .replace(/&uacute;/gi, 'ú')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function extractFavorableDirections(
+  start1: unknown,
+  end1: unknown,
+  start2?: unknown,
+  end2?: unknown,
+): { fromDeg: number; toDeg: number }[] | undefined {
+  const arcs: { fromDeg: number; toDeg: number }[] = [];
+  for (const [sRaw, eRaw] of [
+    [start1, end1],
+    [start2, end2],
+  ]) {
+    const fromDeg = finiteNumber(sRaw);
+    const toDeg = finiteNumber(eRaw);
+    if (
+      fromDeg !== null &&
+      toDeg !== null &&
+      fromDeg >= 0 &&
+      fromDeg <= 360 &&
+      toDeg >= 0 &&
+      toDeg <= 360 &&
+      fromDeg !== toDeg &&
+      !(fromDeg === 0 && toDeg === 360)
+    ) {
+      arcs.push({ fromDeg: fromDeg % 360, toDeg: toDeg % 360 });
+    }
+  }
+  return arcs.length > 0 ? arcs : undefined;
+}
+
 export function parseHolfuyStationsList(text: string): CatalogueStation[] {
   const data: unknown = JSON.parse(text);
   const list =
@@ -215,10 +307,16 @@ export function parseHolfuyStationsList(text: string): CatalogueStation[] {
       continue;
     }
     if (latitude === 0 && longitude === 0) continue;
-    const country = inferRegionCode({ latitude, longitude });
+    const countryHint = normalizeHolfuyCountry(loc.countryCode ?? row.country);
+    const country = inferRegionCode({ latitude, longitude }, countryHint);
     const elevationM = finiteNumber(loc.altitude ?? loc.elevation);
     const name =
       typeof row.name === 'string' && row.name.trim() ? row.name.trim() : `Holfuy ${nativeId}`;
+    const zones = isRecord(row.directionZones) ? row.directionZones : null;
+    const green = zones && isRecord(zones.green) ? zones.green : null;
+    const declaredFavorableDirections = green
+      ? extractFavorableDirections(green.start, green.stop)
+      : undefined;
 
     stations.push({
       uid: formatStationUid('holfuy', nativeId),
@@ -227,12 +325,13 @@ export function parseHolfuyStationsList(text: string): CatalogueStation[] {
       name,
       latitude,
       longitude,
-      elevationM,
+      elevationM: elevationM !== null ? Math.round(elevationM) : null,
       country,
       region: null,
       timeZone: null,
       pageUrl: `https://holfuy.com/en/weather/${encodeURIComponent(nativeId)}`,
       category: 'freeflight',
+      ...(declaredFavorableDirections ? { declaredFavorableDirections } : {}),
       capabilities: {
         gustLull: true,
         temperature: true,
@@ -250,6 +349,161 @@ export function parseHolfuyStationsList(text: string): CatalogueStation[] {
   return stations;
 }
 
+export function parseHolfuyWeatherPageHtml(
+  html: string,
+  fallbackId?: string,
+  baseStation?: CatalogueStation,
+): { station: CatalogueStation; isActive: boolean } | null {
+  const stattrMatch = html.match(/var\s+stattr\s*=\s*(\{[^;]+\})/);
+  if (!stattrMatch) return null;
+  let stattr: Record<string, unknown>;
+  try {
+    const parsed: unknown = JSON.parse(stattrMatch[1]!);
+    if (!isRecord(parsed)) return null;
+    stattr = parsed;
+  } catch {
+    return null;
+  }
+
+  const nativeId = String(stattr.id ?? fallbackId ?? '').trim();
+  if (!nativeId) return null;
+
+  const mapMatch = html.match(/\/map\/la=([-0-9.]+)&lo=([-0-9.]+)/i);
+  const latitude = mapMatch ? finiteNumber(mapMatch[1]) : (baseStation?.latitude ?? null);
+  const longitude = mapMatch ? finiteNumber(mapMatch[2]) : (baseStation?.longitude ?? null);
+  if (
+    latitude === null ||
+    longitude === null ||
+    !validPosition({ latitude, longitude }) ||
+    (latitude === 0 && longitude === 0)
+  ) {
+    return null;
+  }
+
+  const ctitleMatch = html.match(/<span\s+class=["']ctitle["']>([^<]+)<\/span>/i);
+  const rawTitle = ctitleMatch?.[1] ? decodeHtmlText(ctitleMatch[1]) : '';
+  const name = rawTitle || baseStation?.name || `Holfuy ${nativeId}`;
+
+  const altScriptMatch = html.match(/stattr\.altitude\s*=\s*([-0-9.]+)/i);
+  const altHtmlMatch = html.match(/<b>\s*([-0-9.]+)\s*(m|ft)\s*<\/b>\s*\(AMSL\)/i);
+  let elevationM = baseStation?.elevationM ?? null;
+  if (altScriptMatch) {
+    const val = finiteNumber(altScriptMatch[1]);
+    if (val !== null) elevationM = Math.round(val);
+  } else if (altHtmlMatch) {
+    const val = finiteNumber(altHtmlMatch[1]);
+    const unit = altHtmlMatch[2]?.toLowerCase();
+    if (val !== null) {
+      elevationM = Math.round(unit === 'ft' ? val * FEET_TO_METERS : val);
+    }
+  }
+
+  const countryHint = normalizeHolfuyCountry(stattr.country);
+  const country = inferRegionCode({ latitude, longitude }, countryHint);
+  const declaredFavorableDirections =
+    extractFavorableDirections(stattr.o_s, stattr.o_e, stattr.o2_s, stattr.o2_e) ??
+    baseStation?.declaredFavorableDirections ??
+    undefined;
+
+  const isActive = /Speed<\/td>(?:<td>-<\/td>)*<td style="background:/i.test(html);
+
+  const station: CatalogueStation = {
+    uid: formatStationUid('holfuy', nativeId),
+    vendor: 'holfuy',
+    nativeId,
+    name,
+    latitude,
+    longitude,
+    elevationM,
+    country,
+    region: baseStation?.region ?? null,
+    timeZone: baseStation?.timeZone ?? null,
+    pageUrl: `https://holfuy.com/en/weather/${encodeURIComponent(nativeId)}`,
+    category: 'freeflight',
+    ...(declaredFavorableDirections ? { declaredFavorableDirections } : {}),
+    capabilities: {
+      gustLull: true,
+      temperature: true,
+      conditions: true,
+      history: false,
+      battery: true,
+    },
+    samplingWindowSeconds: 60,
+    recommendedPollSeconds: CACHE_TTL_SECONDS,
+    locator: {
+      stationId: Number.isFinite(Number(nativeId)) ? Number(nativeId) : nativeId,
+    },
+  };
+
+  return { station, isActive };
+}
+
+function parseHolfuyPageTableReading(html: string, referenceNowMs: number): HolfuyObservation | null {
+  const unitsMatch = html.match(/var\s+units\s*=\s*JSON\.parse\('([^']+)'\)/);
+  let speedUnit = 'km/h';
+  let tempUnit = 'C';
+  if (unitsMatch) {
+    try {
+      const u = JSON.parse(unitsMatch[1]!.replace(/\\\//g, '/')) as { speed?: string; temp?: string };
+      if (typeof u.speed === 'string') speedUnit = u.speed;
+      if (typeof u.temp === 'string') tempUnit = u.temp.toUpperCase();
+    } catch {
+      // use defaults
+    }
+  }
+  const tableMatch = html.match(/<table class="hour_table">([\s\S]*?)<\/table>/i);
+  if (!tableMatch) return null;
+  const tableHtml = tableMatch[1]!;
+  const rows = [...tableHtml.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)].map(m => m[1]!);
+  const cellsOf = (rowHtml: string | undefined): string[] =>
+    rowHtml
+      ? [...rowHtml.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)]
+          .slice(1)
+          .map(m => m[1]!.replace(/<[^>]+>/g, ' ').trim())
+      : [];
+
+  const speedRow = rows.find(r => />Speed<\/td>/i.test(r));
+  const gustRow = rows.find(r => />Gust\b/i.test(r));
+  const degRow = rows.find(r => /Deg\.<\/span><\/td>/i.test(r));
+  const tempRow = rows.find(r => />Temp\.\b/i.test(r));
+
+  const speeds = cellsOf(speedRow);
+  const gusts = cellsOf(gustRow);
+  const degs = cellsOf(degRow);
+  const temps = cellsOf(tempRow);
+
+  for (let i = speeds.length - 1; i >= 0; i -= 1) {
+    const windAvgMps = parseHolfuySpeedMps(speeds[i], speedUnit);
+    if (windAvgMps === null) continue;
+    const windGustMps = parseHolfuySpeedMps(gusts[i], speedUnit);
+    const dirToken = degs[i]?.split(/\s+/)[0];
+    const dirDeg = finiteNumber(dirToken);
+    const rawTemp = finiteNumber(temps[i]);
+    const temperatureC =
+      rawTemp === null
+        ? null
+        : tempUnit === 'F'
+          ? Math.round((((rawTemp - 32) * 5) / 9) * 10) / 10
+          : rawTemp;
+    const slotsAgo = speeds.length - 1 - i;
+    const observedAt = new Date(referenceNowMs - slotsAgo * 15 * 60_000).toISOString();
+    return {
+      reading: {
+        observedAt,
+        windAvgMps,
+        windDirectionDeg: isCalm(windAvgMps) ? null : windDirection(dirDeg),
+        windGustMps,
+        windLullMps: null,
+        temperatureC,
+        windChillC: null,
+        conditions: null,
+      },
+      telemetry: null,
+    };
+  }
+  return null;
+}
+
 async function fetchHolfuyKeylessWidget(
   environment: ResolvedEnvironment,
   stationId: string,
@@ -263,37 +517,49 @@ async function fetchHolfuyKeylessWidget(
   const pageUrl = `${options.pageBaseUrl ?? HOLFUY_PAGE_URL}/${encodeURIComponent(stationId)}`;
   const pageRes = await environment.fetch(pageUrl, {
     headers: { 'User-Agent': environment.userAgent },
-    signal: AbortSignal.timeout(4_000),
+    signal: AbortSignal.timeout(8_000),
     redirect: 'error',
   });
   if (!pageRes.ok) {
     throw new Error(`Holfuy page returned ${pageRes.status}`);
   }
   const cookieHeader = pageRes.headers.get('set-cookie')?.split(';')[0] ?? '';
+  let pageHtml = '';
   try {
-    await pageRes.body?.cancel();
+    pageHtml = await boundedResponseText(pageRes, 256 * 1024, 'Holfuy page');
   } catch {
-    // ignore
+    // ignore if body cannot be read
   }
 
-  const widgetUrl = `${options.widgetJsonUrl ?? HOLFUY_WIDGET_JSON_URL}?k=${encodeURIComponent(stationId)}`;
-  const widgetRes = await environment.fetch(widgetUrl, {
-    headers: {
-      Accept: 'application/json',
-      'User-Agent': environment.userAgent,
-      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
-      Referer: pageUrl,
-    },
-    signal: AbortSignal.timeout(4_000),
-    redirect: 'error',
-  });
-  if (!widgetRes.ok) {
-    throw new Error(`Holfuy widget endpoint returned ${widgetRes.status}`);
+  const nowMs = environment.now().getTime();
+  try {
+    const widgetUrl = `${options.widgetJsonUrl ?? HOLFUY_WIDGET_JSON_URL}?k=${encodeURIComponent(stationId)}`;
+    const widgetRes = await environment.fetch(widgetUrl, {
+      headers: {
+        Accept: 'application/json',
+        'User-Agent': environment.userAgent,
+        ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+        Referer: pageUrl,
+      },
+      signal: AbortSignal.timeout(8_000),
+      redirect: 'error',
+    });
+    if (!widgetRes.ok) {
+      throw new Error(`Holfuy widget endpoint returned ${widgetRes.status}`);
+    }
+    const text = await boundedResponseText(widgetRes, 128 * 1024, 'Holfuy widget');
+    const observation = parseHolfuyWidgetJson(text, nowMs);
+    const normalizedPayload = JSON.stringify({
+      ...JSON.parse(text),
+      timestamp: observation.reading.observedAt,
+    });
+    await environment.cache.put(`holfuy/widget/${stationId}`, normalizedPayload, CACHE_TTL_SECONDS);
+    return observation;
+  } catch (widgetError) {
+    const fallback = pageHtml ? parseHolfuyPageTableReading(pageHtml, nowMs) : null;
+    if (fallback) return fallback;
+    throw widgetError;
   }
-  const text = await boundedResponseText(widgetRes, 128 * 1024, 'Holfuy widget');
-  const observation = parseHolfuyWidgetJson(text);
-  await environment.cache.put(`holfuy/widget/${stationId}`, text, CACHE_TTL_SECONDS);
-  return observation;
 }
 
 export const loadHolfuyStation = defineStationAdapter<HolfuyStationConfig, HolfuyAdapterOptions>({
@@ -343,6 +609,7 @@ export const holfuyProvider: StationNetworkProvider = {
   async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
     const seeds = (options.seeds ?? []).filter(station => station.vendor === 'holfuy');
     const batches: CatalogueStation[][] = [seeds];
+    let discoveredGlobal = false;
     if (options.includeRemoteDiscovery !== false) {
       const environment = resolveEnvironment(options.environment);
       try {
@@ -353,12 +620,49 @@ export const holfuyProvider: StationNetworkProvider = {
           subject: 'Holfuy stations list',
           limitBytes: 2 * 1024 * 1024,
         });
-        batches.push(parseHolfuyStationsList(text));
+        const baseList = parseHolfuyStationsList(text);
+        const byId = new Map(baseList.map(station => [station.nativeId, station]));
+        if (baseList.length > 50) {
+          discoveredGlobal = true;
+          const maxId = Math.max(2120, ...baseList.map(st => Number(st.nativeId) || 0));
+          const allIds = Array.from({ length: maxId }, (_, index) => String(index + 1));
+          const active: CatalogueStation[] = [];
+          const concurrency = 28;
+          for (let index = 0; index < allIds.length; index += concurrency) {
+            const slice = allIds.slice(index, index + concurrency);
+            const probed = await Promise.all(
+              slice.map(async probeId => {
+                try {
+                  const res = await fetch(`${HOLFUY_PAGE_URL}/${encodeURIComponent(probeId)}`, {
+                    headers: { 'User-Agent': environment.userAgent },
+                    signal: AbortSignal.timeout(6_000),
+                  });
+                  if (!res.ok) return null;
+                  const html = await res.text();
+                  const parsed = parseHolfuyWeatherPageHtml(html, probeId, byId.get(probeId));
+                  return parsed && parsed.isActive ? parsed.station : null;
+                } catch {
+                  return null;
+                }
+              }),
+            );
+            for (const station of probed) {
+              if (station) active.push(station);
+            }
+          }
+          batches.push(active);
+        } else {
+          batches.push(baseList);
+        }
       } catch {
         // Fallback to seeds + winds.mobi unwrapping
       }
     }
-    return filterCatalogueStations(mergeCatalogueStations(batches), {
+    const merged = mergeCatalogueStations(batches);
+    if (discoveredGlobal && !options.bounds) {
+      return merged;
+    }
+    return filterCatalogueStations(merged, {
       ...options,
       regions: options.regions ?? INITIAL_SCOPE_REGIONS,
     });

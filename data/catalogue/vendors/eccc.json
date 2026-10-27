@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "generatedAt": "2026-10-26T22:07:16.339Z",
   "regions": [
     "US",
     "CA",
@@ -8,7 +8,7 @@
     "AM"
   ],
   "vendor": "eccc",
-  "count": 846,
+  "count": 845,
   "stations": [
     {
       "uid": "eccc:CAAB",
@@ -7164,29 +7164,6 @@
       "locator": {}
     },
     {
-      "uid": "eccc:CWJT",
-      "vendor": "eccc",
-      "nativeId": "CWJT",
-      "name": "Pemberton Airport AWOS",
-      "latitude": 50.3025,
-      "longitude": -122.7378,
-      "elevationM": 204,
-      "country": "CA",
-      "region": "BC",
-      "timeZone": "America/Vancouver",
-      "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 600,
-      "recommendedPollSeconds": 300,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
       "uid": "eccc:CWJU",
       "vendor": "eccc",
       "nativeId": "CWJU",
@@ -8599,7 +8576,7 @@
       "elevationM": 205,
       "country": "CA",
       "region": "British Columbia",
-      "timeZone": null,
+      "timeZone": "America/Vancouver",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,

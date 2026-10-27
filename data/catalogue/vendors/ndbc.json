@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T19:40:56.194Z",
+  "generatedAt": "2026-10-26T21:06:06.999Z",
   "regions": [
     "US",
     "CA",
@@ -8,8 +8,31 @@
     "AM"
   ],
   "vendor": "ndbc",
-  "count": 581,
+  "count": 579,
   "stations": [
+    {
+      "uid": "ndbc:41004",
+      "vendor": "ndbc",
+      "nativeId": "41004",
+      "name": "NDBC Station 41004",
+      "latitude": 32.502,
+      "longitude": -79.099,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=41004",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
     {
       "uid": "ndbc:41008",
       "vendor": "ndbc",
@@ -91,6 +114,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=41013",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
+      "uid": "ndbc:41025",
+      "vendor": "ndbc",
+      "nativeId": "41025",
+      "name": "NDBC Station 41025",
+      "latitude": 35.026,
+      "longitude": -75.38,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=41025",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -494,29 +540,6 @@
       "locator": {}
     },
     {
-      "uid": "ndbc:42023",
-      "vendor": "ndbc",
-      "nativeId": "42023",
-      "name": "NDBC Station 42023",
-      "latitude": 26.01,
-      "longitude": -83.086,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=42023",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
       "uid": "ndbc:42026",
       "vendor": "ndbc",
       "nativeId": "42026",
@@ -724,6 +747,29 @@
       "locator": {}
     },
     {
+      "uid": "ndbc:44008",
+      "vendor": "ndbc",
+      "nativeId": "44008",
+      "name": "NDBC Station 44008",
+      "latitude": 40.5,
+      "longitude": -69.254,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=44008",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
       "uid": "ndbc:44009",
       "vendor": "ndbc",
       "nativeId": "44009",
@@ -804,75 +850,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=44027",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:44030",
-      "vendor": "ndbc",
-      "nativeId": "44030",
-      "name": "NDBC Station 44030",
-      "latitude": 43.179,
-      "longitude": -70.426,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=44030",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:44033",
-      "vendor": "ndbc",
-      "nativeId": "44033",
-      "name": "NDBC Station 44033",
-      "latitude": 44.055,
-      "longitude": -68.996,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=44033",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:44034",
-      "vendor": "ndbc",
-      "nativeId": "44034",
-      "name": "NDBC Station 44034",
-      "latitude": 44.103,
-      "longitude": -68.112,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=44034",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -1368,6 +1345,29 @@
       "locator": {}
     },
     {
+      "uid": "ndbc:45013",
+      "vendor": "ndbc",
+      "nativeId": "45013",
+      "name": "NDBC Station 45013",
+      "latitude": 43.098,
+      "longitude": -87.85,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=45013",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
       "uid": "ndbc:45026",
       "vendor": "ndbc",
       "nativeId": "45026",
@@ -1724,29 +1724,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=45164",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:45165",
-      "vendor": "ndbc",
-      "nativeId": "45165",
-      "name": "NDBC Station 45165",
-      "latitude": 41.704,
-      "longitude": -83.264,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=45165",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4139,29 +4116,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=BCFM2",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:BCTP1",
-      "vendor": "ndbc",
-      "nativeId": "BCTP1",
-      "name": "NDBC Station BCTP1",
-      "latitude": 42.153,
-      "longitude": -80.131,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=BCTP1",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7785,29 +7739,6 @@
       "locator": {}
     },
     {
-      "uid": "ndbc:KVOA",
-      "vendor": "ndbc",
-      "nativeId": "KVOA",
-      "name": "NDBC Station KVOA",
-      "latitude": 29.229,
-      "longitude": -87.781,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=KVOA",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
       "uid": "ndbc:KWHH1",
       "vendor": "ndbc",
       "nativeId": "KWHH1",
@@ -8026,6 +7957,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=LNDC1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
+      "uid": "ndbc:LONF1",
+      "vendor": "ndbc",
+      "nativeId": "LONF1",
+      "name": "NDBC Station LONF1",
+      "latitude": 24.844,
+      "longitude": -80.864,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=LONF1",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -9556,29 +9510,6 @@
       "locator": {}
     },
     {
-      "uid": "ndbc:OKSI2",
-      "vendor": "ndbc",
-      "nativeId": "OKSI2",
-      "name": "NDBC Station OKSI2",
-      "latitude": 41.912,
-      "longitude": -87.624,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=OKSI2",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
       "uid": "ndbc:OKXC1",
       "vendor": "ndbc",
       "nativeId": "OKXC1",
@@ -10430,6 +10361,29 @@
       "locator": {}
     },
     {
+      "uid": "ndbc:PPTA1",
+      "vendor": "ndbc",
+      "nativeId": "PPTA1",
+      "name": "NDBC Station PPTA1",
+      "latitude": 30.279,
+      "longitude": -87.556,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=PPTA1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
       "uid": "ndbc:PPTM2",
       "vendor": "ndbc",
       "nativeId": "PPTM2",
@@ -11269,6 +11223,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=RTYC1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 480,
+      "recommendedPollSeconds": 180,
+      "category": "marine",
+      "locator": {}
+    },
+    {
+      "uid": "ndbc:SANF1",
+      "vendor": "ndbc",
+      "nativeId": "SANF1",
+      "name": "NDBC Station SANF1",
+      "latitude": 24.456,
+      "longitude": -81.877,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=SANF1",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -12511,29 +12488,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=TRDF1",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 480,
-      "recommendedPollSeconds": 180,
-      "category": "marine",
-      "locator": {}
-    },
-    {
-      "uid": "ndbc:TRTP1",
-      "vendor": "ndbc",
-      "nativeId": "TRTP1",
-      "name": "NDBC Station TRTP1",
-      "latitude": 42.11,
-      "longitude": -80.154,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://www.ndbc.noaa.gov/station_page.php?station=TRTP1",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
