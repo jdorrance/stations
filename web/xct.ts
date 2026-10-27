@@ -46,6 +46,7 @@ import {
   pilotFreshnessThresholds,
   speedFromMps,
   type FreshnessStatus,
+  type Landform,
   type SpeedUnit,
   type Station,
   type StationCategory,
@@ -143,6 +144,7 @@ interface TileModel {
   readonly uid: string;
   readonly name: string;
   readonly category: StationCategory;
+  readonly landform: Landform | null;
   readonly terrain: TerrainKind;
   readonly windAvgMps: number;
   readonly windGustMps: number | null;
@@ -677,6 +679,20 @@ function windBand(avgMps: number, gustMps: number | null): WindBand {
  * category hint. Unknown elev defaults to valley — most PWS (WU etc.) omit
  * elevation and are valley/city sites, not ridges.
  */
+/** Ground shape behind the rose. The open middle stays the tile colour so the digits stay readable. */
+const LANDFORM_SHADE: Record<Landform, string> = {
+  summit: 'M0 84H80V66L40 40 0 66Z',
+  ridge: 'M0 84H80V68L64 46H16L0 68Z',
+  slope: 'M0 84H80V72L0 46Z',
+  valley: 'M0 50H22L40 78 58 50H80V84H0Z',
+  flat: 'M0 74H80V84H0Z',
+};
+
+function landformShade(landform: Landform | null): string {
+  if (!landform) return '';
+  return `<svg class="landform" viewBox="0 0 80 84" preserveAspectRatio="none" aria-hidden="true"><path d="${LANDFORM_SHADE[landform]}"/></svg>`;
+}
+
 function terrainForStation(station: Station, category: StationCategory): TerrainKind {
   const elev = station.elevationM;
   if (elev !== null && myAltitudeM !== null) {
@@ -728,6 +744,7 @@ function buildTileModels(center: Position, nowMs: number): TileModel[] {
       uid: station.id,
       name: station.name,
       category,
+      landform: entry.landform,
       terrain: terrainForStation(station, category),
       windAvgMps: reading.windAvgMps,
       windGustMps: reading.windGustMps,
@@ -968,6 +985,7 @@ function patchTile(
       ? ''
       : `<span class="ageChip age-${ageChipStep(tile)}">${escapeHtml(formatAgeChip(tile.ageMinutes))}</span>`;
   const markup =
+    landformShade(tile.landform) +
     placeOrbitSvg(tile.bearingDeg) +
     elevRailHtml(tile.elevationM, elevWindow, youM) +
     chip +
@@ -983,6 +1001,7 @@ function patchTile(
 
   node.className = 'stationDetail';
   if (tile.terrain === 'peak') node.classList.add('peak');
+  if (tile.landform) node.classList.add(`landform-${tile.landform}`);
   node.classList.add(`wind-${tile.windBand}`);
   if (tile.freshness === 'aging') node.classList.add('aging');
   if (tile.freshness === 'stale') node.classList.add('stale');

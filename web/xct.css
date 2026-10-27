@@ -144,6 +144,24 @@ body.has-alt .stationList {
   opacity: var(--vis, 1);
 }
 
+/* Landform sits behind the rose. Fill stays off the digits. */
+.stationDetail .landform {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.stationDetail .landform path {
+  fill: #d0d0d0;
+}
+
+.stationDetail .dialWrap {
+  position: relative;
+}
+
 /* Three pairs, each above 8:1. No blended brown. */
 .ageChip {
   position: absolute;
@@ -511,6 +529,10 @@ body.dark .ageChip.age-late {
 body.dark .ageChip.age-stale {
   background: #ffffff;
   color: #1a1a1a;
+}
+
+body.dark .stationDetail .landform path {
+  fill: #454545;
 }
 
 body.dark .orbitDash {
