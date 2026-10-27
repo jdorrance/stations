@@ -169,6 +169,12 @@ test('classifyLandform uses the 1 km ring, not elevation above sea level', () =>
   const valley = classifyLandform(200, [400, 420, 380, 410, 390, 405, 395, 415]);
   assert.equal(valley.landform, 'valley');
 
+  // Hatis: 2014 m, lower than the 1 km ring because the summit is inside it,
+  // but mid-height in the 5 km window. That is a slope, not a valley floor.
+  const hatisNear = [2017, 2025, 2033, 2091, 2149, 2136, 2197, 2003];
+  const hatisFar = [1900, 2100, 1800, 2244, 1750, 2000, 2100, 1700];
+  assert.equal(classifyLandform(2014, hatisNear, hatisFar).landform, 'slope');
+
   const flat = classifyLandform(1518, [1510, 1512, 1516, 1520, 1514, 1511, 1519, 1515]);
   assert.equal(flat.landform, 'flat');
 

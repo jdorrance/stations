@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from '
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { inflateSync } from 'node:zlib';
-import { classifyLandform, terrainRing } from '@stations/contracts';
+import { TERRAIN_CONTEXT_RADIUS_M, TERRAIN_RADIUS_M, classifyLandform, terrainRing } from '@stations/contracts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const cataloguePath = resolve(root, 'data/catalogue/stations.json');
@@ -122,14 +122,22 @@ function place(latitude, longitude) {
   return key;
 }
 
+function ringKeys(latitude, longitude, radiusM) {
+  return terrainRing(latitude, longitude, radiusM).map(point => place(point.latitude, point.longitude));
+}
+
 const rings = new Map();
 for (const station of stations) {
-  rings.set(
-    station.uid,
-    terrainRing(station.latitude, station.longitude).map(point => place(point.latitude, point.longitude)),
-  );
+  rings.set(station.uid, {
+    near: ringKeys(station.latitude, station.longitude, TERRAIN_RADIUS_M),
+    far: ringKeys(station.latitude, station.longitude, TERRAIN_CONTEXT_RADIUS_M),
+  });
 }
-const woodstock = terrainRing(38.8706, -78.45).map(point => place(point.latitude, point.longitude));
+const woodstock = {
+  near: ringKeys(38.8706, -78.45, TERRAIN_RADIUS_M),
+  far: ringKeys(38.8706, -78.45, TERRAIN_CONTEXT_RADIUS_M),
+};
+const hatis = stations.find(station => station.uid === 'wunderground:IHATIS1');
 const elevations = new Map();
 const tiles = [...groups.values()];
 console.log(`terrain tiles ${tiles.length}`);
@@ -153,27 +161,33 @@ await Promise.all(Array.from({ length: concurrency }, () => worker()));
 
 const classified = {};
 const counts = {};
+function classifyKeys(near, far) {
+  const nearValues = near.map(key => elevations.get(key));
+  const farValues = far.map(key => elevations.get(key));
+  if ([...nearValues, ...farValues].some(value => !Number.isFinite(value))) return null;
+  return classifyLandform(nearValues[0], nearValues.slice(1), farValues.slice(1));
+}
+
 for (const station of stations) {
-  const values = rings.get(station.uid).map(key => elevations.get(key));
-  if (values.some(value => !Number.isFinite(value))) continue;
-  const sample = classifyLandform(values[0], values.slice(1));
+  const ring = rings.get(station.uid);
+  const sample = classifyKeys(ring.near, ring.far);
   if (!sample) continue;
   classified[station.uid] = sample;
   counts[sample.landform] = (counts[sample.landform] ?? 0) + 1;
 }
-const woodValues = woodstock.map(key => elevations.get(key));
-const woodstockSample = woodValues.every(Number.isFinite)
-  ? classifyLandform(woodValues[0], woodValues.slice(1))
-  : null;
+const woodstockSample = classifyKeys(woodstock.near, woodstock.far);
+const hatisSample = hatis ? classifyKeys(rings.get(hatis.uid).near, rings.get(hatis.uid).far) : null;
 
 mkdirSync(dirname(outPath), { recursive: true });
 const temporary = `${outPath}.${process.pid}.tmp`;
 writeFileSync(temporary, `${JSON.stringify({
   schemaVersion: 1,
-  radiusM: 1000,
+  radiusM: TERRAIN_RADIUS_M,
+  contextRadiusM: TERRAIN_CONTEXT_RADIUS_M,
   source: 'terrarium-z9',
   stations: classified,
 })}\n`);
 renameSync(temporary, outPath);
 console.log('landforms', counts, 'stations', Object.keys(classified).length);
-console.log('Woodstock Ediths Gap', woodstockSample, 'centerM', Math.round(woodValues[0]));
+console.log('Woodstock Ediths Gap', woodstockSample);
+console.log('Hatis', hatisSample);

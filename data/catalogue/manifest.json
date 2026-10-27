@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T14:49:20.979Z",
+  "generatedAt": "2026-10-27T15:59:47.846Z",
   "regions": [
     "US",
     "CA",
@@ -98,7 +98,7 @@
     },
     "openwindmap": {
       "status": "partial",
-      "sourceGeneratedAt": "2026-10-27T14:49:20.979Z",
+      "sourceGeneratedAt": "2026-10-27T15:59:47.846Z",
       "diagnostics": [
         {
           "level": "error",
@@ -417,7 +417,7 @@
     "vendors/openwindmap.json": {
       "stations": 0,
       "bytes": 188,
-      "sha256": "a260795fac49defa49be89e23339b4dd54acdc781b3f9c0ca9997960e39a7a59"
+      "sha256": "c133c238cfad6016cfef225c5d2f880d53d388730588fd45ca3179d15658b2b7"
     },
     "vendors/holfuy.json": {
       "stations": 1193,
@@ -531,57 +531,57 @@
     },
     "stations.json": {
       "stations": 43544,
-      "bytes": 35867871,
-      "sha256": "f92754c26ddb361c26d67d233565161f0271a5d1c6719c0a4bb43a89ad4c9e3d"
+      "bytes": 35871924,
+      "sha256": "6f95e0402008b237cfcce98042f8ab1bbeb6c9b34ffdf2e09a4f33b46d76bd79"
     },
     "stations.geojson": {
-      "bytes": 55512533,
-      "sha256": "82b862f9cd13754b0c45ca925f911cc0f0b1548d2a854d262e9368c1f6b405ed"
+      "bytes": 55516586,
+      "sha256": "9524071ad276885586029c2d8845307b4e4b3448da87ba43d6d7473038a68a1a"
     },
     "stations.ndjson.gz": {
-      "bytes": 2581105,
-      "sha256": "a17c48b23ff07137c443a28b0bac4d9bb00658c2d71be58aabae34d700e757e4"
+      "bytes": 2582345,
+      "sha256": "8e3112463dc3d454e20ce593bfa51d94b6db5759124ba426fa35e47694834353"
     },
     "launch-corridors.json": {
       "stations": 15799,
-      "bytes": 14003082,
-      "sha256": "df5263b8f8b83f239f9ca06f07fe339b2d0d71e5614b57a187ca811ff1a8b537"
+      "bytes": 14004908,
+      "sha256": "db4abae263c3ed18ca39cd7809cc0955707f9f905cc216c68821d8607fb37754"
     },
     "launch-corridors.geojson": {
-      "bytes": 20414498,
-      "sha256": "c1183ed866115518308f93bb9f44a4a1c4cd1e1f245609138bb1769ddff867d1"
+      "bytes": 20416324,
+      "sha256": "5711a4d613062e69fd1ac64623ead7cd1afd7b32fd55379ffe52327e7a70c21f"
     },
     "regions/us.json": {
-      "bytes": 29992226,
-      "sha256": "8c83612c4bc3d405084b060c527b7c76156573dd6d44f9ea5200ea2a65abd409"
+      "bytes": 29995403,
+      "sha256": "33528eb41c94ed0a0a64cac20d36a2b4569714ef5282efc024b21b111556e6c0"
     },
     "regions/us.ndjson.gz": {
-      "bytes": 2112434,
-      "sha256": "5da81deccfb3dd8fdfee9d8181b3f3495543676abda206b83fa0fe34ed58c030"
+      "bytes": 2113526,
+      "sha256": "9ebb61933fdb8af562c891a14e865509f6d36349b9037664b602de67ee9912db"
     },
     "regions/ca.json": {
-      "bytes": 703954,
-      "sha256": "6410d007ea6aa3bdd8badac16f03f6e7f9d07b8ef67a62e6071f92334a309799"
+      "bytes": 704131,
+      "sha256": "2d11c555b54defcd4f8c324251d24691c5baa14291bfe69e88e120c4243e30cf"
     },
     "regions/ca.ndjson.gz": {
-      "bytes": 49937,
-      "sha256": "8f246765992f1f4a3dd6918aa634eb347e0886b61d37e6546bbd371e35d52524"
+      "bytes": 50052,
+      "sha256": "370e32a20d41f4b24503c759fe72ed2072311b2949708e5e14107b4a2cb81b77"
     },
     "regions/mx.json": {
-      "bytes": 61111,
-      "sha256": "89c2367cc0390b345fe31cffb70f8db2ff741d81864912af51f60ff73d44ba01"
+      "bytes": 61127,
+      "sha256": "a858d885d7966e898e3f881c88e52269af86dfdd153c341d4234e2211445cc34"
     },
     "regions/mx.ndjson.gz": {
-      "bytes": 5130,
-      "sha256": "aa1ff0b108d6295c0a9e9bd8ac67c26b620ad746dfff54f5e388bebf786e2093"
+      "bytes": 5160,
+      "sha256": "9ac73f9500e5705f53ab244a94698cae77e01607e998332baec4f04b6738a0b3"
     },
     "regions/am.json": {
-      "bytes": 62348,
-      "sha256": "d98f4929a1993d9df2248996d285fb645e42448e31ab12938193c3065552b996"
+      "bytes": 62357,
+      "sha256": "98c26303b81cff7a7f7da84d6c1238e1731f69f0984b00b1b0bec5fcecc50c7f"
     },
     "regions/am.ndjson.gz": {
-      "bytes": 5066,
-      "sha256": "0e95d318c531927c2846c872eecd65e97b1923a9133e32539680a9b2f893524a"
+      "bytes": 5056,
+      "sha256": "62dd783ce9c87d51f87085e48d6517f335eb1baf707210aab89083b4cf26fd5a"
     }
   }
 }
