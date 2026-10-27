@@ -19,7 +19,8 @@ Wire units, absence and freshness live in
 ## Typical compositions
 
 **Map / Windy plugin / dashboard (browser)** — load a published catalogue once,
-index it locally, poll a viewport feed:
+index it locally, poll a viewport feed. The local explorer also serves an
+XCTrack nearest-wind page at `/xct`, with setup at `/xct-use` (see [Development](toolkit-development.md#local-explorer)):
 
 ```ts
 import { createStationsClient, createViewportStationStore } from '@stations/client';

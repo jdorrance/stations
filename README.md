@@ -30,6 +30,8 @@ pnpm dev
 ```
 
 Open http://localhost:4331 for the map explorer and live station inspector.
+http://localhost:4331/xct-use is the XCTrack setup page (the widget itself is
+http://localhost:4331/xct).
 
 Optional credentials (Synoptic, Weather Underground, Holfuy, …) go in `.env`;
 see [`.env.example`](.env.example). To rebuild the full live catalogue from
@@ -65,6 +67,6 @@ pnpm test:consumer
 pnpm verify
 ```
 
-`check` covers types, package boundaries and public declarations.
+`check` covers types (including the browser widget), package boundaries and public declarations.
 `test:consumer` installs packed libraries in a separate project and verifies
 their public APIs and browser bundle. `verify` runs the full gate.

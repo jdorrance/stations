@@ -61,8 +61,15 @@ pnpm dev
 
 [`scripts/serve-explorer.mjs`](../scripts/serve-explorer.mjs) mounts
 `createStationsApiHandler` at `/api/stations` on the local catalogue (full
-`stations.json` by default) and serves the map at http://localhost:4331.
-Pass `--corridors` to serve the launch-corridor shard instead.
+`stations.json` by default) and serves the map at http://localhost:4331 plus
+the XCTrack nearest-wind widget at http://localhost:4331/xct. Setup, every URL
+parameter, and a copy-to-clipboard URL are at http://localhost:4331/xct-use
+(the same list is the header of [`web/xct.ts`](../web/xct.ts)). The widget loads a
+nearby catalogue subset for metadata, then requests live readings by ID with
+bounded refill; [`web/xct-feed.ts`](../web/xct-feed.ts) owns that request budget
+and server-time anchors. It does not download the full catalogue.
+Pass `--corridors` to serve the
+launch-corridor shard instead.
 
 Production runs the same handler in a Cloudflare Worker; see the
 [deployment guide](deploy.md) for the Worker entry, catalogue upload and
@@ -73,6 +80,10 @@ secrets flow.
 Library code uses strict TypeScript. Package builds compile dependencies in
 topological order, clean `dist/`, and record file hashes plus dependency
 versions in `dist/build-inventory.json`.
+
+The widget has a dedicated browser-only type check (`pnpm check:web`) in the
+root gate. Script tests execute its entry point against deterministic location,
+clock, HTTP, and DOM fixtures; browser/device checks still own layout and paint.
 
 ```sh
 pnpm check          # types, boundaries, public API

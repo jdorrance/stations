@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>XCTrack · Stations</title>
+    <meta name="description" content="Add the nearest-wind widget to XCTrack. URL parameters and a copy button." />
+    <meta name="theme-color" content="#fcfcfb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a19" media="(prefers-color-scheme: dark)" />
+    <link rel="stylesheet" href="/dist/styles.css" />
+    <style>
+      .use-page { max-width: 42rem; }
+      .use-page h1 { font-size: 1.7rem; letter-spacing: -0.03em; margin: 0.2rem 0 0.35rem; }
+      .use-page .lede { color: var(--ink-2); margin-bottom: 0.8rem; }
+      .use-page ol { margin: 0.3rem 0 1rem; padding-left: 1.2rem; }
+      .use-page li + li { margin-top: 0.2rem; }
+      .use-page h2 { font-size: 1rem; margin: 1.1rem 0 0.4rem; }
+      .opts { display: flex; flex-wrap: wrap; gap: 0.7rem 1rem; align-items: center; margin: 0.2rem 0 0.8rem; }
+      .opts label, .pos label { display: flex; gap: 0.4rem; align-items: center; font-size: 0.84rem; font-weight: 600; }
+      .opts input[type="number"], .pos input { width: 5.5rem; }
+      .opts .field, .pos .field { flex-wrap: wrap; }
+      .field-error { flex-basis: 100%; color: var(--ink); font-size: 0.8rem; font-weight: 600; }
+      [aria-invalid="true"] { outline: 2px solid currentColor; outline-offset: 1px; }
+      #validation-note { margin: 0.5rem 0; font-size: 0.84rem; font-weight: 600; }
+      #open[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+      .use-page [hidden] { display: none !important; }
+      .cats { display: flex; flex-wrap: wrap; gap: 0.35rem 0.8rem; font-weight: 500; }
+      .url-row { display: flex; gap: 8px; align-items: center; }
+      .url-row input { flex: 1; min-width: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.8rem; }
+      .copy-note { min-height: 1.2em; margin-top: 0.35rem; color: var(--ink-3); font-size: 0.84rem; }
+      .params { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 0.2rem; }
+      .params th, .params td { text-align: left; vertical-align: baseline; padding: 0.28rem 0.7rem 0.28rem 0; border-bottom: 1px solid var(--rule); }
+      .params th { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-weight: 650; white-space: nowrap; }
+      .params td { color: var(--ink-2); }
+      .read { color: var(--ink-2); }
+      details { margin-top: 0.6rem; }
+      details summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+      .pos { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.5rem; }
+    </style>
+  </head>
+  <body>
+    <a class="sr-only" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href="/">
+          <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true">
+            <path d="M3 13c6-6 20-6 26 0l-3 2c-5-4-15-4-20 0z" fill="currentColor" />
+            <path d="M7 15l9 11 9-11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <circle cx="16" cy="27" r="1.8" fill="currentColor" />
+          </svg>
+          <span>Stations</span>
+        </a>
+        <nav class="site-nav" aria-label="Main">
+          <a href="/">Explorer</a>
+          <a href="/xct-use" aria-current="page">XCTrack</a>
+          <a href="/api/stations/catalogue" target="_blank" rel="noopener">Catalogue JSON</a>
+          <a href="/api/stations/catalogue?format=geojson" target="_blank" rel="noopener">GeoJSON</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container use-page">
+        <h1>XCTrack widget</h1>
+        <p class="lede">Nearest wind stations, one tile each. Position comes from XCTrack.</p>
+
+        <ol>
+          <li>In the layout editor, add a <strong>Web page</strong> widget (XCTrack Pro).</li>
+          <li>Paste the URL. Turn on <strong>Allow web page to access XCTrack data</strong>. Set reload to <strong>0</strong> — the page polls itself.</li>
+          <li>Place the widget. It needs a network connection.</li>
+        </ol>
+
+        <h2>URL</h2>
+        <div class="opts">
+          <label>Units
+            <select id="units">
+              <option value="">metric</option>
+              <option value="imperial">imperial</option>
+              <option value="kts">knots</option>
+              <option value="ms">m/s</option>
+            </select>
+          </label>
+          <label class="field">Size
+            <input id="size" type="number" inputmode="numeric" min="0" max="100" step="1" placeholder="0" aria-describedby="size-hint size-error" />
+            <span class="field-error" id="size-error" hidden></span>
+          </label>
+          <label><input id="dark" type="checkbox" /> dark</label>
+          <label class="field">Max age, min
+            <input id="maxage" type="number" inputmode="numeric" min="1" step="1" placeholder="120" aria-describedby="maxage-error" />
+            <span class="field-error" id="maxage-error" hidden></span>
+          </label>
+          <div class="cats" role="group" aria-label="Categories. None checked means all.">
+            <label><input type="checkbox" name="category" value="freeflight" /> freeflight</label>
+            <label><input type="checkbox" name="category" value="mountain" /> mountain</label>
+            <label><input type="checkbox" name="category" value="synoptic" /> synoptic</label>
+            <label><input type="checkbox" name="category" value="marine" /> marine</label>
+            <label><input type="checkbox" name="category" value="pws" /> pws</label>
+          </div>
+        </div>
+        <p id="size-hint" class="read">Size 0 is the small tile. 2–100 enlarges it. Leave categories unchecked for all of them.</p>
+        <p id="validation-note" role="alert" hidden>Correct the highlighted settings before copying or opening the widget.</p>
+
+        <div class="url-row">
+          <input id="widget-url" type="text" readonly aria-label="Widget URL" />
+          <button id="copy" class="button" type="button">Copy</button>
+          <a id="open" href="/xct" target="_blank" rel="noopener">Open</a>
+        </div>
+        <p id="copy-note" class="copy-note" role="status"></p>
+
+        <details>
+          <summary>Fixed position</summary>
+          <div class="pos">
+            <label class="field">lat <input id="lat" type="text" inputmode="decimal" autocomplete="off" aria-describedby="lat-error" /><span class="field-error" id="lat-error" hidden></span></label>
+            <label class="field">lng <input id="lng" type="text" inputmode="decimal" autocomplete="off" aria-describedby="lng-error" /><span class="field-error" id="lng-error" hidden></span></label>
+            <label class="field">alt m <input id="alt" type="text" inputmode="decimal" autocomplete="off" aria-describedby="alt-error" /><span class="field-error" id="alt-error" hidden></span></label>
+          </div>
+          <p class="read" style="margin-top:0.4rem">A fixed position overrides XCTrack and browser GPS. lat and lng go together.</p>
+        </details>
+
+        <h2>Parameters</h2>
+        <table class="params">
+          <tbody>
+            <tr><th>units</th><td><code>metric</code> km/h and km, the default. <code>imperial</code> mph and miles. <code>kts</code> knots, distances in km. <code>ms</code> m/s, distances in km. Also accepted: <code>mph</code>, <code>kmh</code>, <code>kt</code>, <code>knots</code>, <code>mps</code>, <code>m/s</code>.</td></tr>
+            <tr><th>size</th><td>2–100. Tiles scale by <code>1 + size/100</code>. 0 or 1 leaves them at 80&nbsp;px.</td></tr>
+            <tr><th>mode</th><td><code>dark</code>.</td></tr>
+            <tr><th>lat, lng</th><td>Fixed position. Both are required. <code>lon</code> works in place of <code>lng</code>.</td></tr>
+            <tr><th>alt</th><td>Your altitude in metres. Used only to tell a peak from the ground.</td></tr>
+            <tr><th>maxage</th><td>Hide readings older than this many minutes. Enter a whole number of at least 1. Default 120.</td></tr>
+            <tr><th>category</th><td>Comma list of <code>freeflight</code>, <code>mountain</code>, <code>synoptic</code>, <code>marine</code>, <code>pws</code>. Default is all of them.</td></tr>
+            <tr><th>debug</th><td>Any value. Pretend the fix is Mt Hatis and drift it. For testing, not for flying.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Reading a tile</h2>
+        <p class="read">The rose is the wind: average over gust, arrow flies with the wind, top tick is north. Colour follows the average: blue under 5 km/h, green 5–9, gold 10–14, orange 15–24, deep orange 25–39. Red, and a tinted tile, is 40 km/h or more — past trim. A gust in a higher band steps the colour up one. A grey mountain is a peak. A faint dashed circle outside the rose is where the station is; the solid arc on it is the direction, and the footer is ~ and the distance. Grey metres just above that are the station height, when we know it. No age chip means the reading is live. Then amber, dark brown, and black — three fixed pairs, so the digits stay readable — while the tile fades. A stale arrow is an outline on a dashed ring. A station with no reading is left off the screen. A green arc on the wind ring is that station’s launch direction, when it declares one.</p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>Check conditions at launch and fly within your limits.</p>
+      </div>
+    </footer>
+
+    <script>
+      const unitsEl = document.getElementById('units');
+      const sizeEl = document.getElementById('size');
+      const darkEl = document.getElementById('dark');
+      const maxageEl = document.getElementById('maxage');
+      const latEl = document.getElementById('lat');
+      const lngEl = document.getElementById('lng');
+      const altEl = document.getElementById('alt');
+      const urlEl = document.getElementById('widget-url');
+      const openEl = document.getElementById('open');
+      const copyBtn = document.getElementById('copy');
+      const noteEl = document.getElementById('copy-note');
+      const validationEl = document.getElementById('validation-note');
+      const categoryEls = document.querySelectorAll('input[name="category"]');
+
+      function fieldError(el, message) {
+        const errorEl = document.getElementById(`${el.id}-error`);
+        el.setCustomValidity(message);
+        el.setAttribute('aria-invalid', String(Boolean(message)));
+        errorEl.textContent = message;
+        errorEl.hidden = !message;
+        return !message;
+      }
+
+      function validateOptions() {
+        const size = Number(sizeEl.value);
+        const validSize = !sizeEl.validity.badInput && (sizeEl.value === '' || (Number.isInteger(size) && size >= 0 && size <= 100));
+        const maxage = Number(maxageEl.value);
+        const validAge = !maxageEl.validity.badInput && (maxageEl.value === '' || (Number.isSafeInteger(maxage) && maxage >= 1 && Number.isFinite(maxage * 60000)));
+        const lat = latEl.value.trim();
+        const lng = lngEl.value.trim();
+        const alt = altEl.value.trim();
+        const latError = lat === '' ? (lng === '' ? '' : 'Enter latitude with longitude.') :
+          (!Number.isFinite(Number(lat)) || Number(lat) < -90 || Number(lat) > 90 ? 'Latitude must be between −90 and 90.' : '');
+        const lngError = lng === '' ? (lat === '' ? '' : 'Enter longitude with latitude.') :
+          (!Number.isFinite(Number(lng)) || Number(lng) < -180 || Number(lng) > 180 ? 'Longitude must be between −180 and 180.' : '');
+        // Evaluate every field so correcting one value also clears its old error.
+        const valid = [
+          fieldError(sizeEl, validSize ? '' : 'Size must be a whole number from 0 to 100.'),
+          fieldError(maxageEl, validAge ? '' : 'Max age must be a whole number of at least 1 minute.'),
+          fieldError(latEl, latError),
+          fieldError(lngEl, lngError),
+          fieldError(altEl, alt !== '' && !Number.isFinite(Number(alt)) ? 'Altitude must be a number in metres.' : ''),
+        ].every(Boolean);
+        validationEl.hidden = valid;
+        copyBtn.disabled = !valid;
+        openEl.setAttribute('aria-disabled', String(!valid));
+        openEl.tabIndex = valid ? 0 : -1;
+        return valid;
+      }
+
+      function widgetUrl() {
+        const q = new URLSearchParams();
+        if (unitsEl.value) q.set('units', unitsEl.value);
+        const size = Number(sizeEl.value);
+        if (size > 1) q.set('size', String(size));
+        if (darkEl.checked) q.set('mode', 'dark');
+        const maxage = Number(maxageEl.value);
+        if (maxageEl.value !== '' && maxage !== 120) q.set('maxage', String(maxage));
+        const cats = [...categoryEls].filter(el => el.checked).map(el => el.value);
+        if (cats.length > 0 && cats.length < categoryEls.length) q.set('category', cats.join(','));
+        const lat = latEl.value.trim();
+        const lng = lngEl.value.trim();
+        if (lat !== '' && lng !== '') {
+          q.set('lat', lat);
+          q.set('lng', lng);
+        }
+        const alt = altEl.value.trim();
+        if (alt !== '') q.set('alt', alt);
+        const query = q.toString().replaceAll('%2C', ',');
+        return `${location.origin}/xct${query ? `?${query}` : ''}`;
+      }
+
+      function refresh() {
+        if (validateOptions()) {
+          const url = widgetUrl();
+          urlEl.value = url;
+          openEl.href = url;
+        } else {
+          urlEl.value = '';
+          openEl.removeAttribute('href');
+        }
+        noteEl.textContent = '';
+        copyBtn.textContent = 'Copy';
+      }
+
+      async function copyUrl() {
+        if (!validateOptions()) return;
+        const url = urlEl.value;
+        try {
+          await navigator.clipboard.writeText(url);
+        } catch {
+          urlEl.focus();
+          urlEl.select();
+          const ok = document.execCommand('copy');
+          noteEl.textContent = ok ? 'Copied.' : 'Select the URL and copy it.';
+          if (ok) copyBtn.textContent = 'Copied';
+          return;
+        }
+        copyBtn.textContent = 'Copied';
+        noteEl.textContent = 'Copied.';
+      }
+
+      for (const el of [unitsEl, sizeEl, darkEl, maxageEl, latEl, lngEl, altEl, ...categoryEls]) {
+        el.addEventListener('input', refresh);
+        el.addEventListener('change', refresh);
+      }
+      copyBtn.addEventListener('click', () => { void copyUrl(); });
+      openEl.addEventListener('click', event => {
+        if (!validateOptions()) event.preventDefault();
+      });
+      refresh();
+    </script>
+  </body>
+</html>

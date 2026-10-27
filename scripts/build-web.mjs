@@ -18,13 +18,16 @@ await build({
   entryPoints: [
     resolve(root, 'web/app.ts'),
     resolve(root, 'web/styles.css'),
+    resolve(root, 'web/xct.ts'),
+    resolve(root, 'web/xct.css'),
   ],
   bundle: true,
   platform: 'browser',
   format: 'esm',
   target: ['es2022'],
   outdir,
+  minify: true,
   sourcemap: false,
 });
 
-console.log('Built web explorer in web/dist');
+console.log('Built web explorer and XCTrack widget in web/dist');

@@ -56,6 +56,21 @@ test('explorer server serves HTML, bundled assets, sanitized /catalogue, and hyd
   assert.ok(html.includes('id="stations-map"'));
   assert.ok(html.includes('/dist/app.js'));
 
+  const xctRes = await handler(new Request('http://127.0.0.1:4331/xct'));
+  assert.equal(xctRes.status, 200);
+  const xctHtml = await xctRes.text();
+  assert.ok(xctHtml.includes('id="station-list"'));
+  assert.ok(xctHtml.includes('/dist/xct.js'));
+
+  const useRes = await handler(new Request('http://127.0.0.1:4331/xct-use'));
+  assert.equal(useRes.status, 200);
+  const useHtml = await useRes.text();
+  assert.ok(useHtml.includes('id="copy"'));
+  assert.ok(useHtml.includes('id="widget-url"'));
+  for (const param of ['units', 'size', 'mode', 'lat, lng', 'alt', 'maxage', 'category', 'debug']) {
+    assert.ok(useHtml.includes(`<th>${param}</th>`), param);
+  }
+
   const catRes = await handler(
     new Request('http://127.0.0.1:4331/api/stations/catalogue?country=US&category=freeflight'),
   );

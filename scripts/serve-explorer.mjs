@@ -138,8 +138,14 @@ export function createExplorerRequestHandler(options = {}) {
   const staticFiles = new Map([
     ['/', resolve(webRoot, 'index.html')],
     ['/index.html', resolve(webRoot, 'index.html')],
+    ['/xct', resolve(webRoot, 'xct.html')],
+    ['/xct.html', resolve(webRoot, 'xct.html')],
+    ['/xct-use', resolve(webRoot, 'xct-use.html')],
+    ['/xct-use.html', resolve(webRoot, 'xct-use.html')],
     ['/dist/app.js', resolve(webRoot, 'dist/app.js')],
     ['/dist/styles.css', resolve(webRoot, 'dist/styles.css')],
+    ['/dist/xct.js', resolve(webRoot, 'dist/xct.js')],
+    ['/dist/xct.css', resolve(webRoot, 'dist/xct.css')],
     ['/dist/maplibre-gl-worker.js', resolve(webRoot, 'dist/maplibre-gl-worker.js')],
     ['/data/catalogue/manifest.json', resolve(root, 'data/catalogue/manifest.json')],
   ]);

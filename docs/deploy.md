@@ -154,7 +154,8 @@ from `wrangler.json` and type-checks the Worker; rerun it after changing binding
    - `GET /` renders the explorer with styles (`GET /dist/styles.css` is
      `200`; `GET /app.ts` and `GET /styles.css` are `404`).
    - `GET /xct` renders the XCTrack widget (`GET /dist/xct.js` and
-     `/dist/xct.css` are `200`; `GET /xct.ts` is `404`).
+     `/dist/xct.css` are `200`; `GET /xct.ts` is `404`). `GET /xct-use` is the
+     setup page.
    - `GET /api/stations/catalogue` returns JSON with an `ETag`; repeating the
      request with `If-None-Match: <etag>` returns `304`.
    - `GET /api/stations/catalogue?format=geojson` returns a `FeatureCollection`.
