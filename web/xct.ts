@@ -6,10 +6,11 @@
  * flying with the wind), peak or not (mountain background), where the
  * station is from me (a solid arc on the faint circle outside the rose, and
  * the distance in the footer), which station (name), and how fresh the reading
- * is. No chip means
- * live. After that the chip uses one of three fixed pairs — amber, dark
- * brown, then black — so the digits stay readable. The tile fades with age.
- * Stale readings draw an outline arrow. A station with no reading is omitted.
+ * is. The feed name is the curated short label when the catalogue has one
+ * (at most 11 characters). No chip means live. After that the chip uses one
+ * of three fixed pairs — amber, dark brown, then black — so the digits stay
+ * readable. The tile fades with age. Stale readings draw an outline arrow. A
+ * station with no reading is omitted.
  *
  * URL parameters (all optional):
  *

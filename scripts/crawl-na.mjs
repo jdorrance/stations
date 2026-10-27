@@ -6,10 +6,12 @@ import { parseArgs } from 'node:util';
 import { gzipSync } from 'node:zlib';
 import {
   CATALOGUE_SCHEMA_VERSION,
+  applyStationOverrides,
   catalogueToGeoJson,
   defaultCategoryForVendor,
   enrichStationsWithLaunches,
   parseCatalogueStation,
+  parseStationOverrides,
   serializeCatalogueNdjson,
   toPublicCatalogueStation,
   toPublicStationCatalogue,
@@ -37,6 +39,17 @@ import { loadDotEnv } from './workspace.mjs';
 
 loadDotEnv();
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
+const DEFAULT_STATION_OVERRIDES_PATH = resolve(repositoryRoot, 'data/overrides/stations.json');
+
+function loadStationOverrides(path = DEFAULT_STATION_OVERRIDES_PATH) {
+  if (!existsSync(path)) return null;
+  try {
+    return parseStationOverrides(JSON.parse(readFileSync(path, 'utf8')));
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    throw new Error(`Invalid station overrides at ${path}: ${detail}`);
+  }
+}
 
 function positiveDistance(raw, name) {
   const value = Number(raw);
@@ -332,6 +345,17 @@ export async function crawlCatalogue(options = {}) {
     stations = stations.filter(station => station.vendor !== 'nws' || (station.aliases?.length ?? 0) > 0);
   }
   stations = enrichStationsWithLaunches(stations, launches, maxLaunchKm);
+  const overridesPath =
+    options.overrides === undefined
+      ? DEFAULT_STATION_OVERRIDES_PATH
+      : resolve(options.overrides);
+  const overrides = loadStationOverrides(overridesPath);
+  if (overrides) {
+    stations = applyStationOverrides(stations, overrides, {
+      onUnmatched: uid => log(`override unmatched: ${uid}`),
+      onConflict: (uid, keys) => log(`override conflict for ${uid}: ${keys.join(', ')}`),
+    });
+  }
   const publicStations = stations.map(toPublicCatalogueStation);
   const document = toPublicStationCatalogue({ schemaVersion: CATALOGUE_SCHEMA_VERSION,
     generatedAt, regions, stations: publicStations });

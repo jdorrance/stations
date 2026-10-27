@@ -25,7 +25,7 @@ in Zod schemas and codecs.
 
 | Subpath | Responsibility |
 | --- | --- |
-| [`/catalogue`](src/catalogue.ts) | `CatalogueStation` / document schemas, cross-network dedup, launch enrichment |
+| [`/catalogue`](src/catalogue.ts) | `CatalogueStation` / document schemas, cross-network dedup, launch enrichment, station overrides |
 | [`/public-catalogue`](src/public-catalogue.ts) | Strip server-only `locator` fields for published files and `/catalogue` |
 | [`/geojson`](src/geojson.ts) | Catalogue and `StationFeed` → GeoJSON `FeatureCollection` |
 | [`/ndjson`](src/ndjson.ts) | Newline-delimited catalogue serialize / parse |

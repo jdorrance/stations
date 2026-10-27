@@ -140,12 +140,17 @@ test('parseStationCatalogueJson, deduplicateCatalogueStations, and enrichStation
 });
 
 test('catalogueToGeoJson and feedToGeoJson emit valid GeoJSON FeatureCollections for maps and Windy', () => {
-  const catalogueGeo = catalogueToGeoJson([sampleCatalogueStation], '2026-10-26T12:00:00Z');
+  const catalogueGeo = catalogueToGeoJson(
+    [{ ...sampleCatalogueStation, shortName: 'Tiger N' }],
+    '2026-10-26T12:00:00Z',
+  );
   assert.equal(catalogueGeo.type, 'FeatureCollection');
   assert.equal(catalogueGeo.features.length, 1);
   assert.deepEqual(catalogueGeo.features[0].geometry.coordinates, [-122.009, 47.4995, 730]);
   assert.equal(catalogueGeo.features[0].properties.status, 'catalogue');
   assert.equal(catalogueGeo.features[0].properties.category, 'freeflight');
+  assert.equal(catalogueGeo.features[0].properties.name, 'Tiger Mountain North');
+  assert.equal(catalogueGeo.features[0].properties.shortName, 'Tiger N');
 
   const rawFeed = {
     schemaVersion: STATION_SCHEMA_VERSION,

@@ -9,9 +9,13 @@ import {
   bearingDeg,
   createSpatialIndex,
   distanceKm,
+  validPosition,
   type Position,
 } from '@stations/geography';
 import { REGION_CODES, type RegionCode } from '@stations/geography/regions';
+
+/** Compact tile label for constrained UIs (XCTrack). At most 11 characters. */
+export const SHORT_NAME_MAX_LENGTH = 11;
 
 export const CATALOGUE_SCHEMA_VERSION = 1;
 
@@ -78,6 +82,11 @@ export interface CatalogueStation {
   readonly vendor: StationVendor;
   readonly nativeId: string;
   readonly name: string;
+  /**
+   * Optional curated label for constrained UIs. When present, live feeds use it
+   * as `Station.name`. At most {@link SHORT_NAME_MAX_LENGTH} characters.
+   */
+  readonly shortName?: string | null;
   readonly latitude: number;
   readonly longitude: number;
   readonly elevationM: number | null;
@@ -93,6 +102,27 @@ export interface CatalogueStation {
   readonly aliases?: readonly string[] | null;
   readonly launchContext?: StationLaunchContext | null;
   readonly locator: StationLocator;
+}
+
+/** Curated per-station fields applied after crawl merge. */
+export interface StationOverride {
+  readonly shortName?: string;
+  readonly elevationM?: number;
+  readonly region?: string;
+  readonly latitude?: number;
+  readonly longitude?: number;
+}
+
+export interface StationOverridesDocument {
+  readonly schemaVersion: 1;
+  readonly stations: Readonly<Record<string, StationOverride>>;
+}
+
+export interface ApplyStationOverridesOptions {
+  /** Called for each override key that matches no catalogue station (uid or alias). */
+  readonly onUnmatched?: (uid: string) => void;
+  /** Called when several alias keys match the same station with disagreeing values. */
+  readonly onConflict?: (uid: string, matchedKeys: readonly string[]) => void;
 }
 
 export interface StationCatalogueDocument {
@@ -174,12 +204,15 @@ export const stationLaunchContextSchema: z.ZodType<StationLaunchContext> = z.obj
   bearingDeg: z.number().finite().min(0).lt(360),
 });
 
+const shortNameSchema = z.string().trim().min(1).max(SHORT_NAME_MAX_LENGTH);
+
 export const catalogueStationSchema: z.ZodType<CatalogueStation> = z
   .object({
     uid: z.string().min(3),
     vendor: z.enum(STATION_VENDORS),
     nativeId: z.string().trim().min(1),
     name: z.string().min(1),
+    shortName: shortNameSchema.nullish(),
     latitude: z.number().finite().min(-90).max(90),
     longitude: z.number().finite().min(-180).max(180),
     elevationM: z.number().finite().nullable(),
@@ -210,6 +243,107 @@ export const stationCatalogueSchema: z.ZodType<StationCatalogueDocument> = z.obj
   regions: z.array(z.enum(REGION_CODES)),
   stations: z.array(catalogueStationSchema),
 });
+
+const stationOverrideSchema: z.ZodType<StationOverride> = z
+  .object({
+    shortName: shortNameSchema.optional(),
+    elevationM: z.number().finite().optional(),
+    region: z.string().min(1).optional(),
+    latitude: z.number().finite().min(-90).max(90).optional(),
+    longitude: z.number().finite().min(-180).max(180).optional(),
+  })
+  .refine(
+    override => (override.latitude === undefined) === (override.longitude === undefined),
+    { message: 'latitude and longitude must be supplied together' },
+  )
+  .refine(
+    override =>
+      override.latitude === undefined ||
+      validPosition({ latitude: override.latitude, longitude: override.longitude! }),
+    { message: 'latitude and longitude must form a valid position' },
+  );
+
+const stationUidKeySchema = z.string().refine(uid => {
+  const parsed = parseStationUid(uid);
+  return parsed !== null && uid === `${parsed.vendor}:${parsed.nativeId}`;
+}, { message: 'expected a canonical station UID' });
+
+export const stationOverridesSchema: z.ZodType<StationOverridesDocument> = z.object({
+  schemaVersion: z.literal(1),
+  stations: z.record(stationUidKeySchema, stationOverrideSchema),
+});
+
+export function parseStationOverrides(value: unknown): StationOverridesDocument {
+  return stationOverridesSchema.parse(value) as StationOverridesDocument;
+}
+
+function applyOneOverride(
+  station: CatalogueStation,
+  override: StationOverride,
+): CatalogueStation {
+  let next: CatalogueStation = station;
+  if (override.shortName !== undefined) {
+    next = { ...next, shortName: override.shortName };
+  }
+  if (override.elevationM !== undefined && next.elevationM === null) {
+    next = { ...next, elevationM: override.elevationM };
+  }
+  if (override.region !== undefined && next.region === null) {
+    next = { ...next, region: override.region };
+  }
+  // Catalogue stations always carry a position today; fill only if one is invalid.
+  if (
+    override.latitude !== undefined &&
+    override.longitude !== undefined &&
+    !validPosition({ latitude: next.latitude, longitude: next.longitude })
+  ) {
+    next = { ...next, latitude: override.latitude, longitude: override.longitude };
+  }
+  return next;
+}
+
+/**
+ * Stamps curated short names and fill-only place fields onto merged catalogue
+ * stations. Direct UID wins over aliases. Unmatched keys and disagreeing alias
+ * hits are reported through the optional callbacks.
+ */
+export function applyStationOverrides(
+  stations: readonly CatalogueStation[],
+  overrides: StationOverridesDocument,
+  options: ApplyStationOverridesOptions = {},
+): CatalogueStation[] {
+  const usedKeys = new Set<string>();
+  const result = stations.map(station => {
+    const direct = overrides.stations[station.uid];
+    if (direct !== undefined) {
+      usedKeys.add(station.uid);
+      return applyOneOverride(station, direct);
+    }
+
+    const matchedKeys: string[] = [];
+    for (const alias of station.aliases ?? []) {
+      if (Object.hasOwn(overrides.stations, alias)) matchedKeys.push(alias);
+    }
+    if (matchedKeys.length === 0) return station;
+
+    const first = overrides.stations[matchedKeys[0]!]!;
+    const firstJson = JSON.stringify(first);
+    const conflict = matchedKeys.some(
+      key => JSON.stringify(overrides.stations[key]) !== firstJson,
+    );
+    if (conflict) {
+      options.onConflict?.(station.uid, matchedKeys);
+      return station;
+    }
+    for (const key of matchedKeys) usedKeys.add(key);
+    return applyOneOverride(station, first);
+  });
+
+  for (const key of Object.keys(overrides.stations)) {
+    if (!usedKeys.has(key)) options.onUnmatched?.(key);
+  }
+  return result;
+}
 
 export function parseCatalogueStation(value: unknown): CatalogueStation | null {
   const parsed = catalogueStationSchema.safeParse(value);
@@ -252,6 +386,7 @@ function mergeTwoStations(
   const launchContext =
     primary.launchContext ?? (sameSite ? secondary.launchContext : null) ?? undefined;
   const category = primary.category ?? secondary.category ?? undefined;
+  const shortName = primary.shortName ?? secondary.shortName ?? undefined;
 
   return {
     ...secondary,
@@ -262,6 +397,7 @@ function mergeTwoStations(
     timeZone: primary.timeZone ?? (sameSite ? secondary.timeZone : null),
     pageUrl: primary.pageUrl ?? secondary.pageUrl,
     ...(category !== undefined ? { category } : {}),
+    ...(shortName !== undefined ? { shortName } : {}),
     ...(declaredFavorableDirections !== undefined ? { declaredFavorableDirections } : {}),
     ...(launchContext !== undefined ? { launchContext } : {}),
     ...(aliases !== undefined ? { aliases } : {}),

@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "stations": {
+    "awc:UDSG": {
+      "shortName": "Gyumri Apt"
+    },
+    "awc:UDYZ": {
+      "shortName": "Zvartnots"
+    },
+    "climatenet:1": {
+      "shortName": "Maralik"
+    },
+    "climatenet:11": {
+      "shortName": "Amasia"
+    },
+    "climatenet:13": {
+      "shortName": "Artsvaberd"
+    },
+    "climatenet:14": {
+      "shortName": "TUMO"
+    },
+    "climatenet:15": {
+      "shortName": "Ijevan"
+    },
+    "climatenet:16": {
+      "shortName": "Berd"
+    },
+    "climatenet:17": {
+      "shortName": "Chambarak"
+    },
+    "climatenet:18": {
+      "shortName": "Azatamut"
+    },
+    "climatenet:19": {
+      "shortName": "Spitak"
+    },
+    "climatenet:20": {
+      "shortName": "Stepanavan"
+    },
+    "climatenet:21": {
+      "shortName": "Vayk"
+    },
+    "climatenet:22": {
+      "shortName": "Areni"
+    },
+    "climatenet:23": {
+      "shortName": "Jermuk"
+    },
+    "climatenet:25": {
+      "shortName": "Alaverdi"
+    },
+    "climatenet:27": {
+      "shortName": "Odzun"
+    },
+    "climatenet:28": {
+      "shortName": "Dsegh"
+    },
+    "climatenet:29": {
+      "shortName": "Shnogh"
+    },
+    "climatenet:3": {
+      "shortName": "Azatan"
+    },
+    "climatenet:30": {
+      "shortName": "Koghb"
+    },
+    "climatenet:31": {
+      "shortName": "Gyumri"
+    },
+    "climatenet:33": {
+      "shortName": "Dilijan"
+    },
+    "climatenet:4": {
+      "shortName": "Artik"
+    },
+    "climatenet:48": {
+      "shortName": "Mkhchyan"
+    },
+    "climatenet:5": {
+      "shortName": "Ashotsk"
+    },
+    "climatenet:56": {
+      "shortName": "Tsaghkunk",
+      "elevationM": 1863
+    },
+    "climatenet:6": {
+      "shortName": "Gavar"
+    },
+    "climatenet:7": {
+      "shortName": "Akhuryan"
+    },
+    "climatenet:8": {
+      "shortName": "VSargsyan"
+    },
+    "climatenet:9": {
+      "shortName": "Sevan"
+    },
+    "hydromet_am:37609": {
+      "shortName": "Bavra"
+    },
+    "hydromet_am:37618": {
+      "shortName": "Tashir"
+    },
+    "hydromet_am:37682": {
+      "shortName": "Ashotsk S"
+    },
+    "hydromet_am:37699": {
+      "shortName": "Aparan"
+    },
+    "hydromet_am:37704": {
+      "shortName": "Vanadzor"
+    },
+    "hydromet_am:37711": {
+      "shortName": "Ijevan Syn"
+    },
+    "hydromet_am:37717": {
+      "shortName": "Sevan Pen"
+    },
+    "hydromet_am:37772": {
+      "shortName": "Talin"
+    },
+    "hydromet_am:37785": {
+      "shortName": "Ashtarak"
+    },
+    "hydromet_am:37787": {
+      "shortName": "Armavir"
+    },
+    "hydromet_am:37792": {
+      "shortName": "Hrazdan"
+    },
+    "hydromet_am:37801": {
+      "shortName": "Gavar Syn"
+    },
+    "hydromet_am:37815": {
+      "shortName": "Masrik"
+    },
+    "hydromet_am:37871": {
+      "shortName": "Artashat"
+    },
+    "hydromet_am:37880": {
+      "shortName": "Vorotan"
+    },
+    "hydromet_am:37882": {
+      "shortName": "Jermuk Syn"
+    },
+    "hydromet_am:37897": {
+      "shortName": "Sisian"
+    },
+    "hydromet_am:37953": {
+      "shortName": "Goris"
+    },
+    "hydromet_am:37958": {
+      "shortName": "Meghri"
+    },
+    "weatherlink:0c17db8c-9d65-4bdb-8684-dc4280f9a531": {
+      "shortName": "Mkhitaryan",
+      "elevationM": 1390,
+      "region": "Vayots Dzor"
+    },
+    "windguru:15245": {
+      "shortName": "Wishup",
+      "region": "Gegharkunik"
+    },
+    "windguru:15518": {
+      "shortName": "Wish Shore",
+      "region": "Gegharkunik"
+    },
+    "windguru:4155": {
+      "shortName": "Arm Camp",
+      "region": "Gegharkunik"
+    },
+    "wunderground:IAKUNK1": {
+      "shortName": "Akunk",
+      "elevationM": 1457,
+      "region": "Kotayk"
+    },
+    "wunderground:IARMAV9": {
+      "shortName": "Armavir WU",
+      "elevationM": 914,
+      "region": "Armavir"
+    },
+    "wunderground:IARTAS8": {
+      "shortName": "Artashat WU",
+      "elevationM": 836,
+      "region": "Ararat"
+    },
+    "wunderground:IGEGHA5": {
+      "shortName": "ArmCamp WU",
+      "elevationM": 1911,
+      "region": "Gegharkunik"
+    },
+    "wunderground:IGEGHA6": {
+      "shortName": "Sevan W",
+      "elevationM": 1929,
+      "region": "Gegharkunik"
+    },
+    "wunderground:IHATIS1": {
+      "shortName": "Hatis",
+      "elevationM": 2019,
+      "region": "Kotayk"
+    },
+    "wunderground:IKOTAY1": {
+      "shortName": "Kotayk 1",
+      "elevationM": 1683,
+      "region": "Kotayk"
+    },
+    "wunderground:IKOTAY11": {
+      "shortName": "Kotayk 11",
+      "elevationM": 1570,
+      "region": "Kotayk"
+    },
+    "wunderground:IKOTAY12": {
+      "shortName": "Kotayk 12",
+      "elevationM": 1294,
+      "region": "Kotayk"
+    },
+    "wunderground:IKOTAY14": {
+      "shortName": "Kotayk 14",
+      "elevationM": 1441,
+      "region": "Kotayk"
+    },
+    "wunderground:ILORI1": {
+      "shortName": "Lori WU",
+      "elevationM": 1719,
+      "region": "Lori"
+    },
+    "wunderground:INORGY2": {
+      "shortName": "Nor Gyukh",
+      "elevationM": 1431,
+      "region": "Kotayk"
+    },
+    "wunderground:ITAVUS1": {
+      "shortName": "Tavush WU",
+      "elevationM": 1905,
+      "region": "Tavush"
+    },
+    "wunderground:IYEREV1": {
+      "shortName": "Yerevan 1",
+      "elevationM": 1064,
+      "region": "Yerevan"
+    },
+    "wunderground:IYEREV13": {
+      "shortName": "Yerevan 13",
+      "elevationM": 1135,
+      "region": "Yerevan"
+    },
+    "wunderground:IYEREV8": {
+      "shortName": "Yerevan 8",
+      "elevationM": 1082,
+      "region": "Yerevan"
+    }
+  }
+}
