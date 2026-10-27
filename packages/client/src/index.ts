@@ -97,14 +97,27 @@ export interface CatalogueIndex {
   toGeoJson(stations?: readonly CatalogueStation[]): StationFeatureCollection;
 }
 
+function hasActiveFilter(filter?: CatalogueQueryFilter): boolean {
+  if (!filter) return false;
+  return Boolean(
+    filter.countries?.length ||
+      filter.vendors?.length ||
+      filter.categories?.length ||
+      filter.launchSlug ||
+      filter.maxLaunchDistanceKm !== undefined ||
+      filter.limit !== undefined,
+  );
+}
+
 function applyCatalogueFilter(
   stations: readonly CatalogueStation[],
   filter?: CatalogueQueryFilter,
 ): CatalogueStation[] {
-  if (!filter) return [...stations];
-  const countrySet = filter.countries?.length ? new Set(filter.countries) : null;
-  const vendorSet = filter.vendors?.length ? new Set(filter.vendors) : null;
-  const categorySet = filter.categories?.length ? new Set(filter.categories) : null;
+  if (!hasActiveFilter(filter)) return [...stations];
+  const activeFilter = filter!;
+  const countrySet = activeFilter.countries?.length ? new Set(activeFilter.countries) : null;
+  const vendorSet = activeFilter.vendors?.length ? new Set(activeFilter.vendors) : null;
+  const categorySet = activeFilter.categories?.length ? new Set(activeFilter.categories) : null;
   let filtered = stations.filter(station => {
     if (countrySet && (station.country === null || !countrySet.has(station.country))) return false;
     if (vendorSet && !vendorSet.has(station.vendor)) return false;
@@ -114,36 +127,43 @@ function applyCatalogueFilter(
     ) {
       return false;
     }
-    if (filter.launchSlug && station.launchContext?.nearestLaunchSlug !== filter.launchSlug) {
+    if (
+      activeFilter.launchSlug &&
+      station.launchContext?.nearestLaunchSlug !== activeFilter.launchSlug
+    ) {
       return false;
     }
     if (
-      filter.maxLaunchDistanceKm !== undefined &&
-      (!station.launchContext || station.launchContext.distanceKm > filter.maxLaunchDistanceKm)
+      activeFilter.maxLaunchDistanceKm !== undefined &&
+      (!station.launchContext ||
+        station.launchContext.distanceKm > activeFilter.maxLaunchDistanceKm)
     ) {
       return false;
     }
     return true;
   });
-  if (filter.limit !== undefined) {
-    filtered = Number.isFinite(filter.limit) && filter.limit > 0
-      ? filtered.slice(0, Math.floor(filter.limit))
-      : [];
+  if (activeFilter.limit !== undefined) {
+    filtered =
+      Number.isFinite(activeFilter.limit) && activeFilter.limit > 0
+        ? filtered.slice(0, Math.floor(activeFilter.limit))
+        : [];
   }
   return filtered;
 }
 
 export function createCatalogueIndex(document: StationCatalogueDocument): CatalogueIndex {
   const spatial = createSpatialIndex(document.stations, 1);
-  const byUidMap = new Map<string, CatalogueStation>(
-    document.stations.map(station => [station.uid, station]),
-  );
+  const byUidMap = new Map<string, CatalogueStation>();
+  for (const station of document.stations) {
+    byUidMap.set(station.uid, station);
+  }
   // Canonical UIDs win collisions; aliases resolve to the same retained station.
   for (const station of document.stations) {
     for (const alias of station.aliases ?? []) {
       if (!byUidMap.has(alias)) byUidMap.set(alias, station);
     }
   }
+  let cachedFullGeoJson: StationFeatureCollection | null = null;
 
   return {
     document,
@@ -164,11 +184,17 @@ export function createCatalogueIndex(document: StationCatalogueDocument): Catalo
       filter?: CatalogueQueryFilter,
     ): NearbyMatch<CatalogueStation>[] {
       const rawMatches = spatial.queryRadius(center, radiusKm);
-      if (!filter) return rawMatches;
+      if (!hasActiveFilter(filter)) return rawMatches;
       const selected = new Set(applyCatalogueFilter(rawMatches.map(match => match.item), filter));
       return rawMatches.filter(match => selected.has(match.item));
     },
     toGeoJson(stations: readonly CatalogueStation[] = document.stations): StationFeatureCollection {
+      if (stations === document.stations) {
+        if (!cachedFullGeoJson) {
+          cachedFullGeoJson = catalogueToGeoJson(document.stations, document.generatedAt);
+        }
+        return cachedFullGeoJson;
+      }
       return catalogueToGeoJson(stations, document.generatedAt);
     },
   };

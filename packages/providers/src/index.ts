@@ -232,10 +232,13 @@ export {
 
 export {
   AMBIENT_DEVICES_URL,
+  FINDU_NEAR_WX_URL,
   FINDU_RAW_WX_URL,
+  SYNOPTIC_AUTH_URL,
   SYNOPTIC_LATEST_URL,
   WINDY_PWS_URL,
   WU_PWS_CURRENT_URL,
+  WU_PWS_NEAR_URL,
   ambientProvider,
   cwopProvider,
   loadAmbientStation,
@@ -246,11 +249,16 @@ export {
   parseAmbientDeviceObservation,
   parseAprsWxPacket,
   parseSynopticLatest,
+  parseSynopticLatestStations,
+  parseSynopticStationEntry,
   parseWindyPwsResponse,
+  parseWuNearLocations,
   parseWuPwsCurrent,
+  resolveSynopticToken,
   synopticProvider,
   windyProvider,
   wundergroundProvider,
+  type SynopticParsedStation,
 } from './cwop.ts';
 
 export {

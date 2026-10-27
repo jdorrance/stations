@@ -366,7 +366,9 @@ export function parseHolfuyWeatherPageHtml(
   }
 
   const nativeId = String(stattr.id ?? fallbackId ?? '').trim();
-  if (!nativeId) return null;
+  if (!nativeId || (fallbackId !== undefined && nativeId !== String(fallbackId).trim())) {
+    return null;
+  }
 
   const mapMatch = html.match(/\/map\/la=([-0-9.]+)&lo=([-0-9.]+)/i);
   const latitude = mapMatch ? finiteNumber(mapMatch[1]) : (baseStation?.latitude ?? null);
@@ -438,72 +440,6 @@ export function parseHolfuyWeatherPageHtml(
   return { station, isActive };
 }
 
-function parseHolfuyPageTableReading(html: string, referenceNowMs: number): HolfuyObservation | null {
-  const unitsMatch = html.match(/var\s+units\s*=\s*JSON\.parse\('([^']+)'\)/);
-  let speedUnit = 'km/h';
-  let tempUnit = 'C';
-  if (unitsMatch) {
-    try {
-      const u = JSON.parse(unitsMatch[1]!.replace(/\\\//g, '/')) as { speed?: string; temp?: string };
-      if (typeof u.speed === 'string') speedUnit = u.speed;
-      if (typeof u.temp === 'string') tempUnit = u.temp.toUpperCase();
-    } catch {
-      // use defaults
-    }
-  }
-  const tableMatch = html.match(/<table class="hour_table">([\s\S]*?)<\/table>/i);
-  if (!tableMatch) return null;
-  const tableHtml = tableMatch[1]!;
-  const rows = [...tableHtml.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)].map(m => m[1]!);
-  const cellsOf = (rowHtml: string | undefined): string[] =>
-    rowHtml
-      ? [...rowHtml.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)]
-          .slice(1)
-          .map(m => m[1]!.replace(/<[^>]+>/g, ' ').trim())
-      : [];
-
-  const speedRow = rows.find(r => />Speed<\/td>/i.test(r));
-  const gustRow = rows.find(r => />Gust\b/i.test(r));
-  const degRow = rows.find(r => /Deg\.<\/span><\/td>/i.test(r));
-  const tempRow = rows.find(r => />Temp\.\b/i.test(r));
-
-  const speeds = cellsOf(speedRow);
-  const gusts = cellsOf(gustRow);
-  const degs = cellsOf(degRow);
-  const temps = cellsOf(tempRow);
-
-  for (let i = speeds.length - 1; i >= 0; i -= 1) {
-    const windAvgMps = parseHolfuySpeedMps(speeds[i], speedUnit);
-    if (windAvgMps === null) continue;
-    const windGustMps = parseHolfuySpeedMps(gusts[i], speedUnit);
-    const dirToken = degs[i]?.split(/\s+/)[0];
-    const dirDeg = finiteNumber(dirToken);
-    const rawTemp = finiteNumber(temps[i]);
-    const temperatureC =
-      rawTemp === null
-        ? null
-        : tempUnit === 'F'
-          ? Math.round((((rawTemp - 32) * 5) / 9) * 10) / 10
-          : rawTemp;
-    const slotsAgo = speeds.length - 1 - i;
-    const observedAt = new Date(referenceNowMs - slotsAgo * 15 * 60_000).toISOString();
-    return {
-      reading: {
-        observedAt,
-        windAvgMps,
-        windDirectionDeg: isCalm(windAvgMps) ? null : windDirection(dirDeg),
-        windGustMps,
-        windLullMps: null,
-        temperatureC,
-        windChillC: null,
-        conditions: null,
-      },
-      telemetry: null,
-    };
-  }
-  return null;
-}
-
 async function fetchHolfuyKeylessWidget(
   environment: ResolvedEnvironment,
   stationId: string,
@@ -524,42 +460,34 @@ async function fetchHolfuyKeylessWidget(
     throw new Error(`Holfuy page returned ${pageRes.status}`);
   }
   const cookieHeader = pageRes.headers.get('set-cookie')?.split(';')[0] ?? '';
-  let pageHtml = '';
   try {
-    pageHtml = await boundedResponseText(pageRes, 256 * 1024, 'Holfuy page');
+    await pageRes.body?.cancel();
   } catch {
-    // ignore if body cannot be read
+    // ignore
   }
 
-  const nowMs = environment.now().getTime();
-  try {
-    const widgetUrl = `${options.widgetJsonUrl ?? HOLFUY_WIDGET_JSON_URL}?k=${encodeURIComponent(stationId)}`;
-    const widgetRes = await environment.fetch(widgetUrl, {
-      headers: {
-        Accept: 'application/json',
-        'User-Agent': environment.userAgent,
-        ...(cookieHeader ? { Cookie: cookieHeader } : {}),
-        Referer: pageUrl,
-      },
-      signal: AbortSignal.timeout(8_000),
-      redirect: 'error',
-    });
-    if (!widgetRes.ok) {
-      throw new Error(`Holfuy widget endpoint returned ${widgetRes.status}`);
-    }
-    const text = await boundedResponseText(widgetRes, 128 * 1024, 'Holfuy widget');
-    const observation = parseHolfuyWidgetJson(text, nowMs);
-    const normalizedPayload = JSON.stringify({
-      ...JSON.parse(text),
-      timestamp: observation.reading.observedAt,
-    });
-    await environment.cache.put(`holfuy/widget/${stationId}`, normalizedPayload, CACHE_TTL_SECONDS);
-    return observation;
-  } catch (widgetError) {
-    const fallback = pageHtml ? parseHolfuyPageTableReading(pageHtml, nowMs) : null;
-    if (fallback) return fallback;
-    throw widgetError;
+  const widgetUrl = `${options.widgetJsonUrl ?? HOLFUY_WIDGET_JSON_URL}?k=${encodeURIComponent(stationId)}`;
+  const widgetRes = await environment.fetch(widgetUrl, {
+    headers: {
+      Accept: 'application/json',
+      'User-Agent': environment.userAgent,
+      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
+      Referer: pageUrl,
+    },
+    signal: AbortSignal.timeout(8_000),
+    redirect: 'error',
+  });
+  if (!widgetRes.ok) {
+    throw new Error(`Holfuy widget endpoint returned ${widgetRes.status}`);
   }
+  const text = await boundedResponseText(widgetRes, 128 * 1024, 'Holfuy widget');
+  const observation = parseHolfuyWidgetJson(text, environment.now().getTime());
+  const normalizedPayload = JSON.stringify({
+    ...JSON.parse(text),
+    timestamp: observation.reading.observedAt,
+  });
+  await environment.cache.put(`holfuy/widget/${stationId}`, normalizedPayload, CACHE_TTL_SECONDS);
+  return observation;
 }
 
 export const loadHolfuyStation = defineStationAdapter<HolfuyStationConfig, HolfuyAdapterOptions>({
@@ -633,12 +561,14 @@ export const holfuyProvider: StationNetworkProvider = {
             const probed = await Promise.all(
               slice.map(async probeId => {
                 try {
-                  const res = await fetch(`${HOLFUY_PAGE_URL}/${encodeURIComponent(probeId)}`, {
-                    headers: { 'User-Agent': environment.userAgent },
-                    signal: AbortSignal.timeout(6_000),
+                  const html = await fetchUpstreamText(environment, {
+                    url: `${HOLFUY_PAGE_URL}/${encodeURIComponent(probeId)}`,
+                    accept: 'text/html,*/*',
+                    cacheKey: `holfuy/page/${probeId}`,
+                    cacheTtlSeconds: 1_800,
+                    subject: `Holfuy station page ${probeId}`,
+                    timeoutMs: 6_000,
                   });
-                  if (!res.ok) return null;
-                  const html = await res.text();
                   const parsed = parseHolfuyWeatherPageHtml(html, probeId, byId.get(probeId));
                   return parsed && parsed.isActive ? parsed.station : null;
                 } catch {

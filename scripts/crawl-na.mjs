@@ -33,7 +33,9 @@ import {
   toStationConfigs,
   unwrapAggregatorStation,
 } from '@stations/providers';
+import { loadDotEnv } from './workspace.mjs';
 
+loadDotEnv();
 const repositoryRoot = fileURLToPath(new URL('../', import.meta.url));
 
 function positiveDistance(raw, name) {
@@ -164,6 +166,21 @@ export async function crawlCatalogue(options = {}) {
   }
   const seeds = options.seeds ?? INITIAL_SEED_STATIONS;
   const log = options.log ?? console.log;
+  const credentials =
+    options.credentials ??
+    (!options.offline && !options.providers && !options.environment
+      ? {
+          tempestToken: process.env.TEMPEST_TOKEN,
+          ecowittApplicationKey: process.env.ECOWITT_APP_KEY,
+          ecowittApiKey: process.env.ECOWITT_API_KEY,
+          holfuyApiKey: process.env.HOLFUY_API_KEY,
+          wuApiKey: process.env.WU_API_KEY,
+          synopticToken: process.env.SYNOPTIC_TOKEN,
+          synopticApiKey: process.env.SYNOPTIC_API_KEY,
+          ambientApiKey: process.env.AMBIENT_API_KEY,
+          ambientApplicationKey: process.env.AMBIENT_APP_KEY,
+        }
+      : undefined);
   const baseEnvironment = resolveEnvironment(
     options.environment ??
       (options.offline
@@ -173,6 +190,16 @@ export async function crawlCatalogue(options = {}) {
               maxConcurrent: 6,
               minIntervalMs: 100,
               maxQueueSize: 500,
+              origins: {
+                'https://holfuy.com': { maxConcurrent: 24, minIntervalMs: 10 },
+                'https://www.weatherlink.com': { maxConcurrent: 40, minIntervalMs: 5 },
+                'https://weather.prod.avalanche.ca': { maxConcurrent: 15, minIntervalMs: 20 },
+                'http://www.findu.com': { maxConcurrent: 12, minIntervalMs: 25 },
+                'https://climatenet.am': { maxConcurrent: 10, minIntervalMs: 30 },
+                'https://sierragliding.us': { maxConcurrent: 8, minIntervalMs: 30 },
+                'https://api.synopticdata.com': { maxConcurrent: 6, minIntervalMs: 50 },
+                'https://api.weather.com': { maxConcurrent: 20, minIntervalMs: 15 },
+              },
             }),
           }),
   );
@@ -237,7 +264,7 @@ export async function crawlCatalogue(options = {}) {
         },
       };
       try {
-        discovered = await providers[vendor].discover({ regions, seeds, launches,
+        discovered = await providers[vendor].discover({ regions, seeds, launches, credentials,
           includeRemoteDiscovery: !options.offline, environment });
         if (!Array.isArray(discovered)) throw new Error('Provider returned a non-array catalogue');
       } catch (error) {
@@ -258,7 +285,7 @@ export async function crawlCatalogue(options = {}) {
         if (toVerify.length > 0) {
           const nowMs = baseEnvironment.now().getTime();
           const feed = await loadStationFeed({
-            stations: toStationConfigs(toVerify, options.credentials),
+            stations: toStationConfigs(toVerify, credentials),
             environment: baseEnvironment,
           });
           const deadIds = new Set(

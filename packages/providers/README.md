@@ -26,17 +26,22 @@ GeoJSON) alongside `@azohra/meteo.station`'s `/feed`, `/current`, `/live`,
 
 ## Supported networks
 
-- **Free-flight and club windtalkers:** `windnerd`, `holfuy` (API and keyless
-  widget fallback), `openwindmap` (Pioupiou), `windsmobi`, `windspion`,
-  `windguru`, `campbell`, `weatherlink` and `realtime_txt` (Cumulus/WeeWX).
+- **Free-flight and club windtalkers:** `windnerd`, `holfuy` (API, keyless
+  widget fallback and global directory sweep), `openwindmap` (Pioupiou),
+  `windsmobi`, `windspion`, `windguru`, `campbell`, `weatherlink` (including
+  Crestline CSS, Sierra Gliding and launch-corridor stations) and `realtime_txt`
+  (Cumulus/WeeWX).
 - **Mountain, fire and avalanche:** `raws` (NIFC Interagency FeatureServer),
-  `snotel` (USDA NRCS AWDB) and `avalanche` (Avalanche Canada).
-- **National synoptic, aviation and marine:** `iem` (ASOS, AWOS and DCP
-  networks across US, CA, MX and AM), `awc` (NOAA Aviation Weather Center
+  `snotel` (USDA NRCS AWDB) and `avalanche` (Avalanche Canada and US National
+  Avalanche Center / SnowObs mountain stations).
+- **National synoptic, aviation and marine:** `iem` (ASOS, AWOS, DCP, RWIS and
+  USCRN networks across US, CA, MX and AM), `awc` (NOAA Aviation Weather Center
   METAR), `nws` (`api.weather.gov`), `eccc` (MSC GeoMet SWOB), `ndbc` (buoys and
-  C-MAN stations) and `conagua` (Mexico SMN EMAs).
-- **Citizen and personal stations:** `cwop` (APRS weather packets), `windy`,
-  `tempest`, `ecowitt`, `wunderground`, `synoptic` and `ambient`.
+  C-MAN stations), `conagua` (Mexico SMN EMAs) and `hydromet_am` (Armenia
+  Hydromet WMO FM-12 SYNOP stations).
+- **Citizen and personal stations:** `cwop` (APRS weather packets),
+  `climatenet` (TUMO ClimateNet Armenia), `windy`, `tempest`, `ecowitt`,
+  `wunderground`, `synoptic` and `ambient`.
 
 Adapters validate upstream timestamps and units before converting to SI. Missing
 or unconfigured credentials degrade individual stations to `unavailable` with

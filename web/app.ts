@@ -18,6 +18,8 @@ import {
 import {
   compassDirection,
   defaultCategoryForVendor,
+  pilotFreshness,
+  pilotFreshnessThresholds,
   speedFromMps,
   type CatalogueStation,
   type Station,
@@ -153,6 +155,39 @@ function formatTemp(station: Station | undefined): string {
   return `${c.toFixed(1)} °C`;
 }
 
+function formatRelativeAge(observedAt: string, nowMs = Date.now()): string {
+  const ageMs = Math.max(0, nowMs - Date.parse(observedAt));
+  const mins = Math.round(ageMs / 60_000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  const remMins = mins % 60;
+  if (hours < 24) return remMins > 0 ? `${hours}h ${remMins}m ago` : `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
+
+function formatObservedWithFreshness(
+  live: Station | undefined,
+  catalogueStation: CatalogueStation,
+): string {
+  if (!live || live.status !== 'ok') return '—';
+  const nowMs = Date.now();
+  const nowIso = new Date(nowMs).toISOString();
+  const category = catalogueStation.category ?? defaultCategoryForVendor(catalogueStation.vendor);
+  const status = pilotFreshness(
+    {
+      observedAt: live.reading.observedAt,
+      servedAt: nowIso,
+      receivedAtMs: nowMs,
+      nowMs,
+    },
+    live,
+    category,
+  );
+  const label = status === 'live' ? 'Live' : status === 'aging' ? 'Aging' : 'Stale';
+  return `${label} · ${formatRelativeAge(live.reading.observedAt, nowMs)}`;
+}
+
 function ensureRaster(
   map: MapLibreMap,
   id: string,
@@ -274,9 +309,12 @@ function currentFilter() {
   };
 }
 
-function filteredCatalogueStations(): CatalogueStation[] {
+function filteredCatalogueStations(): readonly CatalogueStation[] {
   if (!catalogueIndex) return [];
   const { countries, categories, vendors, search } = currentFilter();
+  if (!countries && !categories && !vendors && !search) {
+    return catalogueIndex.document.stations;
+  }
   let list = catalogueIndex.all({ countries, categories, vendors });
   if (search) {
     list = list.filter(
@@ -308,7 +346,7 @@ function stationsInCurrentView(): CatalogueStation[] {
     const distA = a.launchContext?.distanceKm ?? Infinity;
     const distB = b.launchContext?.distanceKm ?? Infinity;
     if (distA !== distB) return distA - distB;
-    return a.name.localeCompare(b.name);
+    return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
   });
 }
 
@@ -363,13 +401,7 @@ function renderStationsTable() {
     tempTd.textContent = formatTemp(live);
 
     const obsTd = document.createElement('td');
-    obsTd.textContent =
-      live?.status === 'ok'
-        ? new Date(live.reading.observedAt).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })
-        : '—';
+    obsTd.textContent = formatObservedWithFreshness(live, station);
 
     tr.append(nameTd, vendorTd, catTd, elevTd, launchTd, windTd, tempTd, obsTd);
     tableBody.appendChild(tr);
@@ -422,10 +454,15 @@ async function selectStation(uid: string, panToStation = false) {
     .filter(([, enabled]) => Boolean(enabled))
     .map(([key]) => key)
     .join(', ');
+  const category = station.category ?? defaultCategoryForVendor(station.vendor);
+  const pilotLimits = pilotFreshnessThresholds(station, category);
+  const liveMins = Math.round(pilotLimits.currentForMs / 60_000);
+  const staleMins = Math.round(pilotLimits.staleAfterMs / 60_000);
 
   const extraFacts: [string, string][] = [
     ['Declared capabilities', capList || 'wind'],
     ['Poll cadence', `${station.recommendedPollSeconds} s`],
+    ['Pilot freshness limits', `Live ≤ ${liveMins}m · Stale > ${staleMins}m`],
     ['Time zone', station.timeZone ?? 'UTC'],
   ];
   if (station.aliases?.length) {
@@ -447,6 +484,10 @@ async function selectStation(uid: string, panToStation = false) {
   if (loadedStation) {
     liveReadingsByUid.set(station.uid, loadedStation);
     renderStationsTable();
+    if (loadedStation.status === 'ok') {
+      const freshnessSummary = formatObservedWithFreshness(loadedStation, station);
+      setDlEntries(stationMetaDl, [...primaryFacts, ['Pilot freshness', freshnessSummary]]);
+    }
   }
 
   liveCardMount.replaceChildren();
@@ -629,9 +670,14 @@ for (const control of [countrySelect, categorySelect, vendorSelect]) {
   });
 }
 
+let searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
 searchInput.addEventListener('input', () => {
-  updateMapSource();
-  renderStationsTable();
+  if (searchDebounceTimer !== null) clearTimeout(searchDebounceTimer);
+  searchDebounceTimer = setTimeout(() => {
+    searchDebounceTimer = null;
+    updateMapSource();
+    renderStationsTable();
+  }, 120);
 });
 
 unitSelect.addEventListener('change', () => {

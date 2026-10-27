@@ -1,4 +1,5 @@
 import {
+  FEET_TO_METERS,
   INHG_TO_HPA,
   MPH_TO_MPS,
   fahrenheitToCelsius,
@@ -24,6 +25,7 @@ import {
   type Reading,
 } from '@azohra/meteo.station';
 import {
+  type ResolvedEnvironment,
   type StationAdapterOptions,
   type StationConfigInput,
 } from '@azohra/meteo.station/server';
@@ -61,6 +63,8 @@ export const FINDU_RAW_WX_URL = 'http://www.findu.com/cgi-bin/rawwx.cgi';
 export const FINDU_NEAR_WX_URL = 'http://www.findu.com/cgi-bin/wxnear.cgi';
 export const WINDY_PWS_URL = 'https://node.windy.com/obs/measurement/v3/pws';
 export const WU_PWS_CURRENT_URL = 'https://api.weather.com/v2/pws/observations/current';
+export const WU_PWS_NEAR_URL = 'https://api.weather.com/v3/location/near';
+export const SYNOPTIC_AUTH_URL = 'https://api.synopticdata.com/v2/auth';
 export const SYNOPTIC_LATEST_URL = 'https://api.synopticdata.com/v2/stations/latest';
 export const AMBIENT_DEVICES_URL = 'https://rt.ambientweather.net/v1/devices';
 
@@ -369,15 +373,7 @@ export const loadWuPwsStation = defineStationAdapter<
   },
 });
 
-export function parseSynopticLatest(text: string, expectedId?: string): Reading {
-  const data: unknown = JSON.parse(text);
-  const stn =
-    isRecord(data) && Array.isArray(data.STATION)
-      ? data.STATION.find((row): row is Record<string, unknown> => isRecord(row) && (!expectedId || row.STID === expectedId))
-      : null;
-  const obs = stn && isRecord(stn.OBSERVATIONS) ? stn.OBSERVATIONS : null;
-  if (!obs) throw new Error('Synoptic response is missing STATION[0].OBSERVATIONS');
-
+function parseSynopticObservationsBlock(obs: Record<string, unknown>): Reading | null {
   const valOf = (prefix: string): { value: number; ms: number } | null => {
     let latest: { value: number; ms: number } | null = null;
     for (const [k, v] of Object.entries(obs)) {
@@ -396,7 +392,7 @@ export function parseSynopticLatest(text: string, expectedId?: string): Reading 
   };
 
   const wspd = valOf('wind_speed_value');
-  if (!wspd || wspd.value < 0) throw new Error('Synoptic station is missing wind_speed_value');
+  if (!wspd || optionalWindMps(wspd.value) === null) return null;
   const windAvgMps = plausibleWindMps(wspd.value, 'Synoptic');
   const concurrent = (prefix: string) => {
     const value = valOf(prefix);
@@ -414,7 +410,10 @@ export function parseSynopticLatest(text: string, expectedId?: string): Reading 
     observedAt: new Date(observedAtMs).toISOString(),
     windAvgMps,
     windDirectionDeg: isCalm(windAvgMps) || !wdir ? null : windDirection(wdir.value),
-    windGustMps: !wgst || wgst.value < 0 ? null : plausibleWindMps(wgst.value, 'Synoptic'),
+    windGustMps:
+      !wgst || optionalWindMps(wgst.value) === null
+        ? null
+        : plausibleWindMps(wgst.value, 'Synoptic'),
     windLullMps: null,
     temperatureC: validTemperatureC(temp ? temp.value : null),
     windChillC: null,
@@ -422,18 +421,191 @@ export function parseSynopticLatest(text: string, expectedId?: string): Reading 
       ...emptyConditions(),
       dewPointC: validTemperatureC(dewp ? dewp.value : null),
       relativeHumidityPercent: rh && rh.value >= 0 && rh.value <= 100 ? rh.value : null,
-      seaLevelPressureHpa:
-        pressureHpa(slp ? slp.value / 100 : null),
+      seaLevelPressureHpa: pressureHpa(slp ? slp.value / 100 : null),
     },
   };
 }
 
+export function parseSynopticLatest(text: string, expectedId?: string): Reading {
+  const data: unknown = JSON.parse(text);
+  const stn =
+    isRecord(data) && Array.isArray(data.STATION)
+      ? data.STATION.find(
+          (row): row is Record<string, unknown> =>
+            isRecord(row) && (!expectedId || row.STID === expectedId),
+        )
+      : null;
+  const obs = stn && isRecord(stn.OBSERVATIONS) ? stn.OBSERVATIONS : null;
+  if (!obs) throw new Error('Synoptic response is missing STATION[0].OBSERVATIONS');
+  const reading = parseSynopticObservationsBlock(obs);
+  if (!reading) throw new Error('Synoptic station is missing wind_speed_value');
+  return reading;
+}
+
+export interface SynopticParsedStation {
+  readonly station: CatalogueStation;
+  readonly reading: Reading | null;
+}
+
+export function parseSynopticStationEntry(raw: unknown): SynopticParsedStation | null {
+  if (!isRecord(raw)) return null;
+  const stid = typeof raw.STID === 'string' ? raw.STID.trim().toUpperCase() : '';
+  if (!stid) return null;
+
+  const latitude = finiteNumber(raw.LATITUDE ?? raw.latitude);
+  const longitude = finiteNumber(raw.LONGITUDE ?? raw.longitude);
+  if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
+    return null;
+  }
+
+  const units = isRecord(raw.UNITS) ? raw.UNITS : null;
+  const elevRaw = finiteNumber(raw.ELEVATION ?? raw.elevation);
+  const elevationM =
+    elevRaw === null
+      ? null
+      : units?.elevation === 'm'
+        ? Math.round(elevRaw)
+        : Math.round(elevRaw * FEET_TO_METERS);
+
+  const countryHint = typeof raw.COUNTRY === 'string' ? raw.COUNTRY.trim().toUpperCase() : null;
+  const country = inferRegionCode({ latitude, longitude }, countryHint);
+  const region = typeof raw.STATE === 'string' && raw.STATE.trim() ? raw.STATE.trim() : null;
+  const timeZone =
+    typeof raw.TIMEZONE === 'string' && raw.TIMEZONE.trim() ? raw.TIMEZONE.trim() : null;
+  const name =
+    typeof raw.NAME === 'string' && raw.NAME.trim() ? raw.NAME.trim() : `Synoptic ${stid}`;
+  const mnetId =
+    typeof raw.MNET_ID === 'string' || typeof raw.MNET_ID === 'number'
+      ? String(raw.MNET_ID).trim()
+      : null;
+
+  const isAsos = mnetId === '1' && /^[A-Z][A-Z0-9]{3}$/.test(stid);
+  const isRaws = mnetId === '2';
+  const isCwop = mnetId === '65';
+  const aliases = isAsos
+    ? [formatStationUid('awc', stid)]
+    : isCwop
+      ? [formatStationUid('cwop', stid)]
+      : null;
+  const category = isCwop
+    ? 'pws'
+    : isRaws || mnetId === '29' || mnetId === '99' || mnetId === '283' || (elevationM !== null && elevationM >= 600)
+      ? 'mountain'
+      : 'synoptic';
+
+  const station: CatalogueStation = {
+    uid: formatStationUid('synoptic', stid),
+    vendor: 'synoptic',
+    nativeId: stid,
+    name,
+    latitude,
+    longitude,
+    elevationM,
+    country,
+    region,
+    timeZone,
+    pageUrl: `https://explore.synopticdata.com/${encodeURIComponent(stid)}/24h`,
+    category,
+    ...(aliases ? { aliases } : {}),
+    capabilities: {
+      gustLull: true,
+      temperature: true,
+      conditions: true,
+      history: false,
+    },
+    samplingWindowSeconds: 300,
+    recommendedPollSeconds: CACHE_TTL_SECONDS,
+    locator: {
+      stid,
+      ...(mnetId ? { mnetId } : {}),
+      ...(isAsos ? { icaoId: stid } : {}),
+      ...(isRaws && /^[A-Z0-9]{5}$/.test(stid) ? { nwsId: stid } : {}),
+    },
+  };
+
+  const obs = isRecord(raw.OBSERVATIONS) ? raw.OBSERVATIONS : null;
+  const reading = obs ? parseSynopticObservationsBlock(obs) : null;
+  return { station, reading };
+}
+
+export function parseSynopticLatestStations(text: string): SynopticParsedStation[] {
+  const data: unknown = JSON.parse(text);
+  const rows = isRecord(data) && Array.isArray(data.STATION) ? data.STATION : [];
+  const out: SynopticParsedStation[] = [];
+  for (const row of rows) {
+    const parsed = parseSynopticStationEntry(row);
+    if (parsed) out.push(parsed);
+  }
+  return out;
+}
+
+const inFlightSynopticAuth = new WeakMap<object, Map<string, Promise<string>>>();
+
+export async function resolveSynopticToken(
+  tokenOrApiKey: string,
+  environment: ResolvedEnvironment,
+  authUrl = SYNOPTIC_AUTH_URL,
+): Promise<string> {
+  const trimmed = tokenOrApiKey.trim();
+  if (!trimmed) throw new Error('Synoptic token or API key is empty');
+  // Tokens are 32-char hex strings (or short test tokens); API keys are 40+ chars
+  if (trimmed.length <= 36) return trimmed;
+
+  const scope = await credentialCacheScope(trimmed);
+  const cacheKey = `synoptic/auth/${scope}`;
+  const cached = await environment.cache.get(cacheKey);
+  if (cached) {
+    const parsedCached: unknown = JSON.parse(cached);
+    const cachedToken =
+      isRecord(parsedCached) && typeof parsedCached.TOKEN === 'string'
+        ? parsedCached.TOKEN.trim()
+        : '';
+    if (cachedToken) return cachedToken;
+  }
+
+  let envInFlight = inFlightSynopticAuth.get(environment.cache);
+  if (!envInFlight) {
+    envInFlight = new Map<string, Promise<string>>();
+    inFlightSynopticAuth.set(environment.cache, envInFlight);
+  }
+  const inflightKey = `${authUrl}|${scope}`;
+  const existing = envInFlight.get(inflightKey);
+  if (existing) return existing;
+
+  const promise = (async () => {
+    try {
+      const url = new URL(authUrl);
+      url.searchParams.set('apikey', trimmed);
+      const text = await fetchUpstreamText(environment, {
+        url,
+        cacheKey,
+        cacheTtlSeconds: 3_600,
+        subject: 'Synoptic API key token exchange',
+      });
+      const parsed: unknown = JSON.parse(text);
+      const token = isRecord(parsed) && typeof parsed.TOKEN === 'string' ? parsed.TOKEN.trim() : '';
+      if (!token) throw new Error('Synoptic /v2/auth response did not contain a valid TOKEN');
+      return token;
+    } finally {
+      envInFlight.delete(inflightKey);
+    }
+  })();
+
+  envInFlight.set(inflightKey, promise);
+  return promise;
+}
+
 export const loadSynopticStation = defineStationAdapter<
   { readonly station: CatalogueStation; readonly token: string },
-  StationAdapterOptions & { readonly synopticUrl?: string }
+  StationAdapterOptions & { readonly synopticUrl?: string; readonly synopticAuthUrl?: string }
 >({
   meta: ({ station }) => stationMetaFromCatalogue(station, 'Synoptic / MesoWest'),
-  load: async ({ station, token }, { environment, options }) => {
+  load: async ({ station, token: rawTokenOrKey }, { environment, options }) => {
+    const token = await resolveSynopticToken(
+      rawTokenOrKey,
+      environment,
+      options.synopticAuthUrl,
+    );
     const url = new URL(options.synopticUrl ?? SYNOPTIC_LATEST_URL);
     url.searchParams.set('stid', station.nativeId);
     url.searchParams.set('units', 'metric');
@@ -441,7 +613,7 @@ export const loadSynopticStation = defineStationAdapter<
 
     const text = await fetchUpstreamText(environment, {
       url,
-      cacheKey: `synoptic/latest/${await credentialCacheScope(token)}/${station.nativeId}`,
+      cacheKey: `synoptic/latest/${await credentialCacheScope(rawTokenOrKey)}/${station.nativeId}`,
       cacheTtlSeconds: CACHE_TTL_SECONDS,
       subject: `Synoptic station ${station.nativeId}`,
     });
@@ -669,15 +841,14 @@ export const cwopProvider: StationNetworkProvider = {
           const probed = await Promise.all(
             slice.map(async call => {
               try {
-                const res = await fetch(
-                  `${FINDU_RAW_WX_URL}?call=${encodeURIComponent(call)}&start=1&length=1`,
-                  {
-                    headers: { 'User-Agent': environment.userAgent },
-                    signal: AbortSignal.timeout(5_000),
-                  },
-                );
-                if (!res.ok) return null;
-                const rawText = await res.text();
+                const rawText = await fetchUpstreamText(environment, {
+                  url: `${FINDU_RAW_WX_URL}?call=${encodeURIComponent(call)}&start=1&length=1`,
+                  accept: 'text/html,text/plain',
+                  cacheKey: `cwop/raw/${call}`,
+                  cacheTtlSeconds: CACHE_TTL_SECONDS,
+                  subject: `CWOP station ${call}`,
+                  timeoutMs: 5_000,
+                });
                 const pos = parseAprsPosition(rawText, call);
                 if (!pos) return null;
                 const reading = parseAprsWxPacket(rawText, nowMs, call);
@@ -742,27 +913,349 @@ export const windyProvider: StationNetworkProvider = createSeededProvider(
     ),
 );
 
-export const wundergroundProvider: StationNetworkProvider = createSeededProvider(
-  'wunderground',
-  (station: CatalogueStation, credentials?: ProviderCredentials) => {
+const WU_ARMENIA_GEOCODES: readonly Position[] = [
+  { latitude: 40.27, longitude: 44.7 }, // Mount Hatis / Kotayk
+  { latitude: 40.59, longitude: 44.47 }, // Aparan / Mount Ara
+  { latitude: 40.55, longitude: 44.95 }, // Lake Sevan / Tsovagyugh
+  { latitude: 40.79, longitude: 43.85 }, // Gyumri / Shirak
+  { latitude: 40.75, longitude: 44.87 }, // Dilijan / Ijevan / Tavush
+  { latitude: 39.85, longitude: 45.0 }, // Vedi / Areni / Vayots Dzor
+  { latitude: 39.45, longitude: 46.25 }, // Goris / Tatev / Syunik
+  { latitude: 40.84, longitude: 44.48 }, // Vanadzor / Spitak / Lori
+];
+
+const WU_US_LAUNCH_GEOCODES: readonly Position[] = [
+  // VA / MD / WV / PA Mid-Atlantic & Appalachian grid (no radius restriction)
+  { latitude: 38.8706, longitude: -78.45 }, // Woodstock Tower VA
+  { latitude: 38.7251, longitude: -78.5089 }, // Edith's Gap / Luray VA
+  { latitude: 38.8537, longitude: -78.2066 }, // Dickey's Ridge / Front Royal VA
+  { latitude: 38.405, longitude: -78.765 }, // Massanutten / Harrisonburg VA
+  { latitude: 38.3105, longitude: -78.512 }, // Daniels / Charlottesville VA
+  { latitude: 37.9336, longitude: -78.9528 }, // Raven's Roost / Wintergreen VA
+  { latitude: 37.6314, longitude: -79.8317 }, // Eagle Rock / Botetourt VA
+  { latitude: 37.27, longitude: -79.94 }, // Roanoke / Blue Ridge VA
+  { latitude: 37.13, longitude: -80.41 }, // Blacksburg / New River Valley VA
+  { latitude: 39.18, longitude: -78.16 }, // Winchester / Northern Shenandoah VA
+  { latitude: 39.11, longitude: -77.56 }, // Leesburg / Loudoun VA
+  { latitude: 38.67, longitude: -78.32 }, // Thornton Gap / Panorama VA
+  { latitude: 38.03, longitude: -79.07 }, // Waynesboro / Afton Mtn VA
+  { latitude: 37.5131, longitude: -80.4329 }, // Peter's Mountain WV/VA
+  { latitude: 37.8, longitude: -80.45 }, // Lewisburg / Greenbrier WV
+  { latitude: 37.78, longitude: -81.19 }, // Beckley / New River Gorge WV
+  { latitude: 38.2043, longitude: -80.2273 }, // Cranberry Mountain / Marlinton WV
+  { latitude: 38.4211, longitude: -79.9966 }, // Snowshoe Mountain WV
+  { latitude: 38.7401, longitude: -79.62 }, // Pharis Knob / Seneca Rocks / Spruce Knob WV
+  { latitude: 38.9989, longitude: -79.4352 }, // Canaan Valley / Davis WV
+  { latitude: 39.002, longitude: -79.4679 }, // Pointy Knob / Dolly Sods WV
+  { latitude: 38.89, longitude: -79.85 }, // Elkins / Bickle Knob WV
+  { latitude: 39.65, longitude: -79.96 }, // Morgantown / Coopers Rock WV
+  { latitude: 39.45, longitude: -77.96 }, // Martinsburg / Eastern Panhandle WV
+  { latitude: 39.65, longitude: -78.76 }, // Cumberland / Dans Mountain MD
+  { latitude: 39.55, longitude: -79.35 }, // Deep Creek / Wisp / Garrett County MD
+  { latitude: 39.6961, longitude: -77.5161 }, // High Rock / Pen Mar / Quirauk MD
+  { latitude: 39.41, longitude: -77.41 }, // Frederick / Catoctin Mountain MD
+  { latitude: 39.9144, longitude: -77.9583 }, // Pulpit / Tuscarora PA/MD
+  { latitude: 40.0972, longitude: -78.0909 }, // Bill's Hill PA/MD
+  { latitude: 39.7947, longitude: -76.647 }, // Shoestring Airpark 0P2 PA/MD
+  // Additional North American soaring hubs
+  { latitude: 36.3, longitude: -81.72 }, // Tater Hill / Boone NC
+  { latitude: 35.35, longitude: -85.4 }, // Henson Gap / Sequatchie TN
+  { latitude: 34.89, longitude: -85.46 }, // Lookout Mountain GA
+  { latitude: 43.37, longitude: -72.36 }, // Morningside NH / VT
+  { latitude: 40.0631, longitude: -105.2989 }, // Boulder CO
+  { latitude: 39.7449, longitude: -105.2411 }, // Lookout Mountain Golden CO
+  { latitude: 40.4535, longitude: -111.9032 }, // Point of the Mountain UT
+  { latitude: 38.5362, longitude: -112.073 }, // Monroe Peak / Cove UT
+  { latitude: 37.6666, longitude: -122.4949 }, // Mussel Rock / Funston CA
+  { latitude: 34.45, longitude: -119.7 }, // Santa Barbara CA
+  { latitude: 34.22, longitude: -117.3 }, // Crestline / Marshall CA
+  { latitude: 32.89, longitude: -117.25 }, // Torrey Pines CA
+  { latitude: 42.2317, longitude: -123.004 }, // Woodrat Mountain OR
+  { latitude: 45.7, longitude: -121.88 }, // Columbia River Gorge WA/OR
+  { latitude: 47.4995, longitude: -122.009 }, // Tiger Mountain WA
+  { latitude: 47.8042, longitude: -120.039 }, // Chelan Butte WA
+  { latitude: 48.6097, longitude: -122.426 }, // Blanchard WA
+  { latitude: 49.2, longitude: -121.9 }, // Fraser Valley / Woodside BC
+  { latitude: 51.27, longitude: -116.9 }, // Golden / Mount 7 BC
+  { latitude: 19.16, longitude: -100.12 }, // Valle de Bravo MX
+];
+
+export function parseWuNearLocations(
+  text: string,
+  maxDistanceKm = Infinity,
+  allowAllInArmenia = true,
+): CatalogueStation[] {
+  const data: unknown = JSON.parse(text);
+  const loc = isRecord(data) && isRecord(data.location) ? data.location : null;
+  if (!loc || !Array.isArray(loc.stationId)) return [];
+
+  const ids = loc.stationId;
+  const names = Array.isArray(loc.stationName) ? loc.stationName : [];
+  const lats = Array.isArray(loc.latitude) ? loc.latitude : [];
+  const lons = Array.isArray(loc.longitude) ? loc.longitude : [];
+  const countries = Array.isArray(loc.country) ? loc.country : [];
+  const states = Array.isArray(loc.adminDistrictCode) ? loc.adminDistrictCode : [];
+  const distances = Array.isArray(loc.distanceKm) ? loc.distanceKm : [];
+
+  const out: CatalogueStation[] = [];
+  for (let i = 0; i < ids.length; i += 1) {
+    const rawId = ids[i];
+    if (typeof rawId !== 'string' || !rawId.trim()) continue;
+    const nativeId = rawId.trim().toUpperCase();
+    const latitude = finiteNumber(lats[i]);
+    const longitude = finiteNumber(lons[i]);
+    if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
+      continue;
+    }
+
+    const rawCountry = typeof countries[i] === 'string' ? countries[i].trim().toUpperCase() : null;
+    const isArmenia =
+      rawCountry === 'AM' ||
+      (latitude >= 38.84 &&
+        latitude <= 41.3 &&
+        longitude >= 43.44 &&
+        longitude <= 46.63 &&
+        !(longitude > 45.4 && latitude > 40.55));
+    const distKm = finiteNumber(distances[i]);
+    if (!allowAllInArmenia || !isArmenia) {
+      if (distKm !== null && distKm > maxDistanceKm) continue;
+    }
+
+    const country = inferRegionCode({ latitude, longitude }, isArmenia ? 'AM' : rawCountry);
+    const region =
+      typeof states[i] === 'string' && states[i].trim() ? states[i].trim() : null;
+    const rawName =
+      typeof names[i] === 'string' && names[i].trim() ? names[i].trim() : `WU ${nativeId}`;
+
+    out.push({
+      uid: formatStationUid('wunderground', nativeId),
+      vendor: 'wunderground',
+      nativeId,
+      name: `${rawName} (${nativeId})`,
+      latitude,
+      longitude,
+      elevationM: null,
+      country,
+      region,
+      timeZone: isArmenia ? 'Asia/Yerevan' : null,
+      pageUrl: `https://www.wunderground.com/dashboard/pws/${encodeURIComponent(nativeId)}`,
+      category: 'pws',
+      capabilities: {
+        gustLull: true,
+        temperature: true,
+        conditions: true,
+        history: false,
+      },
+      samplingWindowSeconds: 60,
+      recommendedPollSeconds: CACHE_TTL_SECONDS,
+      locator: {
+        stationId: nativeId,
+      },
+    });
+  }
+  return out;
+}
+
+export const wundergroundProvider: StationNetworkProvider = {
+  vendor: 'wunderground',
+  coverage: cwopCoverage,
+  async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
+    const seeds = (options.seeds ?? []).filter(station => station.vendor === 'wunderground');
+    const batches: CatalogueStation[][] = [seeds];
+    const apiKey = options.credentials?.wuApiKey?.trim();
+
+    if (options.includeRemoteDiscovery !== false && apiKey) {
+      const environment = resolveEnvironment(options.environment);
+      const nowMs = environment.now().getTime();
+      const regions = options.regions ?? INITIAL_SCOPE_REGIONS;
+      const scopeKey = await credentialCacheScope(apiKey);
+      const candidatesByUid = new Map<string, CatalogueStation>();
+
+      const probeList: { pos: Position; maxKm: number; isAm: boolean }[] = [];
+      if (regions.includes('AM')) {
+        for (const pos of WU_ARMENIA_GEOCODES) {
+          probeList.push({ pos, maxKm: Infinity, isAm: true });
+        }
+      }
+      if (regions.includes('US') || regions.includes('CA') || regions.includes('MX')) {
+        for (const pos of WU_US_LAUNCH_GEOCODES) {
+          probeList.push({ pos, maxKm: Infinity, isAm: false });
+        }
+      }
+
+      const concurrency = 6;
+      for (let i = 0; i < probeList.length; i += concurrency) {
+        const slice = probeList.slice(i, i + concurrency);
+        const foundBatches = await Promise.all(
+          slice.map(async ({ pos, maxKm, isAm }) => {
+            try {
+              const url = new URL(WU_PWS_NEAR_URL);
+              url.searchParams.set('geocode', `${pos.latitude},${pos.longitude}`);
+              url.searchParams.set('product', 'pws');
+              url.searchParams.set('format', 'json');
+              url.searchParams.set('apiKey', apiKey);
+              const text = await fetchUpstreamText(environment, {
+                url,
+                cacheKey: `wunderground/near/${scopeKey}/${pos.latitude},${pos.longitude}`,
+                cacheTtlSeconds: 3_600,
+                subject: `WU PWS near (${pos.latitude}, ${pos.longitude})`,
+                timeoutMs: 6_000,
+              });
+              return parseWuNearLocations(text, maxKm, isAm);
+            } catch {
+              return [];
+            }
+          }),
+        );
+        for (const batch of foundBatches) {
+          for (const st of batch) candidatesByUid.set(st.uid, st);
+        }
+      }
+
+      const candidates = [...candidatesByUid.values()];
+      const active: CatalogueStation[] = [];
+      const verifyConcurrency = 10;
+      for (let i = 0; i < candidates.length; i += verifyConcurrency) {
+        const slice = candidates.slice(i, i + verifyConcurrency);
+        const checked = await Promise.all(
+          slice.map(async candidate => {
+            try {
+              const url = new URL(WU_PWS_CURRENT_URL);
+              url.searchParams.set('stationId', candidate.nativeId);
+              url.searchParams.set('format', 'json');
+              url.searchParams.set('units', 'm');
+              url.searchParams.set('numericPrecision', 'decimal');
+              url.searchParams.set('apiKey', apiKey);
+              const text = await fetchUpstreamText(environment, {
+                url,
+                cacheKey: `wunderground/current/${scopeKey}/${candidate.nativeId}`,
+                cacheTtlSeconds: CACHE_TTL_SECONDS,
+                subject: `WU PWS ${candidate.nativeId}`,
+                timeoutMs: 5_000,
+              });
+              const reading = parseWuPwsCurrent(text, candidate.nativeId);
+              return isRecentObservation(reading.observedAt, nowMs) ? candidate : null;
+            } catch {
+              return null;
+            }
+          }),
+        );
+        for (const st of checked) {
+          if (st) active.push(st);
+        }
+      }
+      batches.push(active);
+    }
+
+    return filterCatalogueStations(mergeCatalogueStations(batches), {
+      ...options,
+      regions: options.regions ?? INITIAL_SCOPE_REGIONS,
+    });
+  },
+  toStationConfig(station: CatalogueStation, credentials?: ProviderCredentials): StationConfigInput {
     const apiKey = credentials?.wuApiKey?.trim();
     if (!apiKey) return unconfiguredCustomStation(station, 'Weather Underground');
     return customStationConfig(station, ({ environment, historyHours, mode }) =>
       loadWuPwsStation({ station, apiKey }, { environment, historyHours, mode }),
     );
   },
-);
+};
 
-export const synopticProvider: StationNetworkProvider = createSeededProvider(
-  'synoptic',
-  (station: CatalogueStation, credentials?: ProviderCredentials) => {
-    const token = credentials?.synopticToken?.trim();
+const SYNOPTIC_US_STATE_BATCHES: readonly string[] = [
+  'AK,WA,OR,ID,MT,WY,HI',
+  'CA,NV,UT,AZ,NM,CO',
+  'ND,SD,NE,KS,OK,TX,MN,IA,MO',
+  'AR,LA,WI,IL,MI,IN,OH,KY,TN',
+  'MS,AL,GA,FL,SC,NC,VA,WV',
+  'MD,DE,PA,NJ,NY,CT,RI,MA,VT,NH,ME,DC,PR',
+];
+
+export const synopticProvider: StationNetworkProvider = {
+  vendor: 'synoptic',
+  coverage: cwopCoverage,
+  async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
+    const seeds = (options.seeds ?? []).filter(station => station.vendor === 'synoptic');
+    const batches: CatalogueStation[][] = [seeds];
+    const rawCred =
+      options.credentials?.synopticToken?.trim() ||
+      options.credentials?.synopticApiKey?.trim();
+
+    if (options.includeRemoteDiscovery !== false && rawCred) {
+      const environment = resolveEnvironment(options.environment);
+      const nowMs = environment.now().getTime();
+      const regions = options.regions ?? INITIAL_SCOPE_REGIONS;
+      try {
+        const token = await resolveSynopticToken(rawCred, environment);
+        const scopeKey = await credentialCacheScope(rawCred);
+        const queries: { key: string; param: [string, string] }[] = [];
+        if (options.bounds) {
+          const bbox = options.bounds.join(',');
+          queries.push({ key: `bbox:${bbox}`, param: ['bbox', bbox] });
+        } else {
+          if (regions.includes('US')) {
+            for (const [idx, stateGroup] of SYNOPTIC_US_STATE_BATCHES.entries()) {
+              queries.push({
+                key: `us-batch-${idx}`,
+                param: ['state', stateGroup],
+              });
+            }
+          }
+          for (const country of ['CA', 'MX', 'AM'] as const) {
+            if (regions.includes(country)) {
+              queries.push({
+                key: `country:${country}`,
+                param: ['country', country],
+              });
+            }
+          }
+        }
+
+        for (const query of queries) {
+          try {
+            const url = new URL(SYNOPTIC_LATEST_URL);
+            url.searchParams.set(query.param[0], query.param[1]);
+            url.searchParams.set('vars', 'wind_speed');
+            url.searchParams.set('within', '43200');
+            url.searchParams.set('units', 'metric');
+            url.searchParams.set('token', token);
+
+            const text = await fetchUpstreamText(environment, {
+              url,
+              cacheKey: `synoptic/discover/${scopeKey}/${query.key}`,
+              cacheTtlSeconds: 900,
+              subject: `Synoptic discovery ${query.key}`,
+              timeoutMs: 18_000,
+              limitBytes: 24 * 1024 * 1024,
+            });
+            const parsed = parseSynopticLatestStations(text).filter(
+              entry =>
+                entry.reading !== null &&
+                isRecentObservation(entry.reading.observedAt, nowMs),
+            );
+            batches.push(parsed.map(entry => entry.station));
+          } catch {
+            // Best-effort regional query
+          }
+        }
+      } catch {
+        // Fallback to seeds if token exchange fails
+      }
+    }
+
+    return filterCatalogueStations(mergeCatalogueStations(batches), {
+      ...options,
+      regions: options.regions ?? INITIAL_SCOPE_REGIONS,
+    });
+  },
+  toStationConfig(station: CatalogueStation, credentials?: ProviderCredentials): StationConfigInput {
+    const token =
+      credentials?.synopticToken?.trim() || credentials?.synopticApiKey?.trim();
     if (!token) return unconfiguredCustomStation(station, 'Synoptic / MesoWest');
     return customStationConfig(station, ({ environment, historyHours, mode }) =>
       loadSynopticStation({ station, token }, { environment, historyHours, mode }),
     );
   },
-);
+};
 
 export const ambientProvider: StationNetworkProvider = createSeededProvider(
   'ambient',

@@ -3,6 +3,7 @@ import {
   isRecord,
   observationTimeMs,
   optionalWindMps,
+  relativeHumidityFromDewPoint,
   strictNumber as finiteNumber,
   validTemperatureC,
   windDirection,
@@ -58,17 +59,6 @@ export type AwcAdapterOptions = StationAdapterOptions & {
 export interface AwcParsedMetar {
   readonly station: CatalogueStation;
   readonly reading: Reading;
-}
-
-/** Magnus approximation for relative humidity (%) from temperature and dew point (°C). */
-function relativeHumidityFromDewPoint(tempC: number | null, dewPointC: number | null): number | null {
-  if (tempC === null || dewPointC === null) return null;
-  const a = 17.625;
-  const b = 243.04;
-  const gammaT = (a * tempC) / (b + tempC);
-  const gammaD = (a * dewPointC) / (b + dewPointC);
-  const rh = 100 * Math.exp(gammaD - gammaT);
-  return Math.min(100, Math.max(0, Math.round(rh)));
 }
 
 export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {

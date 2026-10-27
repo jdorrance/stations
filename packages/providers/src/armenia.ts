@@ -37,6 +37,7 @@ import {
   observationTimeMs,
   optionalWindMps,
   pressureHpa,
+  relativeHumidityFromDewPoint,
   utcPartsMs,
   validTemperatureC,
   windDirection,
@@ -350,18 +351,16 @@ export const climatenetProvider: StationNetworkProvider = {
             const checked = await Promise.all(
               slice.map(async candidate => {
                 try {
-                  const res = await fetch(
-                    `${CLIMATENET_DEVICE_BASE_URL}/${encodeURIComponent(candidate.nativeId)}/latest/`,
-                    {
-                      headers: {
-                        Referer: 'https://climatenet.am/en/',
-                        'User-Agent': environment.userAgent,
-                      },
-                      signal: AbortSignal.timeout(5_000),
+                  const latestText = await fetchUpstreamText(environment, {
+                    url: `${CLIMATENET_DEVICE_BASE_URL}/${encodeURIComponent(candidate.nativeId)}/latest/`,
+                    headers: {
+                      Referer: 'https://climatenet.am/en/',
                     },
-                  );
-                  if (!res.ok) return null;
-                  const latestText = await res.text();
+                    cacheKey: `climatenet/latest/${candidate.nativeId}`,
+                    cacheTtlSeconds: CLIMATENET_CACHE_TTL_SECONDS,
+                    subject: `ClimateNet station ${candidate.nativeId}`,
+                    timeoutMs: 5_000,
+                  });
                   const reading = parseClimateNetLatest(latestText, candidate.timeZone ?? 'Asia/Yerevan');
                   return isRecentObservation(reading.observedAt, nowMs) ? candidate : null;
                 } catch {
@@ -451,16 +450,6 @@ function catalogueStationFromWmoMeta(meta: HydrometAmStationMeta): CatalogueStat
       wmoId: meta.wmoId,
     },
   };
-}
-
-function relativeHumidityFromDewPoint(tempC: number | null, dewPointC: number | null): number | null {
-  if (tempC === null || dewPointC === null) return null;
-  const a = 17.625;
-  const b = 243.04;
-  const gammaT = (a * tempC) / (b + tempC);
-  const gammaD = (a * dewPointC) / (b + dewPointC);
-  const rh = 100 * Math.exp(gammaD - gammaT);
-  return Math.min(100, Math.max(0, Math.round(rh)));
 }
 
 /**

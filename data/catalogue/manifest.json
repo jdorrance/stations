@@ -1,44 +1,47 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:29:15.849Z",
+  "generatedAt": "2026-10-27T08:14:21.397Z",
   "regions": [
     "US",
     "CA",
     "MX",
     "AM"
   ],
-  "totalStations": 14993,
-  "unknownCountryStations": 5562,
-  "launchCorridorStations": 5047,
+  "totalStations": 43540,
+  "unknownCountryStations": 5857,
+  "launchCorridorStations": 15799,
   "launchesIndexed": 1293,
   "countsByRegion": {
-    "US": 8437,
+    "US": 36684,
     "CA": 859,
-    "MX": 71,
-    "AM": 64
+    "MX": 70,
+    "AM": 70
   },
   "countsByCategory": {
-    "mountain": 8429,
-    "synoptic": 3544,
-    "pws": 476,
-    "freeflight": 1965,
+    "mountain": 14526,
+    "synoptic": 12634,
+    "pws": 11267,
+    "freeflight": 4534,
     "marine": 579
   },
   "countsByVendor": {
-    "avalanche": 456,
-    "awc": 1594,
+    "avalanche": 140,
+    "awc": 1603,
     "climatenet": 29,
     "cwop": 458,
     "eccc": 841,
     "holfuy": 1194,
     "hydromet_am": 19,
-    "iem": 6282,
+    "iem": 6305,
     "ndbc": 579,
+    "nws": 6,
     "raws": 2416,
     "snotel": 354,
-    "weatherlink": 653,
+    "synoptic": 25794,
+    "weatherlink": 3222,
     "windguru": 117,
-    "windnerd": 1
+    "windnerd": 1,
+    "wunderground": 462
   },
   "rawCrawledByVendor": {
     "windnerd": 1,
@@ -52,7 +55,7 @@
     "windspion": 0,
     "windguru": 131,
     "windy": 0,
-    "weatherlink": 653,
+    "weatherlink": 3222,
     "realtime_txt": 0,
     "raws": 2416,
     "snotel": 354,
@@ -63,8 +66,8 @@
     "ndbc": 579,
     "conagua": 0,
     "cwop": 458,
-    "wunderground": 0,
-    "synoptic": 0,
+    "wunderground": 462,
+    "synoptic": 31886,
     "ambient": 0,
     "climatenet": 29,
     "hydromet_am": 19
@@ -92,8 +95,20 @@
     },
     "openwindmap": {
       "status": "partial",
-      "sourceGeneratedAt": "2026-10-26T22:29:15.849Z",
+      "sourceGeneratedAt": "2026-10-27T08:14:21.397Z",
       "diagnostics": [
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
+        {
+          "level": "error",
+          "code": "upstream_failure"
+        },
         {
           "level": "error",
           "code": "upstream_failure"
@@ -270,7 +285,7 @@
     },
     "holfuy": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T06:42:44.924Z",
       "diagnostics": []
     },
     "awc": {
@@ -300,7 +315,7 @@
     },
     "weatherlink": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:27:43.209Z",
+      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
       "diagnostics": []
     },
     "realtime_txt": {
@@ -355,12 +370,12 @@
     },
     "wunderground": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:06:06.999Z",
+      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
       "diagnostics": []
     },
     "synoptic": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:06:06.999Z",
+      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
       "diagnostics": []
     },
     "ambient": {
@@ -403,12 +418,12 @@
     "vendors/openwindmap.json": {
       "stations": 0,
       "bytes": 188,
-      "sha256": "b93fc410f14f62ddeb698d17460ee5224d9c84e78b6a68ba2d9d17420dac016b"
+      "sha256": "0fcd39890ddeaca149aa4ce8655d51a0ef3b1540a00add0770ba2f86dbe87953"
     },
     "vendors/holfuy.json": {
       "stations": 1193,
-      "bytes": 831565,
-      "sha256": "fd898cd3f0ad54a7ad63d27acfd370fc0c9e82d014d4f156a5b197dcd7bef041"
+      "bytes": 831512,
+      "sha256": "42153ca017c672b3ae2f7a94e357fcc45f5940c686b72fdbb57a8d8d1002fc3d"
     },
     "vendors/awc.json": {
       "stations": 357,
@@ -436,9 +451,9 @@
       "sha256": "476e17cc43ef205ec23d47dea3a96de7ef920139cc85d9af12db7b5e90d0679c"
     },
     "vendors/weatherlink.json": {
-      "stations": 653,
-      "bytes": 466836,
-      "sha256": "08d8835a30b3e58719b49e579b9a248aad522e9dbdf6e7b427eea50ee69b706b"
+      "stations": 3222,
+      "bytes": 2302380,
+      "sha256": "4334bffe6d1000e0b0071a7fbade170700f0e872be16532cdf990a4c9edebde4"
     },
     "vendors/realtime_txt.json": {
       "stations": 0,
@@ -491,14 +506,14 @@
       "sha256": "90a7a2f37513557014401d9642924c56a6c87a1c5f34526b2fcf9fb1ce7c3783"
     },
     "vendors/wunderground.json": {
-      "stations": 0,
-      "bytes": 189,
-      "sha256": "74d6d81a50652ba91f79ba513693d5fcd4b80b23183e7f7d8edc541eababdede"
+      "stations": 462,
+      "bytes": 295762,
+      "sha256": "0bce595092e09546d1198716cccc434265f2b07def26b570a01920d177c90ae6"
     },
     "vendors/synoptic.json": {
-      "stations": 0,
-      "bytes": 185,
-      "sha256": "8b4b8074bc4ae4005562224b5fff0f002e7ac00d1472efa1f2718e4504f265ed"
+      "stations": 31886,
+      "bytes": 20578502,
+      "sha256": "9cc2219f648dc090124fa7d2406d52a176d0f0b6dc08799cde8c2fdb0269d4bb"
     },
     "vendors/ambient.json": {
       "stations": 0,
@@ -516,58 +531,58 @@
       "sha256": "484e4a71f0e5c72de998a85de337af0fe753a0bf147700f3a53143b2c7ff999d"
     },
     "stations.json": {
-      "stations": 14993,
-      "bytes": 11514408,
-      "sha256": "a3c76e5c6776b5b9899e4f8584f8c5592656122dd8fb27798dc253e5799b652e"
+      "stations": 43540,
+      "bytes": 33825744,
+      "sha256": "6bc8b0396b914759e2ecaf32b9c1aeb22dc5fcf44e2a0c2d5669d756a3099878"
     },
     "stations.geojson": {
-      "bytes": 17737780,
-      "sha256": "e867ddc358933903c0ca1b70e6204e803be27658534fc9e187880572d226fb30"
+      "bytes": 51188823,
+      "sha256": "f8f65232f0f1921136ee5525f1aaad71e8a04535b21365cc7e3bae8b184763ab"
     },
     "stations.ndjson.gz": {
-      "bytes": 775272,
-      "sha256": "a4815cacbff4a61b66a4c0c36b70842560fdb69b6114b2b89b14eaba27226a11"
+      "bytes": 2407817,
+      "sha256": "caca8d7dcab091c047036542237c477f41baa1234632b531b39e46bab2ff6d79"
     },
     "launch-corridors.json": {
-      "stations": 5047,
-      "bytes": 4147758,
-      "sha256": "7ce732f321fef195c6c3e1782e244f1a5c397dceb6cefa77e620d566ac5f9091"
+      "stations": 15799,
+      "bytes": 13272915,
+      "sha256": "a98247145ea0ae60853da960d5ac2a1c0e8f4765e303a8abf2a8c55dae2557e9"
     },
     "launch-corridors.geojson": {
-      "bytes": 6007796,
-      "sha256": "956e6a45e606d60ed9276e09bdd678170bc49a8c289b7aebcfa630748b69a182"
+      "bytes": 18843654,
+      "sha256": "b40c30766252e995dcc3734162bb61d690bab208cc82ed2bebb8750f3f39b713"
     },
     "regions/us.json": {
-      "bytes": 6567945,
-      "sha256": "359bd451607559ce109ae0930d95934737a81d2a162963afb8a1adf36d67959a"
+      "bytes": 28279262,
+      "sha256": "15d1310a5f998b6fa23dd5766b3c852a6598c9c189560669f8b965e7bcbab64d"
     },
     "regions/us.ndjson.gz": {
-      "bytes": 435765,
-      "sha256": "33d5f858f14bc35aa09e86af028d27b1dc6ef8421139d4e7703bec85bc926e5f"
+      "bytes": 1967361,
+      "sha256": "d19c25c47acf4004294c3370436437250ab4686fb166189bca496ae71c953040"
     },
     "regions/ca.json": {
       "bytes": 653518,
-      "sha256": "aeedeef993cecece553c3ac3a15a2c92df2b31d6ac6676d34d102629fc1952df"
+      "sha256": "e9cd5f2c8e1b2448ea2a2b92d99ff435e29cd692f8e5c955ea2c56a44c837c85"
     },
     "regions/ca.ndjson.gz": {
       "bytes": 47057,
       "sha256": "91c2b56dded8e70baac59771a3c37b211b9aa1c492d9fba11fdf94ea96cfc64d"
     },
     "regions/mx.json": {
-      "bytes": 56979,
-      "sha256": "1ddeef0a4dd94fc28b1002663058750a7ed8de0fdb1982e798362baae602a3b4"
+      "bytes": 56197,
+      "sha256": "20da513b13e8a11dfdfbfb48c2931264a6c427e5869445368f2bfea3f6b23920"
     },
     "regions/mx.ndjson.gz": {
-      "bytes": 4896,
-      "sha256": "2bd8dc26ec9b755e837b0517818bd23ca4699ea0fa9a02d6ab3dc5bbe9208c76"
+      "bytes": 4835,
+      "sha256": "b2814509a5f66f031b647064e6bef6a875c411445c1222e4b9f4ffad85b73899"
     },
     "regions/am.json": {
-      "bytes": 52834,
-      "sha256": "33cd26e00d8685b0af21ddc5df3b2580ea87c1e6ed264cd613da0dd4a988e1cc"
+      "bytes": 56871,
+      "sha256": "cd5f26317f4fdadf1128730901dc72097aa894350776b59073f2c1e4a2447ed6"
     },
     "regions/am.ndjson.gz": {
-      "bytes": 4375,
-      "sha256": "fa538a81bd5bcd49a113e44ad59441e5866ecd1f48673c42f5c6b0edb7d3ce30"
+      "bytes": 4331,
+      "sha256": "bdb95b09d2e7bab0ebcc0b78917e235aa3bd9345d547cc7c9f00b1073a5d4ea5"
     }
   }
 }

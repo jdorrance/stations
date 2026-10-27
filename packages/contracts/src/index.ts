@@ -96,7 +96,12 @@ export type {
   StationVendor,
 } from './catalogue.ts';
 
-export { catalogueToGeoJson, feedToGeoJson } from './geojson.ts';
+export {
+  catalogueToGeoJson,
+  feedToGeoJson,
+  pilotFreshness,
+  pilotFreshnessThresholds,
+} from './geojson.ts';
 export type {
   StationFeature,
   StationFeatureCollection,

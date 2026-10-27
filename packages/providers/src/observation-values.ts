@@ -2,6 +2,12 @@ export const KNOTS_TO_MPS = 0.5144444444444445;
 export const MPH_TO_MPS = 0.44704;
 export const FEET_TO_METERS = 0.3048;
 export const INHG_TO_HPA = 33.863886666667;
+
+/**
+ * 30-day catalogue activity window used during discovery and crawling to exclude
+ * decommissioned or offline stations. Tactical flying freshness (`live` / `aging` / `stale`)
+ * is evaluated on much shorter minute-scale windows via `pilotFreshness`.
+ */
 export const MAX_OBSERVATION_AGE_DAYS = 30;
 export const MAX_OBSERVATION_AGE_SECONDS = MAX_OBSERVATION_AGE_DAYS * 86_400;
 export const MAX_OBSERVATION_AGE_MS = MAX_OBSERVATION_AGE_SECONDS * 1_000;
@@ -15,6 +21,20 @@ export function isRecentObservation(
   if (!Number.isFinite(obsMs) || !Number.isFinite(nowMs)) return false;
   const ageMs = nowMs - obsMs;
   return ageMs <= maxAgeMs && ageMs >= -86_400_000;
+}
+
+/** Magnus approximation for relative humidity (%) from temperature and dew point (°C). */
+export function relativeHumidityFromDewPoint(
+  tempC: number | null,
+  dewPointC: number | null,
+): number | null {
+  if (tempC === null || dewPointC === null) return null;
+  const a = 17.625;
+  const b = 243.04;
+  const gammaT = (a * tempC) / (b + tempC);
+  const gammaD = (a * dewPointC) / (b + dewPointC);
+  const rh = 100 * Math.exp(gammaD - gammaT);
+  return Math.min(100, Math.max(0, Math.round(rh)));
 }
 
 /** External JSON stays unknown until an adapter checks its required fields. */

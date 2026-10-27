@@ -59,7 +59,7 @@ export function createSpatialIndex<T extends Position>(
     else buckets.set(key, [item]);
   }
 
-  function collectBoundsCandidates(bounds: Bounds): Set<T> {
+  function forEachCandidate(bounds: Bounds, visitor: (item: T) => void): void {
     const [west, south, east, north] = bounds;
     const minLatCell = toLatCell(south);
     const maxLatCell = toLatCell(north);
@@ -70,31 +70,37 @@ export function createSpatialIndex<T extends Position>(
             [toLonCell(west), lonCells - 1],
             [0, toLonCell(east)],
           ];
-    if (east === 180) lonRanges.push([0, 0]);
-    const seen = new Set<T>();
-    const cellCount = (maxLatCell - minLatCell + 1)
-      * lonRanges.reduce((total, [min, max]) => total + max - min + 1, 0);
+    if (east === 180 && !lonRanges.some(([min, max]) => min <= 0 && max >= 0)) {
+      lonRanges.push([0, 0]);
+    }
+    const cellCount =
+      (maxLatCell - minLatCell + 1) *
+      lonRanges.reduce((total, [min, max]) => total + max - min + 1, 0);
     // Sparse or very fine grids should inspect occupied cells, not billions of empty cells.
     if (cellCount > buckets.size) {
       for (const [key, bucket] of buckets) {
         const latCell = Math.floor(key / lonCells);
         const lonCell = key % lonCells;
-        if (latCell < minLatCell || latCell > maxLatCell
-          || !lonRanges.some(([min, max]) => lonCell >= min && lonCell <= max)) continue;
-        for (const item of bucket) seen.add(item);
+        if (
+          latCell < minLatCell ||
+          latCell > maxLatCell ||
+          !lonRanges.some(([min, max]) => lonCell >= min && lonCell <= max)
+        ) {
+          continue;
+        }
+        for (const item of bucket) visitor(item);
       }
-      return seen;
+      return;
     }
     for (let latCell = minLatCell; latCell <= maxLatCell; latCell += 1) {
       for (const [minLonCell, maxLonCell] of lonRanges) {
         for (let lonCell = minLonCell; lonCell <= maxLonCell; lonCell += 1) {
           const bucket = buckets.get(cellKey(latCell, lonCell));
           if (!bucket) continue;
-          for (const item of bucket) seen.add(item);
+          for (const item of bucket) visitor(item);
         }
       }
     }
-    return seen;
   }
 
   return {
@@ -102,16 +108,17 @@ export function createSpatialIndex<T extends Position>(
     all: () => validItems,
     queryBounds(bounds: Bounds): T[] {
       if (!validBounds(bounds)) return [];
-      const candidates = collectBoundsCandidates(bounds);
       const matches: T[] = [];
-      for (const item of candidates) {
+      forEachCandidate(bounds, item => {
         if (containsPoint(bounds, item)) matches.push(item);
-      }
+      });
       return matches;
     },
     queryRadius(center: Position, radiusKm: number, limit?: number): NearbyMatch<T>[] {
       if (!validPosition(center) || !Number.isFinite(radiusKm) || radiusKm < 0) return [];
       if (limit !== undefined && (!Number.isFinite(limit) || limit <= 0)) return [];
+      const maxResults = limit === undefined ? undefined : Math.floor(limit);
+      if (maxResults === 0) return [];
       const angularRadius = Math.min(radiusKm / EARTH_RADIUS_KM, Math.PI);
       const dLat = angularRadius * RADIANS_TO_DEGREES;
       // Padding makes candidate selection conservative at floating-point cell
@@ -123,19 +130,37 @@ export function createSpatialIndex<T extends Position>(
         bounds = [-180, south, 180, north];
       } else {
         const cosLat = Math.cos(center.latitude / RADIANS_TO_DEGREES);
-        const dLon = Math.asin(Math.min(1, Math.sin(angularRadius) / cosLat)) * RADIANS_TO_DEGREES
-          + BOUNDS_PADDING_DEGREES;
-        bounds = [normalizeLongitude(center.longitude - dLon), south, normalizeLongitude(center.longitude + dLon), north];
+        const dLon =
+          Math.asin(Math.min(1, Math.sin(angularRadius) / cosLat)) * RADIANS_TO_DEGREES +
+          BOUNDS_PADDING_DEGREES;
+        bounds = [
+          normalizeLongitude(center.longitude - dLon),
+          south,
+          normalizeLongitude(center.longitude + dLon),
+          north,
+        ];
       }
 
-      const candidates = collectBoundsCandidates(bounds);
+      if (maxResults === 1) {
+        let bestItem: T | null = null;
+        let bestDistanceKm = radiusKm;
+        forEachCandidate(bounds, item => {
+          const d = distanceKm(center, item);
+          if (d <= bestDistanceKm && (bestItem === null || d < bestDistanceKm)) {
+            bestItem = item;
+            bestDistanceKm = d;
+          }
+        });
+        return bestItem !== null ? [{ item: bestItem, distanceKm: bestDistanceKm }] : [];
+      }
+
       const matches: NearbyMatch<T>[] = [];
-      for (const item of candidates) {
+      forEachCandidate(bounds, item => {
         const d = distanceKm(center, item);
         if (d <= radiusKm) matches.push({ item, distanceKm: d });
-      }
+      });
       matches.sort((a, b) => a.distanceKm - b.distanceKm);
-      return limit === undefined ? matches : matches.slice(0, Math.floor(limit));
+      return maxResults === undefined ? matches : matches.slice(0, maxResults);
     },
   };
 }

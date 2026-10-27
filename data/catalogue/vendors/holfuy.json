@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:07:16.339Z",
+  "generatedAt": "2026-10-27T06:42:44.924Z",
   "regions": [
     "US",
     "CA",
@@ -1562,9 +1562,9 @@
       "latitude": 40.41519,
       "longitude": -0.75647,
       "elevationM": 1490,
-      "country": "US",
-      "region": "UT",
-      "timeZone": "America/Denver",
+      "country": null,
+      "region": null,
+      "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1104",
       "capabilities": {
         "gustLull": true,
@@ -7958,9 +7958,9 @@
       "latitude": 49.94497,
       "longitude": 7.05801,
       "elevationM": 0,
-      "country": "MX",
-      "region": "MEX",
-      "timeZone": "America/Mexico_City",
+      "country": null,
+      "region": null,
+      "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1420",
       "capabilities": {
         "gustLull": true,
@@ -12570,9 +12570,9 @@
       "latitude": 46.67133,
       "longitude": 2.5293,
       "elevationM": 0,
-      "country": "AM",
-      "region": "Kotayk",
-      "timeZone": "Asia/Yerevan",
+      "country": null,
+      "region": null,
+      "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1652",
       "capabilities": {
         "gustLull": true,
@@ -26435,30 +26435,6 @@
       "locator": {}
     },
     {
-      "uid": "holfuy:558",
-      "vendor": "holfuy",
-      "nativeId": "558",
-      "name": "VámosSzabadi p.v.sz.",
-      "latitude": 47.75593,
-      "longitude": 17.64729,
-      "elevationM": 111,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://holfuy.com/en/weather/558",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
       "uid": "holfuy:559",
       "vendor": "holfuy",
       "nativeId": "559",
@@ -31851,6 +31827,30 @@
           "toDeg": 114
         }
       ],
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "holfuy:903",
+      "vendor": "holfuy",
+      "nativeId": "903",
+      "name": "Dolphin Beach",
+      "latitude": -22.84458,
+      "longitude": 14.54007,
+      "elevationM": 0,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://holfuy.com/en/weather/903",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
       "category": "freeflight",
       "locator": {}
     },

@@ -14,6 +14,8 @@ import {
   parseStationCatalogueJson,
   parseStationFeedJson,
   parseStationUid,
+  pilotFreshness,
+  pilotFreshnessThresholds,
   serializeCatalogueNdjson,
 } from '../dist/index.js';
 
@@ -191,4 +193,31 @@ test('catalogueToGeoJson and feedToGeoJson emit valid GeoJSON FeatureCollections
   assert.equal(liveGeo.features[0].properties.freshness, 'live');
   assert.equal(liveGeo.features[0].properties.windCompass, 'NW');
   assert.equal(liveGeo.features[0].properties.country, 'US');
+
+  // Pilot freshness thresholds: free-flight windtalkers become aging after 4m and stale after 15m
+  const ffLimits = pilotFreshnessThresholds({ recommendedPollSeconds: 60 }, 'freeflight');
+  assert.deepEqual(ffLimits, { currentForMs: 240_000, staleAfterMs: 900_000 });
+  const nowMs = Date.parse('2026-10-26T12:20:00Z');
+  const servedAt = '2026-10-26T12:20:00Z';
+  assert.equal(
+    pilotFreshness({ observedAt: '2026-10-26T12:17:00Z', servedAt, receivedAtMs: nowMs, nowMs }, { recommendedPollSeconds: 60 }, 'freeflight'),
+    'live',
+  );
+  assert.equal(
+    pilotFreshness({ observedAt: '2026-10-26T12:10:00Z', servedAt, receivedAtMs: nowMs, nowMs }, { recommendedPollSeconds: 60 }, 'freeflight'),
+    'aging',
+  );
+  assert.equal(
+    pilotFreshness({ observedAt: '2026-10-26T12:04:00Z', servedAt, receivedAtMs: nowMs, nowMs }, { recommendedPollSeconds: 60 }, 'freeflight'),
+    'stale',
+  );
+
+  // Distant records (>50km) with the same UID must not inherit wrong country/region from an unverified seed
+  const distantMerge = mergeCatalogueStations([
+    [{ ...sampleCatalogueStation, uid: 'holfuy:1652', vendor: 'holfuy', nativeId: '1652', country: 'AM', region: 'Kotayk', latitude: 40.27, longitude: 44.71 }],
+    [{ ...sampleCatalogueStation, uid: 'holfuy:1652', vendor: 'holfuy', nativeId: '1652', country: null, region: null, timeZone: null, latitude: 46.67, longitude: 2.53 }],
+  ]);
+  assert.equal(distantMerge[0].country, null);
+  assert.equal(distantMerge[0].region, null);
+  assert.equal(distantMerge[0].timeZone, null);
 });

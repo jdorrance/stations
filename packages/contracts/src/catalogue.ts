@@ -229,32 +229,37 @@ export function parseStationCatalogueJson(json: string): StationCatalogueDocumen
   }
 }
 
+function compareAscii(a: string, b: string): number {
+  return a < b ? -1 : a > b ? 1 : 0;
+}
+
 function mergeTwoStations(
   primary: CatalogueStation,
   secondary: CatalogueStation,
 ): CatalogueStation {
+  const sameSite = distanceKm(primary, secondary) <= 50;
   const aliasSet = new Set<string>([
     ...(primary.aliases ?? []),
     ...(secondary.aliases ?? []),
   ]);
   if (secondary.uid !== primary.uid) aliasSet.add(secondary.uid);
   aliasSet.delete(primary.uid);
-  const aliases = aliasSet.size > 0 ? [...aliasSet].sort() : primary.aliases ?? undefined;
+  const aliases = aliasSet.size > 0 ? [...aliasSet].sort(compareAscii) : primary.aliases ?? undefined;
   const declaredFavorableDirections =
     primary.declaredFavorableDirections ??
-    secondary.declaredFavorableDirections ??
+    (sameSite ? secondary.declaredFavorableDirections : null) ??
     undefined;
   const launchContext =
-    primary.launchContext ?? secondary.launchContext ?? undefined;
+    primary.launchContext ?? (sameSite ? secondary.launchContext : null) ?? undefined;
   const category = primary.category ?? secondary.category ?? undefined;
 
   return {
     ...secondary,
     ...primary,
-    elevationM: primary.elevationM ?? secondary.elevationM,
-    country: primary.country ?? secondary.country,
-    region: primary.region ?? secondary.region,
-    timeZone: primary.timeZone ?? secondary.timeZone,
+    elevationM: primary.elevationM ?? (sameSite ? secondary.elevationM : null),
+    country: primary.country ?? (sameSite ? secondary.country : null),
+    region: primary.region ?? (sameSite ? secondary.region : null),
+    timeZone: primary.timeZone ?? (sameSite ? secondary.timeZone : null),
     pageUrl: primary.pageUrl ?? secondary.pageUrl,
     ...(category !== undefined ? { category } : {}),
     ...(declaredFavorableDirections !== undefined ? { declaredFavorableDirections } : {}),
@@ -284,7 +289,7 @@ export function mergeCatalogueStations(
       byUid.set(candidate.uid, mergeTwoStations(candidate, existing));
     }
   }
-  return [...byUid.values()].sort((a, b) => a.uid.localeCompare(b.uid));
+  return [...byUid.values()].sort((a, b) => compareAscii(a.uid, b.uid));
 }
 
 const VENDOR_PRIORITY: Readonly<Record<StationVendor, number>> = {
@@ -317,6 +322,13 @@ const VENDOR_PRIORITY: Readonly<Record<StationVendor, number>> = {
   windspion: 35,
   custom: 20,
 };
+
+function stationPriority(station: CatalogueStation): number {
+  if (station.vendor === 'avalanche' && /^mesowest-/i.test(station.nativeId)) {
+    return VENDOR_PRIORITY.synoptic - 1;
+  }
+  return VENDOR_PRIORITY[station.vendor];
+}
 
 function canonicalStationCode(station: CatalogueStation): string | null {
   const icao =
@@ -351,6 +363,14 @@ function canonicalStationCode(station: CatalogueStation): string | null {
       : null;
   if (nwsId && /^[A-Z0-9]{5}$/.test(nwsId)) return `nwsli:${nwsId}`;
 
+  const mesoWestId =
+    typeof station.locator.mesoWestId === 'string'
+      ? station.locator.mesoWestId.trim().toUpperCase()
+      : station.vendor === 'synoptic' && station.locator.mnetId === '2'
+        ? station.nativeId.trim().toUpperCase()
+        : null;
+  if (mesoWestId && /^[A-Z0-9]{4,8}$/.test(mesoWestId)) return `mesowest:${mesoWestId}`;
+
   return null;
 }
 
@@ -372,8 +392,8 @@ export function deduplicateCatalogueStations(
   const uniqueByUid = mergeCatalogueStations([stations]);
   const sorted = [...uniqueByUid].sort(
     (a, b) =>
-      VENDOR_PRIORITY[b.vendor] - VENDOR_PRIORITY[a.vendor] ||
-      a.uid.localeCompare(b.uid),
+      stationPriority(b) - stationPriority(a) ||
+      compareAscii(a.uid, b.uid),
   );
 
   // Build identity components before merging so aliases can bridge stations
@@ -435,7 +455,7 @@ export function deduplicateCatalogueStations(
   }
   return [...merged.values()]
     .map(station => ({ ...station, category: station.category ?? defaultCategoryForVendor(station.vendor) }))
-    .sort((a, b) => a.uid.localeCompare(b.uid));
+    .sort((a, b) => compareAscii(a.uid, b.uid));
 }
 
 /**

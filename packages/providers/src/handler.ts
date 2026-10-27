@@ -1,8 +1,10 @@
 import {
+  fetchUpstreamText,
   type ServerEnvironment,
 } from '@azohra/meteo.station/server';
 import {
   createStationFeedHandler,
+  resolveEnvironment,
 } from './server.ts';
 import {
   catalogueToGeoJson,
@@ -25,6 +27,9 @@ import {
   type RegionCode,
   type SpatialIndex,
 } from '@stations/geography';
+import { resolveSynopticToken } from './cwop.ts';
+import { credentialCacheScope } from './freeflight-observations.ts';
+import { isRecord } from './observation-values.ts';
 import { toStationConfigs } from './registry.ts';
 import type { ProviderCredentials } from './types.ts';
 
@@ -80,8 +85,10 @@ function parseStrictCsvFilter<T extends string>(
   return out.size > 0 ? out : 'invalid';
 }
 
-function jsonResponse(
-  body: unknown,
+const utf8Encoder = new TextEncoder();
+
+function rawBytesResponse(
+  bytes: Uint8Array,
   status: number,
   corsOrigin: string,
   isHead: boolean,
@@ -94,7 +101,34 @@ function jsonResponse(
     'X-Content-Type-Options': 'nosniff',
     ...extraHeaders,
   };
-  return new Response(isHead ? null : JSON.stringify(body), { status, headers });
+  return new Response(isHead ? null : (bytes as unknown as BodyInit), { status, headers });
+}
+
+function rawJsonResponse(
+  jsonText: string,
+  status: number,
+  corsOrigin: string,
+  isHead: boolean,
+  extraHeaders: Record<string, string> = {},
+): Response {
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Cache-Control': 'public, max-age=60',
+    'Access-Control-Allow-Origin': corsOrigin,
+    'X-Content-Type-Options': 'nosniff',
+    ...extraHeaders,
+  };
+  return new Response(isHead ? null : jsonText, { status, headers });
+}
+
+function jsonResponse(
+  body: unknown,
+  status: number,
+  corsOrigin: string,
+  isHead: boolean,
+  extraHeaders: Record<string, string> = {},
+): Response {
+  return rawJsonResponse(JSON.stringify(body), status, corsOrigin, isHead, extraHeaders);
 }
 
 interface CachedCatalogueIndex {
@@ -102,6 +136,120 @@ interface CachedCatalogueIndex {
   readonly stationsRef: readonly CatalogueStation[];
   readonly index: SpatialIndex<CatalogueStation>;
   readonly byUid: Map<string, CatalogueStation>;
+  readonly publicByRef: WeakMap<CatalogueStation, CatalogueStation>;
+  readonly etag: string;
+  fullPublicStations?: readonly CatalogueStation[];
+  fullCatalogueJsonBytes?: Uint8Array;
+  fullCatalogueGeoJsonBytes?: Uint8Array;
+}
+
+async function prewarmBatchFeedCache(
+  stations: readonly CatalogueStation[],
+  credentials: ProviderCredentials | undefined,
+  rawEnv: ServerEnvironment | undefined,
+): Promise<void> {
+  if (stations.length < 2) return;
+  const environment = resolveEnvironment(rawEnv);
+
+  const awcStations = stations.filter(s => s.vendor === 'awc');
+  const synopticStations = stations.filter(s => s.vendor === 'synoptic');
+  const tasks: Promise<void>[] = [];
+
+  if (awcStations.length >= 2) {
+    tasks.push(
+      (async () => {
+        const missingIds: string[] = [];
+        for (const s of awcStations) {
+          const cached = await environment.cache.get(`awc/metar/${s.nativeId}`);
+          if (!cached) missingIds.push(s.nativeId);
+        }
+        if (missingIds.length < 2) return;
+        try {
+          const url = new URL('https://aviationweather.gov/api/data/metar');
+          url.searchParams.set('ids', missingIds.join(','));
+          url.searchParams.set('format', 'json');
+          url.searchParams.set('hours', '3');
+          const text = await fetchUpstreamText(environment, {
+            url,
+            cacheKey: `awc/metar/batch/${missingIds.join(',')}`,
+            cacheTtlSeconds: 60,
+            subject: `AWC batch METAR (${missingIds.length} stations)`,
+            timeoutMs: 8_000,
+          });
+          const parsed: unknown = JSON.parse(text);
+          if (!Array.isArray(parsed)) return;
+          const byIcao = new Map<string, unknown[]>();
+          for (const row of parsed) {
+            if (!isRecord(row) || typeof row.icaoId !== 'string') continue;
+            const id = row.icaoId.trim().toUpperCase();
+            let list = byIcao.get(id);
+            if (!list) {
+              list = [];
+              byIcao.set(id, list);
+            }
+            list.push(row);
+          }
+          await Promise.all(
+            [...byIcao.entries()].map(([id, rows]) =>
+              environment.cache.put(`awc/metar/${id}`, JSON.stringify(rows), 60),
+            ),
+          );
+        } catch {
+          // Fall back to individual station fetches on error
+        }
+      })(),
+    );
+  }
+
+  const rawSynopticCred =
+    credentials?.synopticToken?.trim() || credentials?.synopticApiKey?.trim();
+  if (synopticStations.length >= 2 && rawSynopticCred) {
+    tasks.push(
+      (async () => {
+        try {
+          const scope = await credentialCacheScope(rawSynopticCred);
+          const missingIds: string[] = [];
+          for (const s of synopticStations) {
+            const cached = await environment.cache.get(`synoptic/latest/${scope}/${s.nativeId}`);
+            if (!cached) missingIds.push(s.nativeId);
+          }
+          if (missingIds.length < 2) return;
+          const token = await resolveSynopticToken(rawSynopticCred, environment);
+          const url = new URL('https://api.synopticdata.com/v2/stations/latest');
+          url.searchParams.set('stid', missingIds.join(','));
+          url.searchParams.set('units', 'metric');
+          url.searchParams.set('token', token);
+          const text = await fetchUpstreamText(environment, {
+            url,
+            cacheKey: `synoptic/latest/batch/${scope}/${missingIds.join(',')}`,
+            cacheTtlSeconds: 60,
+            subject: `Synoptic batch latest (${missingIds.length} stations)`,
+            timeoutMs: 8_000,
+          });
+          const parsed: unknown = JSON.parse(text);
+          const rows: unknown[] =
+            isRecord(parsed) && Array.isArray(parsed.STATION) ? parsed.STATION : [];
+          await Promise.all(
+            rows.map(async (row: unknown) => {
+              if (!isRecord(row) || typeof row.STID !== 'string') return;
+              const stid = row.STID.trim().toUpperCase();
+              await environment.cache.put(
+                `synoptic/latest/${scope}/${stid}`,
+                JSON.stringify({ STATION: [row] }),
+                60,
+              );
+            }),
+          );
+        } catch {
+          // Fall back to individual station fetches on error
+        }
+      })(),
+    );
+  }
+
+  if (tasks.length > 0) {
+    await Promise.all(tasks);
+  }
 }
 
 export function createStationsApiHandler(
@@ -145,8 +293,22 @@ export function createStationsApiHandler(
       stationsRef: doc.stations,
       index,
       byUid,
+      publicByRef: new WeakMap(),
+      etag: `W/"${doc.generatedAt}-${doc.stations.length}"`,
     };
     return cachedIndex;
+  }
+
+  function toCachedPublicStation(
+    indexed: CachedCatalogueIndex,
+    station: CatalogueStation,
+  ): CatalogueStation {
+    let pub = indexed.publicByRef.get(station);
+    if (!pub) {
+      pub = toPublicCatalogueStation(station);
+      indexed.publicByRef.set(station, pub);
+    }
+    return pub;
   }
 
   return async (request: Request): Promise<Response> => {
@@ -190,9 +352,76 @@ export function createStationsApiHandler(
 
     const catalogueDoc =
       typeof options.catalogue === 'function' ? await options.catalogue() : options.catalogue;
-    const { index, byUid } = getIndexedCatalogue(catalogueDoc);
+    const indexed = getIndexedCatalogue(catalogueDoc);
+    const { index, byUid } = indexed;
 
-    const selectStations = (defaultLimit?: number): CatalogueStation[] | { error: string } => {
+    const isUnfilteredCatalogueQuery =
+      isCatalogueRoute &&
+      !url.searchParams.has('ids') &&
+      !url.searchParams.has('station') &&
+      !url.searchParams.has('bbox') &&
+      !url.searchParams.has('near') &&
+      !url.searchParams.has('limit') &&
+      !url.searchParams.has('country') &&
+      !url.searchParams.has('vendor') &&
+      !url.searchParams.has('category') &&
+      !url.searchParams.has('launch');
+
+    if (isUnfilteredCatalogueQuery) {
+      const format = url.searchParams.get('format') ?? 'json';
+      const routeEtag = format === 'geojson' ? `${indexed.etag}-geojson` : indexed.etag;
+      const ifNoneMatch = request.headers.get('If-None-Match');
+      if (ifNoneMatch && ifNoneMatch === routeEtag) {
+        return new Response(null, {
+          status: 304,
+          headers: {
+            ETag: routeEtag,
+            'Cache-Control': 'public, max-age=300',
+            'Access-Control-Allow-Origin': corsOrigin,
+          },
+        });
+      }
+      if (!indexed.fullPublicStations) {
+        indexed.fullPublicStations = catalogueDoc.stations.map(s =>
+          toCachedPublicStation(indexed, s),
+        );
+      }
+      if (format === 'geojson') {
+        if (!indexed.fullCatalogueGeoJsonBytes) {
+          indexed.fullCatalogueGeoJsonBytes = utf8Encoder.encode(
+            JSON.stringify(
+              catalogueToGeoJson(indexed.fullPublicStations, catalogueDoc.generatedAt),
+            ),
+          );
+        }
+        return rawBytesResponse(
+          indexed.fullCatalogueGeoJsonBytes,
+          200,
+          corsOrigin,
+          isHead,
+          { 'Cache-Control': 'public, max-age=300', ETag: routeEtag },
+        );
+      }
+      if (!indexed.fullCatalogueJsonBytes) {
+        indexed.fullCatalogueJsonBytes = utf8Encoder.encode(
+          JSON.stringify({
+            schemaVersion: catalogueDoc.schemaVersion,
+            generatedAt: catalogueDoc.generatedAt,
+            regions: catalogueDoc.regions,
+            stations: indexed.fullPublicStations,
+          }),
+        );
+      }
+      return rawBytesResponse(
+        indexed.fullCatalogueJsonBytes,
+        200,
+        corsOrigin,
+        isHead,
+        { 'Cache-Control': 'public, max-age=300', ETag: routeEtag },
+      );
+    }
+
+    const selectStations = (defaultLimit?: number): readonly CatalogueStation[] | { error: string } => {
       const idsParam = url.searchParams.get('ids');
       const stationParam = url.searchParams.get('station');
       const bboxParam = url.searchParams.get('bbox');
@@ -226,22 +455,23 @@ export function createStationsApiHandler(
         return { error: 'invalid category filter' };
       }
 
-      let candidates: CatalogueStation[];
+      let candidates: readonly CatalogueStation[];
       if (stationParam) {
         const hit = byUid.get(stationParam.trim());
         candidates = hit ? [hit] : [];
       } else if (idsParam !== null) {
         const seen = new Set<string>();
-        candidates = [];
+        const list: CatalogueStation[] = [];
         for (const rawId of idsParam.split(',')) {
           const trimmed = rawId.trim();
           if (!trimmed) continue;
           const hit = byUid.get(trimmed);
           if (hit && !seen.has(hit.uid)) {
             seen.add(hit.uid);
-            candidates.push(hit);
+            list.push(hit);
           }
         }
+        candidates = list;
       } else if (bboxParam !== null) {
         const bounds = parseBoundsParam(bboxParam);
         if (!bounds) return { error: 'invalid bbox: expected west,south,east,north' };
@@ -253,7 +483,7 @@ export function createStationsApiHandler(
           .queryRadius({ latitude: near.latitude, longitude: near.longitude }, near.radiusKm)
           .map(m => m.item);
       } else {
-        candidates = [...catalogueDoc.stations];
+        candidates = catalogueDoc.stations;
       }
 
       if (countries) {
@@ -285,7 +515,7 @@ export function createStationsApiHandler(
       if ('error' in selected) {
         return jsonResponse({ error: selected.error }, 400, corsOrigin, isHead);
       }
-      const publicStations = selected.map(toPublicCatalogueStation);
+      const publicStations = selected.map(s => toCachedPublicStation(indexed, s));
       const format = url.searchParams.get('format') ?? 'json';
       if (format === 'geojson') {
         return jsonResponse(
@@ -310,11 +540,14 @@ export function createStationsApiHandler(
       );
     }
 
-    const selected = selectStations(isFeedRoute ? maxFeedStations : undefined);
+    const selected = selectStations(isFeedRoute ? maxFeedStations : 1);
     if ('error' in selected) {
       return jsonResponse({ error: selected.error }, 400, corsOrigin, isHead);
     }
-    const capped = isFeedRoute ? selected.slice(0, maxFeedStations) : selected;
+    const capped = isFeedRoute ? selected.slice(0, maxFeedStations) : selected.slice(0, 1);
+    if (isFeedRoute && capped.length >= 2) {
+      await prewarmBatchFeedCache(capped, options.credentials, options.environment);
+    }
     const stationConfigs = toStationConfigs(capped, options.credentials);
 
     const delegate = createStationFeedHandler({

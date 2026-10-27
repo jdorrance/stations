@@ -257,6 +257,7 @@ export function parseSnowObsCurrentGeoJson(
   centerId: string,
   token: string,
   nowMs = Date.now(),
+  expectedNativeId?: string,
 ): { station: CatalogueStation; reading: Reading }[] {
   const root: unknown = JSON.parse(text);
   const features = isRecord(root) && Array.isArray(root.features) ? root.features : [];
@@ -273,6 +274,8 @@ export function parseSnowObsCurrentGeoJson(
         ? String(props.stid).trim()
         : '';
     if (!stid) continue;
+    const nativeId = `${source}-${stid}`;
+    if (expectedNativeId && nativeId !== expectedNativeId) continue;
 
     const latitude = finiteNumber(props.latitude);
     const longitude = finiteNumber(props.longitude);
@@ -305,7 +308,6 @@ export function parseSnowObsCurrentGeoJson(
     const meta = isRecord(props.meta) ? props.meta : null;
     const region = typeof meta?.state === 'string' && meta.state.trim() ? meta.state.trim() : null;
     const country = inferRegionCode({ latitude, longitude }, 'US');
-    const nativeId = `${source}-${stid}`;
     const name =
       typeof props.name === 'string' && props.name.trim()
         ? props.name.trim()
@@ -429,7 +431,8 @@ export const loadAvalancheStation = defineStationAdapter<
         typeof station.locator.centerId === 'string' ? station.locator.centerId : 'NAC',
         snowobsToken,
         nowMs,
-      ).find(entry => entry.station.nativeId === station.nativeId);
+        station.nativeId,
+      )[0];
       if (!parsed) {
         throw new Error(`SnowObs returned no active reading for ${station.nativeId}`);
       }
@@ -487,15 +490,13 @@ export const avalancheProvider: StationNetworkProvider = {
               const checked = await Promise.all(
                 slice.map(async candidate => {
                   try {
-                    const res = await fetch(
-                      `${AVALANCHE_CA_STATIONS_URL}/${encodeURIComponent(candidate.nativeId)}/measurements`,
-                      {
-                        headers: { 'User-Agent': environment.userAgent },
-                        signal: AbortSignal.timeout(5_000),
-                      },
-                    );
-                    if (!res.ok) return null;
-                    const mText = await res.text();
+                    const mText = await fetchUpstreamText(environment, {
+                      url: `${AVALANCHE_CA_STATIONS_URL}/${encodeURIComponent(candidate.nativeId)}/measurements`,
+                      cacheKey: `avalanche/station/${candidate.nativeId}`,
+                      cacheTtlSeconds: CACHE_TTL_SECONDS,
+                      subject: `Avalanche station ${candidate.nativeId}`,
+                      timeoutMs: 5_000,
+                    });
                     const { reading } = parseAvalancheCanadaMeasurements(mText);
                     return isRecentObservation(reading.observedAt, nowMs) ? candidate : null;
                   } catch {

@@ -77,16 +77,19 @@ function parseNdbcNumber(token: string | undefined): number | null {
  * 0:#STN 1:LAT 2:LON 3:YYYY 4:MM 5:DD 6:hh 7:mm 8:WDIR 9:WSPD 10:GST
  * 11:WVHT 12:DPD 13:APD 14:MWD 15:PRES 16:PTDY 17:ATMP 18:WTMP 19:DEWP 20:VIS 21:TIDE
  */
-export function parseNdbcLatestObs(text: string): NdbcParsedRow[] {
+export function parseNdbcLatestObs(text: string, expectedId?: string): NdbcParsedRow[] {
   const results: NdbcParsedRow[] = [];
+  const targetPrefix = expectedId ? `${expectedId.trim().toUpperCase()} ` : null;
   const lines = text.split(/\r?\n/);
   for (const line of lines) {
     const trimmed = line.trim();
     if (!trimmed || trimmed.startsWith('#')) continue;
+    if (targetPrefix && !trimmed.toUpperCase().startsWith(targetPrefix)) continue;
     const cols = trimmed.split(/\s+/);
     if (cols.length < 19) continue;
 
     const nativeId = cols[0]!.toUpperCase();
+    if (expectedId && nativeId !== expectedId.trim().toUpperCase()) continue;
     const latitude = parseNdbcNumber(cols[1]);
     const longitude = parseNdbcNumber(cols[2]);
     if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
@@ -286,9 +289,7 @@ export const loadNdbcStation = defineStationAdapter<NdbcStationConfig, NdbcAdapt
       subject: 'NDBC latest observations table',
       limitBytes: 2 * 1024 * 1024,
     });
-    const match = parseNdbcLatestObs(latestText).find(
-      row => row.station.nativeId === station.nativeId.toUpperCase(),
-    );
+    const match = parseNdbcLatestObs(latestText, station.nativeId)[0];
     if (!match) {
       throw new Error(`NDBC station ${station.nativeId} not found in latest_obs.txt`);
     }

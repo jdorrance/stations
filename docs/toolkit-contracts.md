@@ -23,9 +23,14 @@ and `distanceKm`.
 - **Absence vs zero:** a missing quantity is `null` and is never sent as `0`.
   `windGustMps: null` means gusts are not reported; `windAvgMps: 0` is a
   measured calm reading.
-- **Timestamps:** ISO-8601 UTC strings. Adapters preserve the upstream
-  observation timestamp and never substitute fetch time for a missing measurement
-  time.
+- **Timestamps and freshness:** ISO-8601 UTC strings. Adapters preserve the
+  upstream observation timestamp and never substitute fetch time for a missing
+  measurement time. Discovery applies a 30-day activity window
+  (`isRecentObservation`) to exclude decommissioned hardware from the catalogue,
+  while live feeds and GeoJSON features evaluate tactical flying freshness
+  (`pilotFreshness` / `pilotFreshnessThresholds`: `freeflight` windtalkers are
+  `live` ≤ 4m and `stale` > 15m; `synoptic`/`pws`/`marine` are `live` ≤ 10m and
+  `stale` > 30m; `mountain` telemetry is `live` ≤ 15m and `stale` > 45m).
 
 External data enters as `unknown` and is validated before indexing or display.
 Public catalogue exports (`toPublicCatalogueStation`, `toPublicStationCatalogue`

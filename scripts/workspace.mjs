@@ -1,8 +1,31 @@
-import { readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
+
+export function loadDotEnv(path = resolve(root, '.env')) {
+  if (!existsSync(path)) return;
+  try {
+    const lines = readFileSync(path, 'utf8').split(/\r?\n/);
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eq = trimmed.indexOf('=');
+      if (eq <= 0) continue;
+      const key = trimmed.slice(0, eq).trim();
+      const rawVal = trimmed.slice(eq + 1).trim();
+      const val = rawVal.replace(/^(['"])([\s\S]*)\1$/, '$2');
+      if (key && process.env[key] === undefined) {
+        process.env[key] = val;
+      }
+    }
+  } catch {
+    // Ignore unreadable .env
+  }
+}
+
+loadDotEnv();
 export const packages = readdirSync(resolve(root, 'packages'), { withFileTypes: true })
   .filter(entry => entry.isDirectory())
   .map(entry => {

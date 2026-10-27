@@ -11,6 +11,7 @@ export interface ProviderCredentials {
   readonly holfuyPasswords?: Readonly<Record<string, string>>;
   readonly wuApiKey?: string;
   readonly synopticToken?: string;
+  readonly synopticApiKey?: string;
   readonly ambientApiKey?: string;
   readonly ambientApplicationKey?: string;
 }
@@ -20,6 +21,7 @@ export interface DiscoverOptions {
   readonly bounds?: Bounds;
   readonly seeds?: readonly CatalogueStation[];
   readonly launches?: readonly LaunchSite[];
+  readonly credentials?: ProviderCredentials;
   readonly includeRemoteDiscovery?: boolean;
   readonly environment?: ServerEnvironment;
 }

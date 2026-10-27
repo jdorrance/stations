@@ -1,11 +1,12 @@
 import {
   compassDirection,
   freshness,
-  stationFreshnessThresholds,
   type FreshnessStatus,
+  type FreshnessThresholds,
   type Station,
   type StationCapabilities,
   type StationFeed,
+  type StationMeta,
   type UnavailableReason,
 } from '@azohra/meteo.station';
 import type { RegionCode } from '@stations/geography/regions';
@@ -16,6 +17,56 @@ import {
   type StationCategory,
   type StationVendor,
 } from './catalogue.ts';
+
+/**
+ * Pilot-calibrated freshness thresholds for tactical free-flight decisions on launch or in the air:
+ * - `freeflight` launch windtalkers: thermal cycles last 3–10 min and gust fronts arrive in 10–15 min.
+ *   Readings are `live` up to 4 min (2 min for 30s sonic anemometers), `aging` up to 15 min (7.5 min for 30s),
+ *   and `stale` beyond 15 min.
+ * - `synoptic`, `pws`, and `marine` valley/coastal stations: `live` up to 10 min, `aging` up to 30 min,
+ *   and `stale` beyond 30 min as daytime valley breeze and sea-breeze convergence evolve.
+ * - `mountain` telemetry (RAWS / SNOTEL / Avalanche): `live` up to 15 min, `aging` up to 45 min,
+ *   and `stale` beyond 45 min regardless of slower satellite/radio transmission schedules.
+ */
+export function pilotFreshnessThresholds(
+  meta: Pick<StationMeta, 'recommendedPollSeconds'>,
+  category: StationCategory = 'freeflight',
+): FreshnessThresholds {
+  if (category === 'freeflight') {
+    const currentForMs = Math.min(
+      300_000,
+      Math.max(60_000, meta.recommendedPollSeconds * 4 * 1_000),
+    );
+    const staleAfterMs = Math.min(
+      900_000,
+      Math.max(450_000, Math.round(currentForMs * 3.75)),
+    );
+    return { currentForMs, staleAfterMs };
+  }
+  if (category === 'mountain') {
+    return {
+      currentForMs: 15 * 60_000,
+      staleAfterMs: 45 * 60_000,
+    };
+  }
+  return {
+    currentForMs: 10 * 60_000,
+    staleAfterMs: 30 * 60_000,
+  };
+}
+
+export function pilotFreshness(
+  input: {
+    readonly observedAt: string;
+    readonly servedAt: string;
+    readonly receivedAtMs: number;
+    readonly nowMs: number;
+  },
+  meta: Pick<StationMeta, 'recommendedPollSeconds'>,
+  category: StationCategory = 'freeflight',
+): FreshnessStatus {
+  return freshness(input, pilotFreshnessThresholds(meta, category));
+}
 
 export interface StationFeatureProperties {
   readonly uid: string;
@@ -170,14 +221,15 @@ function stationToFeature(
 
   const { reading } = station;
   const dir = reading.windDirectionDeg;
-  const statusFreshness = freshness(
+  const statusFreshness = pilotFreshness(
     {
       observedAt: reading.observedAt,
       servedAt,
       receivedAtMs: referenceMs,
       nowMs: referenceMs,
     },
-    stationFreshnessThresholds(station),
+    station,
+    category,
   );
 
   return {

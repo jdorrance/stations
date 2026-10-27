@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:29:15.849Z",
+  "generatedAt": "2026-10-27T08:14:21.397Z",
   "regions": [
     "MX"
   ],
@@ -1426,37 +1426,6 @@
         "iem:MX__ASOS:MMZO",
         "windsmobi:metar-MMZO"
       ],
-      "launchContext": null,
-      "locator": {}
-    },
-    {
-      "uid": "holfuy:1420",
-      "vendor": "holfuy",
-      "nativeId": "1420",
-      "name": "Graach Südwest",
-      "latitude": 49.94497,
-      "longitude": 7.05801,
-      "elevationM": 0,
-      "country": "MX",
-      "region": "MEX",
-      "timeZone": "America/Mexico_City",
-      "pageUrl": "https://holfuy.com/en/weather/1420",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 200,
-          "toDeg": 245
-        }
-      ],
-      "category": "freeflight",
       "launchContext": null,
       "locator": {}
     },

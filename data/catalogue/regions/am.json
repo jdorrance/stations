@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:29:15.849Z",
+  "generatedAt": "2026-10-27T08:14:21.397Z",
   "regions": [
     "AM"
   ],
@@ -901,37 +901,6 @@
       "locator": {}
     },
     {
-      "uid": "holfuy:1652",
-      "vendor": "holfuy",
-      "nativeId": "1652",
-      "name": "s1652",
-      "latitude": 46.67133,
-      "longitude": 2.5293,
-      "elevationM": 0,
-      "country": "AM",
-      "region": "Kotayk",
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://holfuy.com/en/weather/1652",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 170,
-          "toDeg": 250
-        }
-      ],
-      "category": "freeflight",
-      "launchContext": null,
-      "locator": {}
-    },
-    {
       "uid": "hydromet_am:37609",
       "vendor": "hydromet_am",
       "nativeId": "37609",
@@ -1497,267 +1466,6 @@
       "locator": {}
     },
     {
-      "uid": "weatherlink:16227daf-3436-427b-b305-c3e1659a74f5",
-      "vendor": "weatherlink",
-      "nativeId": "16227daf-3436-427b-b305-c3e1659a74f5",
-      "name": "Yerevan",
-      "latitude": 40.18827,
-      "longitude": 44.48328,
-      "elevationM": null,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/16227daf-3436-427b-b305-c3e1659a74f5",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-arzni",
-        "nearestLaunchName": "Arzni",
-        "distanceKm": 14.54,
-        "bearingDeg": 210
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:1d792314-b4b6-43ab-a8bd-d604fadc501d",
-      "vendor": "weatherlink",
-      "nativeId": "1d792314-b4b6-43ab-a8bd-d604fadc501d",
-      "name": "2'000 m. MeteoStation/01",
-      "latitude": 40.48528376434469,
-      "longitude": 44.33944668620825,
-      "elevationM": 2000,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/1d792314-b4b6-43ab-a8bd-d604fadc501d",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-aragats-south-summit",
-        "nearestLaunchName": "Aragats South Summit",
-        "distanceKm": 13.29,
-        "bearingDeg": 99
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:1ff03fe3-1e26-4b84-8738-b8f8338928cc",
-      "vendor": "weatherlink",
-      "nativeId": "1ff03fe3-1e26-4b84-8738-b8f8338928cc",
-      "name": "2'600 m. MeteoStation/03",
-      "latitude": 40.4742902,
-      "longitude": 44.2864651,
-      "elevationM": 2600,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/1ff03fe3-1e26-4b84-8738-b8f8338928cc",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-aragats-south-summit",
-        "nearestLaunchName": "Aragats South Summit",
-        "distanceKm": 9.25,
-        "bearingDeg": 111
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
-      "vendor": "weatherlink",
-      "nativeId": "2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
-      "name": "ASEC at Nor-Amberd",
-      "latitude": 40.374887488155,
-      "longitude": 44.263980388641,
-      "elevationM": 2000,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/2480ce0c-aa6d-43a6-bc7e-5c67056e7949",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-mikearmenia",
-        "nearestLaunchName": "MikeArmenia",
-        "distanceKm": 9.17,
-        "bearingDeg": 62
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
-      "vendor": "weatherlink",
-      "nativeId": "6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
-      "name": "WalnutFarms",
-      "latitude": 40.066327374972985,
-      "longitude": 43.842346780580186,
-      "elevationM": null,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/6f3fb3ff-5bbf-4c4d-8b21-3085fe6f2a07",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-aragatsotn-2",
-        "nearestLaunchName": "Aragatsotn 2",
-        "distanceKm": 34.35,
-        "bearingDeg": 237
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
-      "vendor": "weatherlink",
-      "nativeId": "ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
-      "name": "Ip Vr",
-      "latitude": 40.2135094,
-      "longitude": 44.5250121,
-      "elevationM": null,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/ad8cfbb2-56c7-4560-9d4d-9da66c61b6ad",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-arzni",
-        "nearestLaunchName": "Arzni",
-        "distanceKm": 10.47,
-        "bearingDeg": 201
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:e1ad0062-2016-4ef0-b0b5-b4249132ac75",
-      "vendor": "weatherlink",
-      "nativeId": "e1ad0062-2016-4ef0-b0b5-b4249132ac75",
-      "name": "Meteo",
-      "latitude": 39.51598963685731,
-      "longitude": 46.03202157049972,
-      "elevationM": null,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/e1ad0062-2016-4ef0-b0b5-b4249132ac75",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-tatevi-vank",
-        "nearestLaunchName": "Tatevi Vank",
-        "distanceKm": 26.03,
-        "bearingDeg": 315
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:e677fd82-5eca-431d-96e3-23751d1e5fc3",
-      "vendor": "weatherlink",
-      "nativeId": "e677fd82-5eca-431d-96e3-23751d1e5fc3",
-      "name": "Agroweather",
-      "latitude": 40.09825924222545,
-      "longitude": 43.869147596466235,
-      "elevationM": null,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/e677fd82-5eca-431d-96e3-23751d1e5fc3",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-aragatsotn-2",
-        "nearestLaunchName": "Aragatsotn 2",
-        "distanceKm": 30.53,
-        "bearingDeg": 240
-      },
-      "locator": {}
-    },
-    {
-      "uid": "weatherlink:ed65a984-6b48-4ac7-8a6d-f64dfaded104",
-      "vendor": "weatherlink",
-      "nativeId": "ed65a984-6b48-4ac7-8a6d-f64dfaded104",
-      "name": "2'400m. MeteoStation/02",
-      "latitude": 40.48170600259809,
-      "longitude": 44.30168719546969,
-      "elevationM": 2400,
-      "country": "AM",
-      "region": null,
-      "timeZone": "Asia/Yerevan",
-      "pageUrl": "https://www.weatherlink.com/map/ed65a984-6b48-4ac7-8a6d-f64dfaded104",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "category": "freeflight",
-      "launchContext": {
-        "nearestLaunchSlug": "am-aragats-south-summit",
-        "nearestLaunchName": "Aragats South Summit",
-        "distanceKm": 10.24,
-        "bearingDeg": 104
-      },
-      "locator": {}
-    },
-    {
       "uid": "windguru:15245",
       "vendor": "windguru",
       "nativeId": "15245",
@@ -1841,6 +1549,470 @@
         "nearestLaunchName": "Artanish",
         "distanceKm": 4.84,
         "bearingDeg": 84
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IAKUNK1",
+      "vendor": "wunderground",
+      "nativeId": "IAKUNK1",
+      "name": "Akunk (IAKUNK1)",
+      "latitude": 40.26687,
+      "longitude": 44.68544,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IAKUNK1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-hatis-300",
+        "nearestLaunchName": "Hatis 300",
+        "distanceKm": 1.97,
+        "bearingDeg": 251
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IARMAV9",
+      "vendor": "wunderground",
+      "nativeId": "IARMAV9",
+      "name": "Armavir (IARMAV9)",
+      "latitude": 40.21424,
+      "longitude": 44.27632,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IARMAV9",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aragatsotn-2",
+        "nearestLaunchName": "Aragatsotn 2",
+        "distanceKm": 8.55,
+        "bearingDeg": 107
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IARTAS8",
+      "vendor": "wunderground",
+      "nativeId": "IARTAS8",
+      "name": "Artashat (IARTAS8)",
+      "latitude": 39.96505,
+      "longitude": 44.54358,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IARTAS8",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-aygezard",
+        "nearestLaunchName": "Aygezard",
+        "distanceKm": 10.02,
+        "bearingDeg": 287
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IGEGHA5",
+      "vendor": "wunderground",
+      "nativeId": "IGEGHA5",
+      "name": "Gegharkunik (IGEGHA5)",
+      "latitude": 40.48543,
+      "longitude": 45.36577,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IGEGHA5",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-artanish",
+        "nearestLaunchName": "Artanish",
+        "distanceKm": 4.84,
+        "bearingDeg": 83
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IGEGHA6",
+      "vendor": "wunderground",
+      "nativeId": "IGEGHA6",
+      "name": "Gegharkunik (IGEGHA6)",
+      "latitude": 40.47141,
+      "longitude": 45.05956,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IGEGHA6",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-large-lchasar",
+        "nearestLaunchName": "Large Lchasar",
+        "distanceKm": 15,
+        "bearingDeg": 100
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IHATIS1",
+      "vendor": "wunderground",
+      "nativeId": "IHATIS1",
+      "name": "Hatis (IHATIS1)",
+      "latitude": 40.3347,
+      "longitude": 44.73241,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IHATIS1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-hatis-summit",
+        "nearestLaunchName": "Hatis Summit",
+        "distanceKm": 3.21,
+        "bearingDeg": 11
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IKOTAY1",
+      "vendor": "wunderground",
+      "nativeId": "IKOTAY1",
+      "name": "Kotayk Region (IKOTAY1)",
+      "latitude": 40.34751,
+      "longitude": 44.62637,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IKOTAY1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-gutansar",
+        "nearestLaunchName": "Gutansar",
+        "distanceKm": 5.25,
+        "bearingDeg": 250
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IKOTAY11",
+      "vendor": "wunderground",
+      "nativeId": "IKOTAY11",
+      "name": "Kotayk (IKOTAY11)",
+      "latitude": 40.1969,
+      "longitude": 44.65011,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IKOTAY11",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-hatis-300",
+        "nearestLaunchName": "Hatis 300",
+        "distanceKm": 9.73,
+        "bearingDeg": 210
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IKOTAY12",
+      "vendor": "wunderground",
+      "nativeId": "IKOTAY12",
+      "name": "Kotayk (IKOTAY12)",
+      "latitude": 40.28823,
+      "longitude": 44.45688,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IKOTAY12",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 9.6,
+        "bearingDeg": 261
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IKOTAY14",
+      "vendor": "wunderground",
+      "nativeId": "IKOTAY14",
+      "name": "Kotayk (IKOTAY14)",
+      "latitude": 40.27615,
+      "longitude": 44.66147,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IKOTAY14",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-mt-hadis-500",
+        "nearestLaunchName": "Mt. Hadis 500",
+        "distanceKm": 3.37,
+        "bearingDeg": 237
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:ILORI1",
+      "vendor": "wunderground",
+      "nativeId": "ILORI1",
+      "name": "Lori (ILORI1)",
+      "latitude": 40.71598,
+      "longitude": 44.67893,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/ILORI1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-fioletovo",
+        "nearestLaunchName": "Fioletovo",
+        "distanceKm": 6.27,
+        "bearingDeg": 256
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:INORGY2",
+      "vendor": "wunderground",
+      "nativeId": "INORGY2",
+      "name": "Nor Gyukh (INORGY2)",
+      "latitude": 40.26479,
+      "longitude": 44.65444,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/INORGY2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-hatis-300",
+        "nearestLaunchName": "Hatis 300",
+        "distanceKm": 4.58,
+        "bearingDeg": 259
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:ITAVUS1",
+      "vendor": "wunderground",
+      "nativeId": "ITAVUS1",
+      "name": "Tavush (ITAVUS1)",
+      "latitude": 40.69005,
+      "longitude": 44.95139,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/ITAVUS1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-tsovagyugh",
+        "nearestLaunchName": "Tsovagyugh",
+        "distanceKm": 10.77,
+        "bearingDeg": 2
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IYEREV1",
+      "vendor": "wunderground",
+      "nativeId": "IYEREV1",
+      "name": "Yerevan (IYEREV1)",
+      "latitude": 40.19653,
+      "longitude": 44.48561,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IYEREV1",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 13.65,
+        "bearingDeg": 211
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IYEREV13",
+      "vendor": "wunderground",
+      "nativeId": "IYEREV13",
+      "name": "Yerevan (IYEREV13)",
+      "latitude": 40.20352,
+      "longitude": 44.50291,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IYEREV13",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 12.25,
+        "bearingDeg": 207
+      },
+      "locator": {}
+    },
+    {
+      "uid": "wunderground:IYEREV8",
+      "vendor": "wunderground",
+      "nativeId": "IYEREV8",
+      "name": "Yerevan (IYEREV8)",
+      "latitude": 40.20929,
+      "longitude": 44.48827,
+      "elevationM": null,
+      "country": "AM",
+      "region": null,
+      "timeZone": "Asia/Yerevan",
+      "pageUrl": "https://www.wunderground.com/dashboard/pws/IYEREV8",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "launchContext": {
+        "nearestLaunchSlug": "am-arzni",
+        "nearestLaunchName": "Arzni",
+        "distanceKm": 12.33,
+        "bearingDeg": 214
       },
       "locator": {}
     }

@@ -214,6 +214,7 @@ export interface AggregateCatalogueOptions {
   readonly bounds?: Bounds;
   readonly seeds?: readonly CatalogueStation[];
   readonly launches?: readonly LaunchSite[];
+  readonly credentials?: ProviderCredentials;
   readonly maxLaunchDistanceKm?: number;
   readonly deduplicateCrossVendor?: boolean;
   readonly includeRemoteDiscovery?: boolean;
@@ -233,6 +234,7 @@ export async function discoverStations(
     bounds: options.bounds,
     seeds,
     launches: options.launches,
+    credentials: options.credentials,
     includeRemoteDiscovery: options.includeRemoteDiscovery ?? false,
     environment,
   };

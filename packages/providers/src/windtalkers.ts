@@ -37,6 +37,7 @@ import {
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
 import { cacheIdentity, credentialCacheScope, observationTimeIso } from './freeflight-observations.ts';
 import {
+  FEET_TO_METERS,
   INHG_TO_HPA,
   KNOTS_TO_MPS,
   MAX_OBSERVATION_AGE_SECONDS,
@@ -56,6 +57,7 @@ export const WEATHERLINK_MAP_DATA_URL = 'https://www.weatherlink.com/map/data';
 export const WEATHERLINK_MAP_STATION_URL = 'https://www.weatherlink.com/map/data/station';
 export const SIERRA_GLIDING_STATIONS_URL = 'https://sierragliding.us/api/stations';
 export const CRESTLINE_WEATHER_API_URL = 'https://crestlinesoaring.org/apis/weather-station-data/';
+export const AVIATIONWX_AIRPORTS_URL = 'https://api.aviationwx.org/v1/airports';
 const CACHE_TTL_SECONDS = 60;
 
 export type WeatherLinkStationConfig = {
@@ -107,6 +109,48 @@ export function parseWeatherLinkBulletin(
   }
 
   if (!isRecord(data)) throw new Error('WeatherLink returned non-object payload');
+
+  // Format 0c: AviationWX.org backcountry airpark v1 JSON (`{ weather: { ... }, meta: { ... } }`)
+  if (isRecord(data.weather) && isRecord(data.meta)) {
+    const w = data.weather;
+    const m = data.meta;
+    const observedAt = observationTimeIso(w.observation_time ?? m.observation_time);
+    if (!observedAt) throw new Error('AviationWX payload is missing observation_time');
+    const wspdKt = finiteNumber(w.wind_speed);
+    if (wspdKt === null || wspdKt < 0) throw new Error('AviationWX payload is missing wind_speed');
+    const windAvgMps = plausibleWindMps(wspdKt * KNOTS_TO_MPS, 'AviationWX');
+    const gustKt = finiteNumber(w.gust_speed);
+    const windGustMps =
+      gustKt === null || gustKt < 0 ? null : optionalWindMps(gustKt * KNOTS_TO_MPS);
+    const wdirObj = isRecord(w.wind_direction) ? w.wind_direction : null;
+    const dirDeg = wdirObj
+      ? finiteNumber(wdirObj.true_north ?? wdirObj.magnetic_north)
+      : finiteNumber(w.wind_direction);
+    const tempC = validTemperatureC(finiteNumber(w.temperature));
+    const dewC = validTemperatureC(finiteNumber(w.dewpoint));
+    const rh = finiteNumber(w.humidity);
+    const baroInHg = finiteNumber(w.pressure);
+    const rainIn = finiteNumber(w.precip_accum);
+
+    return {
+      observedAt,
+      windAvgMps,
+      windDirectionDeg: isCalm(windAvgMps) ? null : windDirection(dirDeg),
+      windGustMps,
+      windLullMps: null,
+      temperatureC: tempC,
+      windChillC: null,
+      conditions: {
+        ...emptyConditions(),
+        dewPointC: dewC,
+        relativeHumidityPercent: rh !== null && rh >= 0 && rh <= 100 ? rh : null,
+        seaLevelPressureHpa:
+          baroInHg !== null ? pressureHpa(Math.round(baroInHg * INHG_TO_HPA * 10) / 10) : null,
+        precipitationTodayMm:
+          rainIn !== null && rainIn >= 0 ? Math.round(rainIn * 25.4 * 10) / 10 : null,
+      },
+    };
+  }
 
   // Format 0b: Crestline Soaring Society multi-station JSON (`crs`, `mar`, `ajx`)
   const cssKey = stationKey && Array.isArray(data[stationKey]) ? stationKey : null;
@@ -256,6 +300,10 @@ export const loadWeatherLinkStation = defineStationAdapter<
       typeof station.locator.mapStationId === 'string'
         ? station.locator.mapStationId
         : null;
+    const aviationWxId =
+      typeof station.locator.aviationWxId === 'string'
+        ? station.locator.aviationWxId
+        : null;
 
     const nowSec = Math.floor(environment.now().getTime() / 1_000);
     const bulletinBaseUrl = new URL(options.bulletinBaseUrl ?? WEATHERLINK_BULLETIN_URL);
@@ -263,11 +311,13 @@ export const loadWeatherLinkStation = defineStationAdapter<
       ? `https://sierragliding.us/api/station/${encodeURIComponent(sierraId)}/data?start=${nowSec - 7200}&end=${nowSec}&sample=60`
       : crestlineKey
         ? CRESTLINE_WEATHER_API_URL
-        : mapStationId
-          ? `${WEATHERLINK_MAP_STATION_URL}/${encodeURIComponent(mapStationId)}?aqiSchemeId=1&woodsmokeEnabled=false`
-          : typeof station.locator.endpointUrl === 'string'
-            ? station.locator.endpointUrl
-            : `${bulletinBaseUrl.toString().replace(/\/$/, '')}/${encodeURIComponent(station.nativeId)}`;
+        : aviationWxId
+          ? `${AVIATIONWX_AIRPORTS_URL}/${encodeURIComponent(aviationWxId)}/weather`
+          : mapStationId
+            ? `${WEATHERLINK_MAP_STATION_URL}/${encodeURIComponent(mapStationId)}?aqiSchemeId=1&woodsmokeEnabled=false`
+            : typeof station.locator.endpointUrl === 'string'
+              ? station.locator.endpointUrl
+              : `${bulletinBaseUrl.toString().replace(/\/$/, '')}/${encodeURIComponent(station.nativeId)}`;
     const endpointUrl = new URL(endpoint);
     // Metadata cannot redirect a server credential to an unrelated host.
     if (cookie && (endpointUrl.protocol !== 'https:' || endpointUrl.origin !== bulletinBaseUrl.origin)) {
@@ -494,6 +544,364 @@ const CRESTLINE_STATIONS: readonly {
   },
 ];
 
+async function discoverCrestlineStations(
+  environment: ReturnType<typeof resolveEnvironment>,
+  nowMs: number,
+): Promise<CatalogueStation[]> {
+  try {
+    const cssText = await fetchUpstreamText(environment, {
+      url: CRESTLINE_WEATHER_API_URL,
+      cacheKey: 'weatherlink/crestline/all',
+      cacheTtlSeconds: CACHE_TTL_SECONDS,
+      subject: 'Crestline Soaring Society weather API',
+    });
+    const cssStations: CatalogueStation[] = [];
+    for (const item of CRESTLINE_STATIONS) {
+      try {
+        const reading = parseWeatherLinkBulletin(cssText, undefined, item.key);
+        if (isRecentObservation(reading.observedAt, nowMs)) {
+          cssStations.push({
+            uid: formatStationUid('weatherlink', item.nativeId),
+            vendor: 'weatherlink',
+            nativeId: item.nativeId,
+            name: item.name,
+            latitude: item.latitude,
+            longitude: item.longitude,
+            elevationM: item.elevationM,
+            country: 'US',
+            region: 'CA',
+            timeZone: 'America/Los_Angeles',
+            pageUrl: 'https://crestlinesoaring.org/weather/',
+            category: 'freeflight',
+            declaredFavorableDirections: [...item.declaredFavorableDirections],
+            capabilities: {
+              gustLull: true,
+              temperature: true,
+              conditions: false,
+              history: false,
+            },
+            samplingWindowSeconds: 120,
+            recommendedPollSeconds: CACHE_TTL_SECONDS,
+            locator: {
+              stationId: item.nativeId,
+              crestlineKey: item.key,
+            },
+          });
+        }
+      } catch {
+        // Skip inactive Crestline station
+      }
+    }
+    return cssStations;
+  } catch {
+    return [];
+  }
+}
+
+async function discoverSierraGlidingStations(
+  environment: ReturnType<typeof resolveEnvironment>,
+  nowMs: number,
+): Promise<CatalogueStation[]> {
+  const nowSec = Math.floor(nowMs / 1_000);
+  try {
+    const sgAllText = await fetchUpstreamText(environment, {
+      url: `${SIERRA_GLIDING_STATIONS_URL}?all=true`,
+      cacheKey: 'weatherlink/sierragliding/all',
+      cacheTtlSeconds: 3_600,
+      subject: 'Sierra Gliding windtalkers',
+    });
+    const sgCuasaText = await fetchUpstreamText(environment, {
+      url: `${SIERRA_GLIDING_STATIONS_URL}?groupName=CUASA`,
+      cacheKey: 'weatherlink/sierragliding/cuasa',
+      cacheTtlSeconds: 3_600,
+      subject: 'Sierra Gliding CUASA windtalkers',
+    }).catch(() => '[]');
+
+    const sgRows = new Map<string, Record<string, unknown>>();
+    for (const text of [sgAllText, sgCuasaText]) {
+      const parsed: unknown = JSON.parse(text);
+      if (Array.isArray(parsed)) {
+        for (const row of parsed) {
+          if (isRecord(row) && (typeof row.id === 'number' || typeof row.id === 'string')) {
+            sgRows.set(String(row.id), row);
+          }
+        }
+      }
+    }
+
+    const sgActive: CatalogueStation[] = [];
+    for (const [sgId, row] of sgRows) {
+      const name = typeof row.name === 'string' ? row.name.trim() : '';
+      if (!name || /\btest\b|\bdefault\b/i.test(name)) continue;
+      const latitude = finiteNumber(row.lat);
+      const longitude = finiteNumber(row.lon);
+      if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) continue;
+      try {
+        const dataText = await fetchUpstreamText(environment, {
+          url: `https://sierragliding.us/api/station/${encodeURIComponent(sgId)}/data?start=${nowSec - 86400}&end=${nowSec}&sample=300`,
+          cacheKey: `weatherlink/sierragliding/data/${sgId}`,
+          cacheTtlSeconds: CACHE_TTL_SECONDS,
+          subject: `Sierra Gliding station ${sgId}`,
+          timeoutMs: 5_000,
+        });
+        const reading = parseWeatherLinkBulletin(dataText);
+        if (!isRecentObservation(reading.observedAt, nowMs)) continue;
+        const nativeId = `sg-${sgId}`;
+        const elevM = finiteNumber(row.elevation);
+        sgActive.push({
+          uid: formatStationUid('weatherlink', nativeId),
+          vendor: 'weatherlink',
+          nativeId,
+          name: `${name} (Sierra Gliding)`,
+          latitude,
+          longitude,
+          elevationM: elevM !== null ? Math.round(elevM) : null,
+          country: inferRegionCode({ latitude, longitude }, 'US'),
+          region: longitude > -114 ? 'UT' : 'CA',
+          timeZone: longitude > -114 ? 'America/Denver' : 'America/Los_Angeles',
+          pageUrl: `https://sierragliding.us/#station=${encodeURIComponent(sgId)}&duration=3600`,
+          category: 'freeflight',
+          capabilities: {
+            gustLull: true,
+            temperature: true,
+            conditions: false,
+            history: false,
+          },
+          samplingWindowSeconds: 60,
+          recommendedPollSeconds: CACHE_TTL_SECONDS,
+          locator: {
+            stationId: nativeId,
+            sierraGlidingId: sgId,
+          },
+        });
+      } catch {
+        // Skip inactive Sierra Gliding station
+      }
+    }
+    return sgActive;
+  } catch {
+    return [];
+  }
+}
+
+async function discoverWeatherLinkMapStations(
+  environment: ReturnType<typeof resolveEnvironment>,
+  options: DiscoverOptions,
+  nowMs: number,
+): Promise<CatalogueStation[]> {
+  try {
+    const mapText = await fetchUpstreamText(environment, {
+      url: WEATHERLINK_MAP_DATA_URL,
+      cacheKey: 'weatherlink/map/all',
+      cacheTtlSeconds: 3_600,
+      subject: 'WeatherLink public map stations',
+      timeoutMs: 12_000,
+      limitBytes: 12 * 1024 * 1024,
+    });
+    const mapData: unknown = JSON.parse(mapText);
+    if (!Array.isArray(mapData) || mapData.length <= 50) return [];
+
+    const anchorPoints: readonly Position[] =
+      options.launches && options.launches.length > 0
+        ? options.launches
+        : FALLBACK_FLYING_HUBS;
+    const spatial = createSpatialIndex(anchorPoints);
+    const radiusKm = 25;
+
+    const candidates: {
+      id: string;
+      latitude: number;
+      longitude: number;
+      countryHint?: string;
+    }[] = [];
+    for (const row of mapData) {
+      if (!isRecord(row) || typeof row.id !== 'string' || !row.id.trim()) continue;
+      const tb = finiteNumber(row.tb);
+      const latitude = finiteNumber(row.lat);
+      const longitude = finiteNumber(row.lng);
+      if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
+        continue;
+      }
+      const isArmenia =
+        latitude >= 38.84 &&
+        latitude <= 41.3 &&
+        longitude >= 43.44 &&
+        longitude <= 46.63 &&
+        !(longitude > 45.4 && latitude > 40.55);
+      // Skip offline/unmapped stations (tb === -1) outside Armenia
+      if (!isArmenia && tb !== null && tb < 0) continue;
+      const isMidAtlantic =
+        latitude >= 36.54 &&
+        latitude <= 39.72 &&
+        longitude >= -82.65 &&
+        longitude <= -75.05;
+      if (
+        isArmenia ||
+        isMidAtlantic ||
+        spatial.queryRadius({ latitude, longitude }, radiusKm, 1).length > 0
+      ) {
+        candidates.push({
+          id: row.id.trim(),
+          latitude,
+          longitude,
+          ...(isArmenia ? { countryHint: 'AM' } : isMidAtlantic ? { countryHint: 'US' } : {}),
+        });
+      }
+    }
+
+    candidates.sort((a, b) => {
+      const amA = a.countryHint === 'AM' ? 0 : 1;
+      const amB = b.countryHint === 'AM' ? 0 : 1;
+      return amA - amB;
+    });
+
+    const wlActive: CatalogueStation[] = [];
+    const concurrency = 20;
+    for (let index = 0; index < candidates.length; index += concurrency) {
+      const slice = candidates.slice(index, index + concurrency);
+      const checked = await Promise.all(
+        slice.map(async candidate => {
+          try {
+            const detailText = await fetchUpstreamText(environment, {
+              url: `${WEATHERLINK_MAP_STATION_URL}/${encodeURIComponent(candidate.id)}?aqiSchemeId=1&woodsmokeEnabled=false`,
+              cacheKey: `weatherlink/map/station/${candidate.id}`,
+              cacheTtlSeconds: CACHE_TTL_SECONDS,
+              subject: `WeatherLink map station ${candidate.id}`,
+              timeoutMs: 5_000,
+            });
+            const detail: unknown = JSON.parse(detailText);
+            if (!isRecord(detail)) return null;
+            const ageSec = finiteNumber(detail.ageInSeconds);
+            if (ageSec !== null && (ageSec < 0 || ageSec > MAX_OBSERVATION_AGE_SECONDS)) {
+              return null;
+            }
+            const reading = parseWeatherLinkBulletin(detailText);
+            if (!isRecentObservation(reading.observedAt, nowMs)) return null;
+            const rawName = typeof detail.sStation === 'string' ? detail.sStation.trim() : '';
+            const name = rawName || `WeatherLink ${candidate.id.slice(0, 8)}`;
+            const elevMatch = name.match(/\b([1-4])[',.]?(\d{3})\s*m\b/i);
+            const elevationM = elevMatch
+              ? Number(`${elevMatch[1]}${elevMatch[2]}`)
+              : /Nor-Amberd/i.test(name)
+                ? 2000
+                : null;
+            return {
+              uid: formatStationUid('weatherlink', candidate.id),
+              vendor: 'weatherlink' as const,
+              nativeId: candidate.id,
+              name,
+              latitude: candidate.latitude,
+              longitude: candidate.longitude,
+              elevationM,
+              country: inferRegionCode(
+                {
+                  latitude: candidate.latitude,
+                  longitude: candidate.longitude,
+                },
+                candidate.countryHint,
+              ),
+              region: null,
+              timeZone: candidate.countryHint === 'AM' ? 'Asia/Yerevan' : null,
+              pageUrl: `https://www.weatherlink.com/map/${encodeURIComponent(candidate.id)}`,
+              category: 'freeflight' as const,
+              capabilities: {
+                gustLull: true,
+                temperature: true,
+                conditions: true,
+                history: false,
+              },
+              samplingWindowSeconds: 60,
+              recommendedPollSeconds: CACHE_TTL_SECONDS,
+              locator: {
+                stationId: candidate.id,
+                mapStationId: candidate.id,
+              },
+            } satisfies CatalogueStation;
+          } catch {
+            return null;
+          }
+        }),
+      );
+      for (const station of checked) {
+        if (station) wlActive.push(station);
+      }
+    }
+    return wlActive;
+  } catch {
+    return [];
+  }
+}
+
+async function discoverAviationWxStations(
+  environment: ReturnType<typeof resolveEnvironment>,
+): Promise<CatalogueStation[]> {
+  try {
+    const text = await fetchUpstreamText(environment, {
+      url: `${AVIATIONWX_AIRPORTS_URL}?has_weather=true`,
+      cacheKey: 'weatherlink/aviationwx/airports',
+      cacheTtlSeconds: 3_600,
+      subject: 'AviationWX airpark weather directory',
+    });
+    const parsed: unknown = JSON.parse(text);
+    const list =
+      isRecord(parsed) && Array.isArray(parsed.airports)
+        ? parsed.airports
+        : Array.isArray(parsed)
+          ? parsed
+          : [];
+    const out: CatalogueStation[] = [];
+    for (const row of list) {
+      if (!isRecord(row) || row.maintenance === true || row.has_weather === false) continue;
+      const id = typeof row.id === 'string' ? row.id.trim().toLowerCase() : '';
+      if (!id) continue;
+      // Skip major 4-letter ICAO airports already covered by AWC METAR
+      if (typeof row.icao === 'string' && /^[A-Z]{4}$/i.test(row.icao.trim())) continue;
+      if (/^k[a-z]{3}$/i.test(id)) continue;
+
+      const latitude = finiteNumber(row.lat);
+      const longitude = finiteNumber(row.lon);
+      if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
+        continue;
+      }
+      const elevFt = finiteNumber(row.elevation_ft);
+      const elevationM = elevFt !== null ? Math.round(elevFt * FEET_TO_METERS) : null;
+      const rawName = typeof row.name === 'string' && row.name.trim() ? row.name.trim() : id.toUpperCase();
+      const faa = typeof row.faa === 'string' && row.faa.trim() ? row.faa.trim().toUpperCase() : id.toUpperCase();
+      const nativeId = `avwx-${id}`;
+
+      out.push({
+        uid: formatStationUid('weatherlink', nativeId),
+        vendor: 'weatherlink',
+        nativeId,
+        name: `${rawName} (${faa} AviationWX)`,
+        latitude,
+        longitude,
+        elevationM,
+        country: inferRegionCode({ latitude, longitude }, id.startsWith('cy') ? 'CA' : 'US'),
+        region: null,
+        timeZone: typeof row.timezone === 'string' && row.timezone.trim() ? row.timezone.trim() : null,
+        pageUrl: typeof row.url === 'string' && row.url.startsWith('http') ? row.url : `https://${id}.aviationwx.org/`,
+        category: 'freeflight',
+        capabilities: {
+          gustLull: true,
+          temperature: true,
+          conditions: true,
+          history: false,
+        },
+        samplingWindowSeconds: 60,
+        recommendedPollSeconds: CACHE_TTL_SECONDS,
+        locator: {
+          stationId: nativeId,
+          aviationWxId: id,
+        },
+      });
+    }
+    return out;
+  } catch {
+    return [];
+  }
+}
+
 const coverage: Coverage = { kind: 'global' };
 
 export const weatherLinkProvider: StationNetworkProvider = {
@@ -506,270 +914,10 @@ export const weatherLinkProvider: StationNetworkProvider = {
     if (options.includeRemoteDiscovery !== false) {
       const environment = resolveEnvironment(options.environment);
       const nowMs = environment.now().getTime();
-      const nowSec = Math.floor(nowMs / 1_000);
-
-      // 1. Crestline Soaring Society live windtalkers (Crestline, Marshall, AJX)
-      try {
-        const cssText = await fetchUpstreamText(environment, {
-          url: CRESTLINE_WEATHER_API_URL,
-          cacheKey: 'weatherlink/crestline/all',
-          cacheTtlSeconds: CACHE_TTL_SECONDS,
-          subject: 'Crestline Soaring Society weather API',
-        });
-        const cssStations: CatalogueStation[] = [];
-        for (const item of CRESTLINE_STATIONS) {
-          try {
-            const reading = parseWeatherLinkBulletin(cssText, undefined, item.key);
-            if (isRecentObservation(reading.observedAt, nowMs)) {
-              cssStations.push({
-                uid: formatStationUid('weatherlink', item.nativeId),
-                vendor: 'weatherlink',
-                nativeId: item.nativeId,
-                name: item.name,
-                latitude: item.latitude,
-                longitude: item.longitude,
-                elevationM: item.elevationM,
-                country: 'US',
-                region: 'CA',
-                timeZone: 'America/Los_Angeles',
-                pageUrl: 'https://crestlinesoaring.org/weather/',
-                category: 'freeflight',
-                declaredFavorableDirections: [...item.declaredFavorableDirections],
-                capabilities: {
-                  gustLull: true,
-                  temperature: true,
-                  conditions: false,
-                  history: false,
-                },
-                samplingWindowSeconds: 120,
-                recommendedPollSeconds: CACHE_TTL_SECONDS,
-                locator: {
-                  stationId: item.nativeId,
-                  crestlineKey: item.key,
-                },
-              });
-            }
-          } catch {
-            // Skip inactive Crestline station
-          }
-        }
-        batches.push(cssStations);
-      } catch {
-        // Offline or unmocked environment
-      }
-
-      // 2. Sierra Gliding cellular windtalkers (Owens Valley / Mono + CUASA Utah)
-      try {
-        const sgAllText = await fetchUpstreamText(environment, {
-          url: `${SIERRA_GLIDING_STATIONS_URL}?all=true`,
-          cacheKey: 'weatherlink/sierragliding/all',
-          cacheTtlSeconds: 3_600,
-          subject: 'Sierra Gliding windtalkers',
-        });
-        const sgCuasaText = await fetchUpstreamText(environment, {
-          url: `${SIERRA_GLIDING_STATIONS_URL}?groupName=CUASA`,
-          cacheKey: 'weatherlink/sierragliding/cuasa',
-          cacheTtlSeconds: 3_600,
-          subject: 'Sierra Gliding CUASA windtalkers',
-        }).catch(() => '[]');
-
-        const sgRows = new Map<string, Record<string, unknown>>();
-        for (const text of [sgAllText, sgCuasaText]) {
-          const parsed: unknown = JSON.parse(text);
-          if (Array.isArray(parsed)) {
-            for (const row of parsed) {
-              if (isRecord(row) && (typeof row.id === 'number' || typeof row.id === 'string')) {
-                sgRows.set(String(row.id), row);
-              }
-            }
-          }
-        }
-
-        const sgActive: CatalogueStation[] = [];
-        for (const [sgId, row] of sgRows) {
-          const name = typeof row.name === 'string' ? row.name.trim() : '';
-          if (!name || /\btest\b|\bdefault\b/i.test(name)) continue;
-          const latitude = finiteNumber(row.lat);
-          const longitude = finiteNumber(row.lon);
-          if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) continue;
-          try {
-            const dataRes = await fetch(
-              `https://sierragliding.us/api/station/${encodeURIComponent(sgId)}/data?start=${nowSec - 86400}&end=${nowSec}&sample=300`,
-              {
-                headers: { 'User-Agent': environment.userAgent },
-                signal: AbortSignal.timeout(5_000),
-              },
-            );
-            if (!dataRes.ok) continue;
-            const dataText = await dataRes.text();
-            const reading = parseWeatherLinkBulletin(dataText);
-            if (!isRecentObservation(reading.observedAt, nowMs)) continue;
-            const nativeId = `sg-${sgId}`;
-            const elevM = finiteNumber(row.elevation);
-            sgActive.push({
-              uid: formatStationUid('weatherlink', nativeId),
-              vendor: 'weatherlink',
-              nativeId,
-              name: `${name} (Sierra Gliding)`,
-              latitude,
-              longitude,
-              elevationM: elevM !== null ? Math.round(elevM) : null,
-              country: inferRegionCode({ latitude, longitude }, 'US'),
-              region: longitude > -114 ? 'UT' : 'CA',
-              timeZone: longitude > -114 ? 'America/Denver' : 'America/Los_Angeles',
-              pageUrl: `https://sierragliding.us/#station=${encodeURIComponent(sgId)}&duration=3600`,
-              category: 'freeflight',
-              capabilities: {
-                gustLull: true,
-                temperature: true,
-                conditions: false,
-                history: false,
-              },
-              samplingWindowSeconds: 60,
-              recommendedPollSeconds: CACHE_TTL_SECONDS,
-              locator: {
-                stationId: nativeId,
-                sierraGlidingId: sgId,
-              },
-            });
-          } catch {
-            // Skip inactive Sierra Gliding station
-          }
-        }
-        batches.push(sgActive);
-      } catch {
-        // Offline or unmocked environment
-      }
-
-      // 3. Davis WeatherLink Public Map stations within 3.5 km of flying launches
-      try {
-        const mapText = await fetchUpstreamText(environment, {
-          url: WEATHERLINK_MAP_DATA_URL,
-          cacheKey: 'weatherlink/map/all',
-          cacheTtlSeconds: 3_600,
-          subject: 'WeatherLink public map stations',
-          timeoutMs: 12_000,
-          limitBytes: 12 * 1024 * 1024,
-        });
-        const mapData: unknown = JSON.parse(mapText);
-        if (Array.isArray(mapData) && mapData.length > 50) {
-          const anchorPoints: readonly Position[] =
-            options.launches && options.launches.length > 0
-              ? options.launches
-              : FALLBACK_FLYING_HUBS;
-          const spatial = createSpatialIndex(anchorPoints);
-          const radiusKm = options.launches && options.launches.length > 0 ? 3.5 : 15;
-
-          const candidates: {
-            id: string;
-            latitude: number;
-            longitude: number;
-            countryHint?: string;
-          }[] = [];
-          for (const row of mapData) {
-            if (!isRecord(row) || typeof row.id !== 'string' || !row.id.trim()) continue;
-            const latitude = finiteNumber(row.lat);
-            const longitude = finiteNumber(row.lng);
-            if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
-              continue;
-            }
-            const isArmenia =
-              latitude >= 38.84 &&
-              latitude <= 41.3 &&
-              longitude >= 43.44 &&
-              longitude <= 46.63 &&
-              !(longitude > 45.4 && latitude > 40.55);
-            if (isArmenia || spatial.queryRadius({ latitude, longitude }, radiusKm, 1).length > 0) {
-              candidates.push({
-                id: row.id.trim(),
-                latitude,
-                longitude,
-                ...(isArmenia ? { countryHint: 'AM' } : {}),
-              });
-            }
-          }
-
-          const wlActive: CatalogueStation[] = [];
-          const concurrency = 25;
-          for (let index = 0; index < candidates.length; index += concurrency) {
-            const slice = candidates.slice(index, index + concurrency);
-            const checked = await Promise.all(
-              slice.map(async candidate => {
-                try {
-                  const res = await fetch(
-                    `${WEATHERLINK_MAP_STATION_URL}/${encodeURIComponent(candidate.id)}?aqiSchemeId=1&woodsmokeEnabled=false`,
-                    {
-                      headers: {
-                        Accept: 'application/json',
-                        'User-Agent': environment.userAgent,
-                      },
-                      signal: AbortSignal.timeout(5_000),
-                    },
-                  );
-                  if (!res.ok) return null;
-                  const detailText = await res.text();
-                  const detail: unknown = JSON.parse(detailText);
-                  if (!isRecord(detail)) return null;
-                  const ageSec = finiteNumber(detail.ageInSeconds);
-                  if (ageSec !== null && (ageSec < 0 || ageSec > MAX_OBSERVATION_AGE_SECONDS)) {
-                    return null;
-                  }
-                  const reading = parseWeatherLinkBulletin(detailText);
-                  if (!isRecentObservation(reading.observedAt, nowMs)) return null;
-                  const rawName = typeof detail.sStation === 'string' ? detail.sStation.trim() : '';
-                  const name = rawName || `WeatherLink ${candidate.id.slice(0, 8)}`;
-                  const elevMatch = name.match(/\b([1-4])[',.]?(\d{3})\s*m\b/i);
-                  const elevationM = elevMatch
-                    ? Number(`${elevMatch[1]}${elevMatch[2]}`)
-                    : /Nor-Amberd/i.test(name)
-                      ? 2000
-                      : null;
-                  return {
-                    uid: formatStationUid('weatherlink', candidate.id),
-                    vendor: 'weatherlink' as const,
-                    nativeId: candidate.id,
-                    name,
-                    latitude: candidate.latitude,
-                    longitude: candidate.longitude,
-                    elevationM,
-                    country: inferRegionCode(
-                      {
-                        latitude: candidate.latitude,
-                        longitude: candidate.longitude,
-                      },
-                      candidate.countryHint,
-                    ),
-                    region: null,
-                    timeZone: candidate.countryHint === 'AM' ? 'Asia/Yerevan' : null,
-                    pageUrl: `https://www.weatherlink.com/map/${encodeURIComponent(candidate.id)}`,
-                    category: 'freeflight' as const,
-                    capabilities: {
-                      gustLull: true,
-                      temperature: true,
-                      conditions: true,
-                      history: false,
-                    },
-                    samplingWindowSeconds: 60,
-                    recommendedPollSeconds: CACHE_TTL_SECONDS,
-                    locator: {
-                      stationId: candidate.id,
-                      mapStationId: candidate.id,
-                    },
-                  } satisfies CatalogueStation;
-                } catch {
-                  return null;
-                }
-              }),
-            );
-            for (const station of checked) {
-              if (station) wlActive.push(station);
-            }
-          }
-          batches.push(wlActive);
-        }
-      } catch {
-        // Offline or unmocked environment
-      }
+      batches.push(await discoverCrestlineStations(environment, nowMs));
+      batches.push(await discoverSierraGlidingStations(environment, nowMs));
+      batches.push(await discoverAviationWxStations(environment));
+      batches.push(await discoverWeatherLinkMapStations(environment, options, nowMs));
     }
 
     return filterCatalogueStations(mergeCatalogueStations(batches), {

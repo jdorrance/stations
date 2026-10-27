@@ -8,8 +8,8 @@ import {
   parseEcccSwobStations, parseIemCurrentRow, parseIemNetworkGeoJson,
   parseNdbcLatestObs, parseNdbcRealtime2, parseNwsLatestObservation,
   parseNwsStationsCollection, parseOgimetSynopBatch, parseOgimetSynopLine, parseRawsFeature, parseSnotelDataResponse,
-  parseSnotelStationsList, parseSynopticLatest, parseWindyPwsResponse,
-  parseWuPwsCurrent, synopticProvider, wundergroundProvider, ambientProvider,
+  parseSnotelStationsList, parseSynopticLatest, parseSynopticStationEntry, parseWindyPwsResponse,
+  parseWuNearLocations, parseWuPwsCurrent, resolveSynopticToken, synopticProvider, wundergroundProvider, ambientProvider,
 } from '../dist/index.js';
 
 const time = '2026-10-26T18:00:00Z';
@@ -317,4 +317,72 @@ test('Armenia ClimateNet and Hydromet WMO SYNOP parsers and adapters normalize o
   );
   assert.equal(loadedSynop.status, 'ok');
   assert.equal(loadedSynop.reading.windAvgMps, 6);
+});
+
+test('Synoptic API keys exchange via /v2/auth and Synoptic/WU discovery parsers preserve station metadata and aliases', async () => {
+  const requests = [];
+  const env = environment(url => {
+    if (url.pathname.includes('/v2/auth')) return { TOKEN: 'exchanged-32-char-synoptic-token' };
+    return {
+      STATION: [
+        {
+          STID: 'MD012',
+          NAME: 'I-68 at Sideling Hill',
+          LATITUDE: '39.7102',
+          LONGITUDE: '-78.27575',
+          ELEVATION: '1580',
+          STATE: 'MD',
+          COUNTRY: 'US',
+          TIMEZONE: 'America/New_York',
+          MNET_ID: '99',
+          UNITS: { elevation: 'ft' },
+          OBSERVATIONS: {
+            wind_speed_value_1: { value: 6.5, date_time: time },
+            wind_gust_value_1: { value: 9.2, date_time: time },
+            wind_direction_value_1: { value: 270, date_time: time },
+          },
+        },
+      ],
+    };
+  }, requests);
+
+  const longApiKey = 'KuO1KE6W3255d1f4n3Bc5KiLCus57tSXa1DcKnggu4';
+  const token = await resolveSynopticToken(longApiKey, env);
+  assert.equal(token, 'exchanged-32-char-synoptic-token');
+  assert.equal(requests.length, 1);
+
+  const parsedSyn = parseSynopticStationEntry({
+    STID: 'EW4821',
+    NAME: 'CWOP EW4821',
+    LATITUDE: '39.7215',
+    LONGITUDE: '-76.5495',
+    ELEVATION: '705',
+    STATE: 'PA',
+    COUNTRY: 'US',
+    MNET_ID: '65',
+    UNITS: { elevation: 'ft' },
+    OBSERVATIONS: { wind_speed_value_1: { value: 4.0, date_time: time } },
+  });
+  assert.equal(parsedSyn.station.uid, 'synoptic:EW4821');
+  assert.deepEqual(parsedSyn.station.aliases, ['cwop:EW4821']);
+  assert.equal(parsedSyn.reading.windAvgMps, 4.0);
+
+  const wuNear = parseWuNearLocations(
+    JSON.stringify({
+      location: {
+        stationId: ['IHATIS1', 'KVAWOODS74'],
+        stationName: ['Hatis', 'Woodstock'],
+        latitude: [40.3347, 38.8705],
+        longitude: [44.7324, -78.4495],
+        country: ['AM', 'US'],
+        adminDistrictCode: [null, 'VA'],
+        distanceKm: [60.1, 0.07],
+      },
+    }),
+    15,
+    true,
+  );
+  assert.equal(wuNear.length, 2);
+  assert.equal(wuNear[0].country, 'AM');
+  assert.equal(wuNear[1].region, 'VA');
 });
