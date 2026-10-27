@@ -24,6 +24,8 @@ const METERS_PER_DEGREE = 111_320;
 export interface TerrainSample {
   readonly tpiM: number;
   readonly landform: Landform;
+  /** DEM elevation at the station. Fills `elevationM` only when the station has none. */
+  readonly elevationM?: number;
 }
 
 export function isLandform(value: unknown): value is Landform {
@@ -117,6 +119,10 @@ export function applyLandforms(
   return stations.map(station => {
     const sample = byUid[station.uid];
     if (!sample) return { ...station, landform: null, tpiM: null };
-    return { ...station, landform: sample.landform, tpiM: sample.tpiM };
+    const elevationM =
+      station.elevationM === null && Number.isFinite(sample.elevationM)
+        ? Math.round(sample.elevationM!)
+        : station.elevationM;
+    return { ...station, landform: sample.landform, tpiM: sample.tpiM, elevationM };
   });
 }

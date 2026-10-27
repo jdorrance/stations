@@ -165,7 +165,9 @@ function classifyKeys(near, far) {
   const nearValues = near.map(key => elevations.get(key));
   const farValues = far.map(key => elevations.get(key));
   if ([...nearValues, ...farValues].some(value => !Number.isFinite(value))) return null;
-  return classifyLandform(nearValues[0], nearValues.slice(1), farValues.slice(1));
+  const sample = classifyLandform(nearValues[0], nearValues.slice(1), farValues.slice(1));
+  if (!sample) return null;
+  return { ...sample, elevationM: Math.round(nearValues[0]) };
 }
 
 for (const station of stations) {
