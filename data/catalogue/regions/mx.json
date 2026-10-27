@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T16:44:01.211Z",
+  "generatedAt": "2026-10-27T19:09:09.451Z",
   "regions": [
     "MX"
   ],
@@ -272,22 +272,22 @@
       "uid": "awc:MMCT",
       "vendor": "awc",
       "nativeId": "MMCT",
-      "name": "Aeropuerto Internacional de Chichén Itzá",
+      "name": "Chichén Itzá Intl, YU, MX",
       "latitude": 20.641,
       "longitude": -88.446,
       "elevationM": 29,
       "country": "MX",
       "region": null,
       "timeZone": "America/Merida",
-      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMCT&hours=0&decoded=yes&include_taf=yes",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCT",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": true
+        "history": false
       },
-      "samplingWindowSeconds": 600,
-      "recommendedPollSeconds": 60,
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
       "landform": "flat",
@@ -303,22 +303,22 @@
       "uid": "awc:MMCU",
       "vendor": "awc",
       "nativeId": "MMCU",
-      "name": "Aeropuerto Internacional de Chihuahua General Roberto Fierro Villalobos",
+      "name": "Chihuahua Intl, CH, MX",
       "latitude": 28.701,
       "longitude": -105.965,
       "elevationM": 1349,
       "country": "MX",
       "region": null,
       "timeZone": "America/Chihuahua",
-      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMCU&hours=0&decoded=yes&include_taf=yes",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMCU",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": true
+        "history": false
       },
-      "samplingWindowSeconds": 600,
-      "recommendedPollSeconds": 60,
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
       "landform": "flat",
@@ -996,6 +996,37 @@
       "locator": {}
     },
     {
+      "uid": "awc:MMNL",
+      "vendor": "awc",
+      "nativeId": "MMNL",
+      "name": "Quetzalcóatl International Airport",
+      "latitude": 27.448,
+      "longitude": -99.574,
+      "elevationM": 146,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Matamoros",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMNL&hours=0&decoded=yes&include_taf=yes",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
+      "category": "synoptic",
+      "place": "airport",
+      "landform": null,
+      "tpiM": null,
+      "aliases": [
+        "iem:MX__ASOS:MMNL",
+        "windsmobi:metar-MMNL"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
       "uid": "awc:MMPA",
       "vendor": "awc",
       "nativeId": "MMPA",
@@ -1030,22 +1061,22 @@
       "uid": "awc:MMPE",
       "vendor": "awc",
       "nativeId": "MMPE",
-      "name": "Puerto Peñasco Intl",
+      "name": "Puerto Peñasco Intl, SO, MX",
       "latitude": 31.354,
       "longitude": -113.519,
       "elevationM": 9,
       "country": "MX",
       "region": null,
       "timeZone": "America/Hermosillo",
-      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMPE&hours=0&decoded=yes&include_taf=yes",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMPE",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": true
+        "history": false
       },
-      "samplingWindowSeconds": 600,
-      "recommendedPollSeconds": 60,
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
       "landform": "flat",
@@ -1257,22 +1288,22 @@
       "uid": "awc:MMSL",
       "vendor": "awc",
       "nativeId": "MMSL",
-      "name": "Aeropuerto Cabo San Lucas Internacional",
+      "name": "Cabo San Lucas Intl, BS, MX",
       "latitude": 22.948,
       "longitude": -109.936,
       "elevationM": 205,
       "country": "MX",
       "region": null,
       "timeZone": "America/Mazatlan",
-      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMSL&hours=0&decoded=yes&include_taf=yes",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMSL",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": true
+        "history": false
       },
-      "samplingWindowSeconds": 600,
-      "recommendedPollSeconds": 60,
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
       "category": "synoptic",
       "place": "airport",
       "landform": "slope",
@@ -1386,22 +1417,22 @@
       "uid": "awc:MMTO",
       "vendor": "awc",
       "nativeId": "MMTO",
-      "name": "Toluca Licenciado Adolfo Lopez Mateos",
-      "latitude": 19.337,
-      "longitude": -99.566,
-      "elevationM": 2580,
+      "name": "Lic. Adolfo López Mateos International Airport",
+      "latitude": 19.343,
+      "longitude": -99.568,
+      "elevationM": 2582,
       "country": "MX",
-      "region": "MEX",
+      "region": null,
       "timeZone": "America/Mexico_City",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMTO",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=MMTO&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
       "landform": "flat",
@@ -1413,8 +1444,8 @@
       "launchContext": {
         "nearestLaunchSlug": "mx-nevado-de-toluca",
         "nearestLaunchName": "Nevado de Toluca",
-        "distanceKm": 31.46,
-        "bearingDeg": 37
+        "distanceKm": 31.87,
+        "bearingDeg": 36
       },
       "locator": {}
     },
@@ -1538,6 +1569,37 @@
       "aliases": [
         "iem:MX__ASOS:MMVR",
         "windsmobi:metar-MMVR"
+      ],
+      "launchContext": null,
+      "locator": {}
+    },
+    {
+      "uid": "awc:MMZH",
+      "vendor": "awc",
+      "nativeId": "MMZH",
+      "name": "Ixtapa-Zihuatanejo Intl, GR, MX",
+      "latitude": 17.605,
+      "longitude": -101.464,
+      "elevationM": 9,
+      "country": "MX",
+      "region": null,
+      "timeZone": "America/Mexico_City",
+      "pageUrl": "https://aviationweather.gov/data/metar/?id=MMZH",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 120,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "place": "airport",
+      "landform": "valley",
+      "tpiM": -4,
+      "aliases": [
+        "iem:MX__ASOS:MMZH",
+        "windsmobi:metar-MMZH"
       ],
       "launchContext": null,
       "locator": {}
@@ -1761,33 +1823,6 @@
       "place": "airport",
       "landform": "slope",
       "tpiM": 8,
-      "launchContext": null,
-      "locator": {}
-    },
-    {
-      "uid": "iem:MX__ASOS:MMNL",
-      "vendor": "iem",
-      "nativeId": "MX__ASOS:MMNL",
-      "name": "Nuevo Laredo",
-      "latitude": 27.4439,
-      "longitude": -99.5705,
-      "elevationM": 148,
-      "country": "MX",
-      "region": null,
-      "timeZone": "America/Matamoros",
-      "pageUrl": "https://mesonet.agron.iastate.edu/sites/site.php?station=MMNL&network=MX__ASOS",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "place": "airport",
-      "landform": "flat",
-      "tpiM": 1,
       "launchContext": null,
       "locator": {}
     },

@@ -131,7 +131,7 @@ test('parseStationCatalogueJson, deduplicateCatalogueStations, and enrichStation
   const doc = {
     schemaVersion: CATALOGUE_SCHEMA_VERSION,
     generatedAt: '2026-10-26T12:00:00Z',
-    regions: ['US', 'CA', 'MX', 'AM'],
+    regions: ['US', 'CA', 'MX', 'AM', 'NZ'],
     stations: enriched,
   };
   const parsed = parseStationCatalogueJson(JSON.stringify(doc));

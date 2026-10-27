@@ -8,7 +8,7 @@ Runs on Node 20+ and edge Workers — not in the browser.
 import { createStationsApiHandler, discoverStations } from '@stations/providers';
 
 const catalogue = await discoverStations({
-  regions: ['US', 'CA', 'MX', 'AM'],
+  regions: ['US', 'CA', 'MX', 'AM', 'NZ'],
   includeRemoteDiscovery: false,
 });
 
@@ -43,9 +43,12 @@ Missing credentials degrade only those stations to `unavailable` /
   `windspion`, `windguru`, `campbell`, `weatherlink`, `realtime_txt`
 - **Mountain / fire / snow:** `raws`, `snotel`, `avalanche`
 - **Synoptic / aviation / marine:** `iem`, `awc`, `nws`, `eccc`, `ndbc`,
-  `conagua`, `hydromet_am`, `synoptic`
+  `conagua`, `hydromet_am`, `wmo_nz`, `ecan`, `synoptic`
 - **Citizen / PWS:** `cwop`, `climatenet`, `windy`, `tempest`, `ecowitt`,
   `wunderground`, `ambient`
+- **Regional aggregators / council:** `zephyr` (NZ fallback; unwraps to direct
+  vendors when possible), `hilltop` (registered; discovery disabled until
+  GetData is reachable)
 
 ## Next layer
 

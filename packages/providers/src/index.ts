@@ -265,7 +265,6 @@ export {
   ARMENIA_WMO_SYNOP_STATIONS,
   CLIMATENET_DEVICE_BASE_URL,
   CLIMATENET_LIST_URL,
-  OGIMET_GETSYNOP_URL,
   climatenetProvider,
   hydrometAmProvider,
   loadClimateNetStation,
@@ -273,14 +272,50 @@ export {
   parseClimateNetDeviceList,
   parseClimateNetGraph,
   parseClimateNetLatest,
-  parseOgimetSynopBatch,
-  parseOgimetSynopLine,
   type ClimateNetAdapterOptions,
   type ClimateNetStationConfig,
   type HydrometAmAdapterOptions,
   type HydrometAmStationConfig,
   type HydrometAmStationMeta,
 } from './armenia.ts';
+
+export {
+  OGIMET_GETSYNOP_URL,
+  parseOgimetSynopBatch,
+  parseOgimetSynopLine,
+} from './ogimet-synop.ts';
+
+export {
+  ECAN_WIND_LAYER_URL,
+  HILLTOP_COUNCILS,
+  NEW_ZEALAND_WMO_SYNOP_STATIONS,
+  ZEPHYR_DIRECT_TYPE_MAP,
+  ZEPHYR_STATIONS_URL,
+  ecanProvider,
+  hilltopCouncil,
+  hilltopProvider,
+  hilltopSpeedToMps,
+  loadEcanStation,
+  loadHilltopStation,
+  loadWmoNzStation,
+  loadZephyrStation,
+  parseEcanObservation,
+  parseEcanWindFeatures,
+  parseHilltopGetData,
+  parseZephyrObservation,
+  parseZephyrStations,
+  wmoNzProvider,
+  zephyrProvider,
+  type HilltopCouncilConfig,
+  type WmoNzStationMeta,
+} from './newzealand.ts';
+
+export {
+  countryHintFromTimeZoneOrName,
+  coverageCountryHint,
+  defaultTimeZoneForPoint,
+  defaultTimeZoneForRegion,
+} from './region-hints.ts';
 
 export { INITIAL_SEED_STATIONS } from './seeds.ts';
 

@@ -1,10 +1,10 @@
 import { validPosition, type Bounds, type Coverage, type Position } from './index.ts';
 
-export const REGION_CODES = ['US', 'CA', 'MX', 'AM'] as const;
+export const REGION_CODES = ['US', 'CA', 'MX', 'AM', 'NZ'] as const;
 export type RegionCode = (typeof REGION_CODES)[number];
 
 export const NORTH_AMERICA_REGIONS: readonly RegionCode[] = ['US', 'CA', 'MX'];
-export const INITIAL_SCOPE_REGIONS: readonly RegionCode[] = ['US', 'CA', 'MX', 'AM'];
+export const INITIAL_SCOPE_REGIONS: readonly RegionCode[] = ['US', 'CA', 'MX', 'AM', 'NZ'];
 
 export interface RegionDescriptor {
   readonly code: RegionCode;
@@ -20,6 +20,15 @@ const US_CONUS_BOUNDS: Bounds = [-125.0, 24.39, -66.93, 49.38];
 const US_ALASKA_BOUNDS: Bounds = [-179.15, 51.21, -129.97, 71.39];
 const US_HAWAII_BOUNDS: Bounds = [-160.25, 18.91, -154.80, 22.24];
 const US_CARIBBEAN_BOUNDS: Bounds = [-67.95, 17.62, -64.56, 18.52];
+
+/** Mainland North and South Islands (excludes Norfolk Island). */
+const NZ_MAINLAND_BOUNDS: Bounds = [165.8, -47.5, 179.2, -33.9];
+/** Campbell, Auckland, Antipodes and nearby subantarctic islands. */
+const NZ_SUBANTARCTIC_BOUNDS: Bounds = [165.5, -53.0, 179.5, -47.5];
+/** Chatham Islands (east of the antimeridian); Pacific/Chatham. */
+export const NZ_CHATHAMS_BOUNDS: Bounds = [-177.2, -44.6, -175.8, -43.5];
+/** Kermadec Islands (Raoul). */
+const NZ_KERMADEC_BOUNDS: Bounds = [-178.6, -31.6, -177.5, -28.9];
 
 export const REGIONS: Readonly<Record<RegionCode, RegionDescriptor>> = {
   US: {
@@ -65,6 +74,22 @@ export const REGIONS: Readonly<Record<RegionCode, RegionDescriptor>> = {
     coverage: {
       kind: 'bounds',
       bounds: [43.44, 38.84, 46.63, 41.30],
+    },
+  },
+  NZ: {
+    code: 'NZ',
+    name: 'New Zealand',
+    defaultTimeZone: 'Pacific/Auckland',
+    // west > east: envelope crosses the antimeridian (mainland + Chathams/Kermadec).
+    envelope: [165.5, -53.0, -175.8, -28.9],
+    coverage: {
+      kind: 'union',
+      areas: [
+        { kind: 'bounds', bounds: NZ_MAINLAND_BOUNDS },
+        { kind: 'bounds', bounds: NZ_SUBANTARCTIC_BOUNDS },
+        { kind: 'bounds', bounds: NZ_CHATHAMS_BOUNDS },
+        { kind: 'bounds', bounds: NZ_KERMADEC_BOUNDS },
+      ],
     },
   },
 };

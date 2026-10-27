@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T06:42:44.924Z",
+  "generatedAt": "2026-10-27T16:40:11.681Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "holfuy",
-  "count": 1193,
+  "count": 1191,
   "stations": [
     {
       "uid": "holfuy:1000",
@@ -709,36 +710,6 @@
         {
           "fromDeg": 195,
           "toDeg": 255
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "holfuy:1050",
-      "vendor": "holfuy",
-      "nativeId": "1050",
-      "name": "WSCA weerstation",
-      "latitude": 52.25258,
-      "longitude": 4.75787,
-      "elevationM": 6,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://holfuy.com/en/weather/1050",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 135,
-          "toDeg": 315
         }
       ],
       "category": "freeflight",
@@ -1532,7 +1503,7 @@
       "latitude": -39.70546,
       "longitude": 176.92523,
       "elevationM": 100,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1103",
@@ -5817,36 +5788,6 @@
       "locator": {}
     },
     {
-      "uid": "holfuy:1321",
-      "vendor": "holfuy",
-      "nativeId": "1321",
-      "name": "Boulder - RMHPA",
-      "latitude": 40.06309,
-      "longitude": -105.29892,
-      "elevationM": 1970,
-      "country": "US",
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://holfuy.com/en/weather/1321",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 25,
-          "toDeg": 155
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
       "uid": "holfuy:1322",
       "vendor": "holfuy",
       "nativeId": "1322",
@@ -8134,7 +8075,7 @@
       "latitude": -41.40577,
       "longitude": 174.87827,
       "elevationM": 150,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1427",
@@ -9768,7 +9709,7 @@
       "latitude": -39.68671,
       "longitude": 176.91566,
       "elevationM": 414,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/151",
@@ -9882,7 +9823,7 @@
       "latitude": -44.92925,
       "longitude": 168.73377,
       "elevationM": 1620,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/152",
@@ -10087,30 +10028,6 @@
           "toDeg": 300
         }
       ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "holfuy:1538",
-      "vendor": "holfuy",
-      "nativeId": "1538",
-      "name": "Rhum JM",
-      "latitude": 14.86357,
-      "longitude": -61.13728,
-      "elevationM": 145,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://holfuy.com/en/weather/1538",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
       "category": "freeflight",
       "locator": {}
     },
@@ -11301,6 +11218,30 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1591",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
+      "uid": "holfuy:1592",
+      "vendor": "holfuy",
+      "nativeId": "1592",
+      "name": "Depart Geant",
+      "latitude": 45.4109,
+      "longitude": 6.6164,
+      "elevationM": 2181,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://holfuy.com/en/weather/1592",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -12771,7 +12712,7 @@
       "latitude": -39.77112,
       "longitude": 176.65079,
       "elevationM": 414,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1661",
@@ -13285,7 +13226,7 @@
       "latitude": -36.838985,
       "longitude": 174.427933,
       "elevationM": 85,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/168",
@@ -13801,7 +13742,7 @@
       "latitude": -45.024099,
       "longitude": 168.644278,
       "elevationM": 1000,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/170",
@@ -15491,7 +15432,7 @@
       "latitude": -43.64095,
       "longitude": 172.62506,
       "elevationM": 450,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1803",
@@ -16155,10 +16096,10 @@
       "uid": "holfuy:1827",
       "vendor": "holfuy",
       "nativeId": "1827",
-      "name": "ZFC&colon; Blauherd",
+      "name": "ZFC&colon; Gornergrat",
       "latitude": 46.01824,
       "longitude": 7.78204,
-      "elevationM": 2500,
+      "elevationM": 3100,
       "country": null,
       "region": null,
       "timeZone": null,
@@ -16174,8 +16115,8 @@
       "recommendedPollSeconds": 60,
       "declaredFavorableDirections": [
         {
-          "fromDeg": 220,
-          "toDeg": 350
+          "fromDeg": 270,
+          "toDeg": 80
         }
       ],
       "category": "freeflight",
@@ -17444,7 +17385,7 @@
       "latitude": -36.83807,
       "longitude": 174.42965,
       "elevationM": 93,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/1890",
@@ -20216,7 +20157,7 @@
       "latitude": -44.69103,
       "longitude": 169.30471,
       "elevationM": 300,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/2088",
@@ -20894,7 +20835,7 @@
       "latitude": -43.384488,
       "longitude": 171.910766,
       "elevationM": 375,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/240",
@@ -20918,7 +20859,7 @@
       "latitude": -43.54965,
       "longitude": 172.01538,
       "elevationM": 172,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/241",
@@ -21440,7 +21381,7 @@
       "latitude": -44.92621,
       "longitude": 168.74768,
       "elevationM": 1200,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/267",
@@ -21674,7 +21615,7 @@
       "latitude": -44.80564,
       "longitude": 168.34214,
       "elevationM": 370,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/278",
@@ -22518,7 +22459,7 @@
       "latitude": -43.58561,
       "longitude": 172.76574,
       "elevationM": 220,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/327",
@@ -22944,7 +22885,7 @@
       "latitude": -40.957701,
       "longitude": 174.972786,
       "elevationM": 6,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/358",
@@ -23938,7 +23879,7 @@
       "latitude": -44.941726,
       "longitude": 168.77964,
       "elevationM": 450,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/409",
@@ -26439,6 +26380,30 @@
       "locator": {}
     },
     {
+      "uid": "holfuy:558",
+      "vendor": "holfuy",
+      "nativeId": "558",
+      "name": "VámosSzabadi p.v.sz.",
+      "latitude": 47.75593,
+      "longitude": 17.64729,
+      "elevationM": 111,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "https://holfuy.com/en/weather/558",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false,
+        "battery": true
+      },
+      "samplingWindowSeconds": 60,
+      "recommendedPollSeconds": 60,
+      "category": "freeflight",
+      "locator": {}
+    },
+    {
       "uid": "holfuy:559",
       "vendor": "holfuy",
       "nativeId": "559",
@@ -26739,36 +26704,6 @@
         {
           "fromDeg": 90,
           "toDeg": 295
-        }
-      ],
-      "category": "freeflight",
-      "locator": {}
-    },
-    {
-      "uid": "holfuy:577",
-      "vendor": "holfuy",
-      "nativeId": "577",
-      "name": "Fituna",
-      "latitude": 59.04434,
-      "longitude": 17.74433,
-      "elevationM": 0,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "https://holfuy.com/en/weather/577",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false,
-        "battery": true
-      },
-      "samplingWindowSeconds": 60,
-      "recommendedPollSeconds": 60,
-      "declaredFavorableDirections": [
-        {
-          "fromDeg": 165,
-          "toDeg": 235
         }
       ],
       "category": "freeflight",
@@ -29626,7 +29561,7 @@
       "latitude": -41.42879,
       "longitude": 174.9235,
       "elevationM": 140,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/762",
@@ -29660,7 +29595,7 @@
       "latitude": -41.00528,
       "longitude": 174.93713,
       "elevationM": 267,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/763",
@@ -32596,7 +32531,7 @@
       "latitude": -44.97804,
       "longitude": 168.86462,
       "elevationM": 629,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/943",
@@ -32828,7 +32763,7 @@
       "latitude": -13.3467,
       "longitude": -176.18465,
       "elevationM": 60,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/951",
@@ -32852,7 +32787,7 @@
       "latitude": -44.63214,
       "longitude": 168.88234,
       "elevationM": 1720,
-      "country": null,
+      "country": "NZ",
       "region": null,
       "timeZone": null,
       "pageUrl": "https://holfuy.com/en/weather/953",

@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T08:03:56.344Z",
+  "generatedAt": "2026-10-27T16:40:11.681Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "synoptic",
-  "count": 31886,
+  "count": 31887,
   "stations": [
     {
       "uid": "synoptic:0007W",
@@ -23730,10 +23731,10 @@
       "uid": "synoptic:103HE",
       "vendor": "synoptic",
       "nativeId": "103HE",
-      "name": "MECO Napili",
-      "latitude": 20.97268,
-      "longitude": -156.66084,
-      "elevationM": 137,
+      "name": "HECO Kaena Pt",
+      "latitude": 21.57171,
+      "longitude": -158.26157,
+      "elevationM": 255,
       "country": "US",
       "region": "HI",
       "timeZone": "Pacific/Honolulu",
@@ -57763,6 +57764,75 @@
       "region": "CA",
       "timeZone": "America/Los_Angeles",
       "pageUrl": "https://explore.synopticdata.com/461SE/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:46215",
+      "vendor": "synoptic",
+      "nativeId": "46215",
+      "name": "Buoy 46215",
+      "latitude": 35.2,
+      "longitude": -120.9,
+      "elevationM": 0,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/46215/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:46253",
+      "vendor": "synoptic",
+      "nativeId": "46253",
+      "name": "San Pedro South",
+      "latitude": 33.6,
+      "longitude": -118.2,
+      "elevationM": 0,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/46253/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:46256",
+      "vendor": "synoptic",
+      "nativeId": "46256",
+      "name": "Long Beach Channel",
+      "latitude": 33.7,
+      "longitude": -118.2,
+      "elevationM": 0,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/46256/24h",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -122764,6 +122834,32 @@
       "locator": {}
     },
     {
+      "uid": "synoptic:AV913",
+      "vendor": "synoptic",
+      "nativeId": "AV913",
+      "name": "N3TJJ-11 NEW PROVIDENCE",
+      "latitude": 40.0475,
+      "longitude": -76.30383,
+      "elevationM": 275,
+      "country": "US",
+      "region": "PA",
+      "timeZone": "America/New_York",
+      "pageUrl": "https://explore.synopticdata.com/AV913/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "aliases": [
+        "cwop:AV913"
+      ],
+      "locator": {}
+    },
+    {
       "uid": "synoptic:AV914",
       "vendor": "synoptic",
       "nativeId": "AV914",
@@ -122942,6 +123038,32 @@
       "category": "pws",
       "aliases": [
         "cwop:AV924"
+      ],
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:AV926",
+      "vendor": "synoptic",
+      "nativeId": "AV926",
+      "name": "K7OWW-2 CRESCENT",
+      "latitude": 43.434,
+      "longitude": -121.79533,
+      "elevationM": 1402,
+      "country": "US",
+      "region": "OR",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/AV926/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "aliases": [
+        "cwop:AV926"
       ],
       "locator": {}
     },
@@ -141428,29 +141550,6 @@
       "region": "NY",
       "timeZone": "America/New_York",
       "pageUrl": "https://explore.synopticdata.com/AY017/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:AY023",
-      "vendor": "synoptic",
-      "nativeId": "AY023",
-      "name": "wrgb000354",
-      "latitude": 42.76791,
-      "longitude": -74.18184,
-      "elevationM": 317,
-      "country": "US",
-      "region": "NY",
-      "timeZone": "America/New_York",
-      "pageUrl": "https://explore.synopticdata.com/AY023/24h",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -163431,6 +163530,29 @@
       "region": "CA",
       "timeZone": "America/Los_Angeles",
       "pageUrl": "https://explore.synopticdata.com/C3SOD/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:C3STP",
+      "vendor": "synoptic",
+      "nativeId": "C3STP",
+      "name": "Stampede",
+      "latitude": 47.25495,
+      "longitude": -121.3963,
+      "elevationM": 704,
+      "country": "US",
+      "region": "WA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/C3STP/24h",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -194034,29 +194156,6 @@
       "locator": {}
     },
     {
-      "uid": "synoptic:CPPW",
-      "vendor": "synoptic",
-      "nativeId": "CPPW",
-      "name": "COOPER PASS",
-      "latitude": 47.4297222222,
-      "longitude": -121.210833333,
-      "elevationM": 1000,
-      "country": "US",
-      "region": "WA",
-      "timeZone": "America/Los_Angeles",
-      "pageUrl": "https://explore.synopticdata.com/CPPW/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "synoptic:CPPW1",
       "vendor": "synoptic",
       "nativeId": "CPPW1",
@@ -219967,32 +220066,6 @@
       "category": "pws",
       "aliases": [
         "cwop:D6757"
-      ],
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:D6780",
-      "vendor": "synoptic",
-      "nativeId": "D6780",
-      "name": "DW6780 Austin",
-      "latitude": 30.425,
-      "longitude": -97.86167,
-      "elevationM": 306,
-      "country": "US",
-      "region": "TX",
-      "timeZone": "America/Chicago",
-      "pageUrl": "https://explore.synopticdata.com/D6780/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "aliases": [
-        "cwop:D6780"
       ],
       "locator": {}
     },
@@ -334239,32 +334312,6 @@
       "locator": {}
     },
     {
-      "uid": "synoptic:F8537",
-      "vendor": "synoptic",
-      "nativeId": "F8537",
-      "name": "FW8537 Vero Beach",
-      "latitude": 27.6535,
-      "longitude": -80.45717,
-      "elevationM": 6,
-      "country": "US",
-      "region": "FL",
-      "timeZone": "America/New_York",
-      "pageUrl": "https://explore.synopticdata.com/F8537/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "aliases": [
-        "cwop:F8537"
-      ],
-      "locator": {}
-    },
-    {
       "uid": "synoptic:F8543",
       "vendor": "synoptic",
       "nativeId": "F8543",
@@ -342867,32 +342914,6 @@
       "category": "pws",
       "aliases": [
         "cwop:F9696"
-      ],
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:F9697",
-      "vendor": "synoptic",
-      "nativeId": "F9697",
-      "name": "FW9697 Sudbury",
-      "latitude": 42.40017,
-      "longitude": -71.427,
-      "elevationM": 67,
-      "country": "US",
-      "region": "MA",
-      "timeZone": "America/New_York",
-      "pageUrl": "https://explore.synopticdata.com/F9697/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "aliases": [
-        "cwop:F9697"
       ],
       "locator": {}
     },
@@ -367033,32 +367054,6 @@
       "category": "pws",
       "aliases": [
         "cwop:G2375"
-      ],
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:G2376",
-      "vendor": "synoptic",
-      "nativeId": "G2376",
-      "name": "GW2376 Big Bear",
-      "latitude": 34.23298,
-      "longitude": -116.79211,
-      "elevationM": 7382,
-      "country": "US",
-      "region": "CA",
-      "timeZone": "America/Los_Angeles",
-      "pageUrl": "https://explore.synopticdata.com/G2376/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "aliases": [
-        "cwop:G2376"
       ],
       "locator": {}
     },
@@ -472423,33 +472418,6 @@
       "locator": {}
     },
     {
-      "uid": "synoptic:KGAD",
-      "vendor": "synoptic",
-      "nativeId": "KGAD",
-      "name": "Gadsden, Gadsden Municipal Airport",
-      "latitude": 33.96667,
-      "longitude": -86.08333,
-      "elevationM": 173,
-      "country": "US",
-      "region": "AL",
-      "timeZone": "America/Chicago",
-      "pageUrl": "https://explore.synopticdata.com/KGAD/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "place": "airport",
-      "aliases": [
-        "awc:KGAD"
-      ],
-      "locator": {}
-    },
-    {
       "uid": "synoptic:KGAF",
       "vendor": "synoptic",
       "nativeId": "KGAF",
@@ -519487,6 +519455,29 @@
       "locator": {}
     },
     {
+      "uid": "synoptic:LKBM8",
+      "vendor": "synoptic",
+      "nativeId": "LKBM8",
+      "name": "LKBM8",
+      "latitude": 48.43852,
+      "longitude": -107.75125,
+      "elevationM": 737,
+      "country": "US",
+      "region": "MT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://explore.synopticdata.com/LKBM8/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "synoptic:LKCM5",
       "vendor": "synoptic",
       "nativeId": "LKCM5",
@@ -522764,29 +522755,6 @@
       "region": "VT",
       "timeZone": "America/New_York",
       "pageUrl": "https://explore.synopticdata.com/LSC01/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:LSC02",
-      "vendor": "synoptic",
-      "nativeId": "LSC02",
-      "name": "EW7405 Granby",
-      "latitude": 44.58317,
-      "longitude": -71.77867,
-      "elevationM": 453,
-      "country": "US",
-      "region": "VT",
-      "timeZone": "America/New_York",
-      "pageUrl": "https://explore.synopticdata.com/LSC02/24h",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -544696,29 +544664,6 @@
       "samplingWindowSeconds": 300,
       "recommendedPollSeconds": 120,
       "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "synoptic:MRT02",
-      "vendor": "synoptic",
-      "nativeId": "MRT02",
-      "name": "MARTIN 02",
-      "latitude": 27.0829,
-      "longitude": -80.1434,
-      "elevationM": 13,
-      "country": "US",
-      "region": "FL",
-      "timeZone": "America/New_York",
-      "pageUrl": "https://explore.synopticdata.com/MRT02/24h",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "synoptic",
       "locator": {}
     },
     {
@@ -583715,6 +583660,29 @@
       "locator": {}
     },
     {
+      "uid": "synoptic:OVYC1",
+      "vendor": "synoptic",
+      "nativeId": "OVYC1",
+      "name": "OLEMA VALLEY",
+      "latitude": 38.0425,
+      "longitude": -122.79583,
+      "elevationM": 11,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/OVYC1/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "synoptic:OWFO3",
       "vendor": "synoptic",
       "nativeId": "OWFO3",
@@ -606098,6 +606066,29 @@
       "samplingWindowSeconds": 300,
       "recommendedPollSeconds": 120,
       "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "synoptic:PCNT2",
+      "vendor": "synoptic",
+      "nativeId": "PCNT2",
+      "name": "PCNT2",
+      "latitude": 28.45,
+      "longitude": -96.4,
+      "elevationM": 0,
+      "country": "US",
+      "region": "TX",
+      "timeZone": "America/Chicago",
+      "pageUrl": "https://explore.synopticdata.com/PCNT2/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "synoptic",
       "locator": {}
     },
     {
@@ -709484,6 +709475,29 @@
       "locator": {}
     },
     {
+      "uid": "synoptic:TT881",
+      "vendor": "synoptic",
+      "nativeId": "TT881",
+      "name": "CAL FIRE PORTABLE 42",
+      "latitude": 37.35535,
+      "longitude": -119.73786,
+      "elevationM": 618,
+      "country": "US",
+      "region": "CA",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://explore.synopticdata.com/TT881/24h",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "synoptic:TT899",
       "vendor": "synoptic",
       "nativeId": "TT899",
@@ -756359,7 +756373,7 @@
       "nativeId": "WSNPN",
       "name": "NW Wilson River Hwy",
       "latitude": 45.61451,
-      "longitude": -123.07594,
+      "longitude": -123.07591,
       "elevationM": 57,
       "country": "US",
       "region": "OR",

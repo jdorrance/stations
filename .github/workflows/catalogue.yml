@@ -62,7 +62,7 @@ jobs:
       - name: Restore crawl checkpoints from R2
         run: node scripts/sync-crawl-checkpoints.mjs --restore
       - name: Crawl upstream networks
-        run: pnpm catalogue:crawl --regions=US,CA,MX,AM ${{ inputs.resume == true && '--resume' || '' }}
+        run: pnpm catalogue:crawl --regions=US,CA,MX,AM,NZ ${{ inputs.resume == true && '--resume' || '' }}
         env:
           HOLFUY_API_KEY: ${{ secrets.HOLFUY_API_KEY }}
           TEMPEST_TOKEN: ${{ secrets.TEMPEST_TOKEN }}

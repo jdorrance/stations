@@ -123,7 +123,7 @@ function loadKnownLaunches() {
     }
   }
 
-  for (const code of ['us', 'ca', 'mx', 'am']) {
+  for (const code of ['us', 'ca', 'mx', 'am', 'nz']) {
     const geoPath = resolve(repositoryRoot, `../flyingsites/data/${code}.geojson.json`);
     if (!existsSync(geoPath)) continue;
     try {
@@ -215,6 +215,16 @@ export async function crawlCatalogue(options = {}) {
                 'https://sierragliding.us': { maxConcurrent: 8, minIntervalMs: 30 },
                 'https://api.synopticdata.com': { maxConcurrent: 6, minIntervalMs: 50 },
                 'https://api.weather.com': { maxConcurrent: 20, minIntervalMs: 15 },
+                'https://api.zephyrapp.nz': { maxConcurrent: 12, minIntervalMs: 25 },
+                'https://www.ogimet.com': { maxConcurrent: 4, minIntervalMs: 200 },
+                'https://hydro.marlborough.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://envdata.tasman.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://hilltop.gw.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://extranet.trc.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'http://odp.es.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://hilltop.wcrc.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://gisdata.orc.govt.nz': { maxConcurrent: 2, minIntervalMs: 250 },
+                'https://gis.ecan.govt.nz': { maxConcurrent: 4, minIntervalMs: 100 },
               },
             }),
           }),
@@ -386,6 +396,7 @@ export async function crawlCatalogue(options = {}) {
 
   const corridorStations = publicStations.filter(station =>
     station.country === 'AM' ||
+    station.country === 'NZ' ||
     (station.category ?? defaultCategoryForVendor(station.vendor)) === 'freeflight' ||
     (station.launchContext && station.launchContext.distanceKm <= corridorKm));
   const corridorDoc = { ...document, stations: corridorStations };
@@ -422,7 +433,7 @@ export async function crawlCatalogue(options = {}) {
   // arbitrary paths even if someone has edited that manifest.
   for (const path of previousArtifacts) {
     if (!Object.hasOwn(artifacts, path) &&
-        /^(?:regions\/(?:us|ca|mx|am)\.(?:json|ndjson\.gz)|vendors\/[a-z_]+\.json)$/.test(path)) {
+        /^(?:regions\/(?:us|ca|mx|am|nz)\.(?:json|ndjson\.gz)|vendors\/[a-z_]+\.json)$/.test(path)) {
       rmSync(resolve(outDir, path), { force: true });
     }
   }

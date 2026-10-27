@@ -169,6 +169,7 @@ export function containsPolygon(rings: PolygonCoordinates, point: Position): boo
 export {
   INITIAL_SCOPE_REGIONS,
   NORTH_AMERICA_REGIONS,
+  NZ_CHATHAMS_BOUNDS,
   REGION_CODES,
   REGIONS,
   coverageForRegions,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T16:44:01.211Z",
+  "generatedAt": "2026-10-27T19:09:09.451Z",
   "regions": [
     "CA"
   ],
@@ -107,22 +107,22 @@
       "uid": "awc:CWSA",
       "vendor": "awc",
       "nativeId": "CWSA",
-      "name": "Sable Island, NS, CA",
+      "name": "Sable Island",
       "latitude": 43.933,
       "longitude": -60.002,
       "elevationM": 4,
       "country": "CA",
       "region": "NS",
       "timeZone": "America/Halifax",
-      "pageUrl": "https://aviationweather.gov/data/metar/?id=CWSA",
+      "pageUrl": "https://www.aviationweather.gov/data/metar/?id=CWSA&hours=0&decoded=yes&include_taf=yes",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
         "conditions": true,
-        "history": false
+        "history": true
       },
-      "samplingWindowSeconds": 120,
-      "recommendedPollSeconds": 120,
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 60,
       "category": "synoptic",
       "place": "airport",
       "landform": "flat",
@@ -1495,10 +1495,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 5,
       "aliases": [
-        "iem:CA_BC_ASOS:CBBC"
+        "awc:CBBC",
+        "iem:CA_BC_ASOS:CBBC",
+        "windsmobi:metar-CBBC"
       ],
       "launchContext": null,
       "locator": {}
@@ -6931,6 +6934,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 0,
       "aliases": [
@@ -7312,7 +7316,7 @@
       "elevationM": 8,
       "country": "CA",
       "region": "British Columbia",
-      "timeZone": null,
+      "timeZone": "America/Vancouver",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -7323,8 +7327,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": -4,
+      "aliases": [
+        "awc:CWEB",
+        "windsmobi:metar-CWEB"
+      ],
       "launchContext": null,
       "locator": {}
     },
@@ -7491,10 +7500,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWEK"
+        "awc:CWEK",
+        "iem:CA_BC_ASOS:CWEK",
+        "windsmobi:metar-CWEK"
       ],
       "launchContext": null,
       "locator": {}
@@ -7520,10 +7532,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWEL"
+        "awc:CWEL",
+        "iem:CA_BC_ASOS:CWEL",
+        "windsmobi:metar-CWEL"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-gower-point",
@@ -7633,7 +7648,7 @@
       "elevationM": 83,
       "country": "CA",
       "region": "Nunavut",
-      "timeZone": "America/Rankin_Inlet",
+      "timeZone": "America/Atikokan",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -7649,7 +7664,8 @@
       "tpiM": 26,
       "aliases": [
         "awc:CWEU",
-        "iem:CA_NU_ASOS:CWEU"
+        "iem:CA_NU_ASOS:CWEU",
+        "windsmobi:metar-CWEU"
       ],
       "launchContext": null,
       "locator": {}
@@ -7733,10 +7749,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 3,
       "aliases": [
-        "iem:CA_BC_ASOS:CWEZ"
+        "awc:CWEZ",
+        "iem:CA_BC_ASOS:CWEZ",
+        "windsmobi:metar-CWEZ"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-diefenbaker-training-hill",
@@ -8060,10 +8079,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 5,
       "aliases": [
-        "iem:CA_BC_ASOS:CWGB"
+        "awc:CWGB",
+        "iem:CA_BC_ASOS:CWGB",
+        "windsmobi:metar-CWGB"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-sechelt-ridge",
@@ -8347,10 +8369,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWGT"
+        "awc:CWGT",
+        "iem:CA_BC_ASOS:CWGT",
+        "windsmobi:metar-CWGT"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-irwin-lower",
@@ -8539,10 +8564,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWHL"
+        "awc:CWHL",
+        "iem:CA_BC_ASOS:CWHL",
+        "windsmobi:metar-CWHL"
       ],
       "launchContext": null,
       "locator": {}
@@ -8637,10 +8665,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -10,
       "aliases": [
-        "iem:CA_YT_ASOS:CWHT"
+        "awc:CWHT",
+        "iem:CA_YT_ASOS:CWHT",
+        "windsmobi:metar-CWHT"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-haines-junction-paint-mountain",
@@ -9349,7 +9380,7 @@
       "elevationM": 51,
       "country": "CA",
       "region": "British Columbia",
-      "timeZone": null,
+      "timeZone": "America/Vancouver",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -9364,7 +9395,9 @@
       "landform": "slope",
       "tpiM": -1,
       "aliases": [
-        "awc:CWJU"
+        "awc:CWJU",
+        "iem:CA_BC_ASOS:CWJU",
+        "windsmobi:metar-CWJU"
       ],
       "launchContext": null,
       "locator": {}
@@ -9747,7 +9780,8 @@
       "tpiM": -32,
       "aliases": [
         "awc:CWKX",
-        "iem:CA_BC_ASOS:CWKX"
+        "iem:CA_BC_ASOS:CWKX",
+        "windsmobi:metar-CWKX"
       ],
       "launchContext": null,
       "locator": {}
@@ -9805,10 +9839,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 2,
       "aliases": [
-        "iem:CA_BC_ASOS:CWLC"
+        "awc:CWLC",
+        "iem:CA_BC_ASOS:CWLC",
+        "windsmobi:metar-CWLC"
       ],
       "launchContext": null,
       "locator": {}
@@ -9944,10 +9981,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "summit",
       "tpiM": 33,
       "aliases": [
-        "iem:CA_BC_ASOS:CWLM"
+        "awc:CWLM",
+        "iem:CA_BC_ASOS:CWLM",
+        "windsmobi:metar-CWLM"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -9978,10 +10018,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 1,
       "aliases": [
-        "iem:CA_BC_ASOS:CWLP"
+        "awc:CWLP",
+        "iem:CA_BC_ASOS:CWLP",
+        "windsmobi:metar-CWLP"
       ],
       "launchContext": null,
       "locator": {}
@@ -10102,10 +10145,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -34,
       "aliases": [
-        "iem:CA_BC_ASOS:CWME"
+        "awc:CWME",
+        "iem:CA_BC_ASOS:CWME",
+        "windsmobi:metar-CWME"
       ],
       "launchContext": null,
       "locator": {}
@@ -11122,10 +11168,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -1,
       "aliases": [
-        "iem:CA_BC_ASOS:CWPF"
+        "awc:CWPF",
+        "iem:CA_BC_ASOS:CWPF",
+        "windsmobi:metar-CWPF"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -11399,10 +11448,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -24,
       "aliases": [
-        "iem:CA_BC_ASOS:CWPZ"
+        "awc:CWPZ",
+        "iem:CA_BC_ASOS:CWPZ",
+        "windsmobi:metar-CWPZ"
       ],
       "launchContext": null,
       "locator": {}
@@ -11585,10 +11637,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 1,
       "aliases": [
-        "iem:CA_BC_ASOS:CWQK"
+        "awc:CWQK",
+        "iem:CA_BC_ASOS:CWQK",
+        "windsmobi:metar-CWQK"
       ],
       "launchContext": null,
       "locator": {}
@@ -11798,10 +11853,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -9,
       "aliases": [
-        "iem:CA_BC_ASOS:CWQS"
+        "awc:CWQS",
+        "iem:CA_BC_ASOS:CWQS",
+        "windsmobi:metar-CWQS"
       ],
       "launchContext": null,
       "locator": {}
@@ -12102,10 +12160,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 4,
       "aliases": [
-        "iem:CA_BC_ASOS:CWRO"
+        "awc:CWRO",
+        "iem:CA_BC_ASOS:CWRO",
+        "windsmobi:metar-CWRO"
       ],
       "launchContext": null,
       "locator": {}
@@ -12194,10 +12255,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 10,
       "aliases": [
-        "iem:CA_BC_ASOS:CWRU"
+        "awc:CWRU",
+        "iem:CA_BC_ASOS:CWRU",
+        "windsmobi:metar-CWRU"
       ],
       "launchContext": null,
       "locator": {}
@@ -12459,7 +12523,9 @@
       "landform": "slope",
       "tpiM": 9,
       "aliases": [
-        "iem:CA_BC_ASOS:CWSK"
+        "awc:CWSK",
+        "iem:CA_BC_ASOS:CWSK",
+        "windsmobi:metar-CWSK"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-stawamus-chief-mountain",
@@ -13371,10 +13437,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWVF"
+        "awc:CWVF",
+        "iem:CA_BC_ASOS:CWVF",
+        "windsmobi:metar-CWVF"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-diefenbaker-training-hill",
@@ -13633,10 +13702,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -52,
       "aliases": [
-        "iem:CA_BC_ASOS:CWWA"
+        "awc:CWWA",
+        "iem:CA_BC_ASOS:CWWA",
+        "windsmobi:metar-CWWA"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-mt-strachan-nw",
@@ -13831,10 +13903,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -16,
       "aliases": [
-        "iem:CA_BC_ASOS:CWWL"
+        "awc:CWWL",
+        "iem:CA_BC_ASOS:CWWL",
+        "windsmobi:metar-CWWL"
       ],
       "launchContext": null,
       "locator": {}
@@ -14420,10 +14495,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 23,
       "aliases": [
-        "iem:CA_BC_ASOS:CWYJ"
+        "awc:CWYJ",
+        "iem:CA_BC_ASOS:CWYJ",
+        "windsmobi:metar-CWYJ"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -14685,10 +14763,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -5,
       "aliases": [
-        "iem:CA_BC_ASOS:CWZL"
+        "awc:CWZL",
+        "iem:CA_BC_ASOS:CWZL",
+        "windsmobi:metar-CWZL"
       ],
       "launchContext": null,
       "locator": {}
@@ -14746,10 +14827,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CWZO"
+        "awc:CWZO",
+        "iem:CA_BC_ASOS:CWZO",
+        "windsmobi:metar-CWZO"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -14900,7 +14984,8 @@
       "tpiM": 26,
       "aliases": [
         "awc:CWZV",
-        "iem:CA_BC_ASOS:CWZV"
+        "iem:CA_BC_ASOS:CWZV",
+        "windsmobi:metar-CWZV"
       ],
       "launchContext": null,
       "locator": {}
@@ -14931,7 +15016,8 @@
       "tpiM": -5,
       "aliases": [
         "awc:CWZW",
-        "iem:CA_YT_ASOS:CWZW"
+        "iem:CA_YT_ASOS:CWZW",
+        "windsmobi:metar-CWZW"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-teslin-tower",
@@ -14962,6 +15048,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 0,
       "aliases": [
@@ -15265,7 +15352,8 @@
       "tpiM": -47,
       "aliases": [
         "awc:CXCK",
-        "iem:CA_YT_ASOS:CXCK"
+        "iem:CA_YT_ASOS:CXCK",
+        "windsmobi:metar-CXCK"
       ],
       "launchContext": null,
       "locator": {}
@@ -16551,10 +16639,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 4,
       "aliases": [
-        "iem:CA_NU_ASOS:CXRB"
+        "awc:CXRB",
+        "iem:CA_NU_ASOS:CXRB",
+        "windsmobi:metar-CXRB"
       ],
       "launchContext": null,
       "locator": {}
@@ -16637,7 +16728,8 @@
       "tpiM": -2,
       "aliases": [
         "awc:CXSE",
-        "iem:CA_NU_ASOS:CXSE"
+        "iem:CA_NU_ASOS:CXSE",
+        "windsmobi:metar-CXSE"
       ],
       "launchContext": null,
       "locator": {}
@@ -17420,10 +17512,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": 3,
       "aliases": [
-        "iem:CA_BC_ASOS:CYAZ"
+        "awc:CYAZ",
+        "iem:CA_BC_ASOS:CYAZ",
+        "windsmobi:metar-CYAZ"
       ],
       "launchContext": null,
       "locator": {}
@@ -17513,10 +17608,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -42,
       "aliases": [
-        "iem:CA_BC_ASOS:CYBD"
+        "awc:CYBD",
+        "iem:CA_BC_ASOS:CYBD",
+        "windsmobi:metar-CYBD"
       ],
       "launchContext": null,
       "locator": {}
@@ -17611,10 +17709,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -3,
       "aliases": [
-        "iem:CA_BC_ASOS:CYBL"
+        "awc:CYBL",
+        "iem:CA_BC_ASOS:CYBL",
+        "windsmobi:metar-CYBL"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-kitchener",
@@ -17906,10 +18007,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -4,
       "aliases": [
-        "iem:CA_BC_ASOS:CYCD"
+        "awc:CYCD",
+        "iem:CA_BC_ASOS:CYCD",
+        "windsmobi:metar-CYCD"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-mount-prevost",
@@ -18200,7 +18304,7 @@
       "elevationM": 370,
       "country": "CA",
       "region": "Yukon",
-      "timeZone": "America/Whitehorse",
+      "timeZone": "America/Dawson",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -18211,10 +18315,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -60,
       "aliases": [
-        "iem:CA_YT_ASOS:CYDA"
+        "awc:CYDA",
+        "iem:CA_YT_ASOS:CYDA",
+        "windsmobi:metar-CYDA"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-dawson-fire-tower",
@@ -18234,7 +18341,7 @@
       "elevationM": 806,
       "country": "CA",
       "region": "Yukon",
-      "timeZone": "America/Whitehorse",
+      "timeZone": "America/Dawson",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -18250,7 +18357,8 @@
       "tpiM": -5,
       "aliases": [
         "awc:CYDB",
-        "iem:CA_YT_ASOS:CYDB"
+        "iem:CA_YT_ASOS:CYDB",
+        "windsmobi:metar-CYDB"
       ],
       "launchContext": null,
       "locator": {}
@@ -18350,10 +18458,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -37,
       "aliases": [
-        "iem:CA_BC_ASOS:CYDL"
+        "awc:CYDL",
+        "iem:CA_BC_ASOS:CYDL",
+        "windsmobi:metar-CYDL"
       ],
       "launchContext": null,
       "locator": {}
@@ -20400,7 +20511,8 @@
       "tpiM": 0,
       "aliases": [
         "awc:CYMA",
-        "iem:CA_YT_ASOS:CYMA"
+        "iem:CA_YT_ASOS:CYMA",
+        "windsmobi:metar-CYMA"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-klondike-keno",
@@ -21364,7 +21476,8 @@
       "tpiM": 10,
       "aliases": [
         "awc:CYPR",
-        "iem:CA_BC_ASOS:CYPR"
+        "iem:CA_BC_ASOS:CYPR",
+        "windsmobi:metar-CYPR"
       ],
       "launchContext": null,
       "locator": {}
@@ -21390,10 +21503,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "ridge",
       "tpiM": 13,
       "aliases": [
-        "iem:CA_BC_ASOS:CYPW"
+        "awc:CYPW",
+        "iem:CA_BC_ASOS:CYPW",
+        "windsmobi:metar-CYPW"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-mt-hallowell",
@@ -21658,7 +21774,8 @@
       "tpiM": 2,
       "aliases": [
         "awc:CYQH",
-        "iem:CA_YT_ASOS:CYQH"
+        "iem:CA_YT_ASOS:CYQH",
+        "windsmobi:metar-CYQH"
       ],
       "launchContext": null,
       "locator": {}
@@ -21817,10 +21934,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 9,
       "aliases": [
-        "iem:CA_BC_ASOS:CYQQ"
+        "awc:CYQQ",
+        "iem:CA_BC_ASOS:CYQQ",
+        "windsmobi:metar-CYQQ"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-irwin-lower",
@@ -22149,7 +22269,8 @@
       "tpiM": 4,
       "aliases": [
         "awc:CYRB",
-        "iem:CA_NU_ASOS:CYRB"
+        "iem:CA_NU_ASOS:CYRB",
+        "windsmobi:metar-CYRB"
       ],
       "launchContext": null,
       "locator": {}
@@ -23152,7 +23273,7 @@
       "elevationM": 72,
       "country": "CA",
       "region": "Northwest Territories",
-      "timeZone": "America/Yellowknife",
+      "timeZone": "America/Inuvik",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -23168,7 +23289,8 @@
       "tpiM": -1,
       "aliases": [
         "awc:CYVQ",
-        "iem:CA_NT_ASOS:CYVQ"
+        "iem:CA_NT_ASOS:CYVQ",
+        "windsmobi:metar-CYVQ"
       ],
       "launchContext": null,
       "locator": {}
@@ -23199,7 +23321,8 @@
       "tpiM": 1,
       "aliases": [
         "awc:CYVR",
-        "iem:CA_BC_ASOS:CYVR"
+        "iem:CA_BC_ASOS:CYVR",
+        "windsmobi:metar-CYVR"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-diefenbaker-training-hill",
@@ -23395,10 +23518,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": -7,
       "aliases": [
-        "iem:CA_BC_ASOS:CYWH"
+        "awc:CYWH",
+        "iem:CA_BC_ASOS:CYWH",
+        "windsmobi:metar-CYWH"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -23780,7 +23906,7 @@
       "elevationM": 650,
       "country": "CA",
       "region": "Yukon",
-      "timeZone": "America/Whitehorse",
+      "timeZone": "America/Dawson",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -23791,10 +23917,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 3,
       "aliases": [
-        "iem:CA_YT_ASOS:CYXQ"
+        "awc:CYXQ",
+        "iem:CA_YT_ASOS:CYXQ",
+        "windsmobi:metar-CYXQ"
       ],
       "launchContext": null,
       "locator": {}
@@ -23884,10 +24013,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 0,
       "aliases": [
-        "iem:CA_BC_ASOS:CYXT"
+        "awc:CYXT",
+        "iem:CA_BC_ASOS:CYXT",
+        "windsmobi:metar-CYXT"
       ],
       "launchContext": null,
       "locator": {}
@@ -23987,7 +24119,8 @@
       "tpiM": 17,
       "aliases": [
         "awc:CYXY",
-        "iem:CA_YT_ASOS:CYXY"
+        "iem:CA_YT_ASOS:CYXY",
+        "windsmobi:metar-CYXY"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-schwatka-lake",
@@ -24124,7 +24257,8 @@
       "tpiM": 14,
       "aliases": [
         "awc:CYYD",
-        "iem:CA_BC_ASOS:CYYD"
+        "iem:CA_BC_ASOS:CYYD",
+        "windsmobi:metar-CYYD"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-padella-peak",
@@ -24293,10 +24427,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "flat",
       "tpiM": -1,
       "aliases": [
-        "iem:CA_BC_ASOS:CYYJ"
+        "awc:CYYJ",
+        "iem:CA_BC_ASOS:CYYJ",
+        "windsmobi:metar-CYYJ"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-salt-spring-island-bruce-peak",
@@ -24758,7 +24895,8 @@
       "tpiM": 7,
       "aliases": [
         "awc:CYZP",
-        "iem:CA_BC_ASOS:CYZP"
+        "iem:CA_BC_ASOS:CYZP",
+        "windsmobi:metar-CYZP"
       ],
       "launchContext": null,
       "locator": {}
@@ -24858,7 +24996,8 @@
       "tpiM": -1,
       "aliases": [
         "awc:CYZT",
-        "iem:CA_BC_ASOS:CYZT"
+        "iem:CA_BC_ASOS:CYZT",
+        "windsmobi:metar-CYZT"
       ],
       "launchContext": null,
       "locator": {}
@@ -24948,10 +25087,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": -3,
       "aliases": [
-        "iem:CA_YT_ASOS:CYZW"
+        "awc:CYZW",
+        "iem:CA_YT_ASOS:CYZW",
+        "windsmobi:metar-CYZW"
       ],
       "launchContext": {
         "nearestLaunchSlug": "ca-teslin-tower",
@@ -25320,10 +25462,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "slope",
       "tpiM": 12,
       "aliases": [
-        "iem:CA_YT_ASOS:CZFA"
+        "awc:CZFA",
+        "iem:CA_YT_ASOS:CZFA",
+        "windsmobi:metar-CZFA"
       ],
       "launchContext": null,
       "locator": {}
@@ -25370,7 +25515,7 @@
       "elevationM": 100,
       "country": "CA",
       "region": "Northwest Territories",
-      "timeZone": "America/Yellowknife",
+      "timeZone": "America/Inuvik",
       "pageUrl": "https://api.weather.gc.ca/collections/swob-realtime",
       "capabilities": {
         "gustLull": true,
@@ -25381,10 +25526,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "ridge",
       "tpiM": 19,
       "aliases": [
-        "iem:CA_NT_ASOS:CZFN"
+        "awc:CZFN",
+        "iem:CA_NT_ASOS:CZFN",
+        "windsmobi:metar-CZFN"
       ],
       "launchContext": null,
       "locator": {}
@@ -25705,10 +25853,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": 3,
       "aliases": [
-        "iem:CA_BC_ASOS:CZMT"
+        "awc:CZMT",
+        "iem:CA_BC_ASOS:CZMT",
+        "windsmobi:metar-CZMT"
       ],
       "launchContext": null,
       "locator": {}
@@ -25818,10 +25969,13 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "landform": "valley",
       "tpiM": -2,
       "aliases": [
-        "iem:CA_NU_ASOS:CZRP"
+        "awc:CZRP",
+        "iem:CA_NU_ASOS:CZRP",
+        "windsmobi:metar-CZRP"
       ],
       "launchContext": null,
       "locator": {}
@@ -25921,7 +26075,8 @@
       "tpiM": -55,
       "aliases": [
         "awc:CZST",
-        "iem:CA_BC_ASOS:CZST"
+        "iem:CA_BC_ASOS:CZST",
+        "windsmobi:metar-CZST"
       ],
       "launchContext": null,
       "locator": {}

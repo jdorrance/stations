@@ -45,13 +45,28 @@ import {
 import { defineStationAdapter, resolveEnvironment } from './server.ts';
 import { fetchUpstreamText } from '@azohra/meteo.station/server';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
+import {
+  OGIMET_GETSYNOP_URL,
+  createOgimetSynopLoader,
+  createOgimetSynopProvider,
+  formatOgimetBeginUtc,
+  parseOgimetSynopBatch,
+  parseOgimetSynopLine,
+  type OgimetSynopAdapterOptions,
+  type OgimetSynopStationConfig,
+  type OgimetWmoStationMeta,
+} from './ogimet-synop.ts';
+
+export {
+  OGIMET_GETSYNOP_URL,
+  formatOgimetBeginUtc,
+  parseOgimetSynopBatch,
+  parseOgimetSynopLine,
+};
 
 export const CLIMATENET_LIST_URL = 'https://climatenet.am/device_inner/list/';
 export const CLIMATENET_DEVICE_BASE_URL = 'https://climatenet.am/device_inner';
-export const OGIMET_GETSYNOP_URL = 'https://www.ogimet.com/cgi-bin/getsynop';
-
 const CLIMATENET_CACHE_TTL_SECONDS = 300;
-const HYDROMET_CACHE_TTL_SECONDS = 900;
 
 export type ClimateNetStationConfig = {
   readonly station: CatalogueStation;
@@ -59,14 +74,6 @@ export type ClimateNetStationConfig = {
 
 export type ClimateNetAdapterOptions = StationAdapterOptions & {
   readonly deviceBaseUrl?: string;
-};
-
-export type HydrometAmStationConfig = {
-  readonly station: CatalogueStation;
-};
-
-export type HydrometAmAdapterOptions = StationAdapterOptions & {
-  readonly getsynopUrl?: string;
 };
 
 const COMPASS_DEGREES: Readonly<Record<string, number>> = {
@@ -393,14 +400,9 @@ export const climatenetProvider: StationNetworkProvider = {
   },
 };
 
-export interface HydrometAmStationMeta {
-  readonly wmoId: string;
-  readonly name: string;
-  readonly region: string;
-  readonly latitude: number;
-  readonly longitude: number;
-  readonly elevationM: number;
-}
+export type HydrometAmStationMeta = OgimetWmoStationMeta;
+export type HydrometAmStationConfig = OgimetSynopStationConfig;
+export type HydrometAmAdapterOptions = OgimetSynopAdapterOptions;
 
 export const ARMENIA_WMO_SYNOP_STATIONS: readonly HydrometAmStationMeta[] = [
   { wmoId: '37609', name: 'Ashotsk North (Bavra)', region: 'Shirak', latitude: 41.0292, longitude: 43.8764, elevationM: 2012 },
@@ -424,262 +426,19 @@ export const ARMENIA_WMO_SYNOP_STATIONS: readonly HydrometAmStationMeta[] = [
   { wmoId: '37958', name: 'Meghri', region: 'Syunik', latitude: 38.8975, longitude: 46.2422, elevationM: 627 },
 ];
 
-function catalogueStationFromWmoMeta(meta: HydrometAmStationMeta): CatalogueStation {
-  return {
-    uid: formatStationUid('hydromet_am', meta.wmoId),
-    vendor: 'hydromet_am',
-    nativeId: meta.wmoId,
-    name: `${meta.name} (ArmHydromet WMO ${meta.wmoId})`,
-    latitude: meta.latitude,
-    longitude: meta.longitude,
-    elevationM: meta.elevationM,
-    country: 'AM',
-    region: meta.region,
-    timeZone: 'Asia/Yerevan',
-    pageUrl: `https://www.ogimet.com/cgi-bin/gsynres?lang=en&ind=${encodeURIComponent(meta.wmoId)}&decoded=yes&ndays=2`,
-    category: meta.elevationM >= 1600 ? 'mountain' : 'synoptic',
-    capabilities: {
-      gustLull: true,
-      temperature: true,
-      conditions: true,
-      history: true,
-    },
-    samplingWindowSeconds: 600,
-    recommendedPollSeconds: HYDROMET_CACHE_TTL_SECONDS,
-    locator: {
-      wmoId: meta.wmoId,
-    },
-  };
-}
-
-/**
- * Parses a single Ogimet WMO FM-12 SYNOP CSV line:
- * Example: `37699,2026,10,26,12,00,AAXX 26121 37699 32698 51301 10118 20060 38154 48542 57004 85200=`
- */
-export function parseOgimetSynopLine(
-  line: string,
-): { wmoId: string; reading: Reading } | null {
-  const trimmed = line.trim();
-  if (!trimmed || trimmed.startsWith('#')) return null;
-  const match = trimmed.match(
-    /^(\d{5}),(\d{4}),(\d{2}),(\d{2}),(\d{2}),(\d{2}),AAXX\s+(\d{2})(\d{2})([0134/])\s+(\d{5})\s+([^\s=]+)\s+([^\s=]+)(.*)$/,
-  );
-  if (!match) return null;
-
-  const [, csvWmoId, yearStr, monthStr, dayStr, hourStr, minStr, , , iwChar, bodyWmoId, , nddffGroup, rest = ''] = match;
-  if (csvWmoId !== bodyWmoId) return null;
-  const observedAtMs = utcPartsMs(
-    Number(yearStr),
-    Number(monthStr),
-    Number(dayStr),
-    Number(hourStr),
-    Number(minStr),
-  );
-  if (!Number.isFinite(observedAtMs)) return null;
-
-  if (!/^[0-9/](\d{2})(\d{2})$/.test(nddffGroup!)) return null;
-  const ddRaw = Number(nddffGroup!.slice(1, 3));
-  const ffRaw = Number(nddffGroup!.slice(3, 5));
-  if (!Number.isFinite(ddRaw) || !Number.isFinite(ffRaw)) return null;
-
-  const isKnots = iwChar === '3' || iwChar === '4';
-  const rawMps = isKnots ? ffRaw * KNOTS_TO_MPS : ffRaw;
-  if (optionalWindMps(rawMps) === null) return null;
-  const windAvgMps = plausibleWindMps(rawMps, 'WMO SYNOP');
-  const dirDeg =
-    isCalm(windAvgMps) || ddRaw === 0 || ddRaw === 99 || ddRaw > 36
-      ? null
-      : windDirection(ddRaw * 10);
-
-  const tokens = rest.replace(/=+$/, '').trim().split(/\s+/).filter(Boolean);
-  let section = 1;
-  let temperatureC: number | null = null;
-  let dewPointC: number | null = null;
-  let seaLevelPressureHpa: number | null = null;
-  let windGustMps: number | null = null;
-
-  for (const token of tokens) {
-    if (token === '333') {
-      section = 3;
-      continue;
-    }
-    if (token === '555') {
-      section = 5;
-      continue;
-    }
-    if (section === 1) {
-      if (/^1([01])(\d{3})$/.test(token)) {
-        const sign = token[1] === '1' ? -1 : 1;
-        temperatureC = validTemperatureC((sign * Number(token.slice(2))) / 10);
-      } else if (/^2([01])(\d{3})$/.test(token)) {
-        const sign = token[1] === '1' ? -1 : 1;
-        dewPointC = validTemperatureC((sign * Number(token.slice(2))) / 10);
-      } else if (/^4([09]\d{3})$/.test(token)) {
-        const pVal = Number(token.slice(1));
-        const hpa = pVal < 5000 ? 1000 + pVal / 10 : 900 + (pVal - 9000) / 10;
-        seaLevelPressureHpa = pressureHpa(Math.round(hpa * 10) / 10);
-      }
-    } else if (section === 3) {
-      if (/^91[01](\d{2})$/.test(token)) {
-        const gustVal = Number(token.slice(3));
-        const gustMps = isKnots ? gustVal * KNOTS_TO_MPS : gustVal;
-        windGustMps = optionalWindMps(gustMps);
-      }
-    }
-  }
-
-  const relativeHumidityPercent = relativeHumidityFromDewPoint(temperatureC, dewPointC);
-  const hasConditions =
-    dewPointC !== null || relativeHumidityPercent !== null || seaLevelPressureHpa !== null;
-  const conditions: AirConditions | null = hasConditions
-    ? {
-        ...emptyConditions(),
-        dewPointC,
-        relativeHumidityPercent,
-        seaLevelPressureHpa,
-      }
-    : null;
-
-  return {
-    wmoId: csvWmoId!,
-    reading: {
-      observedAt: new Date(observedAtMs).toISOString(),
-      windAvgMps,
-      windDirectionDeg: dirDeg,
-      windGustMps,
-      windLullMps: null,
-      temperatureC,
-      windChillC: null,
-      conditions,
-    },
-  };
-}
-
-export function parseOgimetSynopBatch(
-  text: string,
-  expectedWmoId?: string,
-): { reading: Reading; history: History | null } {
-  const lines = text.trim().split(/\r?\n/);
-  const points: HistoryPoint[] = [];
-  let latestReading: Reading | null = null;
-  let latestMs = -Infinity;
-
-  for (const line of lines) {
-    const parsed = parseOgimetSynopLine(line);
-    if (!parsed) continue;
-    if (expectedWmoId && parsed.wmoId !== expectedWmoId) continue;
-    const ms = Date.parse(parsed.reading.observedAt);
-    if (!Number.isFinite(ms)) continue;
-
-    points.push({
-      observedAt: parsed.reading.observedAt,
-      windAvgMps: parsed.reading.windAvgMps,
-      windGustMps: parsed.reading.windGustMps,
-      windLullMps: null,
-      windDirectionDeg: parsed.reading.windDirectionDeg,
-      temperatureC: parsed.reading.temperatureC,
-      seaLevelPressureHpa: parsed.reading.conditions?.seaLevelPressureHpa ?? null,
-    });
-
-    if (ms >= latestMs) {
-      latestMs = ms;
-      latestReading = parsed.reading;
-    }
-  }
-
-  if (!latestReading) {
-    throw new Error(`No valid SYNOP observations found${expectedWmoId ? ` for ${expectedWmoId}` : ''}`);
-  }
-  points.sort((a, b) => Date.parse(a.observedAt) - Date.parse(b.observedAt));
-  return {
-    reading: latestReading,
-    history: points.length > 1 ? { periodMinutes: 180, points } : null,
-  };
-}
-
-function formatOgimetBeginUtc(ms: number): string {
-  const d = new Date(ms);
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}0000`;
-}
-
-export const loadHydrometAmStation = defineStationAdapter<
-  HydrometAmStationConfig,
-  HydrometAmAdapterOptions
->({
-  meta: ({ station }) => stationMetaFromCatalogue(station, 'Armenia Hydromet (WMO SYNOP)'),
-  load: async ({ station }, { environment, options }) => {
-    const url = new URL(options.getsynopUrl ?? OGIMET_GETSYNOP_URL);
-    url.searchParams.set('block', station.nativeId);
-    url.searchParams.set('begin', formatOgimetBeginUtc(environment.now().getTime() - 48 * 3_600_000));
-
-    const text = await fetchUpstreamText(environment, {
-      url,
-      cacheKey: `hydromet_am/synop/${station.nativeId}`,
-      cacheTtlSeconds: HYDROMET_CACHE_TTL_SECONDS,
-      subject: `Armenia Hydromet SYNOP ${station.nativeId}`,
-    });
-
-    const { reading, history } = parseOgimetSynopBatch(text, station.nativeId);
-    return {
-      reading,
-      history,
-    };
-  },
+export const loadHydrometAmStation = createOgimetSynopLoader({
+  vendor: 'hydromet_am',
+  sourceLabel: 'Armenia Hydromet (WMO SYNOP)',
+  cacheTtlSeconds: 900,
 });
 
-export const hydrometAmProvider: StationNetworkProvider = {
+export const hydrometAmProvider = createOgimetSynopProvider({
   vendor: 'hydromet_am',
-  coverage,
-  async discover(options: DiscoverOptions = {}): Promise<CatalogueStation[]> {
-    const seeds = (options.seeds ?? []).filter(station => station.vendor === 'hydromet_am');
-    const batches: CatalogueStation[][] = [seeds];
-    const regions = options.regions ?? INITIAL_SCOPE_REGIONS;
-
-    if (options.includeRemoteDiscovery !== false && regions.includes('AM')) {
-      const environment = resolveEnvironment(options.environment);
-      const nowMs = environment.now().getTime();
-      try {
-        const url = new URL(OGIMET_GETSYNOP_URL);
-        url.searchParams.set('state', 'Arme');
-        url.searchParams.set('begin', formatOgimetBeginUtc(nowMs - 72 * 3_600_000));
-
-        const text = await fetchUpstreamText(environment, {
-          url,
-          cacheKey: 'hydromet_am/synop/state/Arme',
-          cacheTtlSeconds: 1_800,
-          subject: 'Armenia Hydromet WMO SYNOP state batch',
-        });
-
-        const latestByWmo = new Map<string, string>();
-        for (const line of text.trim().split(/\r?\n/)) {
-          const parsed = parseOgimetSynopLine(line);
-          if (!parsed) continue;
-          const prev = latestByWmo.get(parsed.wmoId);
-          if (!prev || Date.parse(parsed.reading.observedAt) >= Date.parse(prev)) {
-            latestByWmo.set(parsed.wmoId, parsed.reading.observedAt);
-          }
-        }
-
-        const activeStations = ARMENIA_WMO_SYNOP_STATIONS.filter(meta => {
-          const latestIso = latestByWmo.get(meta.wmoId);
-          return latestIso !== undefined && isRecentObservation(latestIso, nowMs);
-        }).map(catalogueStationFromWmoMeta);
-
-        batches.push(activeStations);
-      } catch (error) {
-        logUpstreamFailure(environment, 'HYDROMET_AM discovery failed', error);
-      }
-    }
-
-    return filterCatalogueStations(mergeCatalogueStations(batches), {
-      ...options,
-      regions,
-    });
-  },
-  toStationConfig(station: CatalogueStation): StationConfigInput {
-    return customStationConfig(station, ({ environment, historyHours, mode }) =>
-      loadHydrometAmStation({ station }, { environment, historyHours, mode }),
-    );
-  },
-};
+  region: 'AM',
+  stateQuery: 'Arme',
+  stations: ARMENIA_WMO_SYNOP_STATIONS,
+  defaultTimeZone: 'Asia/Yerevan',
+  sourceLabel: 'Armenia Hydromet (WMO SYNOP)',
+  nameSuffix: meta => ` (ArmHydromet WMO ${meta.wmoId})`,
+  cacheTtlSeconds: 900,
+});
