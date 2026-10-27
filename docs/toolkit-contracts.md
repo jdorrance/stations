@@ -79,7 +79,8 @@ Pilot thresholds by category:
   center elevation minus that ring's mean. Flat means both rings barely
   change height, not “low elevation”.
   Owned by [`data/terrain/landforms.json`](../data/terrain/landforms.json),
-  applied after crawl merge.
+  applied after crawl merge. The same file's DEM elevation fills `elevationM`
+  only when the station has none. A reported elevation is left as-is.
 - **Short name** — optional curated label on a catalogue station, at most 11
   characters. When present, live feeds use it as `Station.name` so compact UIs
   (XCTrack tiles) can show it without a second field. Catalogue `name` stays

@@ -5,7 +5,7 @@ import {
   catalogueStationSchema, parseCatalogueStation, parseStationCatalogue,
   parseStationOverrides,
   serializeCatalogueNdjson, toPublicCatalogueStation, toPublicStationCatalogue,
-  classifyLandform, deduplicateCatalogueStations, defaultPlaceForStation,
+  applyLandforms, classifyLandform, deduplicateCatalogueStations, defaultPlaceForStation,
   enrichStationsWithLaunches,
   parseCatalogueNdjson,
   SHORT_NAME_MAX_LENGTH,
@@ -181,6 +181,18 @@ test('classifyLandform uses the 1 km ring, not elevation above sea level', () =>
   const slope = classifyLandform(500, [700, 650, 500, 400, 300, 400, 500, 650]);
   assert.equal(slope.landform, 'slope');
   assert.equal(classifyLandform(1, [1, 2, 3]), null);
+});
+
+test('applyLandforms fills only a missing elevation from the DEM sample', () => {
+  const bare = { ...station, uid: 'custom:bare', elevationM: null };
+  const reported = { ...station, uid: 'custom:reported', elevationM: 610 };
+  const [filled, kept] = applyLandforms([bare, reported], {
+    'custom:bare': { landform: 'ridge', tpiM: 165, elevationM: 561.4 },
+    'custom:reported': { landform: 'ridge', tpiM: 40, elevationM: 100 },
+  });
+  assert.equal(filled.elevationM, 561);
+  assert.equal(filled.landform, 'ridge');
+  assert.equal(kept.elevationM, 610);
 });
 
 test('applyStationOverrides stamps short names and place; fills only missing elevation/region', () => {
