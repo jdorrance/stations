@@ -3044,6 +3044,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "mountain",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -29954,6 +29955,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "mountain",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -37659,6 +37661,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "mountain",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -46905,6 +46908,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "mountain",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -51367,6 +51371,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "mountain",
+      "place": "airport",
       "locator": {}
     },
     {

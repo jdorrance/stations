@@ -69,15 +69,24 @@ Pilot thresholds by category:
 - **Station UID** — `<vendor>:<nativeId>` (for example `holfuy:1652` or
   `raws:TT029`). Cross-network duplicates keep secondary UIDs in `aliases`.
 - **Category** — `'freeflight' | 'mountain' | 'synoptic' | 'marine' | 'pws'`.
+  Network / application role (freshness, feed selection). Not physical siting.
+- **Place** — optional `'airport' | 'mountain'`. `airport` is inferred for
+  METAR/ASOS sites and names containing airport/airfield/airstrip. `mountain`
+  is an override only. A `place` override always replaces.
+- **Landform** — `'summit' | 'ridge' | 'slope' | 'valley' | 'flat'` from a 1 km
+  DEM ring (8 directions). `tpiM` is center elevation minus the ring mean.
+  Flat means the ring spans under 30 m (DEM noise), not “low elevation”.
+  Owned by [`data/terrain/landforms.json`](../data/terrain/landforms.json),
+  applied after crawl merge.
 - **Short name** — optional curated label on a catalogue station, at most 11
   characters. When present, live feeds use it as `Station.name` so compact UIs
   (XCTrack tiles) can show it without a second field. Catalogue `name` stays
   the upstream name.
 - **Station overrides** — curated fields in
   [`data/overrides/stations.json`](../data/overrides/stations.json), applied
-  after crawl merge. `shortName` always replaces the display label.
-  `elevationM`, `region`, and a latitude/longitude pair fill only when that
-  field is missing on the merged station. A crawl cannot overwrite the file.
+  after crawl merge. `shortName` and `place` always replace. `elevationM`,
+  `region`, and a latitude/longitude pair fill only when that field is missing
+  on the merged station. A crawl cannot overwrite the file.
 - **Launch context** — distance and forward bearing from the nearest known
   free-flight launch within the configured search radius.
 - **Feed** — an `@azohra/meteo.station` `StationFeed` with current readings and

@@ -1204,6 +1204,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1227,6 +1228,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1411,6 +1413,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1687,6 +1690,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -1917,6 +1921,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2193,6 +2198,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2285,6 +2291,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2308,6 +2315,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2400,6 +2408,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2423,6 +2432,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2469,6 +2479,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -2860,6 +2871,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3205,6 +3217,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3251,6 +3264,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3458,6 +3472,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3849,6 +3864,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3941,6 +3957,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -3964,6 +3981,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4079,6 +4097,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4102,6 +4121,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4332,6 +4352,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4378,6 +4399,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4424,6 +4446,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4447,6 +4470,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4493,6 +4517,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4608,6 +4633,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4631,6 +4657,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4677,6 +4704,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4700,6 +4728,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -4723,6 +4752,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7092,6 +7122,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7253,6 +7284,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -7782,6 +7814,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8058,6 +8091,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8587,6 +8621,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8679,6 +8714,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -8748,6 +8784,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -9484,6 +9521,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -11922,6 +11960,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -14682,6 +14721,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -15717,6 +15757,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {
@@ -19420,6 +19461,7 @@
       "samplingWindowSeconds": 600,
       "recommendedPollSeconds": 300,
       "category": "synoptic",
+      "place": "airport",
       "locator": {}
     },
     {

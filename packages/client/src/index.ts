@@ -25,6 +25,7 @@ import {
 import {
   catalogueToGeoJson,
   defaultCategoryForVendor,
+  defaultPlaceForStation,
   feedToGeoJson,
   parseStationCatalogueJson,
   parseStationCurrentJson,
@@ -35,6 +36,8 @@ import {
   type StationCurrent,
   type StationFeatureCollection,
   type StationFeed,
+  type Landform,
+  type StationPlace,
   type StationVendor,
 } from '@stations/contracts';
 import {
@@ -77,6 +80,8 @@ export interface CatalogueQueryFilter {
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
   readonly categories?: readonly StationCategory[];
+  readonly places?: readonly StationPlace[];
+  readonly landforms?: readonly Landform[];
   readonly launchSlug?: string;
   readonly maxLaunchDistanceKm?: number;
   readonly limit?: number;
@@ -103,6 +108,8 @@ function hasActiveFilter(filter?: CatalogueQueryFilter): boolean {
     filter.countries?.length ||
       filter.vendors?.length ||
       filter.categories?.length ||
+      filter.places?.length ||
+      filter.landforms?.length ||
       filter.launchSlug ||
       filter.maxLaunchDistanceKm !== undefined ||
       filter.limit !== undefined,
@@ -118,6 +125,8 @@ function applyCatalogueFilter(
   const countrySet = activeFilter.countries?.length ? new Set(activeFilter.countries) : null;
   const vendorSet = activeFilter.vendors?.length ? new Set(activeFilter.vendors) : null;
   const categorySet = activeFilter.categories?.length ? new Set(activeFilter.categories) : null;
+  const placeSet = activeFilter.places?.length ? new Set(activeFilter.places) : null;
+  const landformSet = activeFilter.landforms?.length ? new Set(activeFilter.landforms) : null;
   let filtered = stations.filter(station => {
     if (countrySet && (station.country === null || !countrySet.has(station.country))) return false;
     if (vendorSet && !vendorSet.has(station.vendor)) return false;
@@ -125,6 +134,13 @@ function applyCatalogueFilter(
       categorySet &&
       !categorySet.has(station.category ?? defaultCategoryForVendor(station.vendor))
     ) {
+      return false;
+    }
+    if (placeSet) {
+      const place = station.place ?? defaultPlaceForStation(station);
+      if (place === null || !placeSet.has(place)) return false;
+    }
+    if (landformSet && (station.landform === null || station.landform === undefined || !landformSet.has(station.landform))) {
       return false;
     }
     if (
@@ -210,6 +226,8 @@ export interface SpatialQueryParams {
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
   readonly categories?: readonly StationCategory[];
+  readonly places?: readonly StationPlace[];
+  readonly landforms?: readonly Landform[];
   readonly launch?: string;
   readonly limit?: number;
   readonly hours?: number;
@@ -278,6 +296,8 @@ function buildQueryString(query?: SpatialQueryParams): string {
   if (query.countries?.length) params.set('country', query.countries.join(','));
   if (query.vendors?.length) params.set('vendor', query.vendors.join(','));
   if (query.categories?.length) params.set('category', query.categories.join(','));
+  if (query.places?.length) params.set('place', query.places.join(','));
+  if (query.landforms?.length) params.set('landform', query.landforms.join(','));
   if (query.launch) params.set('launch', query.launch);
   if (query.limit !== undefined) params.set('limit', String(query.limit));
   if (query.hours !== undefined) params.set('hours', String(query.hours));
@@ -431,6 +451,8 @@ export interface ViewportStationStoreOptions {
   readonly countries?: readonly RegionCode[];
   readonly vendors?: readonly StationVendor[];
   readonly categories?: readonly StationCategory[];
+  readonly places?: readonly StationPlace[];
+  readonly landforms?: readonly Landform[];
   readonly launch?: string;
   readonly limit?: number;
   readonly catalogueByUid?: ReadonlyMap<string, CatalogueStation>;
@@ -487,6 +509,8 @@ export function createViewportStationStore(
         countries: options.countries,
         vendors: options.vendors,
         categories: options.categories,
+        places: options.places,
+        landforms: options.landforms,
         launch: options.launch,
         limit: options.limit,
       };

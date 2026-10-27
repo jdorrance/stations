@@ -162,6 +162,7 @@ export function parseIemNetworkGeoJson(text: string, fallbackNetwork?: string): 
       timeZone: tz,
       pageUrl: `https://mesonet.agron.iastate.edu/sites/site.php?station=${encodeURIComponent(stationId)}&network=${encodeURIComponent(network)}`,
       category: isDcp ? 'mountain' : 'synoptic',
+      ...(isDcp ? {} : { place: 'airport' as const }),
       capabilities: {
         gustLull: true,
         temperature: true,

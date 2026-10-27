@@ -25,6 +25,7 @@
     "deploy:catalogue": "pnpm build:packages && node scripts/export-deploy-catalogue.mjs",
     "catalogue:build": "pnpm build:packages && node scripts/build-catalogue.mjs",
     "catalogue:crawl": "pnpm build:packages && node scripts/crawl-na.mjs",
+    "terrain:annotate": "pnpm build:packages && node scripts/annotate-terrain.mjs",
     "wu:bridge": "node scripts/bridge-wn55-to-wu.mjs",
     "test:scripts": "pnpm build:packages && node --test scripts/test/*.test.mjs"
   },

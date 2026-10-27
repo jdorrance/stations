@@ -5,7 +5,9 @@ import {
   catalogueStationSchema, parseCatalogueStation, parseStationCatalogue,
   parseStationOverrides,
   serializeCatalogueNdjson, toPublicCatalogueStation, toPublicStationCatalogue,
-  deduplicateCatalogueStations, enrichStationsWithLaunches, parseCatalogueNdjson,
+  classifyLandform, deduplicateCatalogueStations, defaultPlaceForStation,
+  enrichStationsWithLaunches,
+  parseCatalogueNdjson,
   SHORT_NAME_MAX_LENGTH,
 } from '../dist/index.js';
 
@@ -116,7 +118,66 @@ test('shortName accepts eleven characters and rejects blank or overlong values',
   assert.equal(parseCatalogueStation({ ...station, shortName: eleven + 'x' }), null);
 });
 
-test('applyStationOverrides stamps short names and fills only missing place fields', () => {
+test('defaultPlaceForStation marks aerodromes and leaves terrain unlabeled', () => {
+  assert.equal(
+    defaultPlaceForStation({ vendor: 'awc', name: 'Seattle', locator: { icaoId: 'KSEA' } }),
+    'airport',
+  );
+  assert.equal(
+    defaultPlaceForStation({
+      vendor: 'iem',
+      name: 'Palmer',
+      locator: { network: 'AK_ASOS', stationId: 'PAAQ' },
+    }),
+    'airport',
+  );
+  assert.equal(
+    defaultPlaceForStation({
+      vendor: 'iem',
+      name: 'Remote',
+      locator: { network: 'WA_DCP', stationId: 'X' },
+    }),
+    null,
+  );
+  assert.equal(
+    defaultPlaceForStation({ vendor: 'raws', name: 'Lookout', locator: {} }),
+    null,
+  );
+  assert.equal(
+    defaultPlaceForStation({ vendor: 'snotel', name: 'High Plateau', locator: {} }),
+    null,
+  );
+  assert.equal(
+    defaultPlaceForStation({
+      vendor: 'raws',
+      name: 'Airport Mesa RAWS',
+      locator: {},
+    }),
+    'airport',
+  );
+});
+
+test('classifyLandform uses the 1 km ring, not elevation above sea level', () => {
+  const peak = classifyLandform(1000, [800, 820, 790, 810, 800, 805, 795, 815]);
+  assert.equal(peak.landform, 'summit');
+  assert.ok(peak.tpiM > 150);
+
+  // Crest runs north-south; east and west fall away. Absolute height is modest.
+  const ridge = classifyLandform(610, [640, 500, 280, 450, 600, 460, 300, 520]);
+  assert.equal(ridge.landform, 'ridge');
+
+  const valley = classifyLandform(200, [400, 420, 380, 410, 390, 405, 395, 415]);
+  assert.equal(valley.landform, 'valley');
+
+  const flat = classifyLandform(1518, [1510, 1512, 1516, 1520, 1514, 1511, 1519, 1515]);
+  assert.equal(flat.landform, 'flat');
+
+  const slope = classifyLandform(500, [700, 650, 500, 400, 300, 400, 500, 650]);
+  assert.equal(slope.landform, 'slope');
+  assert.equal(classifyLandform(1, [1, 2, 3]), null);
+});
+
+test('applyStationOverrides stamps short names and place; fills only missing elevation/region', () => {
   const primary = {
     ...station,
     uid: 'wunderground:IHATIS1',
@@ -141,6 +202,7 @@ test('applyStationOverrides stamps short names and fills only missing place fiel
     stations: {
       'wunderground:IHATIS1': {
         shortName: 'Hatis',
+        place: 'mountain',
         elevationM: 2529,
         region: 'Kotayk',
         latitude: 40.3,
@@ -158,12 +220,17 @@ test('applyStationOverrides stamps short names and fills only missing place fiel
 
   const unmatched = [];
   const conflicts = [];
-  const applied = applyStationOverrides([primary, withElev], overrides, {
-    onUnmatched: uid => unmatched.push(uid),
-    onConflict: (uid, keys) => conflicts.push({ uid, keys: [...keys] }),
-  });
+  const applied = applyStationOverrides(
+    [{ ...primary, place: 'airport' }, withElev],
+    overrides,
+    {
+      onUnmatched: uid => unmatched.push(uid),
+      onConflict: (uid, keys) => conflicts.push({ uid, keys: [...keys] }),
+    },
+  );
 
   assert.equal(applied[0].shortName, 'Hatis');
+  assert.equal(applied[0].place, 'mountain');
   assert.equal(applied[0].name, 'Hatis (IHATIS1)');
   assert.equal(applied[0].elevationM, 2529);
   assert.equal(applied[0].region, 'Kotayk');

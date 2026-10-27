@@ -10,6 +10,7 @@ import {
 import {
   CATALOGUE_SCHEMA_VERSION,
   deduplicateCatalogueStations,
+  defaultPlaceForStation,
   enrichStationsWithLaunches,
   formatStationUid,
   mergeCatalogueStations,
@@ -188,7 +189,9 @@ export function unwrapAggregatorStation(station: CatalogueStation): CatalogueSta
     uid,
     vendor: targetVendor,
     nativeId: normalizedId,
-    ...(targetVendor === 'awc' ? { category: 'synoptic' as const } : {}),
+    ...(targetVendor === 'awc'
+      ? { category: 'synoptic' as const, place: 'airport' as const }
+      : {}),
     aliases: [...new Set([station.uid, ...(station.aliases ?? [])])].filter(alias => alias !== uid),
     locator:
       targetVendor === 'awc'
@@ -284,6 +287,11 @@ export async function discoverStations(
       options.maxLaunchDistanceKm ?? 50,
     );
   }
+
+  stations = stations.map(station => {
+    const place = station.place ?? defaultPlaceForStation(station) ?? undefined;
+    return place !== undefined ? { ...station, place } : station;
+  });
 
   return {
     schemaVersion: CATALOGUE_SCHEMA_VERSION,

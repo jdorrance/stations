@@ -12,11 +12,14 @@ import {
 import type { RegionCode } from '@stations/geography/regions';
 import {
   defaultCategoryForVendor,
+  defaultPlaceForStation,
   parseStationUid,
   type CatalogueStation,
   type StationCategory,
+  type StationPlace,
   type StationVendor,
 } from './catalogue.ts';
+import type { Landform } from './terrain.ts';
 
 /**
  * Pilot-calibrated freshness thresholds for tactical free-flight decisions on launch or in the air:
@@ -72,6 +75,9 @@ export interface StationFeatureProperties {
   readonly uid: string;
   readonly vendor: StationVendor | 'unknown';
   readonly category: StationCategory;
+  readonly place: StationPlace | null;
+  readonly landform: Landform | null;
+  readonly tpiM: number | null;
   readonly name: string;
   readonly shortName: string | null;
   readonly sourceLabel: string;
@@ -137,10 +143,13 @@ export function catalogueToGeoJson(
       uid: station.uid,
       vendor: station.vendor,
       category: station.category ?? defaultCategoryForVendor(station.vendor),
+      place: station.place ?? defaultPlaceForStation(station),
       name: station.name,
       shortName: station.shortName ?? null,
       sourceLabel: station.vendor,
       elevationM: station.elevationM,
+      landform: station.landform ?? null,
+      tpiM: station.tpiM ?? null,
       country: station.country,
       region: station.region,
       pageUrl: station.pageUrl,
@@ -183,6 +192,9 @@ function stationToFeature(
   const category: StationCategory =
     catalogueEntry?.category ??
     (vendor === 'unknown' ? 'pws' : defaultCategoryForVendor(vendor));
+  const place: StationPlace | null = catalogueEntry
+    ? (catalogueEntry.place ?? defaultPlaceForStation(catalogueEntry))
+    : null;
 
   if (station.status === 'unavailable') {
     return {
@@ -196,10 +208,13 @@ function stationToFeature(
         uid: station.id,
         vendor,
         category,
+        place,
         name: station.name,
         shortName: catalogueEntry?.shortName ?? null,
         sourceLabel: station.sourceLabel,
         elevationM,
+        landform: catalogueEntry?.landform ?? null,
+        tpiM: catalogueEntry?.tpiM ?? null,
         country: catalogueEntry?.country ?? null,
         region: catalogueEntry?.region ?? null,
         pageUrl: station.pageUrl ?? catalogueEntry?.pageUrl ?? null,
@@ -246,10 +261,13 @@ function stationToFeature(
       uid: station.id,
       vendor,
       category,
+      place,
       name: station.name,
       shortName: catalogueEntry?.shortName ?? null,
       sourceLabel: station.sourceLabel,
       elevationM,
+      landform: catalogueEntry?.landform ?? null,
+      tpiM: catalogueEntry?.tpiM ?? null,
       country: catalogueEntry?.country ?? null,
       region: catalogueEntry?.region ?? null,
       pageUrl: station.pageUrl ?? catalogueEntry?.pageUrl ?? null,

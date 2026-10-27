@@ -69,14 +69,17 @@ export {
   CATALOGUE_SCHEMA_VERSION,
   SHORT_NAME_MAX_LENGTH,
   STATION_CATEGORIES,
+  STATION_PLACES,
   STATION_VENDORS,
   applyStationOverrides,
   catalogueStationSchema,
   deduplicateCatalogueStations,
   defaultCategoryForVendor,
+  defaultPlaceForStation,
   enrichStationsWithLaunches,
   formatStationUid,
   isStationCategory,
+  isStationPlace,
   isStationVendor,
   mergeCatalogueStations,
   parseCatalogueStation,
@@ -89,6 +92,17 @@ export {
   stationOverridesSchema,
 } from './catalogue.ts';
 
+export {
+  LANDFORMS,
+  TERRAIN_RADIUS_M,
+  applyLandforms,
+  classifyLandform,
+  isLandform,
+  terrainRing,
+} from './terrain.ts';
+
+export type { Landform, TerrainSample } from './terrain.ts';
+
 export type {
   ApplyStationOverridesOptions,
   CatalogueStation,
@@ -100,6 +114,7 @@ export type {
   StationLocatorValue,
   StationOverride,
   StationOverridesDocument,
+  StationPlace,
   StationVendor,
 } from './catalogue.ts';
 

@@ -89,6 +89,7 @@ export function parseAwcMetarEntry(raw: unknown): AwcParsedMetar | null {
     region: null,
     timeZone: null,
     pageUrl: `https://aviationweather.gov/data/metar/?id=${encodeURIComponent(icaoId)}`,
+    place: 'airport',
     capabilities: {
       gustLull: true,
       temperature: true,
