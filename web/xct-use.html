@@ -124,7 +124,7 @@
             <tr><th>size</th><td>2–100. Tiles scale by <code>1 + size/100</code>. 0 or 1 leaves them at 80&nbsp;px.</td></tr>
             <tr><th>mode</th><td><code>dark</code>.</td></tr>
             <tr><th>lat, lng</th><td>Fixed position. Both are required. <code>lon</code> works in place of <code>lng</code>.</td></tr>
-            <tr><th>alt</th><td>Your altitude in metres. Used only to tell a peak from the ground.</td></tr>
+            <tr><th>alt</th><td>Your altitude in metres. The tick on each station’s height rail. The slider appears once this is set and a station on screen has a height; moving it overrides the fix for that session. The title still calls a site a peak when it is more than 80&nbsp;m above you.</td></tr>
             <tr><th>maxage</th><td>Hide readings older than this many minutes. Enter a whole number of at least 1. Default 120.</td></tr>
             <tr><th>category</th><td>Comma list of <code>freeflight</code>, <code>mountain</code>, <code>synoptic</code>, <code>marine</code>, <code>pws</code>. Default is all of them.</td></tr>
             <tr><th>debug</th><td>Any value. Pretend the fix is Mt Hatis and drift it. For testing, not for flying.</td></tr>
@@ -132,7 +132,7 @@
         </table>
 
         <h2>Reading a tile</h2>
-        <p class="read">The rose is the wind: average over gust, arrow flies with the wind, top tick is north. Colour follows the average: blue under 5 km/h, green 5–9, gold 10–14, orange 15–24, deep orange 25–39. Red, and a tinted tile, is 40 km/h or more — past trim. A gust in a higher band steps the colour up one. A grey mountain is a peak. A faint dashed circle outside the rose is where the station is; the solid arc on it is the direction, and the footer is ~ and the distance. Grey metres just above that are the station height, when we know it. No age chip means the reading is live. Then amber, dark brown, and black — three fixed pairs, so the digits stay readable — while the tile fades. A stale arrow is an outline on a dashed ring. A station with no reading is left off the screen. A green arc on the wind ring is that station’s launch direction, when it declares one.</p>
+        <p class="read">The rose is the wind: average over gust, arrow flies with the wind, top tick is north. Colour follows the average: blue under 5 km/h, green 5–9, gold 10–14, orange 15–24, deep orange 25–39. Red, and a tinted tile, is 40 km/h or more — past trim. A gust in a higher band steps the colour up one. A faint dashed circle outside the rose is where the station is; the solid arc on it is the direction, and the footer is the station metres on the left and ~ and the distance on the right. With no station height, the distance stays centered. A rail on the left is height among the stations on this screen: the bead is this station, the tick is your altitude, and the bar between them is the gap. With no altitude yet, the metres are the station’s own. The slider along the bottom is shown once a fix or the alt parameter has your altitude and a station on screen has a height. Moving it overrides that altitude for the session. Past the highest or lowest station, the tick becomes an arrow. No age chip means the reading is live. Then amber, dark brown, and black — three fixed pairs, so the digits stay readable — while the tile fades. A stale arrow is an outline on a dashed ring. A station with no reading is left off the screen. A green arc on the wind ring is that station’s launch direction, when it declares one.</p>
       </div>
     </main>
 

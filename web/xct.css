@@ -2,9 +2,10 @@
  * The rose is the wind. A faint dashed circle outside it is where the station
  * is: the solid arc on that circle, and the distance in the footer. Colour on
  * the rose is the wind band only.
+ * Height is a rail on the left. Bottom is the lowest station on screen, top
+ * is the highest, the bead is this station, the tick is your altitude.
  * Freshness: no chip means live. Then three fixed pairs — amber, dark brown,
- * black — and the tile fades. A stale reading draws an outline arrow.
- * Peak = mountain silhouette. */
+ * black — and the tile fades. A stale reading draws an outline arrow. */
 :root {
   --size-factor: 1;
   --bg: #ffffff;
@@ -21,6 +22,8 @@
   --wind-fresh: #e08a00;
   --wind-strong: #d35400;
   --wind-trim: #c0392b;
+  --elev-ink: #1a1a1a;
+  --elev-track: #c6c6c6;
 }
 
 * {
@@ -74,9 +77,8 @@ body {
   overflow: hidden;
 }
 
-/* Peak only — valley/ground is plain tile (default). */
-.stationDetail.peak {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' preserveAspectRatio='none'%3E%3Cpath d='M80 80 L40 0 L0 80 Z' fill='%23000' fill-opacity='0.16'/%3E%3C/svg%3E");
+body.has-alt .stationList {
+  bottom: 32px;
 }
 
 /* Wind colour on the arrow and the numbers. Past trim also tints the tile. */
@@ -107,7 +109,7 @@ body {
 
 .stationDetail .name,
 .stationDetail .dialWrap,
-.stationDetail .elev,
+.stationDetail .elevRail,
 .stationDetail .meta {
   opacity: var(--vis, 1);
 }
@@ -258,36 +260,190 @@ body {
   font-size: 11.5px;
 }
 
-/* Known station height, just above the distance. Grey, and it ends in m. */
-.elev {
+/* Metres and distance share the footer, under the rose. The step down in
+ * type is what lets both fit in 80 px. No height: distance stays centered. */
+.elevNum {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(1px * var(--size-factor));
+  min-width: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.elevNum .caret {
+  display: none;
+  flex: none;
+}
+
+.elevNum .caret.up,
+.elevNum .caret.down,
+.elevNum .caret.level {
+  display: block;
+}
+
+.elevNum .caret.up,
+.elevNum .caret.down {
+  width: 0;
+  height: 0;
+  border-right: calc(3px * var(--size-factor)) solid transparent;
+  border-left: calc(3px * var(--size-factor)) solid transparent;
+}
+
+.elevNum .caret.up {
+  border-bottom: calc(4px * var(--size-factor)) solid currentColor;
+}
+
+.elevNum .caret.down {
+  border-top: calc(4px * var(--size-factor)) solid currentColor;
+}
+
+.elevNum .caret.level {
+  width: calc(6px * var(--size-factor));
+  height: calc(2px * var(--size-factor));
+  background: currentColor;
+}
+
+/* Height among the stations on screen. Up the rail is higher. */
+.elevRail {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: calc(14px * var(--size-factor));
-  z-index: 4;
-  text-align: center;
-  font-size: calc(0.52em * var(--size-factor));
-  line-height: 1;
-  font-weight: bold;
-  color: #5c5c5c;
+  z-index: 5;
+  top: calc(16px * var(--size-factor));
+  bottom: calc(16px * var(--size-factor));
+  left: calc(5px * var(--size-factor));
+  width: calc(4px * var(--size-factor));
   pointer-events: none;
 }
 
-/* Footer is the distance only. Neutral, so it is not another wind number. */
+.elevTrack {
+  position: absolute;
+  inset: 0;
+  border-radius: calc(2px * var(--size-factor));
+  background: var(--elev-track);
+}
+
+.elevFill {
+  position: absolute;
+  right: 0;
+  left: 0;
+  background: var(--elev-ink);
+}
+
+.elevYou,
+.elevBead {
+  position: absolute;
+  border-radius: 1px;
+  background: var(--elev-ink);
+  transform: translateY(50%);
+}
+
+.elevYou {
+  z-index: 1;
+  left: calc(-5px * var(--size-factor));
+  width: calc(9px * var(--size-factor));
+  height: calc(2px * var(--size-factor));
+}
+
+.elevBead {
+  z-index: 2;
+  left: calc(-2px * var(--size-factor));
+  width: calc(8px * var(--size-factor));
+  height: calc(4px * var(--size-factor));
+  outline: 1px solid var(--tile);
+}
+
+.elevYou.off-high,
+.elevYou.off-low {
+  left: calc(-2px * var(--size-factor));
+  width: 0;
+  height: 0;
+  background: transparent;
+  border-radius: 0;
+  outline: none;
+  transform: none;
+}
+
+.elevYou.off-high {
+  top: -1px;
+  bottom: auto;
+  border-right: calc(4px * var(--size-factor)) solid transparent;
+  border-bottom: calc(5px * var(--size-factor)) solid var(--elev-ink);
+  border-left: calc(4px * var(--size-factor)) solid transparent;
+}
+
+.elevYou.off-low {
+  bottom: -1px;
+  border-top: calc(5px * var(--size-factor)) solid var(--elev-ink);
+  border-right: calc(4px * var(--size-factor)) solid transparent;
+  border-left: calc(4px * var(--size-factor)) solid transparent;
+}
+
+.altBar {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  background: var(--bg);
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.altBar[hidden] {
+  display: none;
+}
+
+.altLabel {
+  flex: none;
+}
+
+.altSlider {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  accent-color: var(--fg);
+}
+
+.altReadout {
+  flex: none;
+  min-width: 4.6em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+/* Footer is under the rose. Distance only, centered, until a height is known. */
 .stationDetail .meta {
   position: relative;
   z-index: 4;
   flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: calc(14px * var(--size-factor));
   padding: 0 2px;
-  text-align: center;
   font-size: calc(0.68em * var(--size-factor));
   line-height: calc(14px * var(--size-factor));
   font-weight: bold;
   color: var(--fg);
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.stationDetail .meta.has-elev {
+  justify-content: space-between;
+  gap: 2px;
+  padding: 0 calc(2px * var(--size-factor));
+  font-size: calc(0.58em * var(--size-factor));
+}
+
+.stationDetail .meta .dist {
+  flex: none;
 }
 
 body.dark {
@@ -304,6 +460,8 @@ body.dark {
   --wind-fresh: #ffb020;
   --wind-strong: #ff7a33;
   --wind-trim: #ff6b6b;
+  --elev-ink: #f2f2f2;
+  --elev-track: #454545;
 }
 
 body.dark .ageChip.age-early {
@@ -321,18 +479,10 @@ body.dark .ageChip.age-stale {
   color: #1a1a1a;
 }
 
-body.dark .elev {
-  color: #c8c8c8;
-}
-
 body.dark .orbitDash {
   stroke: #6a6a6a;
 }
 
 body.dark .orbitMark {
   stroke: #f4f4f4;
-}
-
-body.dark .stationDetail.peak {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' preserveAspectRatio='none'%3E%3Cpath d='M80 80 L40 0 L0 80 Z' fill='%23fff' fill-opacity='0.12'/%3E%3C/svg%3E");
 }
