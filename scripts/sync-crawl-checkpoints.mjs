@@ -30,8 +30,20 @@ export function isMissingObject(output) {
   return /specified key does not exist/i.test(output ?? '');
 }
 
+/** Checkpoint files are `<vendor>-<scope>.json`; `._*` are macOS metadata sidecars. */
+function isCheckpointName(name) {
+  return name.endsWith('.json') && !name.startsWith('._');
+}
+
+// macOS bsdtar stores extended attributes as `._name` entries unless
+// COPYFILE_DISABLE is set; GNU tar on Linux would extract those as plain
+// files that are not JSON. Suppress them when creating and drop them when
+// extracting so every `.json` in the directory is a real checkpoint.
 function tar(args) {
-  const result = spawnSync('tar', args, { stdio: 'inherit' });
+  const result = spawnSync('tar', ['--exclude', '._*', ...args], {
+    stdio: 'inherit',
+    env: { ...process.env, COPYFILE_DISABLE: '1' },
+  });
   if (result.status !== 0) throw new Error(`tar ${args[0]} failed`);
 }
 
@@ -46,7 +58,7 @@ function withTemporaryFile(use) {
 
 function checkpointFiles() {
   if (!existsSync(CHECKPOINTS_DIR)) return [];
-  return readdirSync(CHECKPOINTS_DIR).filter(name => name.endsWith('.json'));
+  return readdirSync(CHECKPOINTS_DIR).filter(isCheckpointName);
 }
 
 export function uploadCheckpoints({ log = console.log } = {}) {

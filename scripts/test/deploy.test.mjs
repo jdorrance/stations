@@ -41,8 +41,14 @@ test('deploy artifacts refuse empty, shrunken, unhydrated or oversized catalogue
   assert.ok(buildDeployArtifacts(catalogue, { minStations: INITIAL_SEED_STATIONS.length }));
   assert.throws(
     () => buildDeployArtifacts({ ...catalogue, stations: catalogue.stations.map(station => ({ ...station, locator: {} })) }),
-    /No station carries a locator/,
+    /Only 0 of \d+ stations carry a locator/,
   );
+  const mostlyUnhydrated = catalogue.stations.map((station, index) => (index === 0 ? station : { ...station, locator: {} }));
+  assert.throws(
+    () => buildDeployArtifacts({ ...catalogue, stations: mostlyUnhydrated }),
+    /Only 1 of \d+ stations carry a locator.*sync-crawl-checkpoints/,
+  );
+  assert.ok(buildDeployArtifacts({ ...catalogue, stations: mostlyUnhydrated }, { minHydratedShare: 0 }));
   assert.throws(() => buildDeployArtifacts(catalogue, { maxHydratedBytes: 1024 }), /above the 0 MiB limit; shard/);
 });
 

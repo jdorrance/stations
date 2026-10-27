@@ -23,6 +23,9 @@ import { readWorkerConfig, root, wrangler } from './workspace.mjs';
 /** Above this the isolate's memory headroom shrinks; shard by region instead of raising it. */
 export const MAX_HYDRATED_BYTES = 40 * 1024 * 1024;
 
+/** Real crawls hydrate ~97% of stations; seeds alone hydrate well under 1%. */
+export const MIN_HYDRATED_SHARE = 0.5;
+
 const CONTENT_TYPES = {
   hydrated: 'application/json; charset=utf-8',
   json: 'application/json; charset=utf-8',
@@ -39,9 +42,14 @@ const FILE_NAMES = {
  * Serializes one hydrated catalogue into the three deploy artifacts. The public
  * documents are produced by the same contract functions the crawler and the API
  * handler use, so the Worker streams bytes identical to a handler response.
- * `minStations` lets a caller refuse to publish a crawl that shrank.
+ * `minStations` lets a caller refuse to publish a crawl that shrank. Live
+ * adapters need locators, so a catalogue where fewer than `minHydratedShare`
+ * of the stations carry one is refused as well: that is what a missing or
+ * unreadable `.cache/stations-crawl/` looks like.
  */
-export function buildDeployArtifacts(catalogue, { maxHydratedBytes = MAX_HYDRATED_BYTES, minStations = 1 } = {}) {
+export function buildDeployArtifacts(catalogue, {
+  maxHydratedBytes = MAX_HYDRATED_BYTES, minStations = 1, minHydratedShare = MIN_HYDRATED_SHARE,
+} = {}) {
   const count = Array.isArray(catalogue.stations) ? catalogue.stations.length : 0;
   if (count === 0) {
     throw new Error('Catalogue has no stations; run pnpm catalogue:crawl or catalogue:build first');
@@ -50,8 +58,11 @@ export function buildDeployArtifacts(catalogue, { maxHydratedBytes = MAX_HYDRATE
     throw new Error(`Catalogue has ${count} stations, below the required ${minStations}; a degraded crawl is not published`);
   }
   const hydratedCount = catalogue.stations.filter(station => Object.keys(station.locator ?? {}).length > 0).length;
-  if (hydratedCount === 0) {
-    throw new Error('No station carries a locator; live adapters need .cache/stations-crawl/ checkpoints');
+  if (hydratedCount < count * minHydratedShare) {
+    throw new Error(
+      `Only ${hydratedCount} of ${count} stations carry a locator; live adapters need the ` +
+      '.cache/stations-crawl/ checkpoints (node scripts/sync-crawl-checkpoints.mjs --restore)',
+    );
   }
   const document = {
     schemaVersion: catalogue.schemaVersion,
