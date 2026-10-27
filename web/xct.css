@@ -1,0 +1,338 @@
+/* Edge-tight XCTrack widget. 80×84 tile: name, rose, distance, each in its own row.
+ * The rose is the wind. A faint dashed circle outside it is where the station
+ * is: the solid arc on that circle, and the distance in the footer. Colour on
+ * the rose is the wind band only.
+ * Freshness: no chip means live. Then three fixed pairs — amber, dark brown,
+ * black — and the tile fades. A stale reading draws an outline arrow.
+ * Peak = mountain silhouette. */
+:root {
+  --size-factor: 1;
+  --bg: #ffffff;
+  --fg: #111111;
+  --tile: #ececec;
+  --tile-nogo: #f6d9d4;
+  --empty: #666666;
+  --ring: #9a9a9a;
+  --fav: #62c484;
+  /* Wind colour. Steps through the usual 5–15 km/h range; red is past trim. */
+  --wind-light: #2a6fbf;
+  --wind-easy: #1b7a36;
+  --wind-active: #a67c00;
+  --wind-fresh: #e08a00;
+  --wind-strong: #d35400;
+  --wind-trim: #c0392b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  overflow: hidden;
+}
+
+.stationList {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+
+.emptyState {
+  width: 100%;
+  text-align: center;
+  margin-top: 1.2em;
+  color: var(--empty);
+  font-size: calc(0.85em * var(--size-factor));
+}
+
+.stationDetail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(80px * var(--size-factor));
+  height: calc(84px * var(--size-factor));
+  max-width: 100%;
+  margin: calc(5px * var(--size-factor));
+  padding: 0;
+  background-color: var(--tile);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  border-radius: 3px;
+  color: var(--fg);
+  overflow: hidden;
+}
+
+/* Peak only — valley/ground is plain tile (default). */
+.stationDetail.peak {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' preserveAspectRatio='none'%3E%3Cpath d='M80 80 L40 0 L0 80 Z' fill='%23000' fill-opacity='0.16'/%3E%3C/svg%3E");
+}
+
+/* Wind colour on the arrow and the numbers. Past trim also tints the tile. */
+.stationDetail.wind-light {
+  color: var(--wind-light);
+}
+
+.stationDetail.wind-easy {
+  color: var(--wind-easy);
+}
+
+.stationDetail.wind-active {
+  color: var(--wind-active);
+}
+
+.stationDetail.wind-fresh {
+  color: var(--wind-fresh);
+}
+
+.stationDetail.wind-strong {
+  color: var(--wind-strong);
+}
+
+.stationDetail.wind-trim {
+  --tile: var(--tile-nogo);
+  color: var(--wind-trim);
+}
+
+.stationDetail .name,
+.stationDetail .dialWrap,
+.stationDetail .elev,
+.stationDetail .meta {
+  opacity: var(--vis, 1);
+}
+
+/* Three pairs, each above 8:1. No blended brown. */
+.ageChip {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  z-index: 3;
+  font-size: calc(0.5em * var(--size-factor));
+  font-weight: bold;
+  line-height: 1.15;
+  padding: 0 2px;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.ageChip.age-early {
+  background: #e0a100;
+  color: #1a1200;
+}
+
+.ageChip.age-late {
+  background: #5c3310;
+  color: #ffffff;
+}
+
+.ageChip.age-stale {
+  background: #1a1a1a;
+  color: #ffffff;
+}
+
+/* Place ring. Faint dashes, with a solid arc toward the station. Not the wind. */
+.orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.orbitDash {
+  fill: none;
+  stroke: #b9b9b9;
+  stroke-width: 1.35;
+  stroke-dasharray: 3.6 3.6;
+}
+
+.orbitMark {
+  fill: none;
+  stroke: #1a1a1a;
+  stroke-width: 2.8;
+  stroke-linecap: round;
+}
+
+.stationDetail .name {
+  position: relative;
+  z-index: 4;
+  flex: none;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: calc(13px * var(--size-factor));
+  font-size: calc(0.68em * var(--size-factor));
+  line-height: calc(13px * var(--size-factor));
+  padding: 0 2px;
+  color: var(--fg);
+}
+
+.stationDetail.has-age .name {
+  text-align: left;
+  padding-left: 3px;
+  padding-right: calc(28px * var(--size-factor));
+}
+
+.stationDetail .dialWrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+
+.stationDetail .dial {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+  display: block;
+}
+
+.dialRing {
+  fill: none;
+  stroke: var(--ring);
+  stroke-width: 1.5;
+}
+
+.dialTick {
+  stroke: var(--ring);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+/* Declared favourable launch directions, as a band on the ring. */
+.dialFav {
+  fill: none;
+  stroke: var(--fav);
+  stroke-width: 6;
+  stroke-linecap: butt;
+}
+
+/* Arrow sits on the rim at the FROM bearing and flies with the wind. */
+.dialArrow {
+  fill: currentColor;
+  stroke: var(--tile);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+
+/* Stale: outline arrow and a broken ring, so it reads as a memory of a reading. */
+.stationDetail.stale .dialArrow {
+  fill: var(--tile);
+  stroke: currentColor;
+  stroke-width: 2;
+  paint-order: normal;
+}
+
+.stationDetail.stale .dialRing {
+  stroke-dasharray: 3 2.5;
+}
+
+.dialAvg,
+.dialGust {
+  fill: currentColor;
+  text-anchor: middle;
+  font-weight: bold;
+}
+
+.dialAvg {
+  font-size: 16.5px;
+}
+
+.dialGust {
+  font-size: 11.5px;
+}
+
+/* Known station height, just above the distance. Grey, and it ends in m. */
+.elev {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(14px * var(--size-factor));
+  z-index: 4;
+  text-align: center;
+  font-size: calc(0.52em * var(--size-factor));
+  line-height: 1;
+  font-weight: bold;
+  color: #5c5c5c;
+  pointer-events: none;
+}
+
+/* Footer is the distance only. Neutral, so it is not another wind number. */
+.stationDetail .meta {
+  position: relative;
+  z-index: 4;
+  flex: none;
+  height: calc(14px * var(--size-factor));
+  padding: 0 2px;
+  text-align: center;
+  font-size: calc(0.68em * var(--size-factor));
+  line-height: calc(14px * var(--size-factor));
+  font-weight: bold;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.dark {
+  --bg: #000000;
+  --fg: #f0f0f0;
+  --tile: #2a2a2a;
+  --tile-nogo: #3a2220;
+  --empty: #aaaaaa;
+  --ring: #8c8c8c;
+  --fav: #2f8f55;
+  --wind-light: #7eb6ff;
+  --wind-easy: #3dcc8c;
+  --wind-active: #f0c14a;
+  --wind-fresh: #ffb020;
+  --wind-strong: #ff7a33;
+  --wind-trim: #ff6b6b;
+}
+
+body.dark .ageChip.age-early {
+  background: #e0a100;
+  color: #1a1200;
+}
+
+body.dark .ageChip.age-late {
+  background: #e8e8e8;
+  color: #1a1a1a;
+}
+
+body.dark .ageChip.age-stale {
+  background: #ffffff;
+  color: #1a1a1a;
+}
+
+body.dark .elev {
+  color: #c8c8c8;
+}
+
+body.dark .orbitDash {
+  stroke: #6a6a6a;
+}
+
+body.dark .orbitMark {
+  stroke: #f4f4f4;
+}
+
+body.dark .stationDetail.peak {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80' preserveAspectRatio='none'%3E%3Cpath d='M80 80 L40 0 L0 80 Z' fill='%23fff' fill-opacity='0.12'/%3E%3C/svg%3E");
+}
