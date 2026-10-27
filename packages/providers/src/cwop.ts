@@ -45,7 +45,13 @@ import {
   validPosition,
   type Coverage,
   type Position,
+  type RegionCode,
 } from '@stations/geography';
+import {
+  coverageCountryHint,
+  defaultTimeZoneForPoint,
+  defaultTimeZoneForRegion,
+} from './region-hints.ts';
 import {
   createSeededProvider,
   customStationConfig,
@@ -730,6 +736,26 @@ const CWOP_HUBS: readonly Position[] = [
   { latitude: 35.35, longitude: -85.4 },
   { latitude: 34.89, longitude: -85.46 },
   { latitude: 43.37, longitude: -72.36 },
+  { latitude: -36.85, longitude: 174.76 }, // Auckland
+  { latitude: -37.69, longitude: 176.17 }, // Tauranga
+  { latitude: -37.79, longitude: 175.28 }, // Hamilton
+  { latitude: -38.68, longitude: 176.07 }, // Taupo
+  { latitude: -39.06, longitude: 174.07 }, // New Plymouth
+  { latitude: -39.49, longitude: 176.91 }, // Napier
+  { latitude: -39.93, longitude: 175.05 }, // Whanganui
+  { latitude: -40.35, longitude: 175.61 }, // Palmerston North
+  { latitude: -41.29, longitude: 174.78 }, // Wellington
+  { latitude: -41.27, longitude: 173.28 }, // Nelson
+  { latitude: -41.51, longitude: 173.96 }, // Blenheim
+  { latitude: -42.45, longitude: 171.21 }, // Greymouth
+  { latitude: -43.53, longitude: 172.64 }, // Christchurch
+  { latitude: -44.39, longitude: 171.25 }, // Timaru
+  { latitude: -45.03, longitude: 168.66 }, // Queenstown
+  { latitude: -45.87, longitude: 170.50 }, // Dunedin
+  { latitude: -46.41, longitude: 168.35 }, // Invercargill
+  { latitude: -35.72, longitude: 174.32 }, // Whangarei
+  { latitude: -38.66, longitude: 178.02 }, // Gisborne
+  { latitude: -43.95, longitude: -176.55 }, // Chatham Islands
 ];
 
 function parseAprsPosition(rawText: string, expectedCallsign: string): Position | null {
@@ -861,9 +887,9 @@ export const cwopProvider: StationNetworkProvider = {
                   latitude: pos.latitude,
                   longitude: pos.longitude,
                   elevationM: null,
-                  country: inferRegionCode(pos),
+                  country: inferRegionCode(pos, coverageCountryHint(pos)),
                   region: null,
-                  timeZone: null,
+                  timeZone: defaultTimeZoneForPoint(pos) ?? defaultTimeZoneForRegion(coverageCountryHint(pos)),
                   pageUrl: `http://www.findu.com/cgi-bin/wxpage.cgi?call=${encodeURIComponent(call)}`,
                   category: 'pws' as const,
                   capabilities: {
@@ -922,6 +948,101 @@ const WU_ARMENIA_GEOCODES: readonly Position[] = [
   { latitude: 39.85, longitude: 45.0 }, // Vedi / Areni / Vayots Dzor
   { latitude: 39.45, longitude: 46.25 }, // Goris / Tatev / Syunik
   { latitude: 40.84, longitude: 44.48 }, // Vanadzor / Spitak / Lori
+];
+
+const WU_NZ_GEOCODES: readonly Position[] = [
+  { latitude: -52.5506, longitude: 169.1497 },
+  { latitude: -50.4931, longitude: 166.2956 },
+  { latitude: -47.2767, longitude: 167.4628 },
+  { latitude: -46.4472, longitude: 169.8117 },
+  { latitude: -46.4106, longitude: 168.3178 },
+  { latitude: -46.1558, longitude: 166.6128 },
+  { latitude: -45.9267, longitude: 170.1967 },
+  { latitude: -45.8131, longitude: 170.557 },
+  { latitude: -45.7621, longitude: 167.4 },
+  { latitude: -45.2206, longitude: 166.8844 },
+  { latitude: -45.0383, longitude: 169.6842 },
+  { latitude: -44.9806, longitude: 168.861 },
+  { latitude: -44.9717, longitude: 171.0806 },
+  { latitude: -44.9289, longitude: 168.735 },
+  { latitude: -44.7427, longitude: 171.008 },
+  { latitude: -44.7403, longitude: 168.026 },
+  { latitude: -44.6378, longitude: 168.908 },
+  { latitude: -44.6092, longitude: 169.283 },
+  { latitude: -44.5258, longitude: 169.8892 },
+  { latitude: -44.4554, longitude: 168.7 },
+  { latitude: -44.2389, longitude: 169.259 },
+  { latitude: -44.1534, longitude: 169.756 },
+  { latitude: -44.1406, longitude: 169.066 },
+  { latitude: -43.8167, longitude: -176.475 },
+  { latitude: -43.8097, longitude: 172.82 },
+  { latitude: -43.6436, longitude: 172.624 },
+  { latitude: -43.586, longitude: 172.766 },
+  { latitude: -43.5325, longitude: 171.554 },
+  { latitude: -43.5009, longitude: 170.962 },
+  { latitude: -43.4278, longitude: 170.151 },
+  { latitude: -43.2339, longitude: 172.217 },
+  { latitude: -43.1562, longitude: 171.672 },
+  { latitude: -42.7128, longitude: 170.9842 },
+  { latitude: -42.502, longitude: 172.417 },
+  { latitude: -42.3115, longitude: 173.61 },
+  { latitude: -41.834, longitude: 172.808 },
+  { latitude: -41.7608, longitude: 172.737 },
+  { latitude: -41.7406, longitude: 171.5794 },
+  { latitude: -41.73, longitude: 172.5 },
+  { latitude: -41.7264, longitude: 174.2758 },
+  { latitude: -41.6472, longitude: 171.85 },
+  { latitude: -41.5713, longitude: 172.936 },
+  { latitude: -41.3727, longitude: 175.054 },
+  { latitude: -41.3419, longitude: 173.253 },
+  { latitude: -41.3292, longitude: 173.752 },
+  { latitude: -41.0719, longitude: 175.7 },
+  { latitude: -41.0256, longitude: 172.861 },
+  { latitude: -41.0056, longitude: 174.935 },
+  { latitude: -40.9042, longitude: 176.2117 },
+  { latitude: -40.665, longitude: 173.9994 },
+  { latitude: -40.5444, longitude: 173.0006 },
+  { latitude: -40.3183, longitude: 175.6144 },
+  { latitude: -39.9611, longitude: 175.0258 },
+  { latitude: -39.7769, longitude: 176.171 },
+  { latitude: -39.7679, longitude: 174.481 },
+  { latitude: -39.7544, longitude: 176.682 },
+  { latitude: -39.7018, longitude: 176.91 },
+  { latitude: -39.6097, longitude: 174.2914 },
+  { latitude: -39.5688, longitude: 174.064 },
+  { latitude: -39.4458, longitude: 175.6578 },
+  { latitude: -39.1169, longitude: 177.9617 },
+  { latitude: -39.0651, longitude: 174.021 },
+  { latitude: -38.9837, longitude: 174.313 },
+  { latitude: -38.6918, longitude: 176.073 },
+  { latitude: -38.6744, longitude: 174.627 },
+  { latitude: -38.6583, longitude: 177.985 },
+  { latitude: -38.3737, longitude: 176.264 },
+  { latitude: -38.1711, longitude: 174.7039 },
+  { latitude: -38.0226, longitude: 177.303 },
+  { latitude: -37.9612, longitude: 177.023 },
+  { latitude: -37.8606, longitude: 175.3317 },
+  { latitude: -37.8204, longitude: 175.906 },
+  { latitude: -37.8153, longitude: 174.834 },
+  { latitude: -37.7531, longitude: 176.46 },
+  { latitude: -37.748, longitude: 176.472 },
+  { latitude: -37.6288, longitude: 176.172 },
+  { latitude: -37.5608, longitude: 178.3142 },
+  { latitude: -37.533, longitude: 175.224 },
+  { latitude: -37.3258, longitude: 174.677 },
+  { latitude: -36.8453, longitude: 174.868 },
+  { latitude: -36.8336, longitude: 174.427 },
+  { latitude: -36.8319, longitude: 175.6753 },
+  { latitude: -36.6019, longitude: 174.808 },
+  { latitude: -36.4572, longitude: 174.548 },
+  { latitude: -36.0798, longitude: 174.598 },
+  { latitude: -35.9028, longitude: 175.1153 },
+  { latitude: -35.8703, longitude: 174.135 },
+  { latitude: -35.2628, longitude: 173.9111 },
+  { latitude: -35.1822, longitude: 173.134 },
+  { latitude: -34.8607, longitude: 173.335 },
+  { latitude: -34.4292, longitude: 172.6817 },
+  { latitude: -29.2444, longitude: -177.9289 },
 ];
 
 const WU_US_LAUNCH_GEOCODES: readonly Position[] = [
@@ -983,7 +1104,8 @@ const WU_US_LAUNCH_GEOCODES: readonly Position[] = [
 export function parseWuNearLocations(
   text: string,
   maxDistanceKm = Infinity,
-  allowAllInArmenia = true,
+  /** When true, stations inside AM/NZ coverage bypass the distance filter. */
+  allowCoverageBypass = true,
 ): CatalogueStation[] {
   const data: unknown = JSON.parse(text);
   const loc = isRecord(data) && isRecord(data.location) ? data.location : null;
@@ -1009,19 +1131,20 @@ export function parseWuNearLocations(
     }
 
     const rawCountry = typeof countries[i] === 'string' ? countries[i].trim().toUpperCase() : null;
-    const isArmenia =
-      rawCountry === 'AM' ||
-      (latitude >= 38.84 &&
-        latitude <= 41.3 &&
-        longitude >= 43.44 &&
-        longitude <= 46.63 &&
-        !(longitude > 45.4 && latitude > 40.55));
+    const coverageHint = coverageCountryHint({ latitude, longitude });
+    const hintedCountry =
+      rawCountry === 'AM' || rawCountry === 'NZ'
+        ? (rawCountry as RegionCode)
+        : coverageHint;
     const distKm = finiteNumber(distances[i]);
-    if (!allowAllInArmenia || !isArmenia) {
+    if (!allowCoverageBypass || (hintedCountry !== 'AM' && hintedCountry !== 'NZ')) {
       if (distKm !== null && distKm > maxDistanceKm) continue;
     }
 
-    const country = inferRegionCode({ latitude, longitude }, isArmenia ? 'AM' : rawCountry);
+    const country = inferRegionCode(
+      { latitude, longitude },
+      hintedCountry ?? rawCountry,
+    );
     const region =
       typeof states[i] === 'string' && states[i].trim() ? states[i].trim() : null;
     const rawName =
@@ -1037,7 +1160,9 @@ export function parseWuNearLocations(
       elevationM: null,
       country,
       region,
-      timeZone: isArmenia ? 'Asia/Yerevan' : null,
+      timeZone:
+        defaultTimeZoneForPoint({ latitude, longitude }) ??
+        defaultTimeZoneForRegion(hintedCountry),
       pageUrl: `https://www.wunderground.com/dashboard/pws/${encodeURIComponent(nativeId)}`,
       category: 'pws',
       capabilities: {
@@ -1071,15 +1196,20 @@ export const wundergroundProvider: StationNetworkProvider = {
       const scopeKey = await credentialCacheScope(apiKey);
       const candidatesByUid = new Map<string, CatalogueStation>();
 
-      const probeList: { pos: Position; maxKm: number; isAm: boolean }[] = [];
+      const probeList: { pos: Position; maxKm: number; coverageBypass: boolean }[] = [];
       if (regions.includes('AM')) {
         for (const pos of WU_ARMENIA_GEOCODES) {
-          probeList.push({ pos, maxKm: Infinity, isAm: true });
+          probeList.push({ pos, maxKm: Infinity, coverageBypass: true });
+        }
+      }
+      if (regions.includes('NZ')) {
+        for (const pos of WU_NZ_GEOCODES) {
+          probeList.push({ pos, maxKm: Infinity, coverageBypass: true });
         }
       }
       if (regions.includes('US') || regions.includes('CA') || regions.includes('MX')) {
         for (const pos of WU_US_LAUNCH_GEOCODES) {
-          probeList.push({ pos, maxKm: Infinity, isAm: false });
+          probeList.push({ pos, maxKm: Infinity, coverageBypass: false });
         }
       }
 
@@ -1087,7 +1217,7 @@ export const wundergroundProvider: StationNetworkProvider = {
       for (let i = 0; i < probeList.length; i += concurrency) {
         const slice = probeList.slice(i, i + concurrency);
         const foundBatches = await Promise.all(
-          slice.map(async ({ pos, maxKm, isAm }) => {
+          slice.map(async ({ pos, maxKm, coverageBypass }) => {
             try {
               const url = new URL(WU_PWS_NEAR_URL);
               url.searchParams.set('geocode', `${pos.latitude},${pos.longitude}`);
@@ -1101,7 +1231,7 @@ export const wundergroundProvider: StationNetworkProvider = {
                 subject: `WU PWS near (${pos.latitude}, ${pos.longitude})`,
                 timeoutMs: 6_000,
               });
-              return parseWuNearLocations(text, maxKm, isAm);
+              return parseWuNearLocations(text, maxKm, coverageBypass);
             } catch {
               return [];
             }
@@ -1200,7 +1330,7 @@ export const synopticProvider: StationNetworkProvider = {
               });
             }
           }
-          for (const country of ['CA', 'MX', 'AM'] as const) {
+          for (const country of ['CA', 'MX', 'AM', 'NZ'] as const) {
             if (regions.includes(country)) {
               queries.push({
                 key: `country:${country}`,

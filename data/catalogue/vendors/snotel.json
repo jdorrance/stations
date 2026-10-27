@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T20:46:59.676Z",
+  "generatedAt": "2026-10-27T16:40:11.681Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "snotel",
   "count": 354,
@@ -7355,9 +7356,9 @@
       "latitude": 40.678,
       "longitude": -110.94873,
       "elevationM": 3039,
-      "country": "US",
+      "country": null,
       "region": "UT",
-      "timeZone": "America/Denver",
+      "timeZone": null,
       "pageUrl": "https://nwcc-apps.sc.egov.usda.gov/awdb/site-plots/POR/WTEQ/UT/Trial%20Lake.html",
       "capabilities": {
         "gustLull": true,

@@ -14,7 +14,7 @@ import {
   createViewportStationStore,
 } from '@stations/client';
 
-assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM']);
+assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM', 'NZ']);
 assert.equal(inferRegionCode({ latitude: 40.2727, longitude: 44.7074 }, 'AM'), 'AM');
 assert.equal(inferRegionCode({ latitude: 40.2727, longitude: 44.7074 }), null);
 assert.equal(formatStationUid('windnerd', 'tiger-mountain'), 'windnerd:tiger-mountain');

@@ -28,6 +28,10 @@ import {
 import { avalancheProvider } from './avalanche.ts';
 import { climatenetProvider, hydrometAmProvider } from './armenia.ts';
 import { awcProvider } from './awc.ts';
+import { ecanProvider } from './ecan.ts';
+import { hilltopProvider } from './hilltop.ts';
+import { wmoNzProvider } from './wmo-nz.ts';
+import { ZEPHYR_DIRECT_TYPE_MAP, zephyrProvider } from './zephyr.ts';
 import {
   campbellProvider,
   ecowittProvider,
@@ -91,6 +95,10 @@ export const PROVIDERS: Readonly<Record<Exclude<StationVendor, 'custom'>, Statio
   ambient: ambientProvider,
   climatenet: climatenetProvider,
   hydromet_am: hydrometAmProvider,
+  wmo_nz: wmoNzProvider,
+  hilltop: hilltopProvider,
+  ecan: ecanProvider,
+  zephyr: zephyrProvider,
 };
 
 export const DEFAULT_DISCOVERY_VENDORS: readonly Exclude<StationVendor, 'custom'>[] = [
@@ -117,6 +125,11 @@ export const DEFAULT_DISCOVERY_VENDORS: readonly Exclude<StationVendor, 'custom'
   'ambient',
   'climatenet',
   'hydromet_am',
+  'wmo_nz',
+  // hilltop: registered in PROVIDERS but omitted while all councils are disabled
+  // (GetData unreachable from crawl network; Zephyr covers those council ports).
+  'ecan',
+  'zephyr',
 ];
 
 export function providerForVendor(vendor: StationVendor): StationNetworkProvider | null {
@@ -163,6 +176,28 @@ export function toStationConfigs(
 }
 
 export function unwrapAggregatorStation(station: CatalogueStation): CatalogueStation {
+  if (station.vendor === 'zephyr') {
+    const zephyrType =
+      typeof station.locator.zephyrType === 'string'
+        ? station.locator.zephyrType.trim().toLowerCase()
+        : null;
+    const externalId =
+      typeof station.locator.externalId === 'string' ? station.locator.externalId.trim() : null;
+    if (!zephyrType || !externalId) return station;
+    const mapped = ZEPHYR_DIRECT_TYPE_MAP[zephyrType];
+    if (!mapped) return station;
+    const normalizedId = mapped.normalizeId ? mapped.normalizeId(externalId) : externalId;
+    const uid = formatStationUid(mapped.vendor, normalizedId);
+    return {
+      ...station,
+      uid,
+      vendor: mapped.vendor,
+      nativeId: normalizedId,
+      aliases: [...new Set([station.uid, ...(station.aliases ?? [])])].filter(alias => alias !== uid),
+      locator: { stationId: normalizedId },
+    };
+  }
+
   if (station.vendor !== 'windsmobi') return station;
   const pvCode =
     typeof station.locator.pvCode === 'string'
@@ -211,9 +246,11 @@ export function mergeDiscoveredStations(
 ): CatalogueStation[] {
   const bySourceUid = mergeCatalogueStations([stations]);
   const aggregators = bySourceUid
-    .filter(station => station.vendor === 'windsmobi')
+    .filter(station => station.vendor === 'windsmobi' || station.vendor === 'zephyr')
     .map(unwrapAggregatorStation);
-  const direct = bySourceUid.filter(station => station.vendor !== 'windsmobi');
+  const direct = bySourceUid.filter(
+    station => station.vendor !== 'windsmobi' && station.vendor !== 'zephyr',
+  );
   const normalized = mergeCatalogueStations([aggregators, direct]);
   return deduplicateCrossVendor ? deduplicateCatalogueStations(normalized) : normalized;
 }

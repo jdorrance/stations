@@ -575,14 +575,14 @@ test('discoverStations aggregates US, CA, MX, and AM stations and filters out ou
   };
 
   const catalogue = await discoverStations({
-    regions: ['US', 'CA', 'MX', 'AM'],
+    regions: ['US', 'CA', 'MX', 'AM', 'NZ'],
     seeds: INITIAL_SEED_STATIONS,
     includeRemoteDiscovery: true,
     environment,
   });
 
   const countries = new Set(catalogue.stations.map(s => s.country));
-  assert.deepEqual([...countries].sort(), ['AM', 'CA', 'MX', 'US']);
+  assert.deepEqual([...countries].sort(), ['AM', 'CA', 'MX', 'NZ', 'US']);
   assert.equal(
     catalogue.stations.some(s => s.uid === 'openwindmap:999'),
     false,

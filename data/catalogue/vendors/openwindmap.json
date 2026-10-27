@@ -1,11 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T16:44:01.211Z",
+  "generatedAt": "2026-10-27T19:09:09.451Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "openwindmap",
   "count": 0,

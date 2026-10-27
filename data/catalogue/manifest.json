@@ -1,50 +1,54 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-27T16:44:01.211Z",
+  "generatedAt": "2026-10-27T19:09:09.451Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
-  "totalStations": 43544,
-  "unknownCountryStations": 5861,
-  "launchCorridorStations": 15799,
-  "launchesIndexed": 1293,
+  "totalStations": 44033,
+  "unknownCountryStations": 4655,
+  "launchCorridorStations": 16301,
+  "launchesIndexed": 1585,
   "countsByRegion": {
-    "US": 36684,
+    "US": 36448,
     "CA": 859,
-    "MX": 70,
-    "AM": 70
+    "MX": 71,
+    "AM": 79,
+    "NZ": 1921
   },
   "countsByCategory": {
-    "mountain": 14526,
-    "synoptic": 12638,
-    "pws": 11267,
-    "freeflight": 4534,
-    "marine": 579
+    "mountain": 14414,
+    "synoptic": 12927,
+    "pws": 12312,
+    "freeflight": 3795,
+    "marine": 585
   },
   "countsByPlace": {
-    "airport": 3344
+    "airport": 3464
   },
   "countsByVendor": {
-    "avalanche": 140,
-    "awc": 1605,
+    "avalanche": 143,
+    "awc": 2627,
     "climatenet": 29,
-    "cwop": 458,
+    "cwop": 502,
+    "ecan": 3,
     "eccc": 841,
-    "holfuy": 1194,
+    "holfuy": 1192,
     "hydromet_am": 19,
-    "iem": 6307,
-    "ndbc": 579,
-    "nws": 6,
+    "iem": 5233,
+    "ndbc": 585,
     "raws": 2416,
     "snotel": 354,
-    "synoptic": 25794,
-    "weatherlink": 3222,
-    "windguru": 117,
+    "synoptic": 25818,
+    "weatherlink": 2445,
+    "windguru": 157,
     "windnerd": 1,
-    "wunderground": 462
+    "wmo_nz": 50,
+    "wunderground": 1113,
+    "zephyr": 505
   },
   "rawCrawledByVendor": {
     "windnerd": 1,
@@ -52,53 +56,57 @@
     "ecowitt": 0,
     "campbell": 0,
     "openwindmap": 0,
-    "holfuy": 1193,
-    "awc": 349,
-    "windsmobi": 1922,
+    "holfuy": 1191,
+    "awc": 627,
+    "windsmobi": 3107,
     "windspion": 0,
-    "windguru": 131,
+    "windguru": 181,
     "windy": 0,
-    "weatherlink": 3222,
+    "weatherlink": 2446,
     "realtime_txt": 0,
     "raws": 2416,
     "snotel": 354,
-    "avalanche": 572,
-    "iem": 8516,
-    "nws": 791,
+    "avalanche": 634,
+    "iem": 8410,
+    "nws": 991,
     "eccc": 845,
-    "ndbc": 579,
+    "ndbc": 585,
     "conagua": 0,
-    "cwop": 458,
-    "wunderground": 462,
-    "synoptic": 31886,
+    "cwop": 502,
+    "wunderground": 1113,
+    "synoptic": 31887,
     "ambient": 0,
     "climatenet": 29,
-    "hydromet_am": 19
+    "hydromet_am": 19,
+    "wmo_nz": 55,
+    "hilltop": 0,
+    "ecan": 3,
+    "zephyr": 505
   },
   "vendorRuns": {
     "windnerd": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:27:07.700Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "tempest": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "ecowitt": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "campbell": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "openwindmap": {
       "status": "partial",
-      "sourceGeneratedAt": "2026-10-27T16:44:01.211Z",
+      "sourceGeneratedAt": "2026-10-27T19:09:09.451Z",
       "diagnostics": [
         {
           "level": "error",
@@ -284,304 +292,352 @@
     },
     "holfuy": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-27T06:42:44.924Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "awc": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-27T13:50:14.652Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "windsmobi": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "windspion": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "windguru": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:27:43.209Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "windy": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "weatherlink": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "realtime_txt": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "raws": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "snotel": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T20:46:59.676Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "avalanche": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "iem": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "nws": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "eccc": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "ndbc": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:06:06.999Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "conagua": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:06:06.999Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "cwop": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:07:16.339Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "wunderground": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "synoptic": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-27T08:03:56.344Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "ambient": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T21:06:06.999Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "climatenet": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:27:43.209Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
       "diagnostics": []
     },
     "hydromet_am": {
       "status": "resumed",
-      "sourceGeneratedAt": "2026-10-26T22:27:43.209Z",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
+      "diagnostics": []
+    },
+    "wmo_nz": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-27T19:09:09.451Z",
+      "diagnostics": []
+    },
+    "hilltop": {
+      "status": "resumed",
+      "sourceGeneratedAt": "2026-10-27T16:40:11.681Z",
+      "diagnostics": []
+    },
+    "ecan": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-27T19:09:09.451Z",
+      "diagnostics": []
+    },
+    "zephyr": {
+      "status": "ok",
+      "sourceGeneratedAt": "2026-10-27T19:09:09.451Z",
       "diagnostics": []
     }
   },
   "artifacts": {
     "vendors/windnerd.json": {
       "stations": 1,
-      "bytes": 995,
-      "sha256": "c2b0a9669d784625c2de15f60d80f6cbedeae056a82bfb45e9e98f51f0e099ea"
+      "bytes": 1005,
+      "sha256": "6e46b080d324cd707ab687d35d178a20295c920ac90182f17fb64863582e1245"
     },
     "vendors/tempest.json": {
       "stations": 0,
-      "bytes": 184,
-      "sha256": "772035fd8033a0296fe751c3c910c26fc1fe2a6800f495453fcd15554c4e2b96"
+      "bytes": 194,
+      "sha256": "e745b73daa4299065b7a600a34800f08272db482e4547268afbc50dc3eda728a"
     },
     "vendors/ecowitt.json": {
       "stations": 0,
-      "bytes": 184,
-      "sha256": "13e88d76bda640aa39393145d2c553144e7c16c19d8a0ac09e47fb589d480c79"
+      "bytes": 194,
+      "sha256": "e56d3f8b63992d0dc1e503b5b21500fda84ad2274442ea3ba20565156fd76844"
     },
     "vendors/campbell.json": {
       "stations": 0,
-      "bytes": 185,
-      "sha256": "4c0d05da0c73eadc55bcbaa2a97a77ee99acb30a30fe00128ba9b0fa71991706"
+      "bytes": 195,
+      "sha256": "b2da522d8687c5e66d2680460625aec7e99c76b965e50bc1b7154c71c1c3bc30"
     },
     "vendors/openwindmap.json": {
       "stations": 0,
-      "bytes": 188,
-      "sha256": "ed90ce2142c03532c33ee5852f661c4f26554d790a3bce4e8a6ea258ad8f25ad"
+      "bytes": 198,
+      "sha256": "4179cab7de0534f0a1aa48f127ee9121a4deabf598e4b749393cffc5448aee21"
     },
     "vendors/holfuy.json": {
-      "stations": 1193,
-      "bytes": 831616,
-      "sha256": "1f6308e30f0d4049806a20cb3a69b6c977f9a77d381690e9498441ee04541212"
+      "stations": 1191,
+      "bytes": 830053,
+      "sha256": "feef269a7b47c6fbd848bf9319a3b5e98dcb0f845b08ac656e6181c4f13bcf23"
     },
     "vendors/awc.json": {
-      "stations": 349,
-      "bytes": 221806,
-      "sha256": "3c7f5cbe135c95bfd2cf9f1e98e5424e306d49da953661437b390dc1aa1fdd48"
+      "stations": 627,
+      "bytes": 399614,
+      "sha256": "6c68f6d8e9db7725e4d8dfcdc39c4ac39676ef008237bf1b6035c115e90eefdb"
     },
     "vendors/windsmobi.json": {
-      "stations": 1922,
-      "bytes": 1439205,
-      "sha256": "d9a74fef41b0cd92ec2891b8f2129163174e66f7cb4ca4c89ad2cbcd3a3c25d5"
+      "stations": 3107,
+      "bytes": 2325107,
+      "sha256": "e325edf230b1078bdd22f297aaefbdc507b54626a81a483f10db7da8d4e844b6"
     },
     "vendors/windspion.json": {
       "stations": 0,
-      "bytes": 186,
-      "sha256": "cce408a644401a7443ee378275179aeb1ffa475d2c3358d8cdfb2e7493b62da0"
+      "bytes": 196,
+      "sha256": "69361c8b19d86a410bf27249cdbd1b38fde4263cf667890457441eb79ac89eab"
     },
     "vendors/windguru.json": {
-      "stations": 131,
-      "bytes": 82857,
-      "sha256": "6328e106a02c0952db7407d7e5f5b1a21806ed96d562b2904d19b9e352544640"
+      "stations": 181,
+      "bytes": 114496,
+      "sha256": "b1007a01f613c6c5b9f8e07337ab0d4c9afbbe3386b472ded538c6bd5422c15a"
     },
     "vendors/windy.json": {
       "stations": 0,
-      "bytes": 182,
-      "sha256": "476e17cc43ef205ec23d47dea3a96de7ef920139cc85d9af12db7b5e90d0679c"
+      "bytes": 192,
+      "sha256": "dea319375f38ffbf286440da408b238e5e224129ba6cb9f4bf985f8c56380b2a"
     },
     "vendors/weatherlink.json": {
-      "stations": 3222,
-      "bytes": 2303342,
-      "sha256": "44d6bc704560b598a4d46caa85783b79e1e5d8a9b2b719236e3fbb3939e4b110"
+      "stations": 2446,
+      "bytes": 1757083,
+      "sha256": "6d259bf962f99d1b23ffae6f3c98394631ecb5714a393cc57db4f8bcc7f80e77"
     },
     "vendors/realtime_txt.json": {
       "stations": 0,
-      "bytes": 189,
-      "sha256": "d22dff5af18762b3f300c99429ee5af59f3e4df519e9557a2fb9b91632722c2d"
+      "bytes": 199,
+      "sha256": "6d2eabb5893daa7e81eb90b40f579f618eddc46460b6b6896e005b48e56f2942"
     },
     "vendors/raws.json": {
       "stations": 2416,
-      "bytes": 1527267,
-      "sha256": "05468be3fa0c7f2488ea8ac0cdb88999f17c8cd2b6b5a3784d03e84f4bb3450e"
+      "bytes": 1527328,
+      "sha256": "f0725b1b2b8f483fd50e5ecfda5523898ef198338e620b2af16737159d50745f"
     },
     "vendors/snotel.json": {
       "stations": 354,
-      "bytes": 233574,
-      "sha256": "b0f5b526c1a1addbe16f490fe02d16cec4c03261253bd7f5789e93762b978b25"
+      "bytes": 233572,
+      "sha256": "e9c0de080065ac4704ce571031065555bad6dbd8c2d1dc6c9c2423d245c6ef75"
     },
     "vendors/avalanche.json": {
-      "stations": 572,
-      "bytes": 359702,
-      "sha256": "b44609b4cbd0d46bd7fea98b76ed4a26b80cfa84f7527593786b74b6b290f25e"
+      "stations": 634,
+      "bytes": 398372,
+      "sha256": "38576453495a008881fc7fda18953f66df3bb5acd8c25d74d56a1cf9b14c3085"
     },
     "vendors/iem.json": {
-      "stations": 8516,
-      "bytes": 5739710,
-      "sha256": "3aa1162b540be896f7b9d018a3cab19ed7ab0654c167a7b66550f3ffec51f381"
+      "stations": 8410,
+      "bytes": 5669754,
+      "sha256": "bf4b1c59d824aabe381bbb4464288840b9115bb615c5804184d1abd016109aa6"
     },
     "vendors/nws.json": {
-      "stations": 791,
-      "bytes": 512976,
-      "sha256": "b342f140582e1121c4d10cb1f42ded73679b1510f15432d8ee45cb73c4db5f70"
+      "stations": 991,
+      "bytes": 642692,
+      "sha256": "0e8714b7f680069b1cff4beb5c0dbe0fa7f489db505d48c709ee6f0f6bb083ad"
     },
     "vendors/eccc.json": {
       "stations": 845,
-      "bytes": 523421,
-      "sha256": "47fcc0a20337a69961fba052c82ad8c6479499c1a390e93811efd499bf9b9933"
+      "bytes": 523431,
+      "sha256": "4f4836545209f65edcd1cc4272fe890b379408904d01062262d2f1728249598c"
     },
     "vendors/ndbc.json": {
-      "stations": 579,
-      "bytes": 355672,
-      "sha256": "a5c321290cd8def9077439b94d3005673bb189dc08cce746d8d04bf5a38fe4ca"
+      "stations": 585,
+      "bytes": 359369,
+      "sha256": "51649a99ba2690fddd27d1ac8a14a6fe9840502ff152e7a400b3d0455636c6f6"
     },
     "vendors/conagua.json": {
       "stations": 0,
-      "bytes": 184,
-      "sha256": "4e231925ca7e2c3bcce9305167b4faa4fd5063e2b42aead19fb275fa2bcb182b"
+      "bytes": 194,
+      "sha256": "6457d9ece5ea6b39f2adfce7c69327b75fbe9f320785946f467b17ba88709d78"
     },
     "vendors/cwop.json": {
-      "stations": 458,
-      "bytes": 277605,
-      "sha256": "90a7a2f37513557014401d9642924c56a6c87a1c5f34526b2fcf9fb1ce7c3783"
+      "stations": 502,
+      "bytes": 304760,
+      "sha256": "47fc23cb09de0924c7f1d58dc576b98de40187801e5a59ee4bcec3a58cc578b7"
     },
     "vendors/wunderground.json": {
-      "stations": 462,
-      "bytes": 295762,
-      "sha256": "0bce595092e09546d1198716cccc434265f2b07def26b570a01920d177c90ae6"
+      "stations": 1113,
+      "bytes": 716691,
+      "sha256": "54f35ccc66756a33fb02b55146c33bed6784ad7eb9edfe1a21e460daeeb91512"
     },
     "vendors/synoptic.json": {
-      "stations": 31886,
-      "bytes": 20632140,
-      "sha256": "7cce401e82f59bb127c5e5dbb8ef8d804bbc06cd9fe33bcb71de652f7e987702"
+      "stations": 31887,
+      "bytes": 20632579,
+      "sha256": "cda34062b38e5d95d26c32b9d63ac12a60fabc3f621fbc65e42b9072ba3c7280"
     },
     "vendors/ambient.json": {
       "stations": 0,
-      "bytes": 184,
-      "sha256": "6f7de5756520bb45050a0eb81df131950546f18060aa044294d002bdba5c1644"
+      "bytes": 194,
+      "sha256": "0d2929496f21d5908ab44958e27549c6616f7d86cf731b03d1eee4ae42d3b313"
     },
     "vendors/climatenet.json": {
       "stations": 29,
-      "bytes": 18292,
-      "sha256": "3b351c41913e2fb1f4d2265fbd638d513044ce68a5bb96a796465a114981f44c"
+      "bytes": 18302,
+      "sha256": "3bdc98f00564ff12e68281ba3431ce140c1a40095c73e6b47260c34f1eadcfb5"
     },
     "vendors/hydromet_am.json": {
       "stations": 19,
-      "bytes": 13137,
-      "sha256": "484e4a71f0e5c72de998a85de337af0fe753a0bf147700f3a53143b2c7ff999d"
+      "bytes": 13147,
+      "sha256": "c4ce9705233a089baf3033c38bf1cdd6a3eb662db36419c1c9b3c8026516be44"
+    },
+    "vendors/wmo_nz.json": {
+      "stations": 55,
+      "bytes": 37529,
+      "sha256": "17330448b337a71dd052752d94839e30336b11290939fe522edbb70f82e29ec3"
+    },
+    "vendors/hilltop.json": {
+      "stations": 0,
+      "bytes": 194,
+      "sha256": "e21ee890c2a8e4c5a7519acb82058ab73b9389096aa3db4a261cf3326c8e1313"
+    },
+    "vendors/ecan.json": {
+      "stations": 3,
+      "bytes": 2103,
+      "sha256": "8bc7b8a530269212375f5ade993948b44d518359017d50181ae9d9ae4d554801"
+    },
+    "vendors/zephyr.json": {
+      "stations": 505,
+      "bytes": 335522,
+      "sha256": "ee57be62791eef4b8e34c739bff7e855785939d8a6ea03970400e575006fd938"
     },
     "stations.json": {
-      "stations": 43544,
-      "bytes": 37165835,
-      "sha256": "08d96333287c2fc454fa97aad9701099abb972ea3ff8b795620a7a7fdedefb6a"
+      "stations": 44033,
+      "bytes": 36338328,
+      "sha256": "ed519e167b65f7ca888a38eb228e5b6d6392684624932ac39b4c38521a90ac13"
     },
     "stations.geojson": {
-      "bytes": 55859543,
-      "sha256": "7fb90f7c499bce73945176cf02720cc092356240e65b99e45ad2c06df1b8d512"
+      "bytes": 56167392,
+      "sha256": "4e7efbcd8465194ad613b7a139b62c0e9288a28c590911fc0c68a19f4b1b82eb"
     },
     "stations.ndjson.gz": {
-      "bytes": 2821410,
-      "sha256": "e23ebcb3d4cb7c1d316f6101b81ac10427e614973d2b82a8f6f883b489bb042d"
+      "bytes": 2621931,
+      "sha256": "986c846b743f91d7051d32f461df63b674878d2bfbce2ff70798c8f7436ee61f"
     },
     "launch-corridors.json": {
-      "stations": 15799,
-      "bytes": 14450549,
-      "sha256": "65da252245c2c24130ccde80c0f47a8d75a000d564a00485c236a46333c92ebf"
+      "stations": 16301,
+      "bytes": 14447536,
+      "sha256": "60774bd333d3b2f934561a37d2a49b26e3c280dadc851f16b5fdfcd46a5204ec"
     },
     "launch-corridors.geojson": {
-      "bytes": 20566548,
-      "sha256": "1e3f01ca0bc2412db080fb003c7ee0b51f8502e05e91efdd0591579d16bcca4f"
+      "bytes": 21075190,
+      "sha256": "dd203c30b39666e32aa745172a94ceabb4681b9bc5ba338538b7e3bb7e4ff746"
     },
     "regions/us.json": {
-      "bytes": 31155819,
-      "sha256": "e4a32af6398fac1825906184e2cf7717534e6a25541115acbe7cba27f505ce60"
+      "bytes": 29843560,
+      "sha256": "ae849916a699cc39faa0f9ceeb547ae73d5dd1a17fc741b0f5ed09593563af78"
     },
     "regions/us.ndjson.gz": {
-      "bytes": 2319284,
-      "sha256": "6e38cafd5c657c2295b8da23610b9cb310e54b62a2215a5da339cadb0e44c595"
+      "bytes": 2115771,
+      "sha256": "874aa1e94552cc904962c4a24abacd29e91767518f5ac791026c7dda428bcac9"
     },
     "regions/ca.json": {
-      "bytes": 704131,
-      "sha256": "3ccfd8fb30878646b390adfe2a54e0f3ac48307d94b99b441349fed43600d451"
+      "bytes": 708289,
+      "sha256": "1f8d06128606009ebe1bdb8352625d091c4ae2a730a7939d056518ae662586ea"
     },
     "regions/ca.ndjson.gz": {
-      "bytes": 50052,
-      "sha256": "370e32a20d41f4b24503c759fe72ed2072311b2949708e5e14107b4a2cb81b77"
+      "bytes": 50345,
+      "sha256": "e5b60c962a81b2c46fb294ed3ae4a0485c45f3aa61893b1699e08d35e266e97a"
     },
     "regions/mx.json": {
-      "bytes": 61127,
-      "sha256": "98108fb2ac6273e0ac632a251db383d9d7fc66f084bf33d87fd3da4e88862b38"
+      "bytes": 61874,
+      "sha256": "6efc8717ff69af3a34aec13942ef6989bac9a8290c58176c87507464dd16effb"
     },
     "regions/mx.ndjson.gz": {
-      "bytes": 5160,
-      "sha256": "9ac73f9500e5705f53ab244a94698cae77e01607e998332baec4f04b6738a0b3"
+      "bytes": 5220,
+      "sha256": "e96859a543be4c5e7cd5399d160ab751f8b5ee4303b502a392062804114f1110"
     },
     "regions/am.json": {
-      "bytes": 62357,
-      "sha256": "ac32960faef81b11720ea4b62007665a1cdd6cc0fdc8fbb42cf5f1070dd642cb"
+      "bytes": 71010,
+      "sha256": "c4c79b3991101e2d90038bac0ed592dace4727d1c9472994757404dd4e764ae5"
     },
     "regions/am.ndjson.gz": {
-      "bytes": 5056,
-      "sha256": "62dd783ce9c87d51f87085e48d6517f335eb1baf707210aab89083b4cf26fd5a"
+      "bytes": 5871,
+      "sha256": "38bb2c5c2e910fe865e927fbbcd1166fb6fbd2ec1b0f925e079f754dfa8d63ba"
+    },
+    "regions/nz.json": {
+      "bytes": 1754495,
+      "sha256": "65fe54312ca67d3d5c0525fbd458af0870495fd35461595d4cc96233a533594e"
+    },
+    "regions/nz.ndjson.gz": {
+      "bytes": 131933,
+      "sha256": "89c29e2cd42042a4ac2ebef368ccd3e41483f3bee9e068920413e84942ba1b93"
     }
   }
 }

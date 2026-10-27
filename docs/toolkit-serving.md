@@ -40,7 +40,7 @@ All routes accept `GET` and `HEAD`. Selection query params are shared:
 | `station` | Single UID (required for `/current`, `/live`, `/history`, `/climatology`) |
 | `bbox` | `west,south,east,north` |
 | `near` | `lat,lon,radiusKm` |
-| `country` | CSV of `US` / `CA` / `MX` / `AM` |
+| `country` | CSV of `US` / `CA` / `MX` / `AM` / `NZ` |
 | `vendor` | CSV of vendor ids |
 | `category` | CSV of `freeflight` / `mountain` / `synoptic` / `marine` / `pws` |
 | `place` | CSV of `airport` / `mountain` (physical siting; unknown stations excluded) |

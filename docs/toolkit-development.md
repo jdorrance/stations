@@ -18,6 +18,15 @@ implements [`StationNetworkProvider`](../packages/providers/src/types.ts):
    readings into SI units and validate timestamps with
    [`observation-values.ts`](../packages/providers/src/observation-values.ts).
 
+New Zealand providers are split by ownership:
+[`wmo-nz.ts`](../packages/providers/src/wmo-nz.ts),
+[`hilltop.ts`](../packages/providers/src/hilltop.ts),
+[`ecan.ts`](../packages/providers/src/ecan.ts),
+[`zephyr.ts`](../packages/providers/src/zephyr.ts)
+(barrel: [`newzealand.ts`](../packages/providers/src/newzealand.ts)).
+Shared Ogimet SYNOP parsing is in
+[`ogimet-synop.ts`](../packages/providers/src/ogimet-synop.ts).
+
 Register the provider in [`registry.ts`](../packages/providers/src/registry.ts).
 Add offline fixtures for normal readings, calm wind, malformed rows and missing
 timestamps.
@@ -33,7 +42,7 @@ across configured providers, enriches stations with proximity to launches from
 and writes public artifacts:
 
 ```sh
-pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
+pnpm catalogue:crawl -- --regions=US,CA,MX,AM,NZ --resume
 ```
 
 | Path | Contents |

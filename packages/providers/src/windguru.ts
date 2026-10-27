@@ -39,6 +39,7 @@ import {
   isRecord,
   windDirection,
 } from './observation-values.ts';
+import { countryHintFromTimeZoneOrName } from './region-hints.ts';
 
 export const WINDGURU_IAPI_URL = 'https://www.windguru.cz/int/iapi.php';
 const CACHE_TTL_SECONDS = 60;
@@ -165,16 +166,10 @@ export function parseWindGuruStationsList(text: string): CatalogueStation[] {
         ? `${spot} - ${rawName}`
         : rawName || spot || `WindGuru ${nativeId}`;
 
-    const countryHint =
-      tz === 'Asia/Yerevan' || /\barmenia/i.test(name)
-        ? 'AM'
-        : tz &&
-            /^America\/(?:Mexico_City|Cancun|Mazatlan|Hermosillo|Merida|Monterrey|Chihuahua|Tijuana|Bahia_Banderas)$/i.test(
-              tz,
-            )
-          ? 'MX'
-          : null;
-    const country = inferRegionCode({ latitude, longitude }, countryHint);
+    const country = inferRegionCode(
+      { latitude, longitude },
+      countryHintFromTimeZoneOrName(tz, name),
+    );
 
     stations.push({
       uid: formatStationUid('windguru', nativeId),

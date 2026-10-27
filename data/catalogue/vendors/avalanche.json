@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:07:16.339Z",
+  "generatedAt": "2026-10-27T16:40:11.681Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "avalanche",
-  "count": 572,
+  "count": 634,
   "stations": [
     {
       "uid": "avalanche:1",
@@ -2794,6 +2795,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-A1332",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-A1332",
+      "name": "Pinehurst",
+      "latitude": 47.53671,
+      "longitude": -116.23687,
+      "elevationM": 677,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-A3674",
       "vendor": "avalanche",
       "nativeId": "mesowest-A3674",
@@ -2826,6 +2850,52 @@
       "elevationM": 2511,
       "country": "US",
       "region": "WY",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-ABAUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ABAUT",
+      "name": "Abajo Peak",
+      "latitude": 37.84107,
+      "longitude": -109.46188,
+      "elevationM": 3453,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-AGD",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-AGD",
+      "name": "ALTA - GUARD HOUSE",
+      "latitude": 40.5905,
+      "longitude": -111.638,
+      "elevationM": 2682,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -2873,6 +2943,52 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-ALT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ALT",
+      "name": "ALTA - TOP OF COLLINS",
+      "latitude": 40.571,
+      "longitude": -111.631,
+      "elevationM": 3183,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-AMB",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-AMB",
+      "name": "ALTA - MT BALDY",
+      "latitude": 40.5677,
+      "longitude": -111.6374,
+      "elevationM": 3373,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -3011,6 +3127,29 @@
       "country": "US",
       "region": "OR",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-ATH20",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ATH20",
+      "name": "Atwater Study Plot",
+      "latitude": 40.59148,
+      "longitude": -111.63778,
+      "elevationM": 2668,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -3300,6 +3439,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-BIFM8",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BIFM8",
+      "name": "BC BALDY",
+      "latitude": 48.62495,
+      "longitude": -115.58102,
+      "elevationM": 1277,
+      "country": "US",
+      "region": "MT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-BIGMS",
       "vendor": "avalanche",
       "nativeId": "mesowest-BIGMS",
@@ -3438,6 +3600,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-BRW",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BRW",
+      "name": "BRIGHTON GREAT WESTERN",
+      "latitude": 40.5923,
+      "longitude": -111.5616,
+      "elevationM": 3220,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-BRWDM",
       "vendor": "avalanche",
       "nativeId": "mesowest-BRWDM",
@@ -3448,6 +3633,29 @@
       "country": "US",
       "region": "NH",
       "timeZone": "America/New_York",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-BSGU1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BSGU1",
+      "name": "TRAIL MOUNTAIN BURN SCAR",
+      "latitude": 39.40139,
+      "longitude": -111.19222,
+      "elevationM": 3115,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -3507,6 +3715,75 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-BT094",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BT094",
+      "name": "KOOTENAY PASS",
+      "latitude": 49.05806,
+      "longitude": -117.04,
+      "elevationM": 1780,
+      "country": "US",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-BT095",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BT095",
+      "name": "STAGLEAP",
+      "latitude": 49.07161,
+      "longitude": -117.08389,
+      "elevationM": 2140,
+      "country": "US",
+      "region": "BC",
+      "timeZone": "America/Vancouver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-BT096",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BT096",
+      "name": "CRAGS RIDGE",
+      "latitude": 49.07644,
+      "longitude": -117.00218,
+      "elevationM": 2054,
+      "country": "US",
+      "region": "BC",
+      "timeZone": "America/Creston",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-BTEA2",
       "vendor": "avalanche",
       "nativeId": "mesowest-BTEA2",
@@ -3517,6 +3794,29 @@
       "country": "US",
       "region": "AK",
       "timeZone": "America/Anchorage",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-BUNUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-BUNUT",
+      "name": "Bunnells Ridge",
+      "latitude": 40.314757,
+      "longitude": -111.563976,
+      "elevationM": 2682,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -3921,6 +4221,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-CLN",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-CLN",
+      "name": "ALTA - COLLINS",
+      "latitude": 40.5763,
+      "longitude": -111.6383,
+      "elevationM": 2945,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-CLOWM",
       "vendor": "avalanche",
       "nativeId": "mesowest-CLOWM",
@@ -4059,6 +4382,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-CRDUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-CRDUT",
+      "name": "Card Canyon",
+      "latitude": 41.73126,
+      "longitude": -111.6834,
+      "elevationM": 2656,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-CRLC1",
       "vendor": "avalanche",
       "nativeId": "mesowest-CRLC1",
@@ -4115,6 +4461,29 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-CSC",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-CSC",
+      "name": "Cascade Peak",
+      "latitude": 40.312604,
+      "longitude": -111.588704,
+      "elevationM": 3315,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -4473,6 +4842,52 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-DSRUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-DSRUT",
+      "name": "Duchesne Ridge",
+      "latitude": 40.46689,
+      "longitude": -111.10347,
+      "elevationM": 3095,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-DVO",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-DVO",
+      "name": "DV - Ontario",
+      "latitude": 40.609141,
+      "longitude": -111.497424,
+      "elevationM": 2774,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-E1336",
       "vendor": "avalanche",
       "nativeId": "mesowest-E1336",
@@ -4667,6 +5082,29 @@
       "country": "US",
       "region": "AK",
       "timeZone": "America/Juneau",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-ELBUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ELBUT",
+      "name": "UDOT LCC Elberts",
+      "latitude": 40.57579,
+      "longitude": -111.68773,
+      "elevationM": 2316,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -5577,6 +6015,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-GOLDB",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-GOLDB",
+      "name": "Goldbasin",
+      "latitude": 38.465283,
+      "longitude": -109.264475,
+      "elevationM": 3063,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-GRAA2",
       "vendor": "avalanche",
       "nativeId": "mesowest-GRAA2",
@@ -5715,6 +6176,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-HDP",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-HDP",
+      "name": "Hidden Peak",
+      "latitude": 40.56106,
+      "longitude": -111.64522,
+      "elevationM": 3353,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-HHAI1",
       "vendor": "avalanche",
       "nativeId": "mesowest-HHAI1",
@@ -5837,29 +6321,6 @@
       "latitude": 61.76515,
       "longitude": -149.247,
       "elevationM": 721,
-      "country": "US",
-      "region": "AK",
-      "timeZone": "America/Anchorage",
-      "pageUrl": "https://avalanche.org/",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 300,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
-      "uid": "avalanche:mesowest-HRDA2",
-      "vendor": "avalanche",
-      "nativeId": "mesowest-HRDA2",
-      "name": "HARDING ICEFIELD",
-      "latitude": 60.13247,
-      "longitude": -149.78203,
-      "elevationM": 1311,
       "country": "US",
       "region": "AK",
       "timeZone": "America/Anchorage",
@@ -6267,6 +6728,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-ITD19",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ITD19",
+      "name": "Fourth Of July Pass",
+      "latitude": 47.62222,
+      "longitude": -116.52425,
+      "elevationM": 951,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-ITD29",
       "vendor": "avalanche",
       "nativeId": "mesowest-ITD29",
@@ -6383,6 +6867,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-ITD90",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ITD90",
+      "name": "Wallace Viaduct",
+      "latitude": 47.47432,
+      "longitude": -115.90816,
+      "elevationM": 851,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-ITDA3",
       "vendor": "avalanche",
       "nativeId": "mesowest-ITDA3",
@@ -6393,6 +6900,29 @@
       "country": "US",
       "region": "ID",
       "timeZone": "America/Boise",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-ITDB1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-ITDB1",
+      "name": "Trestle Creek",
+      "latitude": 48.2542,
+      "longitude": -116.3198,
+      "elevationM": 650,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -7226,6 +7756,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-KMLP",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-KMLP",
+      "name": "Mullan Pass, Mullan Pass Vor",
+      "latitude": 47.45417,
+      "longitude": -115.66972,
+      "elevationM": 1829,
+      "country": "US",
+      "region": "MT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-KMMH",
       "vendor": "avalanche",
       "nativeId": "mesowest-KMMH",
@@ -7508,6 +8061,30 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-KSZT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-KSZT",
+      "name": "Sandpoint, Sandpoint Airport",
+      "latitude": 48.29944,
+      "longitude": -116.56,
+      "elevationM": 648,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "place": "airport",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-KTET",
       "vendor": "avalanche",
       "nativeId": "mesowest-KTET",
@@ -7635,6 +8212,52 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-LGP",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-LGP",
+      "name": "LOGAN PEAK",
+      "latitude": 41.71353,
+      "longitude": -111.71763,
+      "elevationM": 2961,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-LGS",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-LGS",
+      "name": "Logan Summit",
+      "latitude": 41.95347,
+      "longitude": -111.49188,
+      "elevationM": 2317,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -7901,6 +8524,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-LOFTY",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-LOFTY",
+      "name": "Lofty Lake Peak",
+      "latitude": 40.731222,
+      "longitude": -110.891,
+      "elevationM": 3409,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-LRCM8",
       "vendor": "avalanche",
       "nativeId": "mesowest-LRCM8",
@@ -7910,6 +8556,29 @@
       "elevationM": 1679,
       "country": "US",
       "region": "MT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-LSL",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-LSL",
+      "name": "LA SAL",
+      "latitude": 38.4566,
+      "longitude": -109.2455,
+      "elevationM": 3568,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -7993,6 +8662,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-MAEI1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-MAEI1",
+      "name": "MAGEE PEAK",
+      "latitude": 47.88373,
+      "longitude": -116.29898,
+      "elevationM": 1439,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-MAEMT",
       "vendor": "avalanche",
       "nativeId": "mesowest-MAEMT",
@@ -8049,6 +8741,29 @@
       "country": "US",
       "region": "ID",
       "timeZone": "America/Boise",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-MBY",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-MBY",
+      "name": "DV - MOUNT BALDY",
+      "latitude": 40.6089,
+      "longitude": -111.4802,
+      "elevationM": 2849,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -8163,6 +8878,29 @@
       "elevationM": 3066,
       "country": "US",
       "region": "WY",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-MHSUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-MHSUT",
+      "name": "Mill Hollow Snow",
+      "latitude": 40.4805,
+      "longitude": -111.1026,
+      "elevationM": 2843,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -8706,6 +9444,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-MTLPS",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-MTLPS",
+      "name": "Lookout Pass I-90 MP 0.2",
+      "latitude": 47.45357,
+      "longitude": -115.69506,
+      "elevationM": 1440,
+      "country": "US",
+      "region": "MT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-MTM60",
       "vendor": "avalanche",
       "nativeId": "mesowest-MTM60",
@@ -8877,6 +9638,29 @@
       "country": "US",
       "region": "ID",
       "timeZone": "America/Boise",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-NUCI1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-NUCI1",
+      "name": "NUCKOLS",
+      "latitude": 47.50415,
+      "longitude": -115.93686,
+      "elevationM": 1219,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -9084,6 +9868,29 @@
       "country": "US",
       "region": "OR",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-OGP",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-OGP",
+      "name": "SNOWBASIN - MOUNT OGDEN",
+      "latitude": 41.2,
+      "longitude": -111.881,
+      "elevationM": 2917,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -9420,6 +10227,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-PC010",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PC010",
+      "name": "Sundance",
+      "latitude": 40.39643,
+      "longitude": -111.58691,
+      "elevationM": 1961,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-PC045",
       "vendor": "avalanche",
       "nativeId": "mesowest-PC045",
@@ -9430,6 +10260,29 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-PC064",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PC064",
+      "name": "Albion Basin",
+      "latitude": 40.59291,
+      "longitude": -111.62444,
+      "elevationM": 2751,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -9466,6 +10319,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-PC154",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PC154",
+      "name": "Bear Valley Canyon",
+      "latitude": 39.39874,
+      "longitude": -111.11027,
+      "elevationM": 2058,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-PC240",
       "vendor": "avalanche",
       "nativeId": "mesowest-PC240",
@@ -9475,6 +10351,29 @@
       "elevationM": 1842,
       "country": "US",
       "region": "WY",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-PC254",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PC254",
+      "name": "The Elbow",
+      "latitude": 39.65353,
+      "longitude": -111.12962,
+      "elevationM": 2906,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -9590,6 +10489,29 @@
       "elevationM": 2053,
       "country": "US",
       "region": "WY",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-PC538",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PC538",
+      "name": "Flat Iron Point",
+      "latitude": 39.33718,
+      "longitude": -111.45287,
+      "elevationM": 3154,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -9788,6 +10710,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-PLKI1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PLKI1",
+      "name": "PRIEST LAKE",
+      "latitude": 48.57418,
+      "longitude": -116.95787,
+      "elevationM": 792,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-PLPUP",
       "vendor": "avalanche",
       "nativeId": "mesowest-PLPUP",
@@ -9890,6 +10835,29 @@
       "country": "US",
       "region": "OR",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-PRSUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-PRSUT",
+      "name": "Paris Peak",
+      "latitude": 42.20294,
+      "longitude": -111.54938,
+      "elevationM": 2908,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Boise",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -10432,6 +11400,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-SADI1",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SADI1",
+      "name": "SADDLE PASS",
+      "latitude": 48.93855,
+      "longitude": -116.73451,
+      "elevationM": 1561,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-SAFO3",
       "vendor": "avalanche",
       "nativeId": "mesowest-SAFO3",
@@ -10487,6 +11478,98 @@
       "elevationM": 2767,
       "country": "US",
       "region": "WY",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SB2",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SB2",
+      "name": "SNOWBASIN - STRAW TOP",
+      "latitude": 41.1861,
+      "longitude": -111.87221,
+      "elevationM": 2805,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SBBWK",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SBBWK",
+      "name": "SNOWBASIN - BOARDWALK",
+      "latitude": 41.1981,
+      "longitude": -111.867,
+      "elevationM": 2436,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SBE",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SBE",
+      "name": "SNOWBASIN - BASE",
+      "latitude": 41.2151,
+      "longitude": -111.8582,
+      "elevationM": 1925,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SBT15",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SBT15",
+      "name": "SNOWBASIN - STRAWBERRY TOWER 15",
+      "latitude": 41.1884,
+      "longitude": -111.8641,
+      "elevationM": 2552,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -10758,9 +11841,9 @@
       "vendor": "avalanche",
       "nativeId": "mesowest-SH7MT",
       "name": "USGS/BNSF Shed 7",
-      "latitude": 48.25675,
-      "longitude": -113.48227,
-      "elevationM": 1858,
+      "latitude": 48.25689,
+      "longitude": -113.48589,
+      "elevationM": 1920,
       "country": "US",
       "region": "MT",
       "timeZone": "America/Denver",
@@ -10856,6 +11939,29 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SKY",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SKY",
+      "name": "Skyline",
+      "latitude": 39.6362,
+      "longitude": -111.3286,
+      "elevationM": 2844,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -11053,6 +12159,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-SND",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SND",
+      "name": "Arrowhead Summit",
+      "latitude": 40.368386,
+      "longitude": -111.593964,
+      "elevationM": 2515,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-SNEA2",
       "vendor": "avalanche",
       "nativeId": "mesowest-SNEA2",
@@ -11099,6 +12228,52 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-SOL",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SOL",
+      "name": "SOLITUDE POWDERHORN",
+      "latitude": 40.6083,
+      "longitude": -111.6044,
+      "elevationM": 3014,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SOLHP",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SOLHP",
+      "name": "SOLITUDE HONEYCOMB PEAK",
+      "latitude": 40.60167,
+      "longitude": -111.61417,
+      "elevationM": 3197,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-SOUC1",
       "vendor": "avalanche",
       "nativeId": "mesowest-SOUC1",
@@ -11109,6 +12284,29 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-SPC",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-SPC",
+      "name": "SPRUCES",
+      "latitude": 40.641,
+      "longitude": -111.636,
+      "elevationM": 2256,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -11629,29 +12827,6 @@
       "locator": {}
     },
     {
-      "uid": "avalanche:mesowest-TIOC1",
-      "vendor": "avalanche",
-      "nativeId": "mesowest-TIOC1",
-      "name": "TIOGA PASS-DANA MEADOWS NEAR LEE VINING 9SW DAN",
-      "latitude": 37.89611,
-      "longitude": -119.25722,
-      "elevationM": 2992,
-      "country": "US",
-      "region": "CA",
-      "timeZone": "America/Los_Angeles",
-      "pageUrl": "https://avalanche.org/",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": true
-      },
-      "samplingWindowSeconds": 3600,
-      "recommendedPollSeconds": 300,
-      "category": "mountain",
-      "locator": {}
-    },
-    {
       "uid": "avalanche:mesowest-TIRC1",
       "vendor": "avalanche",
       "nativeId": "mesowest-TIRC1",
@@ -11754,6 +12929,52 @@
       "country": "US",
       "region": "WA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-TPRUT",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-TPRUT",
+      "name": "Red Creek",
+      "latitude": 40.84404,
+      "longitude": -111.04269,
+      "elevationM": 2856,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-TR123",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-TR123",
+      "name": "MANTI - PORTABLE #3",
+      "latitude": 39.37706,
+      "longitude": -111.76981,
+      "elevationM": 2612,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -12089,6 +13310,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-TT955",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-TT955",
+      "name": "LUNCH PEAK",
+      "latitude": 48.37828,
+      "longitude": -116.19247,
+      "elevationM": 1958,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-TUMC1",
       "vendor": "avalanche",
       "nativeId": "mesowest-TUMC1",
@@ -12214,6 +13458,121 @@
       "country": "US",
       "region": "CA",
       "timeZone": "America/Los_Angeles",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-UKALF",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-UKALF",
+      "name": "Kalf Plot Portable",
+      "latitude": 39.4726,
+      "longitude": -111.4929,
+      "elevationM": 1797,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-UTASG",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-UTASG",
+      "name": "Aspen Grove",
+      "latitude": 40.404631,
+      "longitude": -111.604574,
+      "elevationM": 2097,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-UTMON",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-UTMON",
+      "name": "SR-39 at MP 46 Monte Cristo",
+      "latitude": 41.4446,
+      "longitude": -111.5056,
+      "elevationM": 2733,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-UTMPK",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-UTMPK",
+      "name": "Monument Peak",
+      "latitude": 39.614327,
+      "longitude": -111.177347,
+      "elevationM": 3167,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-UTPW3",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-UTPW3",
+      "name": "James Peak",
+      "latitude": 41.39134,
+      "longitude": -111.79291,
+      "elevationM": 2873,
+      "country": "US",
+      "region": "UT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,
@@ -12374,6 +13733,29 @@
       "elevationM": 2295,
       "country": "US",
       "region": "NM",
+      "timeZone": "America/Denver",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-WDYPK",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-WDYPK",
+      "name": "Windy Peak",
+      "latitude": 40.84148,
+      "longitude": -111.02062,
+      "elevationM": 3250,
+      "country": "US",
+      "region": "UT",
       "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
@@ -12549,6 +13931,29 @@
       "locator": {}
     },
     {
+      "uid": "avalanche:mesowest-WSUBC",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-WSUBC",
+      "name": "WSU Bloomington Canyon Yurt",
+      "latitude": 42.17266,
+      "longitude": -111.55534,
+      "elevationM": 2319,
+      "country": "US",
+      "region": "ID",
+      "timeZone": "America/Boise",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
       "uid": "avalanche:mesowest-WWA01",
       "vendor": "avalanche",
       "nativeId": "mesowest-WWA01",
@@ -12628,6 +14033,29 @@
       "country": "US",
       "region": "ID",
       "timeZone": "America/Boise",
+      "pageUrl": "https://avalanche.org/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": true
+      },
+      "samplingWindowSeconds": 3600,
+      "recommendedPollSeconds": 300,
+      "category": "mountain",
+      "locator": {}
+    },
+    {
+      "uid": "avalanche:mesowest-YKAM8",
+      "vendor": "avalanche",
+      "nativeId": "mesowest-YKAM8",
+      "name": "YAAK (UPPER FORD)",
+      "latitude": 48.91667,
+      "longitude": -115.65667,
+      "elevationM": 914,
+      "country": "US",
+      "region": "MT",
+      "timeZone": "America/Denver",
       "pageUrl": "https://avalanche.org/",
       "capabilities": {
         "gustLull": true,

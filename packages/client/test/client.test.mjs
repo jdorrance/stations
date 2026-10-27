@@ -125,7 +125,7 @@ test('createCatalogueIndex supports filtering by country, vendor, and limit', ()
   const index = createCatalogueIndex({
     schemaVersion: 1,
     generatedAt: '2026-10-26T18:05:00Z',
-    regions: ['US', 'CA', 'MX', 'AM'],
+    regions: ['US', 'CA', 'MX', 'AM', 'NZ'],
     stations: INITIAL_SEED_STATIONS,
   });
 

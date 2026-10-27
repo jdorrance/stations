@@ -4,7 +4,7 @@ Stations finds weather stations near free-flight launches, indexes them by
 location, and serves live wind observations through a small HTTP API and the
 [`@azohra/meteo.station`](https://github.com/azohra/meteo) wire contract.
 
-Coverage today is the United States, Canada, Mexico and Armenia, plus global
+Coverage today is the United States, Canada, Mexico, Armenia and New Zealand, plus global
 Holfuy windtalkers. Catalogue size and per-network counts live in
 [`data/catalogue/manifest.json`](data/catalogue/manifest.json).
 
@@ -38,7 +38,7 @@ see [`.env.example`](.env.example). To rebuild the full live catalogue from
 upstream networks:
 
 ```sh
-pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
+pnpm catalogue:crawl -- --regions=US,CA,MX,AM,NZ --resume
 ```
 
 ## Documentation

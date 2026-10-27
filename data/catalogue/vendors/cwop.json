@@ -1,14 +1,15 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-26T22:07:16.339Z",
+  "generatedAt": "2026-10-27T16:40:11.681Z",
   "regions": [
     "US",
     "CA",
     "MX",
-    "AM"
+    "AM",
+    "NZ"
   ],
   "vendor": "cwop",
-  "count": 458,
+  "count": 502,
   "stations": [
     {
       "uid": "cwop:AC7PD",
@@ -22,6 +23,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=AC7PD",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:AH6DL",
+      "vendor": "cwop",
+      "nativeId": "AH6DL",
+      "name": "CWOP AH6DL",
+      "latitude": 19.87,
+      "longitude": -155.112,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=AH6DL",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -264,6 +288,52 @@
       "locator": {}
     },
     {
+      "uid": "cwop:CW4778",
+      "vendor": "cwop",
+      "nativeId": "CW4778",
+      "name": "CWOP CW4778",
+      "latitude": -36.86283,
+      "longitude": 174.73867,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW4778",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:CW5039",
+      "vendor": "cwop",
+      "nativeId": "CW5039",
+      "name": "CWOP CW5039",
+      "latitude": -37.66783,
+      "longitude": 175.26133,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW5039",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:CW5212",
       "vendor": "cwop",
       "nativeId": "CW5212",
@@ -379,17 +449,40 @@
       "locator": {}
     },
     {
-      "uid": "cwop:CW6256",
+      "uid": "cwop:CW6293",
       "vendor": "cwop",
-      "nativeId": "CW6256",
-      "name": "CWOP CW6256",
-      "latitude": 42.40817,
-      "longitude": -123.321,
+      "nativeId": "CW6293",
+      "name": "CWOP CW6293",
+      "latitude": 42.5,
+      "longitude": -110,
       "elevationM": null,
       "country": null,
       "region": null,
       "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW6256",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW6293",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:CW6688",
+      "vendor": "cwop",
+      "nativeId": "CW6688",
+      "name": "CWOP CW6688",
+      "latitude": 47.35833,
+      "longitude": -122.0545,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW6688",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -413,6 +506,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW6697",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:CW7972",
+      "vendor": "cwop",
+      "nativeId": "CW7972",
+      "name": "CWOP CW7972",
+      "latitude": -40.352,
+      "longitude": 175.635,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=CW7972",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -701,6 +817,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:DW0000",
+      "vendor": "cwop",
+      "nativeId": "DW0000",
+      "name": "CWOP DW0000",
+      "latitude": -37.12867,
+      "longitude": 174.60867,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW0000",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:DW0117",
       "vendor": "cwop",
       "nativeId": "DW0117",
@@ -712,6 +851,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW0117",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:DW0269",
+      "vendor": "cwop",
+      "nativeId": "DW0269",
+      "name": "CWOP DW0269",
+      "latitude": 20.03217,
+      "longitude": -155.69433,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW0269",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -827,6 +989,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW0495",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:DW0942",
+      "vendor": "cwop",
+      "nativeId": "DW0942",
+      "name": "CWOP DW0942",
+      "latitude": -41.248,
+      "longitude": 174.77183,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW0942",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -1115,17 +1300,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:DW3884",
+      "uid": "cwop:DW3921",
       "vendor": "cwop",
-      "nativeId": "DW3884",
-      "name": "CWOP DW3884",
-      "latitude": 47.33783,
-      "longitude": -122.07383,
+      "nativeId": "DW3921",
+      "name": "CWOP DW3921",
+      "latitude": -39.045,
+      "longitude": 177.42633,
       "elevationM": null,
-      "country": null,
+      "country": "NZ",
       "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW3884",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW3921",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -1483,6 +1668,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:DW8522",
+      "vendor": "cwop",
+      "nativeId": "DW8522",
+      "name": "CWOP DW8522",
+      "latitude": -37.667,
+      "longitude": 176.1215,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=DW8522",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:DW8546",
       "vendor": "cwop",
       "nativeId": "DW8546",
@@ -1556,8 +1764,8 @@
       "vendor": "cwop",
       "nativeId": "DW9017",
       "name": "CWOP DW9017",
-      "latitude": 39.76667,
-      "longitude": -105.1,
+      "latitude": 39.77367,
+      "longitude": -105.11417,
       "elevationM": null,
       "country": null,
       "region": null,
@@ -1851,29 +2059,6 @@
       "locator": {}
     },
     {
-      "uid": "cwop:EW1175",
-      "vendor": "cwop",
-      "nativeId": "EW1175",
-      "name": "CWOP EW1175",
-      "latitude": 49.24617,
-      "longitude": -122.8285,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW1175",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
       "uid": "cwop:EW1336",
       "vendor": "cwop",
       "nativeId": "EW1336",
@@ -1989,6 +2174,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:EW1736",
+      "vendor": "cwop",
+      "nativeId": "EW1736",
+      "name": "CWOP EW1736",
+      "latitude": -37.45283,
+      "longitude": 175.97633,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW1736",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:EW1855",
       "vendor": "cwop",
       "nativeId": "EW1855",
@@ -2046,6 +2254,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW2046",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:EW2077",
+      "vendor": "cwop",
+      "nativeId": "EW2077",
+      "name": "CWOP EW2077",
+      "latitude": 39.61867,
+      "longitude": -105.34417,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW2077",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -2161,6 +2392,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW2704",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:EW2751",
+      "vendor": "cwop",
+      "nativeId": "EW2751",
+      "name": "CWOP EW2751",
+      "latitude": -36.78717,
+      "longitude": 174.6675,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW2751",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -2334,6 +2588,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:EW3941",
+      "vendor": "cwop",
+      "nativeId": "EW3941",
+      "name": "CWOP EW3941",
+      "latitude": 20.079,
+      "longitude": -155.464,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW3941",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:EW4338",
       "vendor": "cwop",
       "nativeId": "EW4338",
@@ -2368,6 +2645,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW4565",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:EW4606",
+      "vendor": "cwop",
+      "nativeId": "EW4606",
+      "name": "CWOP EW4606",
+      "latitude": 32.8,
+      "longitude": -114.5,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW4606",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -2506,6 +2806,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW5449",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:EW5485",
+      "vendor": "cwop",
+      "nativeId": "EW5485",
+      "name": "CWOP EW5485",
+      "latitude": -43.56383,
+      "longitude": 172.06417,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW5485",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -2748,6 +3071,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:EW6193",
+      "vendor": "cwop",
+      "nativeId": "EW6193",
+      "name": "CWOP EW6193",
+      "latitude": -41.5245,
+      "longitude": 173.83267,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW6193",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:EW6216",
       "vendor": "cwop",
       "nativeId": "EW6216",
@@ -2817,17 +3163,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:EW6690",
+      "uid": "cwop:EW6648",
       "vendor": "cwop",
-      "nativeId": "EW6690",
-      "name": "CWOP EW6690",
-      "latitude": 47.442,
-      "longitude": -122.01433,
+      "nativeId": "EW6648",
+      "name": "CWOP EW6648",
+      "latitude": 19.60967,
+      "longitude": -155.95983,
       "elevationM": null,
       "country": null,
       "region": null,
       "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW6690",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW6648",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -3058,6 +3404,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW8078",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:EW8155",
+      "vendor": "cwop",
+      "nativeId": "EW8155",
+      "name": "CWOP EW8155",
+      "latitude": -36.66233,
+      "longitude": 174.67683,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW8155",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -3530,29 +3899,6 @@
       "locator": {}
     },
     {
-      "uid": "cwop:EW9935",
-      "vendor": "cwop",
-      "nativeId": "EW9935",
-      "name": "CWOP EW9935",
-      "latitude": 48.7,
-      "longitude": -122.5,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=EW9935",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
       "uid": "cwop:EW9975",
       "vendor": "cwop",
       "nativeId": "EW9975",
@@ -3760,6 +4106,75 @@
       "locator": {}
     },
     {
+      "uid": "cwop:FW0696",
+      "vendor": "cwop",
+      "nativeId": "FW0696",
+      "name": "CWOP FW0696",
+      "latitude": -45.02317,
+      "longitude": 170.14667,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW0696",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:FW0803",
+      "vendor": "cwop",
+      "nativeId": "FW0803",
+      "name": "CWOP FW0803",
+      "latitude": 19.75467,
+      "longitude": -155.15067,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW0803",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:FW0841",
+      "vendor": "cwop",
+      "nativeId": "FW0841",
+      "name": "CWOP FW0841",
+      "latitude": 19.32367,
+      "longitude": -155.88067,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW0841",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:FW0869",
       "vendor": "cwop",
       "nativeId": "FW0869",
@@ -3875,6 +4290,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:FW1494",
+      "vendor": "cwop",
+      "nativeId": "FW1494",
+      "name": "CWOP FW1494",
+      "latitude": -36.65467,
+      "longitude": 174.65817,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW1494",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:FW1714",
       "vendor": "cwop",
       "nativeId": "FW1714",
@@ -3955,29 +4393,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW2003",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
-      "uid": "cwop:FW2122",
-      "vendor": "cwop",
-      "nativeId": "FW2122",
-      "name": "CWOP FW2122",
-      "latitude": 45.57233,
-      "longitude": -121.63867,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW2122",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4208,6 +4623,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW2847",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:FW2983",
+      "vendor": "cwop",
+      "nativeId": "FW2983",
+      "name": "CWOP FW2983",
+      "latitude": 35.1075,
+      "longitude": -106.501,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW2983",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4634,6 +5072,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:FW4661",
+      "vendor": "cwop",
+      "nativeId": "FW4661",
+      "name": "CWOP FW4661",
+      "latitude": -43.553,
+      "longitude": 172.64833,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW4661",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:FW4672",
       "vendor": "cwop",
       "nativeId": "FW4672",
@@ -4726,17 +5187,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:FW5407",
+      "uid": "cwop:FW5399",
       "vendor": "cwop",
-      "nativeId": "FW5407",
-      "name": "CWOP FW5407",
-      "latitude": 48.55267,
-      "longitude": -122.62517,
+      "nativeId": "FW5399",
+      "name": "CWOP FW5399",
+      "latitude": -38.097,
+      "longitude": 176.68767,
       "elevationM": null,
-      "country": null,
+      "country": "NZ",
       "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW5407",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW5399",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4806,29 +5267,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW6023",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
-      "uid": "cwop:FW6124",
-      "vendor": "cwop",
-      "nativeId": "FW6124",
-      "name": "CWOP FW6124",
-      "latitude": 48.745,
-      "longitude": -122.3955,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW6124",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -4921,6 +5359,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW6395",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:FW6582",
+      "vendor": "cwop",
+      "nativeId": "FW6582",
+      "name": "CWOP FW6582",
+      "latitude": 39.5965,
+      "longitude": -105.16817,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW6582",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -5358,6 +5819,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW7915",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:FW8089",
+      "vendor": "cwop",
+      "nativeId": "FW8089",
+      "name": "CWOP FW8089",
+      "latitude": -40.749,
+      "longitude": 175.14217,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW8089",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -5830,6 +6314,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:FW9291",
+      "vendor": "cwop",
+      "nativeId": "FW9291",
+      "name": "CWOP FW9291",
+      "latitude": -39.504,
+      "longitude": 176.91083,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW9291",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:FW9295",
       "vendor": "cwop",
       "nativeId": "FW9295",
@@ -5968,6 +6475,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:FW9660",
+      "vendor": "cwop",
+      "nativeId": "FW9660",
+      "name": "CWOP FW9660",
+      "latitude": 19.96733,
+      "longitude": -155.23683,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=FW9660",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:FW9917",
       "vendor": "cwop",
       "nativeId": "FW9917",
@@ -6002,6 +6532,52 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0040",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GW0083",
+      "vendor": "cwop",
+      "nativeId": "GW0083",
+      "name": "CWOP GW0083",
+      "latitude": -43.93383,
+      "longitude": -176.528,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0083",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GW0154",
+      "vendor": "cwop",
+      "nativeId": "GW0154",
+      "name": "CWOP GW0154",
+      "latitude": 19.70667,
+      "longitude": -155.97817,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0154",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -6267,6 +6843,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW0580",
+      "vendor": "cwop",
+      "nativeId": "GW0580",
+      "name": "CWOP GW0580",
+      "latitude": -43.59783,
+      "longitude": 172.72217,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0580",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW0586",
       "vendor": "cwop",
       "nativeId": "GW0586",
@@ -6301,6 +6900,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0679",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GW0774",
+      "vendor": "cwop",
+      "nativeId": "GW0774",
+      "name": "CWOP GW0774",
+      "latitude": -40.378,
+      "longitude": 175.51083,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW0774",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -6773,6 +7395,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW2260",
+      "vendor": "cwop",
+      "nativeId": "GW2260",
+      "name": "CWOP GW2260",
+      "latitude": 20.71283,
+      "longitude": -156.34217,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW2260",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW2356",
       "vendor": "cwop",
       "nativeId": "GW2356",
@@ -6968,6 +7613,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW2757",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GW2758",
+      "vendor": "cwop",
+      "nativeId": "GW2758",
+      "name": "CWOP GW2758",
+      "latitude": 19.57967,
+      "longitude": -154.93833,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW2758",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7210,17 +7878,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:GW3518",
+      "uid": "cwop:GW3416",
       "vendor": "cwop",
-      "nativeId": "GW3518",
-      "name": "CWOP GW3518",
-      "latitude": 43.64333,
-      "longitude": -72.43233,
+      "nativeId": "GW3416",
+      "name": "CWOP GW3416",
+      "latitude": -36.85867,
+      "longitude": 174.59667,
       "elevationM": null,
-      "country": null,
+      "country": "NZ",
       "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3518",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3416",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7233,17 +7901,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:GW3555",
+      "uid": "cwop:GW3518",
       "vendor": "cwop",
-      "nativeId": "GW3555",
-      "name": "CWOP GW3555",
-      "latitude": 48.56233,
-      "longitude": -120.37783,
+      "nativeId": "GW3518",
+      "name": "CWOP GW3518",
+      "latitude": 43.64333,
+      "longitude": -72.43233,
       "elevationM": null,
       "country": null,
       "region": null,
       "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3555",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3518",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7371,29 +8039,6 @@
       "locator": {}
     },
     {
-      "uid": "cwop:GW3817",
-      "vendor": "cwop",
-      "nativeId": "GW3817",
-      "name": "CWOP GW3817",
-      "latitude": 37.2065,
-      "longitude": -113.20383,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3817",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
       "uid": "cwop:GW3835",
       "vendor": "cwop",
       "nativeId": "GW3835",
@@ -7486,6 +8131,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW3946",
+      "vendor": "cwop",
+      "nativeId": "GW3946",
+      "name": "CWOP GW3946",
+      "latitude": 19.6,
+      "longitude": -155,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW3946",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW3953",
       "vendor": "cwop",
       "nativeId": "GW3953",
@@ -7520,6 +8188,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4042",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GW4153",
+      "vendor": "cwop",
+      "nativeId": "GW4153",
+      "name": "CWOP GW4153",
+      "latitude": 19.898,
+      "longitude": -155.17667,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4153",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7670,17 +8361,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:GW4614",
+      "uid": "cwop:GW4624",
       "vendor": "cwop",
-      "nativeId": "GW4614",
-      "name": "CWOP GW4614",
-      "latitude": 38.91017,
-      "longitude": -78.7925,
+      "nativeId": "GW4624",
+      "name": "CWOP GW4624",
+      "latitude": 44.26167,
+      "longitude": -114.4025,
       "elevationM": null,
       "country": null,
       "region": null,
       "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4614",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4624",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7693,17 +8384,17 @@
       "locator": {}
     },
     {
-      "uid": "cwop:GW4624",
+      "uid": "cwop:GW4646",
       "vendor": "cwop",
-      "nativeId": "GW4624",
-      "name": "CWOP GW4624",
-      "latitude": 44.262,
-      "longitude": -114.40283,
+      "nativeId": "GW4646",
+      "name": "CWOP GW4646",
+      "latitude": 20.754,
+      "longitude": -156.44883,
       "elevationM": null,
       "country": null,
       "region": null,
       "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4624",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW4646",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -7992,6 +8683,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW5604",
+      "vendor": "cwop",
+      "nativeId": "GW5604",
+      "name": "CWOP GW5604",
+      "latitude": 36.17667,
+      "longitude": -81.62367,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW5604",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW5625",
       "vendor": "cwop",
       "nativeId": "GW5625",
@@ -8153,6 +8867,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW5821",
+      "vendor": "cwop",
+      "nativeId": "GW5821",
+      "name": "CWOP GW5821",
+      "latitude": 19.62383,
+      "longitude": -155.95883,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW5821",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW5833",
       "vendor": "cwop",
       "nativeId": "GW5833",
@@ -8187,29 +8924,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW5845",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
-      "uid": "cwop:GW5891",
-      "vendor": "cwop",
-      "nativeId": "GW5891",
-      "name": "CWOP GW5891",
-      "latitude": 35.96283,
-      "longitude": -81.54283,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW5891",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -8774,6 +9488,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:GW7961",
+      "vendor": "cwop",
+      "nativeId": "GW7961",
+      "name": "CWOP GW7961",
+      "latitude": -36.72933,
+      "longitude": 175.65967,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW7961",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:GW8010",
       "vendor": "cwop",
       "nativeId": "GW8010",
@@ -8831,6 +9568,29 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GW8089",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:GWO459",
+      "vendor": "cwop",
+      "nativeId": "GWO459",
+      "name": "CWOP GWO459",
+      "latitude": -37,
+      "longitude": 176,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=GWO459",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -9245,29 +10005,6 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=KE7PGE-13",
-      "capabilities": {
-        "gustLull": true,
-        "temperature": true,
-        "conditions": true,
-        "history": false
-      },
-      "samplingWindowSeconds": 300,
-      "recommendedPollSeconds": 120,
-      "category": "pws",
-      "locator": {}
-    },
-    {
-      "uid": "cwop:KE7YUP",
-      "vendor": "cwop",
-      "nativeId": "KE7YUP",
-      "name": "CWOP KE7YUP",
-      "latitude": 40.39,
-      "longitude": -111.98467,
-      "elevationM": null,
-      "country": null,
-      "region": null,
-      "timeZone": null,
-      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=KE7YUP",
       "capabilities": {
         "gustLull": true,
         "temperature": true,
@@ -10246,6 +10983,29 @@
       "locator": {}
     },
     {
+      "uid": "cwop:W4MLN-2",
+      "vendor": "cwop",
+      "nativeId": "W4MLN-2",
+      "name": "CWOP W4MLN-2",
+      "latitude": 36.41083,
+      "longitude": -81.49583,
+      "elevationM": null,
+      "country": null,
+      "region": null,
+      "timeZone": null,
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=W4MLN-2",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
       "uid": "cwop:W4MLN-3",
       "vendor": "cwop",
       "nativeId": "W4MLN-3",
@@ -10533,6 +11293,259 @@
       "region": null,
       "timeZone": null,
       "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=WY7EM",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL1KPB-13",
+      "vendor": "cwop",
+      "nativeId": "ZL1KPB-13",
+      "name": "CWOP ZL1KPB-13",
+      "latitude": -38.058,
+      "longitude": 175.09,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL1KPB-13",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL1TQN",
+      "vendor": "cwop",
+      "nativeId": "ZL1TQN",
+      "name": "CWOP ZL1TQN",
+      "latitude": -37.86383,
+      "longitude": 176.4905,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL1TQN",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL1TRE",
+      "vendor": "cwop",
+      "nativeId": "ZL1TRE",
+      "name": "CWOP ZL1TRE",
+      "latitude": -36.9,
+      "longitude": 174.9,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL1TRE",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL1UCH",
+      "vendor": "cwop",
+      "nativeId": "ZL1UCH",
+      "name": "CWOP ZL1UCH",
+      "latitude": -34.89083,
+      "longitude": 173.36917,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL1UCH",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL1UTH",
+      "vendor": "cwop",
+      "nativeId": "ZL1UTH",
+      "name": "CWOP ZL1UTH",
+      "latitude": -38.885,
+      "longitude": 175.2945,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL1UTH",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL2ARL",
+      "vendor": "cwop",
+      "nativeId": "ZL2ARL",
+      "name": "CWOP ZL2ARL",
+      "latitude": -41.31983,
+      "longitude": 174.81683,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL2ARL",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL2IH",
+      "vendor": "cwop",
+      "nativeId": "ZL2IH",
+      "name": "CWOP ZL2IH",
+      "latitude": -39.10583,
+      "longitude": 174.1865,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL2IH",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL2VAX",
+      "vendor": "cwop",
+      "nativeId": "ZL2VAX",
+      "name": "CWOP ZL2VAX",
+      "latitude": -40.38167,
+      "longitude": 175.7935,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL2VAX",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL3DRP",
+      "vendor": "cwop",
+      "nativeId": "ZL3DRP",
+      "name": "CWOP ZL3DRP",
+      "latitude": -43.31333,
+      "longitude": 172.16633,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL3DRP",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL4BMC-10",
+      "vendor": "cwop",
+      "nativeId": "ZL4BMC-10",
+      "name": "CWOP ZL4BMC-10",
+      "latitude": -46.4175,
+      "longitude": 168.36533,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL4BMC-10",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": true,
+        "conditions": true,
+        "history": false
+      },
+      "samplingWindowSeconds": 300,
+      "recommendedPollSeconds": 120,
+      "category": "pws",
+      "locator": {}
+    },
+    {
+      "uid": "cwop:ZL4VM-1",
+      "vendor": "cwop",
+      "nativeId": "ZL4VM-1",
+      "name": "CWOP ZL4VM-1",
+      "latitude": -45.82833,
+      "longitude": 170.6175,
+      "elevationM": null,
+      "country": "NZ",
+      "region": null,
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "http://www.findu.com/cgi-bin/wxpage.cgi?call=ZL4VM-1",
       "capabilities": {
         "gustLull": true,
         "temperature": true,

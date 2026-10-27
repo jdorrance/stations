@@ -33,31 +33,40 @@ test('validPosition and validBounds validate geographic coordinates', () => {
   assert.equal(boundsIntersect([43, 38, 46, 41], [-125, 45, -120, 49]), false);
 });
 
-test('regional coverages and explicit country metadata identify US, CA, MX, and AM launches', () => {
+test('regional coverages and explicit country metadata identify US, CA, MX, AM, and NZ launches', () => {
   assert.deepEqual(NORTH_AMERICA_REGIONS, ['US', 'CA', 'MX']);
-  assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM']);
+  assert.deepEqual(INITIAL_SCOPE_REGIONS, ['US', 'CA', 'MX', 'AM', 'NZ']);
   assert.equal(regionDescriptor('AM').defaultTimeZone, 'Asia/Yerevan');
+  assert.equal(regionDescriptor('NZ').defaultTimeZone, 'Pacific/Auckland');
 
   const tigerMountain = { latitude: 47.4995, longitude: -122.009 };
   const pemberton = { latitude: 50.318, longitude: -122.805 };
   const valleDeBravo = { latitude: 19.195, longitude: -100.132 };
   const hatis = { latitude: 40.3063, longitude: 44.7253 };
+  const wellington = { latitude: -41.2865, longitude: 174.7762 };
+  const chatham = { latitude: -43.95, longitude: -176.55 };
+  const norfolkIsland = { latitude: -29.04, longitude: 167.95 };
   const alps = { latitude: 45.9237, longitude: 6.8694 };
 
   assert.equal(inferRegionCode(tigerMountain, 'US'), 'US');
   assert.equal(inferRegionCode(pemberton, 'CA'), 'CA');
   assert.equal(inferRegionCode(valleDeBravo, 'MX'), 'MX');
   assert.equal(inferRegionCode(hatis, 'AM'), 'AM');
+  assert.equal(inferRegionCode(wellington, 'NZ'), 'NZ');
   assert.equal(inferRegionCode(alps), null);
 
   assert.equal(inRegion('US', tigerMountain, 'US'), true);
   assert.equal(inRegion('CA', pemberton, 'CA'), true);
   assert.equal(inRegion('MX', valleDeBravo, 'MX'), true);
   assert.equal(inRegion('AM', hatis, 'AM'), true);
+  assert.equal(inRegion('NZ', wellington, 'NZ'), true);
 
   const initialCoverage = coverageForRegions(INITIAL_SCOPE_REGIONS);
   assert.equal(coversPoint(initialCoverage, tigerMountain), true);
   assert.equal(coversPoint(initialCoverage, hatis), true);
+  assert.equal(coversPoint(initialCoverage, wellington), true);
+  assert.equal(coversPoint(initialCoverage, chatham), true);
+  assert.equal(coversPoint(initialCoverage, norfolkIsland), false);
   assert.equal(coversPoint(initialCoverage, alps), false);
 });
 

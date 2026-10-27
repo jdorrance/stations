@@ -34,6 +34,11 @@ import {
   filterCatalogueStations,
   stationMetaFromCatalogue,
 } from './azohra-vendors.ts';
+import {
+  coverageCountryHint,
+  defaultTimeZoneForPoint,
+  defaultTimeZoneForRegion,
+} from './region-hints.ts';
 import type { DiscoverOptions, StationNetworkProvider } from './types.ts';
 import { cacheIdentity, credentialCacheScope, observationTimeIso } from './freeflight-observations.ts';
 import {
@@ -722,21 +727,16 @@ async function discoverWeatherLinkMapStations(
       if (latitude === null || longitude === null || !validPosition({ latitude, longitude })) {
         continue;
       }
-      const isArmenia =
-        latitude >= 38.84 &&
-        latitude <= 41.3 &&
-        longitude >= 43.44 &&
-        longitude <= 46.63 &&
-        !(longitude > 45.4 && latitude > 40.55);
-      // Skip offline/unmapped stations (tb === -1) outside Armenia
-      if (!isArmenia && tb !== null && tb < 0) continue;
+      const coverageHint = coverageCountryHint({ latitude, longitude });
+      // Skip offline/unmapped stations (tb === -1) outside curated coverage regions
+      if (!coverageHint && tb !== null && tb < 0) continue;
       const isMidAtlantic =
         latitude >= 36.54 &&
         latitude <= 39.72 &&
         longitude >= -82.65 &&
         longitude <= -75.05;
       if (
-        isArmenia ||
+        coverageHint ||
         isMidAtlantic ||
         spatial.queryRadius({ latitude, longitude }, radiusKm, 1).length > 0
       ) {
@@ -744,15 +744,18 @@ async function discoverWeatherLinkMapStations(
           id: row.id.trim(),
           latitude,
           longitude,
-          ...(isArmenia ? { countryHint: 'AM' } : isMidAtlantic ? { countryHint: 'US' } : {}),
+          ...(coverageHint
+            ? { countryHint: coverageHint }
+            : isMidAtlantic
+              ? { countryHint: 'US' }
+              : {}),
         });
       }
     }
 
     candidates.sort((a, b) => {
-      const amA = a.countryHint === 'AM' ? 0 : 1;
-      const amB = b.countryHint === 'AM' ? 0 : 1;
-      return amA - amB;
+      const rank = (hint?: string) => (hint === 'AM' || hint === 'NZ' ? 0 : 1);
+      return rank(a.countryHint) - rank(b.countryHint);
     });
 
     const wlActive: CatalogueStation[] = [];
@@ -801,7 +804,16 @@ async function discoverWeatherLinkMapStations(
                 candidate.countryHint,
               ),
               region: null,
-              timeZone: candidate.countryHint === 'AM' ? 'Asia/Yerevan' : null,
+              timeZone:
+                defaultTimeZoneForPoint({
+                  latitude: candidate.latitude,
+                  longitude: candidate.longitude,
+                }) ??
+                defaultTimeZoneForRegion(
+                  candidate.countryHint === 'AM' || candidate.countryHint === 'NZ'
+                    ? candidate.countryHint
+                    : null,
+                ),
               pageUrl: `https://www.weatherlink.com/map/${encodeURIComponent(candidate.id)}`,
               category: 'freeflight' as const,
               capabilities: {

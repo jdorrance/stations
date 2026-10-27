@@ -49,6 +49,10 @@ export const STATION_VENDORS = [
   'ambient',
   'climatenet',
   'hydromet_am',
+  'wmo_nz',
+  'hilltop',
+  'ecan',
+  'zephyr',
   'custom',
 ] as const;
 
@@ -211,6 +215,9 @@ export function defaultCategoryForVendor(vendor: StationVendor): StationCategory
     case 'eccc':
     case 'conagua':
     case 'hydromet_am':
+    case 'wmo_nz':
+    case 'hilltop':
+    case 'ecan':
     case 'synoptic':
       return 'synoptic';
     case 'tempest':
@@ -221,6 +228,7 @@ export function defaultCategoryForVendor(vendor: StationVendor): StationCategory
     case 'wunderground':
     case 'ambient':
     case 'climatenet':
+    case 'zephyr':
     case 'custom':
       return 'pws';
   }
@@ -503,14 +511,18 @@ const VENDOR_PRIORITY: Readonly<Record<StationVendor, number>> = {
   conagua: 74,
   hydromet_am: 73,
   awc: 72,
-  iem: 70,
-  nws: 68,
+  wmo_nz: 71,
+  hilltop: 70,
+  ecan: 69,
+  iem: 68,
+  nws: 67,
   climatenet: 66,
   cwop: 64,
   windy: 62,
   wunderground: 60,
   synoptic: 58,
   ambient: 56,
+  zephyr: 45,
   windsmobi: 40,
   windspion: 35,
   custom: 20,

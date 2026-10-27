@@ -20,7 +20,7 @@ index.queryRadius({ latitude: 47.6, longitude: -122.3 }, 40);
 ## What it owns
 
 - Position / bounds helpers (`containsPoint`, `distanceKm`, `bearingDeg`, tiles)
-- Regional envelopes for `US`, `CA`, `MX` and `AM`
+- Regional envelopes for `US`, `CA`, `MX`, `AM` and `NZ`
 - `createSpatialIndex` for bounding-box and great-circle radius queries
 - `inferRegionCode` — preserves explicit country metadata; never guesses from
   overlapping rectangles

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-27T19:09:09.451Z",
+  "regions": [
+    "US",
+    "CA",
+    "MX",
+    "AM",
+    "NZ"
+  ],
+  "vendor": "ecan",
+  "count": 3,
+  "stations": [
+    {
+      "uid": "ecan:Geraldine",
+      "vendor": "ecan",
+      "nativeId": "Geraldine",
+      "name": "Geraldine (ECan)",
+      "latitude": -44.10014266681554,
+      "longitude": 171.2408697056301,
+      "elevationM": null,
+      "country": "NZ",
+      "region": "Canterbury",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "https://www.ecan.govt.nz/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": false,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 300,
+      "category": "synoptic",
+      "locator": {}
+    },
+    {
+      "uid": "ecan:Rangiora",
+      "vendor": "ecan",
+      "nativeId": "Rangiora",
+      "name": "Rangiora (ECan)",
+      "latitude": -43.30711755488095,
+      "longitude": 172.59556733037252,
+      "elevationM": null,
+      "country": "NZ",
+      "region": "Canterbury",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "https://www.ecan.govt.nz/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": false,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 300,
+      "category": "synoptic",
+      "locator": {}
+    },
+    {
+      "uid": "ecan:Woolston",
+      "vendor": "ecan",
+      "nativeId": "Woolston",
+      "name": "Woolston (ECan)",
+      "latitude": -43.55681185108505,
+      "longitude": 172.68180667559463,
+      "elevationM": null,
+      "country": "NZ",
+      "region": "Canterbury",
+      "timeZone": "Pacific/Auckland",
+      "pageUrl": "https://www.ecan.govt.nz/",
+      "capabilities": {
+        "gustLull": true,
+        "temperature": false,
+        "conditions": false,
+        "history": false
+      },
+      "samplingWindowSeconds": 600,
+      "recommendedPollSeconds": 300,
+      "category": "synoptic",
+      "locator": {}
+    }
+  ]
+}

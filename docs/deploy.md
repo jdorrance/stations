@@ -116,7 +116,7 @@ repositories beside it (that is where `crawl-na.mjs` reads launches):
 1. `node scripts/sync-crawl-checkpoints.mjs --restore` downloads
    `checkpoints/stations-crawl.tar.gz` from the bucket into
    `.cache/stations-crawl/`. The first run finds nothing and starts clean.
-2. `pnpm catalogue:crawl --regions=US,CA,MX,AM` with the provider secrets.
+2. `pnpm catalogue:crawl --regions=US,CA,MX,AM,NZ` with the provider secrets.
 3. `pnpm deploy:catalogue --upload --min-stations=<90% of the committed
    manifest's totalStations>`: a crawl that shrank by more than a tenth is not
    published and production keeps the previous objects.

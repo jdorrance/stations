@@ -88,6 +88,10 @@
       "types": "./dist/armenia.d.ts",
       "import": "./dist/armenia.js"
     },
+    "./newzealand": {
+      "types": "./dist/newzealand.d.ts",
+      "import": "./dist/newzealand.js"
+    },
     "./seeds": {
       "types": "./dist/seeds.d.ts",
       "import": "./dist/seeds.js"

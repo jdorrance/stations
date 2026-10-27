@@ -14,7 +14,7 @@ function station(id, overrides = {}) {
 }
 
 function catalogue(stations) {
-  return { schemaVersion: 1, generatedAt: '2026-10-26T12:00:00Z', regions: ['US', 'CA', 'MX', 'AM'], stations };
+  return { schemaVersion: 1, generatedAt: '2026-10-26T12:00:00Z', regions: ['US', 'CA', 'MX', 'AM', 'NZ'], stations };
 }
 
 const request = path => new Request(`https://stations.test/api/stations/${path}`);
