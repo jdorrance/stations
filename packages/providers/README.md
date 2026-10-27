@@ -1,8 +1,8 @@
 # @stations/providers
 
 Discover weather stations across upstream networks, normalize live observations
-into the `@azohra/meteo.station` wire contract and serve them over HTTP.
-Discovery and live adapters run on Node 20+ and edge workers.
+into the `@azohra/meteo.station` wire contract, and serve them over HTTP.
+Runs on Node 20+ and edge Workers — not in the browser.
 
 ```ts
 import { createStationsApiHandler, discoverStations } from '@stations/providers';
@@ -18,47 +18,38 @@ export const handleRequest = createStationsApiHandler({
 });
 ```
 
-`discoverStations` queries the selected providers, validates each station record
-and merges duplicate identifiers while preserving direct-provider metadata over
-meta-aggregators. `createStationsApiHandler` mounts `/catalogue` (JSON and
-GeoJSON) alongside `@azohra/meteo.station`'s `/feed`, `/current`, `/live`,
-`/history` and `/climatology` routes.
+`discoverStations` queries selected providers, validates records and merges
+duplicates while preferring direct-provider metadata over meta-aggregators.
+`createStationsApiHandler` mounts `/catalogue`, `/feed`, `/current`, `/live`,
+`/history` and `/climatology`. Full route, auth, cache and batching behaviour:
+[Serving](../../docs/toolkit-serving.md).
+
+## What it owns
+
+- Per-vendor `StationNetworkProvider` adapters and the
+  [registry](src/registry.ts)
+- Live loaders that validate timestamps/units before SI conversion
+  ([observation validators](src/observation-values.ts))
+- The [HTTP handler](src/handler.ts) and credential-scoped upstream cache keys
+- Origin-aware retries and rate limits via
+  [`createProviderFetch`](docs/transport.md)
+
+Missing credentials degrade only those stations to `unavailable` /
+`not_configured`; the rest of a feed continues.
 
 ## Supported networks
 
-- **Free-flight and club windtalkers:** `windnerd`, `holfuy` (API, keyless
-  widget fallback and global directory sweep), `openwindmap` (Pioupiou),
-  `windsmobi`, `windspion`, `windguru`, `campbell`, `weatherlink` (including
-  Crestline CSS, Sierra Gliding and launch-corridor stations) and `realtime_txt`
-  (Cumulus/WeeWX).
-- **Mountain, fire and avalanche:** `raws` (NIFC Interagency FeatureServer),
-  `snotel` (USDA NRCS AWDB) and `avalanche` (Avalanche Canada and US National
-  Avalanche Center / SnowObs mountain stations).
-- **National synoptic, aviation and marine:** `iem` (ASOS, AWOS, DCP, RWIS and
-  USCRN networks across US, CA, MX and AM), `awc` (NOAA Aviation Weather Center
-  METAR), `nws` (`api.weather.gov`), `eccc` (MSC GeoMet SWOB), `ndbc` (buoys and
-  C-MAN stations), `conagua` (Mexico SMN EMAs) and `hydromet_am` (Armenia
-  Hydromet WMO FM-12 SYNOP stations).
-- **Citizen and personal stations:** `cwop` (APRS weather packets),
-  `climatenet` (TUMO ClimateNet Armenia), `windy`, `tempest`, `ecowitt`,
-  `wunderground`, `synoptic` and `ambient`.
+- **Free-flight / club:** `windnerd`, `holfuy`, `openwindmap`, `windsmobi`,
+  `windspion`, `windguru`, `campbell`, `weatherlink`, `realtime_txt`
+- **Mountain / fire / snow:** `raws`, `snotel`, `avalanche`
+- **Synoptic / aviation / marine:** `iem`, `awc`, `nws`, `eccc`, `ndbc`,
+  `conagua`, `hydromet_am`, `synoptic`
+- **Citizen / PWS:** `cwop`, `climatenet`, `windy`, `tempest`, `ecowitt`,
+  `wunderground`, `ambient`
 
-Adapters validate upstream timestamps and units before converting to SI. Missing
-or unconfigured credentials degrade individual stations to `unavailable` with
-`reason: 'not_configured'` without failing the rest of a feed. Credentialed
-requests isolate their cache keys by authorization scope.
+## Next layer
 
-See the [provider registry](src/registry.ts), [HTTP handler](src/handler.ts) and
-[observation validators](src/observation-values.ts) for details.
-
-## Request scheduling
-
-Provider discovery, adapters and this package's server loaders share automatic
-GET/HEAD retries and rate limits by URL origin. Transient failures use bounded
-exponential backoff with jitter; `Retry-After` pauses requests to that origin.
-Caller cancellation and existing upstream deadlines still apply.
-
-Use `createProviderFetch` to configure limits and pass the same fetch instance in
-`environment.fetch` to the crawler or handler. Limits are local to that instance
-and process; multiple workers need coordination outside this package. See
-[transport configuration and behavior](docs/transport.md).
+- [Serving stations](../../docs/toolkit-serving.md)
+- [Transport retries and limits](docs/transport.md)
+- [Adding a network](../../docs/toolkit-development.md#add-a-station-network)
+- [Wire semantics](../../docs/toolkit-contracts.md)

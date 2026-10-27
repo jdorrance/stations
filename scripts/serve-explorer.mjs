@@ -233,13 +233,15 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     options: {
       port: { type: 'string', default: '4331' },
       host: { type: 'string', default: '127.0.0.1' },
-      full: { type: 'boolean', default: false },
+      full: { type: 'boolean', default: true },
+      corridors: { type: 'boolean', default: false },
     },
   });
   const started = await startExplorerServer({
     port: Number(args.port),
     host: args.host,
-    full: args.full,
+    // `--corridors` selects the launch-corridor shard; `--full` remains the default.
+    full: args.corridors ? false : args.full,
   });
   console.log(`Stations explorer running at ${started.url}`);
 }

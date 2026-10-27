@@ -1,7 +1,8 @@
 # @stations/client
 
-Query published station catalogues, poll active map viewports and subscribe to
-station feeds in a browser or Node app.
+Query published station catalogues, poll map viewports and subscribe to live
+feeds in a browser or Node app. Talks only to your Stations HTTP API — never to
+upstream networks.
 
 ```ts
 import { createStationsClient, createViewportStationStore } from '@stations/client';
@@ -24,19 +25,23 @@ await viewport.setViewport([-123.0, 47.0, -121.0, 49.0]);
 stop();
 ```
 
-`createStationsClient` provides both nullable convenience methods (`loadFeed`,
-`loadCatalogue`, `loadCurrent`) and detailed result methods (`loadFeedResult`,
-`loadCatalogueResult`, `loadCurrentResult`) that distinguish HTTP status errors,
-network failures, invalid documents, timeouts and caller cancellations.
+## What it owns
 
-`createViewportStationStore` manages map viewport polling: it coalesces
-identical in-flight bounds, cancels superseded viewport requests, retains the
-previous `dataBounds` and `feed` with `stale: true` when a refresh fails, and
-converts live feeds into GeoJSON `FeatureCollection` objects.
+- **`createStationsClient`** — HTTP client for `/catalogue`, `/feed` and
+  `/current`. Nullable helpers (`loadFeed`, …) and detailed results
+  (`loadFeedResult`, …) that distinguish HTTP, network, parse, timeout and
+  abort errors.
+- **`createCatalogueIndex`** — in-memory spatial index over a catalogue
+  document (bounds, radius, country, vendor, category, launch, aliases).
+- **`createViewportStationStore`** — coalesces identical in-flight bounds,
+  cancels superseded polls, keeps the last feed as `stale: true` on failure,
+  and exposes GeoJSON for the map.
 
-`createCatalogueIndex` wraps a `StationCatalogueDocument` in an in-memory
-spatial index supporting bounding-box, radius, country, vendor, category and
-launch-corridor queries, as well as alias resolution.
+Also re-exports polling stores from `@azohra/meteo.station/client`
+([public exports](src/index.ts)).
 
-The [public exports](src/index.ts) also re-export the polling stores from
-`@azohra/meteo.station/client`.
+## Next layer
+
+- [Plugin recipe and HTTP routes](../../docs/toolkit-serving.md#plugin-recipe)
+- [Wire semantics](../../docs/toolkit-contracts.md)
+- [`@stations/providers` handler](../providers/README.md)

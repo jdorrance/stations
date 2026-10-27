@@ -1,18 +1,25 @@
 # Stations
 
-Stations discovers weather stations, indexes them by location and launch
-proximity, and serves live observations through the
-[`@azohra/meteo.station`](https://github.com/azohra/meteo) wire contract. The
-catalogue currently covers the United States, Canada, Mexico and Armenia.
+Stations finds weather stations near free-flight launches, indexes them by
+location, and serves live wind observations through a small HTTP API and the
+[`@azohra/meteo.station`](https://github.com/azohra/meteo) wire contract.
 
-The spatial index, contracts, provider adapters and browser client are also
-available as independent TypeScript packages within this workspace. See the
-[package guide](docs/toolkit.md) for using them in another application.
+Coverage today is the United States, Canada, Mexico and Armenia, plus global
+Holfuy windtalkers. Catalogue size and per-network counts live in
+[`data/catalogue/manifest.json`](data/catalogue/manifest.json).
 
-## Start locally
+## What you get
 
-Use Node 20 or later and the pnpm version pinned in [package.json](package.json).
-These commands build the packages and start the local station explorer:
+- A published station catalogue (JSON, GeoJSON, NDJSON) with launch proximity
+- A server handler that proxies live upstream reads and keeps credentials private
+- Four TypeScript packages for geography, contracts, providers and browser clients
+
+Plugins, maps and dashboards call **your** API. Upstream keys never leave the
+server. See [Serving stations](docs/toolkit-serving.md).
+
+## Quick start
+
+Node 20+ and the pnpm version in [package.json](package.json):
 
 ```sh
 pnpm install --frozen-lockfile
@@ -21,16 +28,31 @@ pnpm catalogue:build
 pnpm dev
 ```
 
-Open http://localhost:4331 to browse the station map and inspect live readings.
-To crawl upstream networks and rebuild the full regional shards, run
-`pnpm catalogue:crawl`. See the [development guide](docs/toolkit-development.md)
-for crawler options, cache checkpoints and adding station networks.
+Open http://localhost:4331 for the map explorer and live station inspector.
+
+Optional credentials (Synoptic, Weather Underground, Holfuy, …) go in `.env`;
+see [`.env.example`](.env.example). To rebuild the full live catalogue from
+upstream networks:
+
+```sh
+pnpm catalogue:crawl -- --regions=US,CA,MX,AM --resume
+```
 
 ## Documentation
 
-- [Packages and architecture](docs/toolkit.md)
-- [API conventions and wire semantics](docs/toolkit-contracts.md)
-- [Adding providers, crawling and development](docs/toolkit-development.md)
+Read in this order; each layer owns one set of facts:
+
+| Doc | Owns |
+| --- | --- |
+| [Packages](docs/toolkit.md) | Package map and how to compose them |
+| [Serving](docs/toolkit-serving.md) | HTTP routes, auth, cache, batching, deploy |
+| [Contracts](docs/toolkit-contracts.md) | Units, absence, freshness, terminology |
+| [Development](docs/toolkit-development.md) | Providers, crawl, explorer, checks |
+
+Package READMEs: [`geography`](packages/geography/README.md) ·
+[`contracts`](packages/contracts/README.md) ·
+[`providers`](packages/providers/README.md) ·
+[`client`](packages/client/README.md)
 
 ## Development checks
 
@@ -41,6 +63,6 @@ pnpm test:consumer
 pnpm verify
 ```
 
-`check` covers types, package boundaries and public declarations. `test:consumer`
-installs the packed libraries in a separate project and checks their public APIs
-and browser bundle.
+`check` covers types, package boundaries and public declarations.
+`test:consumer` installs packed libraries in a separate project and verifies
+their public APIs and browser bundle. `verify` runs the full gate.

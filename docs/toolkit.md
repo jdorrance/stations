@@ -1,37 +1,59 @@
-# Station toolkit
+# Packages
 
-The toolkit provides the geographic indexing, wire contracts, upstream station
-adapters and client stores used by the Stations workspace. Its packages can also
-support a standalone map layer, a Windy plugin, a launch briefing page or a
-live station dashboard. They are currently private workspace packages.
+Stations ships four packages. Each owns a distinct responsibility; start with
+the README for the package you need, then follow its links for types and deeper
+guides.
 
-Catalogue discovery and live upstream adapters run in Node or an edge worker.
-Published catalogues are JSON, NDJSON and GeoJSON documents that a browser can
-index and query without contacting upstream station networks directly.
+| Package | Owns | Runs in |
+| --- | --- | --- |
+| [`@stations/geography`](../packages/geography/README.md) | Positions, bounds, regional envelopes, spatial index | Browser, Node, Workers |
+| [`@stations/contracts`](../packages/contracts/README.md) | Catalogue records, dedup, launch context, GeoJSON/NDJSON, observation schemas | Browser, Node, Workers |
+| [`@stations/providers`](../packages/providers/README.md) | Upstream discovery, live adapters, HTTP handler | Node 20+, edge Workers |
+| [`@stations/client`](../packages/client/README.md) | Catalogue queries, viewport polling, reactive stores | Browser, Node |
 
-## Packages
+Wire units, absence and freshness live in
+[Contracts](toolkit-contracts.md). HTTP serving, credentials and caching live in
+[Serving](toolkit-serving.md). Adding networks and crawling live in
+[Development](toolkit-development.md).
 
-- [geography](../packages/geography/README.md) works with positions, bounds,
-  regional coverages and spatial indexing.
-- [contracts](../packages/contracts/README.md) defines catalogue records,
-  cross-network deduplication, launch-proximity metadata, GeoJSON features and
-  re-exported `@azohra/meteo.station` observation documents.
-- [providers](../packages/providers/README.md) discovers stations across upstream
-  networks, normalizes live readings into the `@azohra/meteo.station` wire
-  contract and mounts the HTTP feed handler.
-- [client](../packages/client/README.md) queries published catalogues, polls
-  active map viewports and exposes reactive stores for maps and dashboards.
+## Typical compositions
 
-## Using the packages
+**Map / Windy plugin / dashboard (browser)** — load a published catalogue once,
+index it locally, poll a viewport feed:
 
-Start with the README for the package you need. It links to its public types and
-usage snippets. Application concerns such as map rendering, unit preferences and
-credentials stay with the consumer.
+```ts
+import { createStationsClient, createViewportStationStore } from '@stations/client';
 
-`pnpm test:consumer` compiles and runs integration fixtures against packed archives
-in a separate project.
+const client = createStationsClient({ baseUrl: 'https://stations.example/api/stations' });
+const index = await client.loadCatalogueIndex();
+const viewport = createViewportStationStore({
+  client,
+  catalogueByUid: index?.byUidMap,
+  categories: ['freeflight', 'mountain'],
+});
+await viewport.setViewport([-123, 47, -121, 49]);
+```
 
-For changes to the toolkit, see [API conventions](toolkit-contracts.md) and the
-[development guide](toolkit-development.md). TypeScript generates the published
-declarations from source; package checks catch private imports and undeclared
-dependencies.
+**API Worker / Node server** — mount a baked catalogue and keep upstream keys on
+the server:
+
+```ts
+import { createStationsApiHandler } from '@stations/providers';
+import catalogue from './stations.json' with { type: 'json' };
+
+export default {
+  fetch: createStationsApiHandler({
+    catalogue,
+    basePath: '/api/stations',
+    credentials: {
+      synopticApiKey: env.SYNOPTIC_API_KEY,
+      wuApiKey: env.WU_API_KEY,
+      holfuyApiKey: env.HOLFUY_API_KEY,
+    },
+  }),
+};
+```
+
+Application concerns (map rendering, unit preferences, auth of *your* clients)
+stay with the consumer. `pnpm test:consumer` compiles and runs integration
+fixtures against packed archives in a separate project.

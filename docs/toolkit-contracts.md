@@ -1,45 +1,78 @@
-# API conventions
+# Contracts
+
+This guide owns wire semantics: units, absence, freshness and shared
+terminology. Package surfaces are in [Packages](toolkit.md); HTTP behaviour is
+in [Serving](toolkit-serving.md).
 
 Each package exposes a small set of named entry points through its `exports`
-map. Public types describe the values a caller needs; upstream wire formats and
-parsing helpers stay inside their packages. New exports should serve a concrete
-use in an application or another package.
+map. Public types describe values a caller needs; upstream wire formats stay
+inside their packages. New exports should serve a concrete use in an application
+or another package.
 
-## Types and values
+## Units and absence
 
 Use shared domain types when passing station data between packages. Field names
-carry units where practical, such as `temperatureC`, `windAvgMps`, `elevationM`
-and `distanceKm`.
+carry units where practical (`temperatureC`, `windAvgMps`, `elevationM`,
+`distanceKm`).
 
-- **Speeds:** metres per second (`m/s`). Convert to display units (`mph`, `kmh`,
-  `knots`) when values leave the data layer.
-- **Directions:** degrees true `[0, 360)`, the bearing the wind blows **from**.
-  Below the WMO calm threshold (`0.5 m/s`, `CALM_THRESHOLD_MPS`),
-  `windDirectionDeg` is `null`. A `null` direction on a blowing reading means a
-  missing or unserviceable vane.
-- **Temperatures and pressures:** degrees Celsius (`°C`) and hectopascals
-  (`hPa`) reduced to mean sea level (`seaLevelPressureHpa`).
-- **Elevations:** metres above mean sea level (`elevationM`).
-- **Absence vs zero:** a missing quantity is `null` and is never sent as `0`.
-  `windGustMps: null` means gusts are not reported; `windAvgMps: 0` is a
-  measured calm reading.
-- **Timestamps and freshness:** ISO-8601 UTC strings. Adapters preserve the
-  upstream observation timestamp and never substitute fetch time for a missing
-  measurement time. Discovery applies a 30-day activity window
-  (`isRecentObservation`) to exclude decommissioned hardware from the catalogue,
-  while live feeds and GeoJSON features evaluate tactical flying freshness
-  (`pilotFreshness` / `pilotFreshnessThresholds`: `freeflight` windtalkers are
-  `live` ≤ 4m and `stale` > 15m; `synoptic`/`pws`/`marine` are `live` ≤ 10m and
-  `stale` > 30m; `mountain` telemetry is `live` ≤ 15m and `stale` > 45m).
+| Quantity | Unit / rule |
+| --- | --- |
+| Wind speed | Metres per second (`m/s`). Convert to display units at the edge. |
+| Wind direction | Degrees true `[0, 360)`, the bearing the wind blows **from**. |
+| Calm | Below `0.5 m/s` (`CALM_THRESHOLD_MPS`), `windDirectionDeg` is `null`. |
+| Temperature | Degrees Celsius (`°C`). |
+| Pressure | Hectopascals (`hPa`) reduced to mean sea level (`seaLevelPressureHpa`). |
+| Elevation | Metres above mean sea level (`elevationM`). |
+| Distance / bearing | Kilometres; forward bearing from launch to station in degrees true. |
+
+**Absence vs zero.** A missing quantity is `null` and is never sent as `0`.
+`windGustMps: null` means gusts are not reported; `windAvgMps: 0` is a measured
+calm reading. A `null` direction on a blowing reading means a missing or
+unserviceable vane.
+
+**Timestamps.** ISO-8601 UTC strings. Adapters preserve the upstream observation
+time and never substitute fetch time for a missing measurement time.
+
+**Public exports.** `toPublicCatalogueStation`, `toPublicStationCatalogue` and
+`serializeCatalogueNdjson` strip server-only `locator` fields so tokens and
+private endpoints never appear in published files or `/catalogue` responses.
 
 External data enters as `unknown` and is validated before indexing or display.
-Public catalogue exports (`toPublicCatalogueStation`, `toPublicStationCatalogue`
-and `serializeCatalogueNdjson`) strip server-only `locator` fields so adapter
-tokens or private endpoints never appear in published files or `/catalogue`
-responses.
-
 Network operations accept cancellation and timeouts. Viewport stores coalesce
 identical bounds and discard out-of-order responses.
+
+## Freshness
+
+Two windows, two jobs:
+
+| Window | Owner | Purpose |
+| --- | --- | --- |
+| Discovery activity | `isRecentObservation` (30 days) | Keep decommissioned hardware out of the catalogue |
+| Tactical flying | `pilotFreshness` / `pilotFreshnessThresholds` | Tell a pilot if a reading is still useful on launch |
+
+Pilot thresholds by category:
+
+| Category | `live` | `aging` | `stale` |
+| --- | --- | --- | --- |
+| `freeflight` | ≤ 4 min (≤ 2 min for 30 s sonic) | ≤ 15 min (≤ 7.5 min sonic) | beyond |
+| `synoptic` / `pws` / `marine` | ≤ 10 min | ≤ 30 min | beyond |
+| `mountain` | ≤ 15 min | ≤ 45 min | beyond |
+
+## Terminology
+
+- **Position** — latitude and longitude in degrees; east-positive longitude.
+- **Bounds** — `[west, south, east, north]` in degrees; `west > east` crosses
+  the antimeridian.
+- **Discovery coverage** — coarse envelopes used to query upstream networks.
+  Rectangles do not assign political country codes; `country` comes only from
+  trusted upstream or curated metadata.
+- **Station UID** — `<vendor>:<nativeId>` (for example `holfuy:1652` or
+  `raws:TT029`). Cross-network duplicates keep secondary UIDs in `aliases`.
+- **Category** — `'freeflight' | 'mountain' | 'synoptic' | 'marine' | 'pws'`.
+- **Launch context** — distance and forward bearing from the nearest known
+  free-flight launch within the configured search radius.
+- **Feed** — an `@azohra/meteo.station` `StationFeed` with current readings and
+  optional history for a set of stations.
 
 ## Generated declarations
 
@@ -48,23 +81,6 @@ schemas in `@stations/contracts` and `@azohra/meteo.station` define the types of
 validated documents. Edit those sources when an API changes; `dist/` is
 generated output.
 
-`pnpm check` checks declarations, exports, package dependencies and boundary
-rules, including unintended package-owned `any` types. `pnpm test:consumer`
-compiles and runs an external example against the packed libraries and verifies
-that browser bundles exclude server adapters.
-
-## Terminology
-
-- **Position:** latitude and longitude in degrees, with east-positive longitude.
-- **Bounds:** `[west, south, east, north]` in degrees; `west > east` crosses the
-  antimeridian.
-- **Discovery coverage:** coarse geographic envelopes used to query upstream
-  networks. Rectangular coverage does not assign political country codes;
-  `country` is preserved only from trusted upstream or curated metadata.
-- **Station UID:** `<vendor>:<nativeId>` (for example `windnerd:tiger-mountain`
-  or `raws:TT029`). Cross-network duplicates retain secondary UIDs in `aliases`.
-- **Category:** `'freeflight' | 'mountain' | 'synoptic' | 'marine' | 'pws'`.
-- **Launch context:** distance and forward bearing from the nearest known
-  free-flight launch within the configured search radius.
-- **Feed:** an `@azohra/meteo.station` `StationFeed` document containing current
-  readings and optional history for a set of stations.
+`pnpm check` verifies declarations, exports, dependencies and boundary rules.
+`pnpm test:consumer` compiles an external example against packed libraries and
+confirms browser bundles exclude server adapters.
