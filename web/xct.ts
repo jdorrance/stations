@@ -168,7 +168,8 @@ let pollInFlight = false;
 let partialFailureCount = 0;
 let coverageLimited = false;
 let requestController: AbortController | null = null;
-let nativeTimeMs: number | null = null;
+/** Raw bridge identity (`lat,lon,time`); resets the fix clock only when this changes. */
+let nativePayloadKey: string | null = null;
 let fixReceivedAtMs = 0;
 let fixAgeAtReceiptMs = 0;
 let browserFixActive = false;
@@ -260,24 +261,74 @@ function setEmpty(message: string | null): void {
   emptyEl.textContent = message;
 }
 
-function validCoordinates(lat: unknown, lon: unknown): lat is number {
-  return typeof lat === 'number' && typeof lon === 'number' &&
-    Number.isFinite(lat) && Number.isFinite(lon) &&
-    lat >= -90 && lat <= 90 && lon >= -180 && lon <= 180;
+function coerceCoordinate(raw: unknown): number | null {
+  const value = typeof raw === 'number' ? raw : typeof raw === 'string' ? Number(raw) : NaN;
+  return Number.isFinite(value) ? value : null;
 }
 
-/** Accept epoch milliseconds/seconds or ISO dates; never guess missing fix time. */
+function validCoordinates(lat: unknown, lon: unknown): lat is number {
+  const latitude = coerceCoordinate(lat);
+  const longitude = coerceCoordinate(lon);
+  return latitude !== null && longitude !== null &&
+    latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180;
+}
+
+/**
+ * Explicit invalid only. Missing flags and truthy bridge quirks (`1`, `"true"`)
+ * still count as a fix when coordinates are in range.
+ */
+function isExplicitlyInvalidFix(flag: unknown): boolean {
+  return flag === false || flag === 0 || flag === 'false' || flag === '0';
+}
+
+/**
+ * Epoch milliseconds when `raw` is unix seconds/ms or an ISO date.
+ * Small time-of-day numbers become 1970 dates — callers must not treat those
+ * as wall-clock proof of a live fix.
+ */
 function fixTimestampMs(raw: unknown): number | null {
-  const value = typeof raw === 'number'
-    ? (raw < 100_000_000_000 ? raw * 1_000 : raw)
-    : typeof raw === 'string' ? Date.parse(raw) : NaN;
-  return Number.isFinite(value) && value > 0 ? value : null;
+  let value: number;
+  if (typeof raw === 'number') {
+    value = raw;
+  } else if (typeof raw === 'string' && raw.trim() !== '') {
+    const asNumber = Number(raw);
+    value = Number.isFinite(asNumber) ? asNumber : Date.parse(raw);
+  } else {
+    return null;
+  }
+  if (!Number.isFinite(value) || value <= 0) return null;
+  if (value < 100_000_000_000) value *= 1_000;
+  return value;
+}
+
+/**
+ * Wall-clock age for a bridge/browser timestamp that is near `Date.now()`.
+ * Returns null when the field is missing, unusable, or skewed too far to trust
+ * (time-of-day, multi-hour clock error). A plausible recent unix time older
+ * than {@link FIX_MAX_AGE_MS} returns that age so the caller can reject it.
+ */
+const PLAUSIBLE_FIX_SKEW_MS = 15 * 60_000;
+
+function wallClockAgeMs(raw: unknown): number | null {
+  const timeMs = fixTimestampMs(raw);
+  if (timeMs === null) return null;
+  const ageMs = Date.now() - timeMs;
+  if (Math.abs(ageMs) <= FIX_MAX_AGE_MS) return Math.max(0, ageMs);
+  // Recent past beyond the live window — treat as a real but stale GPS time.
+  if (ageMs > FIX_MAX_AGE_MS && ageMs <= PLAUSIBLE_FIX_SKEW_MS) return ageMs;
+  return null;
+}
+
+/** Browser GeolocationPosition.timestamp is unix ms when the engine follows the spec. */
+function isUsableUnixTimestampMs(timestamp: number): boolean {
+  return Number.isFinite(timestamp) && timestamp >= 1_000_000_000_000;
 }
 
 function invalidatePosition(message: string): void {
   myPosition = null;
   myAltitudeM = null;
   browserFixActive = false;
+  nativePayloadKey = null;
   geoError = message;
 }
 
@@ -285,30 +336,46 @@ function currentFixAgeMs(): number {
   return fixAgeAtReceiptMs + Math.max(0, performance.now() - fixReceivedAtMs);
 }
 
-function readXcTrackPosition(): Position | null | undefined {
+type XcTrackRead =
+  | { kind: 'absent' }
+  | { kind: 'unavailable' }
+  | { kind: 'stale' }
+  | { kind: 'ok'; position: Position };
+
+function readXcTrackPosition(): XcTrackRead {
   if (typeof window.XCTrack === 'undefined' || typeof window.XCTrack.getLocation !== 'function') {
-    return undefined;
+    return { kind: 'absent' };
   }
   try {
     const data: unknown = JSON.parse(window.XCTrack.getLocation());
-    if (!data || typeof data !== 'object') return null;
+    if (!data || typeof data !== 'object') return { kind: 'unavailable' };
     const fix = data as Record<string, unknown>;
-    if (fix.isValid !== true || !validCoordinates(fix.lat, fix.lon)) return null;
-    const timeMs = fixTimestampMs(fix.time);
-    if (timeMs === null || timeMs > Date.now() + FIX_MAX_AGE_MS) return null;
-    // Re-reading a frozen native payload must not reset its expiration clock.
-    if (timeMs !== nativeTimeMs) {
-      nativeTimeMs = timeMs;
-      fixReceivedAtMs = performance.now();
-      fixAgeAtReceiptMs = Math.max(0, Date.now() - timeMs);
+    if (isExplicitlyInvalidFix(fix.isValid)) return { kind: 'unavailable' };
+    const latitude = coerceCoordinate(fix.lat);
+    const longitude = coerceCoordinate(fix.lon);
+    if (latitude === null || longitude === null ||
+        latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+      return { kind: 'unavailable' };
     }
-    if (currentFixAgeMs() > FIX_MAX_AGE_MS) return null;
+
+    const ageFromWall = wallClockAgeMs(fix.time);
+    if (ageFromWall !== null && ageFromWall > FIX_MAX_AGE_MS) return { kind: 'stale' };
+
+    // Re-reading a frozen native payload must not reset its expiration clock.
+    const payloadKey = `${latitude},${longitude},${String(fix.time)}`;
+    if (payloadKey !== nativePayloadKey) {
+      nativePayloadKey = payloadKey;
+      fixReceivedAtMs = performance.now();
+      fixAgeAtReceiptMs = ageFromWall ?? 0;
+    }
+    if (currentFixAgeMs() > FIX_MAX_AGE_MS) return { kind: 'stale' };
+
     myAltitudeM = parseAltitudeM(getParam('alt')) ??
       parseAltitudeM(fix.altGps) ?? parseAltitudeM(fix.alt) ??
       parseAltitudeM(fix.altitude) ?? parseAltitudeM(fix.elevation);
-    return { latitude: fix.lat, longitude: fix.lon as number };
+    return { kind: 'ok', position: { latitude, longitude } };
   } catch {
-    return null;
+    return { kind: 'unavailable' };
   }
 }
 
@@ -354,11 +421,12 @@ function refreshPosition(advanceDebug = false): void {
   }
 
   const xc = readXcTrackPosition();
-  if (xc !== undefined) {
-    if (xc === null) invalidatePosition('GPS fix unavailable or stale');
-    else {
-      myPosition = xc;
+  if (xc.kind !== 'absent') {
+    if (xc.kind === 'ok') {
+      myPosition = xc.position;
       geoError = null;
+    } else {
+      invalidatePosition(xc.kind === 'stale' ? 'GPS fix stale' : 'GPS fix unavailable');
     }
     return;
   }
@@ -374,7 +442,7 @@ function refreshPosition(advanceDebug = false): void {
 function startGeolocationFallback(): void {
   if (getParam('debug') !== null) return;
   if (readUrlPosition()) return;
-  if (readXcTrackPosition() !== undefined) return;
+  if (readXcTrackPosition().kind !== 'absent') return;
   if (!navigator.geolocation) {
     geoError = 'geolocation unavailable';
     return;
@@ -382,15 +450,21 @@ function startGeolocationFallback(): void {
   navigator.geolocation.watchPosition(
     pos => {
       const hadFix = myPosition !== null;
-      if (!validCoordinates(pos.coords.latitude, pos.coords.longitude) ||
-          !Number.isFinite(pos.timestamp) ||
-          Math.abs(Date.now() - pos.timestamp) > FIX_MAX_AGE_MS) {
-        invalidatePosition('GPS fix unavailable or stale');
+      if (!validCoordinates(pos.coords.latitude, pos.coords.longitude)) {
+        invalidatePosition('GPS fix unavailable');
+        updateView();
+        return;
+      }
+      const usableUnix = isUsableUnixTimestampMs(pos.timestamp);
+      if (usableUnix && Math.abs(Date.now() - pos.timestamp) > FIX_MAX_AGE_MS) {
+        invalidatePosition('GPS fix stale');
         updateView();
         return;
       }
       fixReceivedAtMs = performance.now();
-      fixAgeAtReceiptMs = Math.max(0, Date.now() - pos.timestamp);
+      fixAgeAtReceiptMs = usableUnix && Math.abs(Date.now() - pos.timestamp) <= FIX_MAX_AGE_MS
+        ? Math.max(0, Date.now() - pos.timestamp)
+        : 0;
       browserFixActive = true;
       myPosition = {
         latitude: pos.coords.latitude,
