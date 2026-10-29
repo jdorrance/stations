@@ -1,0 +1,38 @@
+{
+  "name": "@stations/windy-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Windy.com station observation overlay",
+  "scripts": {
+    "start": "rollup -w -c",
+    "build": "rollup -c --environment SERVE:false && node -e \"require('node:fs').copyFileSync('package.json','dist/package.json')\"",
+    "build:check": "cross-env STATIONS_API_BASE_URL=https://stations.invalid rollup -c --environment SERVE:false && node -e \"require('node:fs').copyFileSync('package.json','dist/package.json')\"",
+    "typecheck": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "node --test test/*.test.mjs",
+    "check": "pnpm typecheck && pnpm test"
+  },
+  "dependencies": {
+    "@stations/client": "workspace:*",
+    "@stations/contracts": "workspace:*",
+    "@stations/geography": "workspace:*"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "29.0.3",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "@rollup/plugin-replace": "6.0.3",
+    "@rollup/plugin-terser": "1.0.2",
+    "@swc/core": "1.16.20",
+    "@types/node": "24.10.1",
+    "@windycom/plugin-devtools": "3.0.5",
+    "cross-env": "10.1.0",
+    "rollup": "4.66.0",
+    "rollup-plugin-serve": "3.0.0",
+    "rollup-plugin-svelte": "7.2.3",
+    "rollup-plugin-swc3": "0.12.1",
+    "svelte": "4.2.20",
+    "svelte-check": "3.8.6",
+    "svelte-preprocess": "6.0.5",
+    "typescript": "5.9.3"
+  }
+}

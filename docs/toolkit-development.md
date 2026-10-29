@@ -88,6 +88,36 @@ Production runs the same handler in a Cloudflare Worker; see the
 [deployment guide](deploy.md) for the Worker entry, catalogue upload and
 secrets flow.
 
+## Windy private plugin
+
+The consumer app in [`plugins/windy`](../plugins/windy/src/plugin.svelte) adds
+station observations to Windy's existing map. It uses the public Stations API;
+provider credentials stay on the Worker. Its bounded request scheduler is owned
+by [`data.ts`](../plugins/windy/src/data.ts), independently of the explorer.
+
+Build the libraries, then set `STATIONS_API_BASE_URL` to the real HTTPS Worker
+origin plus `/api/stations` and run `pnpm --filter @stations/windy-plugin start`.
+Open [Windy developer mode](https://www.windy.com/developer-mode), trust the local
+development certificate, and load `https://localhost:9999/plugin.js`. The API must
+also be HTTPS and allow Windy's cross-origin requests; plain HTTP localhost is
+not a suitable API base from an HTTPS Windy page.
+
+`pnpm --filter @stations/windy-plugin build` produces `plugins/windy/dist/` and
+requires that environment variable. `build:check` uses a non-routable test URL
+for CI bundle checks, not a working pilot artifact. Check map markers, units,
+partial failures, background/resume and close/reopen in Windy before sharing.
+The arrows indicate the meteorological direction the wind comes **from**;
+measurements remain current when Windy's forecast slider moves.
+
+Private publication is a manual workflow in
+[`windy-plugin.yml`](../.github/workflows/windy-plugin.yml), not part of Worker
+deployment. It requires a Windy Plugins API key stored as `WINDY_API_KEY` in
+GitHub secrets, along with `STATIONS_API_BASE_URL` for the real HTTPS API base.
+Confirm the API URL and plugin identity before running it.
+A private plugin is unlisted, not authenticated; sharing its installation URL
+does not restrict access to the underlying API. Publication and live Windy
+compatibility checks require the operator's account.
+
 ## Build and checks
 
 Library code uses strict TypeScript. Package builds compile dependencies in
