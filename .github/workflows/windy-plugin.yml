@@ -1,0 +1,53 @@
+name: Windy plugin
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: Type PUBLISH to build and upload the private plugin artifact
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windy-plugin
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build private plugin
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      STATIONS_API_BASE_URL: ${{ secrets.STATIONS_API_BASE_URL }}
+      WINDY_API_KEY: ${{ secrets.WINDY_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Verify repository and build plugin
+        run: |
+          pnpm verify
+          pnpm build:windy
+      - name: Publish plugin
+        if: inputs.confirm == 'PUBLISH'
+        working-directory: plugins/windy/dist
+        run: |
+          if [ -z "$WINDY_API_KEY" ]; then
+            echo "Secret WINDY_API_KEY is not configured" >&2
+            exit 1
+          fi
+          echo "{\"repositoryName\": \"${{ github.repository }}\", \"commitSha\": \"${{ github.sha }}\", \"repositoryOwner\": \"${{ github.repository_owner }}\"}" > /tmp/plugin-info.json
+          mv plugin.json /tmp/plugin.json
+          jq -s '.[0] * .[1]' /tmp/plugin.json /tmp/plugin-info.json > plugin.json
+          tar cf ../plugin.tar .
+          curl --fail-with-body --silent --show-error -XPOST 'https://node.windy.com/plugins/v1.0/upload' -H "x-windy-api-key: ${WINDY_API_KEY}" -F "plugin_archive=@../plugin.tar"
+      - name: Report no publish
+        if: inputs.confirm != 'PUBLISH'
+        run: echo "Artifact built but not published; rerun with confirm=PUBLISH to publish."

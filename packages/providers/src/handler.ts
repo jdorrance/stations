@@ -1,12 +1,11 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import {
-  fetchUpstreamText,
+  loadStationCurrent,
+  loadStationFeed,
   type ServerEnvironment,
   type StationConfigInput,
 } from '@azohra/meteo.station/server';
-import {
-  createStationFeedHandler,
-  resolveEnvironment,
-} from './server.ts';
+import { createStationFeedHandler } from './server.ts';
 import {
   catalogueToGeoJson,
   defaultCategoryForVendor,
@@ -16,6 +15,7 @@ import {
   isLandform,
   isStationPlace,
   isStationVendor,
+  LIVE_CATALOGUE_PROFILE,
   parseStationFeedJson,
   toPublicCatalogueStation,
   type CatalogueStation,
@@ -33,24 +33,28 @@ import {
   type RegionCode,
   type SpatialIndex,
 } from '@stations/geography';
-import { resolveSynopticToken } from './cwop.ts';
-import { credentialCacheScope } from './freeflight-observations.ts';
-import { isRecord } from './observation-values.ts';
+import { cacheIdentity } from './freeflight-observations.ts';
+import { prewarmBatchFeedCache } from './batch.ts';
+import { createStationCache, type StationCachePolicy, type StationCacheResult, type StationRequestContext } from './station-cache.ts';
+import { toLiveCatalogueDocument } from './live-catalogue.ts';
 import { toStationConfigs } from './registry.ts';
 import type { ProviderCredentials } from './types.ts';
+
+export type { StationCachePolicy, StationRequestContext } from './station-cache.ts';
 
 export const DEFAULT_MAX_FEED_STATIONS = 25;
 
 export interface StationsApiHandlerOptions {
   readonly catalogue:
     | StationCatalogueDocument
-    | (() => Promise<StationCatalogueDocument> | StationCatalogueDocument);
+    | ((context?: StationRequestContext) => Promise<StationCatalogueDocument> | StationCatalogueDocument);
   readonly credentials?: ProviderCredentials;
   readonly environment?: ServerEnvironment;
   readonly basePath?: string;
   readonly maxFeedStations?: number;
   readonly maxHistoryHours?: number;
   readonly corsOrigin?: string;
+  readonly cachePolicy?: StationCachePolicy;
 }
 
 function parseNearParam(
@@ -70,21 +74,6 @@ function parseFeedHistory(raw: string | null): boolean | 'invalid' {
   if (raw === null || raw === '1') return true;
   if (raw === '0') return false;
   return 'invalid';
-}
-
-function currentOnlyConfigs(configs: readonly StationConfigInput[]): StationConfigInput[] {
-  return configs.map(config => {
-    if (config.vendor !== 'custom') return config;
-    const load = config.load;
-    return {
-      ...config,
-      load: async context => {
-        const station = await load({ ...context, mode: 'current' });
-        if (station.status !== 'ok') return station;
-        return { ...station, history: null };
-      },
-    };
-  });
 }
 
 function parseLimitParam(raw: string | null, fallback?: number): number | undefined {
@@ -169,120 +158,16 @@ interface CachedCatalogueIndex {
   fullPublicStations?: readonly CatalogueStation[];
   fullCatalogueJsonBytes?: Uint8Array;
   fullCatalogueGeoJsonBytes?: Uint8Array;
-}
-
-async function prewarmBatchFeedCache(
-  stations: readonly CatalogueStation[],
-  credentials: ProviderCredentials | undefined,
-  rawEnv: ServerEnvironment | undefined,
-): Promise<void> {
-  if (stations.length < 2) return;
-  const environment = resolveEnvironment(rawEnv);
-
-  const awcStations = stations.filter(s => s.vendor === 'awc');
-  const synopticStations = stations.filter(s => s.vendor === 'synoptic');
-  const tasks: Promise<void>[] = [];
-
-  if (awcStations.length >= 2) {
-    tasks.push(
-      (async () => {
-        const missingIds: string[] = [];
-        for (const s of awcStations) {
-          const cached = await environment.cache.get(`awc/metar/${s.nativeId}`);
-          if (!cached) missingIds.push(s.nativeId);
-        }
-        if (missingIds.length < 2) return;
-        try {
-          const url = new URL('https://aviationweather.gov/api/data/metar');
-          url.searchParams.set('ids', missingIds.join(','));
-          url.searchParams.set('format', 'json');
-          url.searchParams.set('hours', '3');
-          const text = await fetchUpstreamText(environment, {
-            url,
-            cacheKey: `awc/metar/batch/${missingIds.join(',')}`,
-            cacheTtlSeconds: 60,
-            subject: `AWC batch METAR (${missingIds.length} stations)`,
-            timeoutMs: 8_000,
-          });
-          const parsed: unknown = JSON.parse(text);
-          if (!Array.isArray(parsed)) return;
-          const byIcao = new Map<string, unknown[]>();
-          for (const row of parsed) {
-            if (!isRecord(row) || typeof row.icaoId !== 'string') continue;
-            const id = row.icaoId.trim().toUpperCase();
-            let list = byIcao.get(id);
-            if (!list) {
-              list = [];
-              byIcao.set(id, list);
-            }
-            list.push(row);
-          }
-          await Promise.all(
-            [...byIcao.entries()].map(([id, rows]) =>
-              environment.cache.put(`awc/metar/${id}`, JSON.stringify(rows), 60),
-            ),
-          );
-        } catch {
-          // Fall back to individual station fetches on error
-        }
-      })(),
-    );
-  }
-
-  const rawSynopticCred =
-    credentials?.synopticToken?.trim() || credentials?.synopticApiKey?.trim();
-  if (synopticStations.length >= 2 && rawSynopticCred) {
-    tasks.push(
-      (async () => {
-        try {
-          const scope = await credentialCacheScope(rawSynopticCred);
-          const missingIds: string[] = [];
-          for (const s of synopticStations) {
-            const cached = await environment.cache.get(`synoptic/latest/${scope}/${s.nativeId}`);
-            if (!cached) missingIds.push(s.nativeId);
-          }
-          if (missingIds.length < 2) return;
-          const token = await resolveSynopticToken(rawSynopticCred, environment);
-          const url = new URL('https://api.synopticdata.com/v2/stations/latest');
-          url.searchParams.set('stid', missingIds.join(','));
-          url.searchParams.set('units', 'metric');
-          url.searchParams.set('token', token);
-          const text = await fetchUpstreamText(environment, {
-            url,
-            cacheKey: `synoptic/latest/batch/${scope}/${missingIds.join(',')}`,
-            cacheTtlSeconds: 60,
-            subject: `Synoptic batch latest (${missingIds.length} stations)`,
-            timeoutMs: 8_000,
-          });
-          const parsed: unknown = JSON.parse(text);
-          const rows: unknown[] =
-            isRecord(parsed) && Array.isArray(parsed.STATION) ? parsed.STATION : [];
-          await Promise.all(
-            rows.map(async (row: unknown) => {
-              if (!isRecord(row) || typeof row.STID !== 'string') return;
-              const stid = row.STID.trim().toUpperCase();
-              await environment.cache.put(
-                `synoptic/latest/${scope}/${stid}`,
-                JSON.stringify({ STATION: [row] }),
-                60,
-              );
-            }),
-          );
-        } catch {
-          // Fall back to individual station fetches on error
-        }
-      })(),
-    );
-  }
-
-  if (tasks.length > 0) {
-    await Promise.all(tasks);
-  }
+  liveCatalogueBytes?: Uint8Array;
+  /** Lean-index cache for the same revision, so a `profile=live` request does not evict the full index. */
+  live?: CachedCatalogueIndex;
+  /** Lean projection memoized for the same revision. */
+  liveDocument?: StationCatalogueDocument;
 }
 
 export function createStationsApiHandler(
   options: StationsApiHandlerOptions,
-): (request: Request) => Promise<Response> {
+): (request: Request, context?: StationRequestContext) => Promise<Response> {
   const corsOrigin = options.corsOrigin ?? '*';
   const maxFeedStations = options.maxFeedStations ?? DEFAULT_MAX_FEED_STATIONS;
   if (!Number.isSafeInteger(maxFeedStations) || maxFeedStations <= 0) {
@@ -299,6 +184,64 @@ export function createStationsApiHandler(
     : null;
 
   let cachedIndex: CachedCatalogueIndex | null = null;
+  const stationCache = createStationCache(options.environment, options.cachePolicy);
+  const cacheScope = cacheIdentity(JSON.stringify([options.credentials ?? {}, options.cachePolicy ?? {}]));
+  const stationKeys = new WeakMap<CatalogueStation, Promise<string>>();
+  const feedRequests = new AsyncLocalStorage<{ stations: StationConfigInput[]; primaryStationId?: string }>();
+  const delegate = createStationFeedHandler({
+    stations: () => feedRequests.getStore()?.stations ?? [],
+    get primaryStationId() {
+      return feedRequests.getStore()?.primaryStationId;
+    },
+    environment: options.environment,
+    basePath: normalizedBase ?? undefined,
+    maxHistoryHours: options.maxHistoryHours,
+    cors: corsOrigin,
+    cacheControl: (route, maxAgeSeconds) => (
+      route === 'feed' || route === 'current'
+        ? 'no-store'
+        : `public, max-age=${Math.round(maxAgeSeconds)}`
+    ),
+  }, stationCache.cacheTimeoutMs);
+
+  /**
+   * Resolves the index for the request's catalogue revision. `profile=live`
+   * shares the revision's `cachedIndex` and memoizes its lean projection and
+   * index on that base, so a live request neither evicts the full catalogue's
+   * index nor rebuilds the lean one on every call.
+   */
+  function getRequestCatalogue(
+    doc: StationCatalogueDocument,
+    liveOnly: boolean,
+  ): { indexed: CachedCatalogueIndex; liveDocument: StationCatalogueDocument | null } {
+    const base = getIndexedCatalogue(doc);
+    if (!liveOnly) return { indexed: base, liveDocument: null };
+    const liveDocument = base.liveDocument ?? toLiveCatalogueDocument(doc);
+    base.liveDocument = liveDocument;
+    base.live ??= buildIndexedCatalogue(liveDocument);
+    base.live.liveDocument = liveDocument;
+    return { indexed: base.live, liveDocument };
+  }
+
+  /** Builds a spatial index and UID map without touching the request cache slot. */
+  function buildIndexedCatalogue(doc: StationCatalogueDocument): CachedCatalogueIndex {
+    const index = createSpatialIndex(doc.stations, 1);
+    const byUid = new Map<string, CatalogueStation>();
+    for (const station of doc.stations) {
+      byUid.set(station.uid, station);
+      for (const alias of station.aliases ?? []) {
+        if (!byUid.has(alias)) byUid.set(alias, station);
+      }
+    }
+    return {
+      generatedAt: doc.generatedAt,
+      stationsRef: doc.stations,
+      index,
+      byUid,
+      publicByRef: new WeakMap(),
+      etag: `W/"${doc.generatedAt}-${doc.stations.length}"`,
+    };
+  }
 
   function getIndexedCatalogue(doc: StationCatalogueDocument): CachedCatalogueIndex {
     if (
@@ -308,22 +251,7 @@ export function createStationsApiHandler(
     ) {
       return cachedIndex;
     }
-    const index = createSpatialIndex(doc.stations, 1);
-    const byUid = new Map<string, CatalogueStation>();
-    for (const station of doc.stations) {
-      byUid.set(station.uid, station);
-      for (const alias of station.aliases ?? []) {
-        if (!byUid.has(alias)) byUid.set(alias, station);
-      }
-    }
-    cachedIndex = {
-      generatedAt: doc.generatedAt,
-      stationsRef: doc.stations,
-      index,
-      byUid,
-      publicByRef: new WeakMap(),
-      etag: `W/"${doc.generatedAt}-${doc.stations.length}"`,
-    };
+    cachedIndex = buildIndexedCatalogue(doc);
     return cachedIndex;
   }
 
@@ -339,7 +267,7 @@ export function createStationsApiHandler(
     return pub;
   }
 
-  return async (request: Request): Promise<Response> => {
+  return async (request: Request, context: StationRequestContext = {}): Promise<Response> => {
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
@@ -379,23 +307,56 @@ export function createStationsApiHandler(
     }
 
     const catalogueDoc =
-      typeof options.catalogue === 'function' ? await options.catalogue() : options.catalogue;
-    const indexed = getIndexedCatalogue(catalogueDoc);
+      typeof options.catalogue === 'function' ? await options.catalogue(context) : options.catalogue;
+
+    // `profile` is not a filter: an unknown value fails closed rather than
+    // silently returning the full public catalogue.
+    const profileParam = isCatalogueRoute ? url.searchParams.get('profile') : null;
+    if (profileParam !== null && profileParam !== LIVE_CATALOGUE_PROFILE) {
+      return jsonResponse(
+        { error: 'invalid profile: expected live' },
+        400,
+        corsOrigin,
+        isHead,
+      );
+    }
+    const liveOnly = isCatalogueRoute && profileParam === LIVE_CATALOGUE_PROFILE;
+    // A filtered (or GeoJSON) `profile=live` query still answers over the live
+    // station set, memoized on the catalogue revision so it neither evicts the
+    // full index nor rebuilds the lean projection per request.
+    const { indexed, liveDocument } = getRequestCatalogue(catalogueDoc, liveOnly);
     const { index, byUid } = indexed;
 
+    // Filtering params travel separately so the lean profile can share the
+    // predicate: filters with `profile=live` stay filtered, not unfiltered.
+    const hasSelectionFilter =
+      url.searchParams.has('ids') ||
+      url.searchParams.has('station') ||
+      url.searchParams.has('bbox') ||
+      url.searchParams.has('near') ||
+      url.searchParams.has('limit') ||
+      url.searchParams.has('country') ||
+      url.searchParams.has('vendor') ||
+      url.searchParams.has('category') ||
+      url.searchParams.has('place') ||
+      url.searchParams.has('landform') ||
+      url.searchParams.has('launch');
     const isUnfilteredCatalogueQuery =
-      isCatalogueRoute &&
-      !url.searchParams.has('ids') &&
-      !url.searchParams.has('station') &&
-      !url.searchParams.has('bbox') &&
-      !url.searchParams.has('near') &&
-      !url.searchParams.has('limit') &&
-      !url.searchParams.has('country') &&
-      !url.searchParams.has('vendor') &&
-      !url.searchParams.has('category') &&
-      !url.searchParams.has('place') &&
-      !url.searchParams.has('landform') &&
-      !url.searchParams.has('launch');
+      isCatalogueRoute && !hasSelectionFilter && profileParam === null;
+
+    // `profile=live` serves the lean wind-only catalogue for hosts without R2
+    // (local explorer, self-hosted Worker). Only the unfiltered, JSON variant
+    // returns the memoized whole-document bytes; filtered or GeoJSON requests
+    // fall through to `selectStations()` against the live station set.
+    if (isCatalogueRoute && profileParam === LIVE_CATALOGUE_PROFILE && !hasSelectionFilter &&
+        (url.searchParams.get('format') ?? 'json') === 'json') {
+      if (!indexed.liveCatalogueBytes) {
+        indexed.liveCatalogueBytes = utf8Encoder.encode(JSON.stringify(liveDocument!));
+      }
+      return rawBytesResponse(indexed.liveCatalogueBytes, 200, corsOrigin, isHead, {
+        'Cache-Control': 'public, max-age=300',
+      });
+    }
 
     if (isUnfilteredCatalogueQuery) {
       const format = url.searchParams.get('format') ?? 'json';
@@ -529,7 +490,7 @@ export function createStationsApiHandler(
           .queryRadius({ latitude: near.latitude, longitude: near.longitude }, near.radiusKm)
           .map(m => m.item);
       } else {
-        candidates = catalogueDoc.stations;
+        candidates = indexed.stationsRef;
       }
 
       if (countries) {
@@ -574,27 +535,27 @@ export function createStationsApiHandler(
       }
       const publicStations = selected.map(s => toCachedPublicStation(indexed, s));
       const format = url.searchParams.get('format') ?? 'json';
+      // The lean profile has no `regions` of its own; inherit the catalogue's.
+      const document = liveOnly
+        ? { ...liveDocument!, stations: publicStations }
+        : {
+            schemaVersion: catalogueDoc.schemaVersion,
+            generatedAt: catalogueDoc.generatedAt,
+            regions: catalogueDoc.regions,
+            stations: publicStations,
+          };
       if (format === 'geojson') {
         return jsonResponse(
-          catalogueToGeoJson(publicStations, catalogueDoc.generatedAt),
+          catalogueToGeoJson(document.stations, document.generatedAt),
           200,
           corsOrigin,
           isHead,
           { 'Cache-Control': 'public, max-age=300' },
         );
       }
-      return jsonResponse(
-        {
-          schemaVersion: catalogueDoc.schemaVersion,
-          generatedAt: catalogueDoc.generatedAt,
-          regions: catalogueDoc.regions,
-          stations: publicStations,
-        },
-        200,
-        corsOrigin,
-        isHead,
-        { 'Cache-Control': 'public, max-age=300' },
-      );
+      return jsonResponse(document, 200, corsOrigin, isHead, {
+        'Cache-Control': 'public, max-age=300',
+      });
     }
 
     const selected = selectStations(isFeedRoute ? maxFeedStations : 1);
@@ -602,36 +563,84 @@ export function createStationsApiHandler(
       return jsonResponse({ error: selected.error }, 400, corsOrigin, isHead);
     }
     const capped = isFeedRoute ? selected.slice(0, maxFeedStations) : selected.slice(0, 1);
-    if (isFeedRoute && capped.length >= 2) {
-      await prewarmBatchFeedCache(capped, options.credentials, options.environment);
-    }
     const includeHistory = isFeedRoute ? parseFeedHistory(url.searchParams.get('history')) : true;
     if (includeHistory === 'invalid') {
       return jsonResponse({ error: 'invalid history: expected 0 or 1' }, 400, corsOrigin, isHead);
     }
     if (includeHistory === false) url.searchParams.delete('history');
-    const stationConfigs = includeHistory === false
-      ? currentOnlyConfigs(toStationConfigs(capped, options.credentials))
-      : toStationConfigs(capped, options.credentials);
-
-    const delegate = createStationFeedHandler({
-      stations: stationConfigs,
-      primaryStationId: capped[0]?.uid,
-      environment: options.environment,
-      basePath: normalizedBase ?? undefined,
-      maxHistoryHours: options.maxHistoryHours,
-      cors: corsOrigin,
-    });
+    const geojsonFeed = isFeedRoute && url.searchParams.get('format') === 'geojson';
+    const currentRoute = pathname.endsWith('/current');
+    const tracked = isFeedRoute || currentRoute;
+    const results: StationCacheResult[] = [];
+    const batches = new Map<string, Promise<void>>();
+    const configs = toStationConfigs(capped, options.credentials);
+    const stationConfigs: StationConfigInput[] = tracked ? configs.map((config, i) => ({
+      vendor: 'custom' as const,
+      id: config.id,
+      name: config.name,
+      latitude: config.latitude,
+      longitude: config.longitude,
+      elevationM: config.elevationM,
+      timeZone: config.timeZone,
+      pageUrl: config.pageUrl,
+      load: async loadContext => {
+        const station = capped[i]!;
+        const mode = includeHistory === false ? 'current' : loadContext.mode;
+        let identity = stationKeys.get(station);
+        if (!identity) {
+          identity = cacheIdentity(JSON.stringify(station));
+          stationKeys.set(station, identity);
+        }
+        const key = `station/v1/${await cacheScope}/${catalogueDoc.generatedAt}/${await identity}/${mode}/${mode === 'full' ? loadContext.historyHours : ''}`;
+        const result = await stationCache.read(key, station, async () => {
+          const environment = loadContext.environment;
+          // Only cache misses enter this vendor barrier; other vendors start immediately.
+          if (station.vendor === 'awc' || station.vendor === 'synoptic') {
+            let batch = batches.get(station.vendor);
+            if (!batch) {
+              batch = prewarmBatchFeedCache(capped.filter(s => s.vendor === station.vendor), options.credentials, environment);
+              batches.set(station.vendor, batch);
+            }
+            await batch;
+          }
+          const loadOptions = { stations: [config], environment, historyHours: loadContext.historyHours };
+          const loaded = mode === 'current'
+            ? (await loadStationCurrent({ ...loadOptions, stationId: config.id })).station
+            : (await loadStationFeed(loadOptions)).stations[0]!;
+          return mode === 'current' && loaded.status === 'ok' ? { ...loaded, history: null } : loaded;
+        }, context);
+        results.push(result);
+        return result.station;
+      },
+    })) : configs;
     // Selection resolves aliases; the delegate must receive the canonical ID too.
     const stationParam = url.searchParams.get('station');
     if (stationParam && byUid.has(stationParam.trim())) {
       url.searchParams.set('station', byUid.get(stationParam.trim())!.uid);
     }
-    const geojsonFeed = isFeedRoute && url.searchParams.get('format') === 'geojson';
     const headers = new Headers(request.headers);
     // The delegate's ETag covers its JSON representation, not our GeoJSON metadata.
     if (geojsonFeed) headers.delete('If-None-Match');
-    const response = await delegate(new Request(url, { method: request.method, headers, signal: request.signal }));
+    const response = await feedRequests.run(
+      { stations: stationConfigs, primaryStationId: capped[0]?.uid },
+      () => delegate(new Request(url, { method: request.method, headers, signal: request.signal })),
+    );
+    if (tracked) {
+      const complete = results.length === capped.length && results.length > 0;
+      const state = !complete ? 'miss'
+        : results.some(result => result.state === 'stale') ? 'stale'
+        : results.every(result => result.state === 'hit') ? 'hit'
+        : results.every(result => result.state === 'hit' || result.state === 'fill') ? 'fill'
+        : 'miss';
+      const freshUntil = complete ? Math.min(...results.map(result => result.freshUntil)) : 0;
+      const clock = options.environment?.now?.().getTime() ?? Date.now();
+      const ttl = complete ? Math.max(0, Math.floor((freshUntil - clock) / 1000)) : 0;
+      response.headers.set('X-Station-Cache', state);
+      if (isFeedRoute) response.headers.set('X-Feed-Cache', state);
+      response.headers.set('X-Station-Cache-Ttl', String(ttl));
+      response.headers.set('X-Station-Catalogue-Revision', catalogueDoc.generatedAt);
+      response.headers.set('Access-Control-Expose-Headers', 'Age, ETag, X-Station-Cache');
+    }
     if (!geojsonFeed || !response.ok) return response;
     if (isHead) {
       const responseHeaders = new Headers(response.headers);
@@ -640,8 +649,8 @@ export function createStationsApiHandler(
     }
     const feed = parseStationFeedJson(await response.text());
     if (!feed) return jsonResponse({ error: 'invalid upstream feed' }, 502, corsOrigin, false);
-    return jsonResponse(feedToGeoJson(feed, byUid), 200, corsOrigin, false, {
-      'Cache-Control': response.headers.get('Cache-Control') ?? 'public, max-age=30',
-    });
+    const responseHeaders = new Headers(response.headers);
+    responseHeaders.delete('ETag');
+    return jsonResponse(feedToGeoJson(feed, byUid), 200, corsOrigin, false, Object.fromEntries(responseHeaders));
   };
 }

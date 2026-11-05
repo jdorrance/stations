@@ -233,6 +233,8 @@ export interface SpatialQueryParams {
   readonly hours?: number;
   /** `false` sends `history=0`: current readings, no history fetch. */
   readonly history?: boolean;
+  /** Catalogue profile, e.g. `live` for the lean wind-only document. */
+  readonly profile?: string;
 }
 
 export interface StationsRequestOptions {
@@ -302,8 +304,19 @@ function buildQueryString(query?: SpatialQueryParams): string {
   if (query.limit !== undefined) params.set('limit', String(query.limit));
   if (query.hours !== undefined) params.set('hours', String(query.hours));
   if (query.history === false) params.set('history', '0');
+  if (query.profile) params.set('profile', query.profile);
   const qs = params.toString();
   return qs ? `?${qs}` : '';
+}
+
+/** Keep the receipt-time freshness anchor honest when an HTTP cache replays a body. */
+function accountForCacheAge<T>(data: T, response: Response): T {
+  const age = response.headers.get('Age');
+  if (!age || !/^\d+$/.test(age) || typeof data !== 'object' || data === null || !('servedAt' in data)) return data;
+  if (typeof data.servedAt !== 'string') return data;
+  const servedAtMs = Date.parse(data.servedAt) + Number(age) * 1000;
+  if (!Number.isFinite(servedAtMs) || Math.abs(servedAtMs) > 8.64e15) return data;
+  return { ...data, servedAt: new Date(servedAtMs).toISOString() };
 }
 
 export function createStationsClient(options: StationsClientOptions): StationsHttpClient {
@@ -367,7 +380,7 @@ export function createStationsClient(options: StationsClientOptions): StationsHt
         const data = parse(text);
         return data === null
           ? { data: null, error: { kind: 'parse', message: 'Station response is not a valid document' } }
-          : { data, error: null };
+          : { data: accountForCacheAge(data, response), error: null };
       } catch {
         return { data: null, error: { kind: 'parse', message: 'Station response is not a valid document' } };
       }
@@ -455,6 +468,8 @@ export interface ViewportStationStoreOptions {
   readonly landforms?: readonly Landform[];
   readonly launch?: string;
   readonly limit?: number;
+  /** `false` loads current readings without history. Defaults to the server's history policy. */
+  readonly history?: boolean;
   readonly catalogueByUid?: ReadonlyMap<string, CatalogueStation>;
   readonly timeoutMs?: number;
 }
@@ -513,6 +528,7 @@ export function createViewportStationStore(
         landforms: options.landforms,
         launch: options.launch,
         limit: options.limit,
+        history: options.history,
       };
       const request = { signal: controller.signal, timeoutMs: options.timeoutMs };
       let result: StationsClientResult<StationFeed>;

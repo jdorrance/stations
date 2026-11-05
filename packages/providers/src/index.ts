@@ -335,7 +335,16 @@ export {
   DEFAULT_MAX_FEED_STATIONS,
   createStationsApiHandler,
   type StationsApiHandlerOptions,
+  type StationCachePolicy,
+  type StationRequestContext,
 } from './handler.ts';
+
+export {
+  liveCatalogueVendors,
+  toLiveCatalogueDocument,
+  toLiveCatalogueStation,
+  type LiveCatalogueOptions,
+} from './live-catalogue.ts';
 
 export {
   MAX_OBSERVATION_AGE_DAYS,

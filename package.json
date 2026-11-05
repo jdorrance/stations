@@ -15,9 +15,12 @@
     "test:consumer": "pnpm build:packages && node scripts/test-consumer.mjs",
     "check:worker": "wrangler types deploy/worker/worker-configuration.d.ts --include-runtime=false --strict-vars=false && tsc -p deploy/worker/tsconfig.json --noEmit",
     "check:web": "tsc -p web/tsconfig.xct.json",
-    "check": "pnpm build:packages && pnpm check:boundaries && pnpm check:api && pnpm check:worker && pnpm check:web",
+    "check:windy": "pnpm --filter @stations/windy-plugin check",
+    "build:windy": "pnpm --filter @stations/windy-plugin build",
+    "build:windy:check": "pnpm --filter @stations/windy-plugin build:check",
+    "check": "pnpm build:packages && pnpm check:boundaries && pnpm check:api && pnpm check:worker && pnpm check:web && pnpm check:windy",
     "test": "pnpm build:packages && node --test packages/*/test/*.test.mjs scripts/test/*.test.mjs deploy/worker/test/*.test.mjs",
-    "verify": "pnpm check && node --test packages/*/test/*.test.mjs scripts/test/*.test.mjs deploy/worker/test/*.test.mjs && node scripts/test-consumer.mjs",
+    "verify": "pnpm check && node --test packages/*/test/*.test.mjs scripts/test/*.test.mjs deploy/worker/test/*.test.mjs && node scripts/test-consumer.mjs && pnpm build:windy:check",
     "build:web": "pnpm build:packages && node scripts/build-web.mjs",
     "build": "pnpm build:packages && node scripts/build-web.mjs",
     "dev": "pnpm build:web && node scripts/serve-explorer.mjs",
@@ -45,6 +48,7 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
+      "@swc/core",
       "esbuild",
       "workerd"
     ]

@@ -133,6 +133,7 @@ export type {
 
 export { parseCatalogueNdjson, serializeCatalogueNdjson } from './ndjson.ts';
 export {
+  LIVE_CATALOGUE_PROFILE,
   toPublicCatalogueStation,
   toPublicStationCatalogue,
 } from './public-catalogue.ts';

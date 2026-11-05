@@ -53,6 +53,7 @@ pnpm catalogue:crawl -- --regions=US,CA,MX,AM,NZ --resume
 | `data/catalogue/stations.json` | Full public catalogue |
 | `data/catalogue/stations.geojson` | GeoJSON twin |
 | `data/catalogue/stations.ndjson.gz` | Compressed NDJSON |
+| `data/catalogue/stations.live.json.gz` | Lean wind-only catalogue for the browser plugin (locator-free, gzipped) |
 | `data/catalogue/launch-corridors.json` | Free-flight + near-launch subset |
 | `data/catalogue/regions/*` | Per-country shards |
 | `data/catalogue/vendors/*` | Per-vendor shards |
@@ -87,6 +88,42 @@ launch-corridor shard instead.
 Production runs the same handler in a Cloudflare Worker; see the
 [deployment guide](deploy.md) for the Worker entry, catalogue upload and
 secrets flow.
+
+## Windy private plugin
+
+The consumer app in [`plugins/windy`](../plugins/windy/src/plugin.svelte) adds
+station observations to Windy's existing map. It uses the public Stations API;
+provider credentials stay on the Worker. Its bounded request scheduler is owned
+by [`data.ts`](../plugins/windy/src/data.ts), independently of the explorer.
+
+Build the libraries, then set `STATIONS_API_BASE_URL` to the real HTTPS Worker
+origin plus `/api/stations` and run `pnpm --filter @stations/windy-plugin start`.
+Open [Windy developer mode](https://www.windy.com/developer-mode), trust the local
+development certificate, and load `https://localhost:9999/plugin.js`. The API must
+also be HTTPS and allow Windy's cross-origin requests; plain HTTP localhost is
+not a suitable API base from an HTTPS Windy page.
+
+`pnpm --filter @stations/windy-plugin build` produces `plugins/windy/dist/` and
+requires that environment variable. `build:check` uses a non-routable test URL
+for CI bundle checks, not a working pilot artifact. Check map markers, units,
+partial failures, background/resume and close/reopen in Windy before sharing.
+Markers use current observations rather than Windy's forecast time. Arrows point
+in the direction the wind blows; reported bearings identify where it comes from.
+Panning reuses
+recent and in-flight readings. Successfully checked readings are reused for two
+minutes; failures have separate retry backoff. Displayed freshness reflects
+observation age, not the refresh interval. Badge colors follow Windy's host wind
+gradient, which is not a flight-safety recommendation. Windy's observation-badge
+color API is not documented as stable.
+
+Private publication is a manual workflow in
+[`windy-plugin.yml`](../.github/workflows/windy-plugin.yml), not part of Worker
+deployment. It requires a Windy Plugins API key stored as `WINDY_API_KEY` in
+GitHub secrets, along with `STATIONS_API_BASE_URL` for the real HTTPS API base.
+Confirm the API URL and plugin identity before running it.
+A private plugin is unlisted, not authenticated; sharing its installation URL
+does not restrict access to the underlying API. Publication and live Windy
+compatibility checks require the operator's account.
 
 ## Build and checks
 

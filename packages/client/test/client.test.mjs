@@ -330,6 +330,53 @@ test('client helpers can be destructured', async () => {
   assert.equal((await loadGeoJsonFeed()).features.length, 0);
 });
 
+test('cached feed and current responses keep cache residence in their freshness anchor', async () => {
+  const servedAt = '2026-10-26T18:05:00.000Z';
+  const observation = {
+    id: 'custom:a', name: 'A', sourceLabel: 'Test', pageUrl: null,
+    latitude: 40, longitude: 44, elevationM: null, timeZone: null,
+    capabilities: { gustLull: false, temperature: false, conditions: false, history: false },
+    samplingWindowSeconds: null, recommendedPollSeconds: 60, status: 'ok',
+    reading: {
+      observedAt: '2026-10-26T18:04:30Z', windAvgMps: 0, windDirectionDeg: null,
+      windGustMps: null, windLullMps: null, temperatureC: null, windChillC: null, conditions: null,
+    },
+    history: null,
+  };
+  let age = 60;
+  const client = createStationsClient({
+    baseUrl: '/api/stations',
+    fetch: async url => new Response(JSON.stringify(String(url).includes('/current')
+      ? { schemaVersion: STATION_SCHEMA_VERSION, servedAt, station: observation }
+      : { ...emptyFeed(servedAt), stations: [observation] }), { headers: { Age: String(age) } }),
+  });
+  const first = await client.loadFeed();
+  assert.equal(first.servedAt, '2026-10-26T18:06:00.000Z');
+  age = 180;
+  const replay = await client.loadFeed();
+  const current = await client.loadCurrent('custom:a');
+  assert.equal(replay.servedAt, '2026-10-26T18:08:00.000Z');
+  assert.equal(current.servedAt, replay.servedAt);
+  assert.equal(replay.stations[0].reading.observedAt, observation.reading.observedAt);
+  assert.equal(current.station.reading.observedAt, observation.reading.observedAt);
+  assert.equal(replay.stations[0].reading.windAvgMps, 0);
+});
+
+test('malformed cache age never corrupts a valid response or changes catalogue timestamps', async () => {
+  let age = '-5';
+  const client = createStationsClient({
+    baseUrl: '/api/stations',
+    fetch: async url => new Response(JSON.stringify(String(url).includes('/catalogue')
+      ? { schemaVersion: 1, generatedAt: '2026-10-26T18:05:00Z', regions: [], stations: [] }
+      : emptyFeed()), { headers: { Age: age } }),
+  });
+  for (age of ['-5', 'invalid', 'Infinity', '1e99', '999999999999999999999999999999']) {
+    assert.equal((await client.loadFeed()).servedAt, emptyFeed().servedAt);
+  }
+  age = '120';
+  assert.equal((await client.loadCatalogue()).generatedAt, '2026-10-26T18:05:00Z');
+});
+
 
 test('catalogue aliases resolve without overriding canonical IDs and all spatial methods share filters', () => {
   const base = INITIAL_SEED_STATIONS[0];
@@ -352,13 +399,14 @@ test('catalogue aliases resolve without overriding canonical IDs and all spatial
   }
 });
 
-test('viewport forwards category and launch selection to the client', async () => {
+test('viewport forwards category, launch and current-only selection to the client', async () => {
   let requested;
   const store = createViewportStationStore({
     client: { loadFeed: async query => { requested = query; return emptyFeed(); } },
-    categories: ['freeflight'], launch: 'launch',
+    categories: ['freeflight'], launch: 'launch', history: false,
   });
   await store.setViewport([43, 39, 45, 41]);
   assert.deepEqual(requested.categories, ['freeflight']);
   assert.equal(requested.launch, 'launch');
+  assert.equal(requested.history, false);
 });
