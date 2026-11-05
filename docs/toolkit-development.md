@@ -53,6 +53,7 @@ pnpm catalogue:crawl -- --regions=US,CA,MX,AM,NZ --resume
 | `data/catalogue/stations.json` | Full public catalogue |
 | `data/catalogue/stations.geojson` | GeoJSON twin |
 | `data/catalogue/stations.ndjson.gz` | Compressed NDJSON |
+| `data/catalogue/stations.live.json.gz` | Lean wind-only catalogue for the browser plugin (locator-free, gzipped) |
 | `data/catalogue/launch-corridors.json` | Free-flight + near-launch subset |
 | `data/catalogue/regions/*` | Per-country shards |
 | `data/catalogue/vendors/*` | Per-vendor shards |
@@ -106,8 +107,14 @@ not a suitable API base from an HTTPS Windy page.
 requires that environment variable. `build:check` uses a non-routable test URL
 for CI bundle checks, not a working pilot artifact. Check map markers, units,
 partial failures, background/resume and close/reopen in Windy before sharing.
-The arrows indicate the meteorological direction the wind comes **from**;
-measurements remain current when Windy's forecast slider moves.
+Markers use current observations rather than Windy's forecast time. Arrows point
+in the direction the wind blows; reported bearings identify where it comes from.
+Panning reuses
+recent and in-flight readings. Successfully checked readings are reused for two
+minutes; failures have separate retry backoff. Displayed freshness reflects
+observation age, not the refresh interval. Badge colors follow Windy's host wind
+gradient, which is not a flight-safety recommendation. Windy's observation-badge
+color API is not documented as stable.
 
 Private publication is a manual workflow in
 [`windy-plugin.yml`](../.github/workflows/windy-plugin.yml), not part of Worker

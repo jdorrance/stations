@@ -7,7 +7,7 @@ const config: ExternalPluginConfig = {
   title: 'Station observations',
   description: 'Live wind observations from weather stations.',
   author: 'Stations',
-  desktopUI: 'rhpane',
+  desktopUI: 'embedded',
   mobileUI: 'small',
   routerPath: '/stations-observations',
   private: true,

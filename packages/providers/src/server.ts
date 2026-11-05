@@ -1,22 +1,45 @@
 import * as upstream from '@azohra/meteo.station/server';
 import { providerFetch } from './transport.ts';
 
-/**
- * Upstream coalesces concurrent misses on the cache object's identity. A fresh
- * object per resolve keeps that map inside one load: a Worker request canceled
- * mid-fetch must not leave later requests awaiting its unsettled promise.
- */
-function detachInFlightCache(cache: upstream.FeedCache): upstream.FeedCache {
-  return {
-    get: key => cache.get(key),
-    put: (key, value, ttlSeconds) => cache.put(key, value, ttlSeconds),
+const requestCaches = new WeakMap<upstream.FeedCache, upstream.FeedCache>();
+
+/** One cache identity per operation: share misses within it, never its I/O with another request. */
+export function createRequestEnvironment(
+  environment?: upstream.ServerEnvironment,
+  cacheTimeoutMs = 100,
+): upstream.ResolvedEnvironment {
+  if (!Number.isFinite(cacheTimeoutMs) || cacheTimeoutMs < 0) {
+    throw new RangeError('cacheTimeoutMs must be a non-negative finite number');
+  }
+  const resolved = managedEnvironment(environment);
+  const cache = requestCaches.get(resolved.cache) ?? resolved.cache;
+  async function bestEffort<T>(load: () => Promise<T>, fallback: T): Promise<T> {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        Promise.resolve().then(load).catch(() => fallback),
+        new Promise<T>(resolve => { timer = setTimeout(() => resolve(fallback), cacheTimeoutMs); }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+  const scoped: upstream.FeedCache = {
+    get: key => bestEffort(() => cache.get(key), null),
+    put: (key, value, ttlSeconds) => bestEffort(() => cache.put(key, value, ttlSeconds), undefined),
   };
+  requestCaches.set(scoped, cache);
+  return { ...resolved, cache: scoped };
+}
+
+function managedEnvironment(environment?: upstream.ServerEnvironment): upstream.ResolvedEnvironment {
+  return upstream.resolveEnvironment({ ...environment, fetch: providerFetch(environment?.fetch) });
 }
 
 /** Preserve upstream environment contracts while sharing a managed transport. */
 export function resolveEnvironment(environment?: upstream.ServerEnvironment): upstream.ResolvedEnvironment {
-  const resolved = upstream.resolveEnvironment({ ...environment, fetch: providerFetch(environment?.fetch) });
-  return { ...resolved, cache: detachInFlightCache(resolved.cache) };
+  const resolved = managedEnvironment(environment);
+  return requestCaches.has(resolved.cache) ? resolved : createRequestEnvironment(resolved);
 }
 
 function withEnvironment<T extends { environment?: upstream.ServerEnvironment }>(options: T) {
@@ -35,7 +58,10 @@ export function defineStationAdapter<C, O extends upstream.StationAdapterOptions
 }
 
 export function createStationFeedHandler(options: upstream.StationFeedHandlerOptions): upstream.StationFeedHandler {
-  return upstream.createStationFeedHandler(withEnvironment(options));
+  return request => upstream.createStationFeedHandler({
+    ...options,
+    environment: createRequestEnvironment(options.environment),
+  })(request);
 }
 
 export function loadStationCurrent(options: upstream.LoadStationCurrentOptions) {

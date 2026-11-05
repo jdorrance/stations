@@ -70,5 +70,7 @@ reflect the upstream allowance and your account quota. A default limit is not a
 promise that every provider permits that volume.
 
 Upstream response caching and duplicate-load coalescing run above the
-transport, so cache hits do not consume a request slot. Retries never change
+transport, so cache hits do not consume a request slot. Coalescing shares an
+operation's cache identity through its adapters; separate HTTP requests never
+share pending I/O. Cache failures are bounded and best-effort. Retries never change
 observations, credentials, catalogue data or cache authorization scopes.

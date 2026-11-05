@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import { presentStation, safeSourceUrl, windDirectionRotation } from '../src/presentation.ts';
 
-const metric = { convertValue: value => `${value * 2} kt` };
+const metric = { convertNumber: value => value * 2, convertValue: value => `${value * 2} kt` };
 const entry = {
   station: { uid: 's1', vendor: 'windnerd', category: null, name: 'Station', elevationM: 0, pageUrl: 'https://example.com/station' },
   status: 'ok',
@@ -12,6 +13,13 @@ const entry = {
   },
   unavailable: null, error: null, servedAt: '2026-10-26T12:00:30Z', receivedAtMs: 1000,
 };
+
+test('badge styling uses Windy iconfont and no fixed speed palette', async () => {
+  const source = await readFile(new URL('../src/plugin.svelte', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /stations-marker-speed-\d/);
+  assert.match(source, /font:\s*10px\/10px iconfont/);
+  assert.match(source, /arrows point in the direction the wind blows/i);
+});
 
 test('source links accept only absolute HTTP and HTTPS URLs', () => {
   assert.equal(safeSourceUrl('https://example.com/a'), 'https://example.com/a');
@@ -41,11 +49,12 @@ test('zero is preserved independently of missing wind values', () => {
   assert.equal(noAverage.gust, '4 kt');
 });
 
-test('arrow rotation points toward the meteorological source direction', () => {
-  for (const direction of [0, 90, 180, 270]) {
+test('south-pointing glyph rotates from reported direction toward wind travel', () => {
+  for (const [direction, travel] of [[0, 180], [90, 270], [180, 0], [270, 90]]) {
     assert.equal(windDirectionRotation(direction), direction);
     const reading = { ...entry.observation.reading, windDirectionDeg: direction };
     assert.equal(presentStation({ ...entry, observation: { ...entry.observation, reading } }, metric, 1000).rotation, direction);
+    assert.equal((windDirectionRotation(direction) + 180) % 360, travel);
   }
   assert.equal(windDirectionRotation(360), 0);
   assert.equal(windDirectionRotation(-90), 270);
@@ -90,7 +99,7 @@ test('unavailable source links follow the source shown when there is no retained
 test('wind values are converted through the selected metric on each presentation', () => {
   const station = { ...entry, observation: { ...entry.observation, reading: { ...entry.observation.reading, windAvgMps: 3, windGustMps: 4 } } };
   assert.equal(presentStation(station, metric, 1000).average, '6 kt');
-  const other = { convertValue: value => `${value} m/s` };
+  const other = { convertNumber: value => value, convertValue: value => `${value} m/s` };
   assert.equal(presentStation(station, other, 1000).average, '3 m/s');
   assert.equal(presentStation(station, other, 1000).gust, '4 m/s');
 });

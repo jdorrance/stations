@@ -5,9 +5,10 @@
  * Inputs: the public catalogue in `data/catalogue/`, private locator
  * checkpoints in `.cache/stations-crawl/` (via `loadExplorerCatalogue`) and the
  * Worker name, bucket and key prefix from `wrangler.json`.
- * Outputs: `.cache/stations-deploy/stations.{hydrated.json,public.json,public.geojson}`
+ * Outputs: `.cache/stations-deploy/stations.{hydrated.json,public.json,public.geojson,live.json.gz}`
  * and, with `--upload` (remote R2) or `--local` (wrangler dev storage), the
- * same objects under the keys in `deploy/worker/catalogue.ts`.
+ * same objects under the keys in `deploy/worker/catalogue.ts`. The `.live.json.gz`
+ * object is the lean wind-only catalogue the browser plugin downloads.
  *
  * Usage: node scripts/export-deploy-catalogue.mjs [--upload | --local] [--out <dir>] [--min-stations <n>]
  */
@@ -15,7 +16,9 @@ import { chmodSync, mkdirSync, renameSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import { gzipSync } from 'node:zlib';
 import { catalogueToGeoJson, toPublicStationCatalogue } from '@stations/contracts';
+import { toLiveCatalogueDocument } from '@stations/providers';
 import { catalogueKeys } from '../deploy/worker/catalogue.ts';
 import { loadExplorerCatalogue } from './serve-explorer.mjs';
 import { readWorkerConfig, root, wrangler } from './workspace.mjs';
@@ -30,16 +33,18 @@ const CONTENT_TYPES = {
   hydrated: 'application/json; charset=utf-8',
   json: 'application/json; charset=utf-8',
   geojson: 'application/geo+json; charset=utf-8',
+  live: 'application/json; charset=utf-8',
 };
 
 const FILE_NAMES = {
   hydrated: 'stations.hydrated.json',
   json: 'stations.public.json',
   geojson: 'stations.public.geojson',
+  live: 'stations.live.json.gz',
 };
 
 /**
- * Serializes one hydrated catalogue into the three deploy artifacts. The public
+ * Serializes one hydrated catalogue into the four deploy artifacts. The public
  * documents are produced by the same contract functions the crawler and the API
  * handler use, so the Worker streams bytes identical to a handler response.
  * `minStations` lets a caller refuse to publish a crawl that shrank. Live
@@ -78,6 +83,13 @@ export function buildDeployArtifacts(catalogue, {
   if (publicDocument.generatedAt !== catalogue.generatedAt || geojson.generatedAt !== catalogue.generatedAt) {
     throw new Error('generatedAt differs between hydrated, public and GeoJSON documents');
   }
+  // The lean wind-only catalogue is pre-gzipped so the Worker only echoes stored
+  // bytes; the browser plugin downloads a fraction of the public catalogue.
+  const liveDocument = toLiveCatalogueDocument(publicDocument);
+  if (liveDocument.stations.some(station => Object.keys(station.locator).length > 0)) {
+    throw new Error('Live catalogue still contains locators');
+  }
+  const liveBytes = gzipSync(Buffer.from(JSON.stringify(liveDocument)));
   const hydratedText = JSON.stringify(document);
   const hydratedBytes = Buffer.byteLength(hydratedText);
   if (hydratedBytes > maxHydratedBytes) {
@@ -90,17 +102,19 @@ export function buildDeployArtifacts(catalogue, {
     generatedAt: catalogue.generatedAt,
     stations: catalogue.stations.length,
     hydratedStations: hydratedCount,
+    liveStations: liveDocument.stations.length,
     artifacts: [
       { kind: 'hydrated', text: hydratedText, contentType: CONTENT_TYPES.hydrated },
       { kind: 'json', text: JSON.stringify(publicDocument), contentType: CONTENT_TYPES.json },
       { kind: 'geojson', text: JSON.stringify(geojson), contentType: CONTENT_TYPES.geojson },
+      { kind: 'live', bytes: liveBytes, contentType: CONTENT_TYPES.live, contentEncoding: 'gzip' },
     ],
   };
 }
 
-function writePrivate(path, text) {
+function writePrivate(path, content) {
   const temporary = `${path}.tmp`;
-  writeFileSync(temporary, text, { mode: 0o600 });
+  writeFileSync(temporary, content, { mode: 0o600 });
   chmodSync(temporary, 0o600);
   renameSync(temporary, path);
 }
@@ -120,12 +134,13 @@ export function exportDeployCatalogue({
   const keys = catalogueKeys(target.prefix);
   const built = buildDeployArtifacts(loadExplorerCatalogue({ full: true }), { minStations });
   mkdirSync(outDir, { recursive: true, mode: 0o700 });
-  log(`Catalogue ${built.generatedAt}: ${built.stations} stations, ${built.hydratedStations} with private locators`);
+  log(`Catalogue ${built.generatedAt}: ${built.stations} stations, ${built.hydratedStations} with private locators, ${built.liveStations} in the lean catalogue`);
   const written = [];
   for (const artifact of built.artifacts) {
     const file = resolve(outDir, FILE_NAMES[artifact.kind]);
-    writePrivate(file, artifact.text);
-    log(`  ${FILE_NAMES[artifact.kind]}  ${(Buffer.byteLength(artifact.text) / 1_048_576).toFixed(1)} MiB`);
+    const content = artifact.text ?? artifact.bytes;
+    writePrivate(file, content);
+    log(`  ${FILE_NAMES[artifact.kind]}  ${(Buffer.byteLength(content) / 1_048_576).toFixed(1)} MiB`);
     written.push({ ...artifact, file, key: keys[artifact.kind] });
   }
   if (mode) {

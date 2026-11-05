@@ -10,7 +10,7 @@ provider API keys are Worker secrets mirrored from GitHub on every deploy.
 | Worker name, bindings, vars | [`wrangler.json`](../wrangler.json) | Infrastructure as code; dashboard edits are overwritten on deploy |
 | Worker code | [`deploy/worker/`](../deploy/worker/index.ts) | Routing in `router.ts`, R2 access in `catalogue.ts`, secrets in `credentials.ts` |
 | Explorer assets | `web/` (`index.html`, built `dist/`) | `pnpm build`; `web/.assetsignore` keeps sources out |
-| Catalogue objects | [`scripts/export-deploy-catalogue.mjs`](../scripts/export-deploy-catalogue.mjs) | Three objects under `vars.CATALOGUE_PREFIX` |
+| Catalogue objects | [`scripts/export-deploy-catalogue.mjs`](../scripts/export-deploy-catalogue.mjs) | Four objects under `vars.CATALOGUE_PREFIX` (`stations.hydrated.json`, `.public.json`, `.public.geojson`, `.live.json.gz`) |
 | Crawl checkpoints | [`scripts/sync-crawl-checkpoints.mjs`](../scripts/sync-crawl-checkpoints.mjs) | Private tarball in the same bucket |
 | Secrets | GitHub Actions secrets | Synced by [`scripts/sync-worker-secrets.mjs`](../scripts/sync-worker-secrets.mjs) |
 | Pipelines | [`.github/workflows/`](../.github/workflows/) | `ci.yml` verifies, `deploy.yml` ships `main`, `catalogue.yml` refreshes data |
@@ -73,15 +73,18 @@ workflow log; it is also shown in the Cloudflare dashboard under the Worker.
 
 ## Catalogue objects
 
-The Worker reads three objects from the bucket, keyed by
+The Worker reads four objects from the bucket, keyed by
 `vars.CATALOGUE_PREFIX` (`catalogue/stations` → `catalogue/stations.hydrated.json`,
-`.public.json`, `.public.geojson`):
+`.public.json`, `.public.geojson`, `.live.json.gz`):
 
 - **hydrated** — full catalogue with private adapter `locator` fields, loaded
   into memory for feeds and filtered queries. Never sent to clients.
 - **public JSON / GeoJSON** — sanitized documents streamed verbatim for the
   unfiltered `GET /api/stations/catalogue` (optionally `?format=geojson`), so
   the Worker never materialises them.
+- **live** — the lean wind-only catalogue, pre-gzipped; streamed with
+  `Content-Encoding: gzip` for `?profile=live` so the plugin downloads a
+  fraction of the public document.
 
 Publish them from a checkout that has the public catalogue in `data/catalogue/`
 and the private crawl checkpoints in `.cache/stations-crawl/`:
@@ -183,3 +186,26 @@ from `wrangler.json` and type-checks the Worker; rerun it after changing binding
 - Rate limits in the provider transport are per isolate. `maxFeedStations` (30)
   and the shared `createProviderFetch` (6 concurrent, 100 ms spacing) bound
   upstream fan-out per request.
+
+## Cache configuration
+
+Station snapshot behavior and policy defaults are owned by
+[Serving: caching](toolkit-serving.md#caching). Optional Worker variables map to
+the handler policy:
+
+- `STATION_CACHE_FRESH_SECONDS` / `STATION_CACHE_MAX_AGE_SECONDS`
+- `SONIC_CACHE_FRESH_SECONDS` / `SONIC_CACHE_MAX_AGE_SECONDS`
+- `CACHE_TIMEOUT_MS` (cache lookups)
+- `CACHE_FILL_TIMEOUT_MS` (background streaming fills)
+- `CATALOGUE_TIMEOUT_MS` (hydrated catalogue loads)
+
+`RESPONSE_CACHE_SECONDS` controls the short exact live-response fast path;
+`CATALOGUE_CACHE_SECONDS` controls public catalogue edge retention;
+`CATALOGUE_REVALIDATE_SECONDS` controls hydrated catalogue checks. Defaults are
+in [wrangler.json](../wrangler.json). Streaming fills and hydrated loads have
+independent deadlines so a short lookup budget does not abort large catalogue
+transfers. Zero disables the corresponding seconds-based cache (or checks
+every request for the revalidation interval).
+
+The `VERSION` metadata binding namespaces response entries per deployment.
+Background fills and refreshes use the current request's `ctx.waitUntil`.

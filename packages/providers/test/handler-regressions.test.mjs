@@ -171,3 +171,119 @@ test('invalid limits and incomplete near parameters cannot broaden expensive fee
     assert.equal((await handler(request(`feed?${query}`))).status, 400);
   }
 });
+
+test('the live profile serves a lean, locator-free catalogue', async () => {
+  const handler = createStationsApiHandler({
+    catalogue: catalogue([station('TEST', {
+      uid: 'awc:TEST', vendor: 'awc', nativeId: 'TEST', country: 'US',
+      launchContext: { nearestLaunchSlug: 'x', nearestLaunchName: 'X', distanceKm: 1, bearingDeg: 0 },
+      landform: 'ridge', tpiM: 12,
+      locator: { icaoId: 'TEST' },
+    })]),
+    basePath: '/api/stations',
+  });
+  const response = await handler(request('catalogue?profile=live'));
+  assert.equal(response.status, 200);
+  const body = await response.json();
+  assert.deepEqual(body.stations.map(entry => entry.uid), ['awc:TEST']);
+  assert.deepEqual(body.stations[0].locator, {});
+  assert.equal(body.stations[0].launchContext, undefined);
+  assert.equal(body.stations[0].landform, undefined);
+  assert.equal(body.stations[0].tpiM, undefined);
+});
+
+test('the live profile drops stations whose vendor has no live feed arm', async () => {
+  const handler = createStationsApiHandler({
+    catalogue: catalogue([station('one')]), // vendor 'custom' has no provider
+    basePath: '/api/stations',
+  });
+  const body = await (await handler(request('catalogue?profile=live'))).json();
+  assert.deepEqual(body.stations, []);
+});
+
+test('station snapshots skip repeated upstream loads and honour If-None-Match', async () => {
+  let fetches = 0;
+  const fetchImpl = async input => {
+    fetches += 1;
+    const url = String(input instanceof Request ? input.url : input);
+    if (url.includes('aviationweather.gov')) {
+      return new Response(JSON.stringify([
+        { icaoId: 'KSEA', lat: 47.45, lon: -122.31, obsTime: Math.floor(Date.now() / 1000), wdir: 210, wspd: 12, temp: 14.5, slp: 1016.2 },
+      ]), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    }
+    return new Response('offline', { status: 502 });
+  };
+  const handler = createStationsApiHandler({
+    catalogue: catalogue([station('KSEA', { uid: 'awc:KSEA', vendor: 'awc', nativeId: 'KSEA', country: 'US' })]),
+    basePath: '/api/stations',
+    environment: { fetch: fetchImpl, cache: memoryCache(), logger: () => {} },
+  });
+  const first = await handler(request('feed?ids=awc:KSEA&history=0'));
+  assert.equal(first.status, 200);
+  assert.ok(fetches > 0);
+  assert.equal((await first.clone().json()).stations[0].status, 'ok');
+  const etag = first.headers.get('ETag');
+  const firstFetches = fetches;
+
+  const second = await handler(request('feed?ids=awc:KSEA&history=0'));
+  assert.equal(second.status, 200);
+  assert.equal(second.headers.get('X-Feed-Cache'), 'hit');
+  assert.equal(fetches, firstFetches, 'a cached feed does not call upstream');
+
+  if (etag) {
+    const conditional = await handler(new Request(
+      'https://stations.test/api/stations/feed?ids=awc:KSEA&history=0',
+      { headers: { 'If-None-Match': etag } },
+    ));
+    assert.equal(conditional.status, 304);
+  }
+});
+
+test('toLiveCatalogueDocument keeps every live vendor and never leaks a locator', async () => {
+  const { toLiveCatalogueDocument, liveCatalogueVendors } = await import('../dist/index.js');
+  const vendors = liveCatalogueVendors();
+  const document = catalogue([
+    station('TEST', { uid: 'awc:TEST', vendor: 'awc', nativeId: 'TEST', locator: { icaoId: 'TEST' } }),
+    station('one'), // custom: no provider, must be dropped
+  ]);
+  const live = toLiveCatalogueDocument(document);
+  assert.deepEqual(live.stations.map(entry => entry.uid), ['awc:TEST']);
+  assert.ok(vendors.has('awc'));
+  assert.equal(vendors.has('custom'), false);
+  for (const entry of live.stations) {
+    assert.equal(Object.keys(entry.locator).length, 0);
+    assert.equal(entry.launchContext, undefined);
+  }
+});
+
+test('catalogue profile validation fails closed and keeps filtered live queries filtered', async () => {
+  const handler = createStationsApiHandler({
+    catalogue: catalogue([
+      station('TEST', { uid: 'awc:TEST', vendor: 'awc', nativeId: 'TEST', country: 'US' }),
+      station('ONE', { country: 'US' }), // custom vendor: dropped only by the live profile
+    ]),
+    basePath: '/api/stations',
+  });
+  assert.equal((await handler(request('catalogue?profile=nope'))).status, 400);
+  assert.equal((await handler(request('catalogue?profile=live&country=typo'))).status, 400);
+
+  const filtered = await handler(request('catalogue?profile=live&country=US'));
+  assert.equal(filtered.status, 200);
+  const body = await filtered.json();
+  assert.deepEqual(body.stations.map(entry => entry.uid), ['awc:TEST']);
+});
+
+test('a filtered live GeoJSON query returns the lean set, not the full catalogue', async () => {
+  const handler = createStationsApiHandler({
+    catalogue: catalogue([
+      station('TEST', { uid: 'awc:TEST', vendor: 'awc', nativeId: 'TEST', country: 'US' }),
+      station('ONE', { country: 'US' }),
+    ]),
+    basePath: '/api/stations',
+  });
+  const geojson = await handler(request('catalogue?profile=live&format=geojson'));
+  assert.equal(geojson.status, 200);
+  const body = await geojson.json();
+  assert.equal(body.type, 'FeatureCollection');
+  assert.deepEqual(body.features.map(feature => feature.properties.uid), ['awc:TEST']);
+});

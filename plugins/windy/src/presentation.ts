@@ -2,6 +2,8 @@ import { defaultCategoryForVendor, pilotFreshness } from '@stations/contracts';
 import type { WindyDataEntry } from './data.ts';
 
 export interface WindMetric {
+  readonly metric?: string;
+  convertNumber(value: number): number;
   convertValue(value: number): string;
 }
 
@@ -19,7 +21,7 @@ export function windDirectionRotation(direction: number | null): number | null {
   return direction === null || !Number.isFinite(direction) ? null : ((direction % 360) + 360) % 360;
 }
 
-export function presentStation(entry: WindyDataEntry, metric: WindMetric, nowMs: number) {
+export function presentMarker(entry: WindyDataEntry, nowMs: number) {
   const observation = entry.observation?.status === 'ok' ? entry.observation : null;
   const reading = observation?.reading ?? null;
   const ageMs = reading && entry.servedAt !== null && entry.receivedAtMs !== null
@@ -38,17 +40,24 @@ export function presentStation(entry: WindyDataEntry, metric: WindMetric, nowMs:
     : entry.status === 'unavailable' ? 'Unavailable'
     : entry.status === 'refresh-failed' ? 'Refresh failed'
     : 'Available';
-  const speed = (value: number | null | undefined) => value == null ? 'Not reported' : metric.convertValue(value);
-
   return {
     status,
     freshness,
     age: age === null ? 'Unknown age' : age === 0 ? 'Less than 1 min ago' : `${age} min ago`,
     observedAt: reading?.observedAt ?? null,
-    average: speed(reading?.windAvgMps),
-    gust: speed(reading?.windGustMps),
     direction: reading?.windDirectionDeg == null ? 'Not reported' : `${reading.windDirectionDeg}° from`,
     rotation: windDirectionRotation(reading?.windDirectionDeg ?? null),
+  };
+}
+
+export function presentStation(entry: WindyDataEntry, metric: WindMetric, nowMs: number) {
+  const observation = entry.observation?.status === 'ok' ? entry.observation : null;
+  const reading = observation?.reading ?? null;
+  const speed = (value: number | null | undefined) => value == null ? 'Not reported' : metric.convertValue(value);
+  return {
+    ...presentMarker(entry, nowMs),
+    average: speed(reading?.windAvgMps),
+    gust: speed(reading?.windGustMps),
     temperature: reading?.temperatureC == null ? 'Not reported' : `${reading.temperatureC} °C`,
     elevation: (observation?.elevationM ?? entry.station.elevationM) == null
       ? 'Not reported' : `${observation?.elevationM ?? entry.station.elevationM} m`,

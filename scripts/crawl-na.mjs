@@ -34,6 +34,7 @@ import {
   loadStationFeed,
   mergeDiscoveredStations,
   resolveEnvironment,
+  toLiveCatalogueDocument,
   toStationConfigs,
   unwrapAggregatorStation,
 } from '@stations/providers';
@@ -393,6 +394,10 @@ export async function crawlCatalogue(options = {}) {
   publishJson('stations.json', document, { stations: publicStations.length });
   publishJson('stations.geojson', catalogueToGeoJson(publicStations, generatedAt));
   publish('stations.ndjson.gz', gzipSync(Buffer.from(serializeCatalogueNdjson(publicStations))));
+  // Lean wind-only catalogue for the browser plugin; pre-gzipped so hosting it
+  // next to the full catalogue costs a fraction of the bytes.
+  const liveDocument = toLiveCatalogueDocument(document);
+  publish('stations.live.json.gz', gzipSync(Buffer.from(JSON.stringify(liveDocument))), { stations: liveDocument.stations.length });
 
   const corridorStations = publicStations.filter(station =>
     station.country === 'AM' ||

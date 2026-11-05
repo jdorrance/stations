@@ -30,11 +30,12 @@ function fakeStore(initial) {
   return store;
 }
 
-test('catalogueKeys derives the three object keys from the configured prefix', () => {
+test('catalogueKeys derives the four object keys from the configured prefix', () => {
   assert.deepEqual(catalogueKeys('catalogue/stations'), {
     hydrated: 'catalogue/stations.hydrated.json',
     json: 'catalogue/stations.public.json',
     geojson: 'catalogue/stations.public.geojson',
+    live: 'catalogue/stations.live.json.gz',
   });
 });
 
@@ -88,12 +89,49 @@ test('hydrated loader keeps the last document when a refresh fails and surfaces 
   await assert.rejects(invalid(), /not a station catalogue document/);
 });
 
+test('hydrated revalidation serves the last document immediately and belongs to the current request', async () => {
+  let nowMs = 0;
+  const store = fakeStore({ hydrated: { etag: '"v1"', text: JSON.stringify(DOCUMENT) } });
+  const load = createHydratedCatalogueLoader({ store, key: 'hydrated', revalidateMs: 1000, now: () => nowMs });
+  const first = await load();
+  let release;
+  const head = store.head;
+  store.head = async key => {
+    await new Promise(resolve => { release = resolve; });
+    return head(key);
+  };
+  store.objects.set('hydrated', { etag: '"v2"', text: JSON.stringify({ ...DOCUMENT, generatedAt: '2026-10-28T00:00:00Z' }) });
+  nowMs = 1000;
+  const tasks = [];
+  const context = { waitUntil: task => tasks.push(task) };
+  assert.equal(await load(context), first, 'foreground does not await R2');
+  assert.equal(await load(context), first);
+  assert.equal(tasks[0], tasks[1], 'concurrent refresh callers share bounded work');
+  release();
+  await Promise.all(tasks);
+  const refreshed = await load();
+  assert.notEqual(refreshed, first);
+  assert.equal(refreshed.generatedAt, '2026-10-28T00:00:00Z');
+});
+
+test('a stalled catalogue load times out and permits a later retry', async () => {
+  const store = fakeStore({ hydrated: { etag: '"v1"', text: JSON.stringify(DOCUMENT) } });
+  const get = store.get;
+  store.get = () => new Promise(() => {});
+  const load = createHydratedCatalogueLoader({ store, key: 'hydrated', timeoutMs: 5 });
+  await assert.rejects(load(), /timed out/);
+  store.get = get;
+  assert.equal((await load()).generatedAt, DOCUMENT.generatedAt);
+  assert.throws(() => createHydratedCatalogueLoader({ store, key: 'x', revalidateMs: -1 }), /timings/);
+});
+
 test('getPublicCatalogueObject forwards If-None-Match and reports matches as a null body', async () => {
   const store = fakeStore({ pub: { etag: '"p1"', text: '{}' } });
 
   const fresh = await getPublicCatalogueObject(store, 'pub', null);
   assert.equal(fresh.etag, '"p1"');
   assert.equal(fresh.size, 2);
+  assert.equal(fresh.contentEncoding, null);
   assert.ok(fresh.body instanceof ReadableStream);
   assert.equal(await new Response(fresh.body).text(), '{}');
 
@@ -101,6 +139,11 @@ test('getPublicCatalogueObject forwards If-None-Match and reports matches as a n
   assert.equal(matched.body, null);
   assert.equal(matched.etag, '"p1"');
   assert.deepEqual(store.calls.at(-1), ['get', 'pub', '"p1"']);
+
+  // A `.gz` key is reported as gzip-coded so the router can echo it.
+  const gzStore = fakeStore({ 'pub.gz': { etag: '"gz"', text: 'compressed' } });
+  const gz = await getPublicCatalogueObject(gzStore, 'pub.gz', null);
+  assert.equal(gz.contentEncoding, 'gzip');
 
   assert.equal(await getPublicCatalogueObject(store, 'absent', null), null);
 });
