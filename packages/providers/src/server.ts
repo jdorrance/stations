@@ -1,7 +1,10 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import * as upstream from '@azohra/meteo.station/server';
+import { withDeadline } from './deadline.ts';
 import { providerFetch } from './transport.ts';
 
 const requestCaches = new WeakMap<upstream.FeedCache, upstream.FeedCache>();
+const requestScope = new AsyncLocalStorage<upstream.FeedCache>();
 
 /** One cache identity per operation: share misses within it, never its I/O with another request. */
 export function createRequestEnvironment(
@@ -14,14 +17,10 @@ export function createRequestEnvironment(
   const resolved = managedEnvironment(environment);
   const cache = requestCaches.get(resolved.cache) ?? resolved.cache;
   async function bestEffort<T>(load: () => Promise<T>, fallback: T): Promise<T> {
-    let timer: ReturnType<typeof setTimeout> | undefined;
     try {
-      return await Promise.race([
-        Promise.resolve().then(load).catch(() => fallback),
-        new Promise<T>(resolve => { timer = setTimeout(() => resolve(fallback), cacheTimeoutMs); }),
-      ]);
-    } finally {
-      clearTimeout(timer);
+      return await withDeadline(Promise.resolve().then(load), cacheTimeoutMs, 'Cache timed out');
+    } catch {
+      return fallback;
     }
   }
   const scoped: upstream.FeedCache = {
@@ -57,11 +56,25 @@ export function defineStationAdapter<C, O extends upstream.StationAdapterOptions
   });
 }
 
-export function createStationFeedHandler(options: upstream.StationFeedHandlerOptions): upstream.StationFeedHandler {
-  return request => upstream.createStationFeedHandler({
-    ...options,
-    environment: createRequestEnvironment(options.environment),
-  })(request);
+export function createStationFeedHandler(
+  options: upstream.StationFeedHandlerOptions,
+  cacheTimeoutMs = 100,
+): upstream.StationFeedHandler {
+  const base = managedEnvironment(options.environment);
+  const environment: upstream.ServerEnvironment = {
+    fetch: base.fetch,
+    logger: base.logger,
+    userAgent: base.userAgent,
+    now: base.now,
+    get cache() {
+      return requestScope.getStore() ?? base.cache;
+    },
+  };
+  const handler = upstream.createStationFeedHandler({ ...options, environment });
+  return request => {
+    const scoped = createRequestEnvironment(base, cacheTimeoutMs);
+    return requestScope.run(scoped.cache, () => handler(request));
+  };
 }
 
 export function loadStationCurrent(options: upstream.LoadStationCurrentOptions) {

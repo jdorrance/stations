@@ -1,4 +1,5 @@
 import { CATALOGUE_SCHEMA_VERSION, type StationCatalogueDocument } from '@stations/contracts';
+import { withDeadline } from './deadline.ts';
 
 /**
  * Catalogue objects published to the R2 bucket by `scripts/export-deploy-catalogue.mjs`.
@@ -108,7 +109,7 @@ export function createHydratedCatalogueLoader(
   }
   const now = options.now ?? Date.now;
   let loaded: LoadedCatalogue | null = null;
-  let inflight: Promise<StationCatalogueDocument> | null = null;
+  let pending: Promise<StationCatalogueDocument> | null = null;
 
   async function refresh(): Promise<LoadedCatalogue> {
     const previous = loaded;
@@ -126,39 +127,37 @@ export function createHydratedCatalogueLoader(
     return { doc, etag: object.httpEtag, checkedAt: now() };
   }
 
-  return (context = {}) => {
-    if (loaded && now() - loaded.checkedAt < revalidateMs) return Promise.resolve(loaded.doc);
-    inflight ??= boundedRefresh()
-      .catch((error: unknown) => {
-        if (!loaded) throw error;
-        loaded = { ...loaded, checkedAt: now() };
-        return loaded.doc;
-      })
-      .finally(() => {
-        inflight = null;
-      });
-    if (context.waitUntil) {
-      context.waitUntil(inflight);
-      if (loaded) return Promise.resolve(loaded.doc);
-    }
-    return inflight;
-  };
-
-  async function boundedRefresh(): Promise<StationCatalogueDocument> {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    try {
-      const next = await Promise.race([
-        refresh(),
-        new Promise<never>((_, reject) => {
-          timer = setTimeout(() => reject(new Error('Catalogue refresh timed out')), timeoutMs);
-        }),
-      ]);
+  function begin(): Promise<StationCatalogueDocument> {
+    const run = refresh().then(next => {
       loaded = next;
       return next.doc;
-    } finally {
-      if (timer !== undefined) clearTimeout(timer);
-    }
+    }).catch((error: unknown) => {
+      if (!loaded) throw error;
+      loaded = { ...loaded, checkedAt: now() };
+      return loaded.doc;
+    });
+    const tracked = run.finally(() => {
+      if (pending === tracked) pending = null;
+    });
+    pending = tracked;
+    return tracked;
   }
+
+  return (context = {}) => {
+    if (loaded && now() - loaded.checkedAt < revalidateMs) return Promise.resolve(loaded.doc);
+    const current = pending ?? begin();
+    if (context.waitUntil) {
+      context.waitUntil(current);
+      if (loaded) return Promise.resolve(loaded.doc);
+    }
+    return withDeadline(current, timeoutMs, 'Catalogue refresh timed out').catch((error: unknown) => {
+      if (error instanceof Error && error.message === 'Catalogue refresh timed out') {
+        if (pending === current) pending = null;
+        if (loaded) return loaded.doc;
+      }
+      throw error;
+    });
+  };
 }
 
 /**

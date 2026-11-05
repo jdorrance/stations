@@ -114,6 +114,32 @@ test('hydrated revalidation serves the last document immediately and belongs to 
   assert.equal(refreshed.generatedAt, '2026-10-28T00:00:00Z');
 });
 
+test('a timed-out catalogue refresh applies a late success and still allows another attempt', async () => {
+  let nowMs = 0;
+  let release = () => {};
+  const store = fakeStore({ hydrated: { etag: '"v1"', text: JSON.stringify(DOCUMENT) } });
+  const load = createHydratedCatalogueLoader({
+    store, key: 'hydrated', revalidateMs: 1_000, timeoutMs: 15, now: () => nowMs,
+  });
+  assert.equal((await load()).generatedAt, DOCUMENT.generatedAt);
+  const get = store.get;
+  store.get = async (...args) => {
+    await new Promise(resolve => { release = resolve; });
+    return get(...args);
+  };
+  store.objects.set('hydrated', {
+    etag: '"v2"',
+    text: JSON.stringify({ ...DOCUMENT, generatedAt: '2026-10-28T00:00:00.000Z' }),
+  });
+  nowMs = 1_000;
+  assert.equal((await load()).generatedAt, DOCUMENT.generatedAt, 'a timed-out refresh keeps the previous document');
+  release();
+  for (let i = 0; i < 8; i++) await Promise.resolve();
+  const refreshed = await load();
+  assert.equal(refreshed.generatedAt, '2026-10-28T00:00:00.000Z');
+  assert.equal(store.calls.filter(([method]) => method === 'get').length, 2);
+});
+
 test('a stalled catalogue load times out and permits a later retry', async () => {
   const store = fakeStore({ hydrated: { etag: '"v1"', text: JSON.stringify(DOCUMENT) } });
   const get = store.get;

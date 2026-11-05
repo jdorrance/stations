@@ -126,23 +126,11 @@ export function createWorkerRouter(deps: WorkerRouterDeps): (request: Request, c
       key = new Request(new URL(`/__stations-cache/${await scope}/live/${await identity(canonical.pathname + canonical.search)}`, url));
       const hit = await cachedResponse(deps.responseCache, key, now(), cacheTimeoutMs);
       if (hit && (!catalogueRevision || hit.headers.get('X-Station-Catalogue-Revision') === catalogueRevision)) {
-        try {
-          const document = await hit.json() as { servedAt: string };
-          if (typeof document.servedAt === 'string') {
-            document.servedAt = new Date(now()).toISOString();
-            const headers = new Headers(hit.headers);
-            headers.delete('Content-Length');
-            headers.set('Age', '0');
-            headers.set('X-Response-Cache', 'hit');
-            headers.set('X-Station-Cache', 'hit');
-            if (headers.has('X-Feed-Cache')) headers.set('X-Feed-Cache', 'hit');
-            if (context.waitUntil) context.waitUntil(loadHydrated(context).catch(() => {}));
-            return conditionalResponse(new Response(JSON.stringify(document), { headers }), request);
-          }
-        } catch {
-          // Corrupt/obsolete response: rebuild through the handler.
-        }
+        hit.headers.set('X-Response-Cache', 'hit');
+        if (context.waitUntil) context.waitUntil(loadHydrated(context).catch(() => {}));
+        return conditionalResponse(hit, request);
       }
+      if (hit) void hit.body?.cancel();
     }
     const response = await apiHandler(request, context);
     if (key && !isHead) {

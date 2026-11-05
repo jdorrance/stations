@@ -65,6 +65,40 @@ test('a retained refresh-failed reading replays without flashing an error on war
   data.destroy();
 });
 
+test('hydrate drops a reading whose station payload fails validation', async () => {
+  const wall = Date.now();
+  const feeds = [];
+  const store = createMemorySnapshotStore({
+    version: 1,
+    savedAtWallMs: wall,
+    catalogue: document([station('a')]),
+    readings: [{
+      uid: 'a', status: 'ok', observation: { id: 'broken' }, unavailable: null,
+      servedAt: '2026-10-26T12:00:00Z', receivedAtWallMs: wall, checkedAtWallMs: wall,
+      retryAtWallMs: 0, failures: 0,
+    }],
+  });
+  const data = createWindyData({
+    client: {
+      async loadCatalogueResult() { return { data: document([station('a')]), error: null }; },
+      async loadFeedResult(query) {
+        feeds.push(query.ids);
+        return { data: null, error: { kind: 'timeout', message: 'slow' } };
+      },
+    },
+    onChange() {},
+    snapshotStore: store,
+    ...clock(),
+  });
+  data.setViewport({ west: -180, south: -90, east: 180, north: 90 });
+  data.resume();
+  await flush();
+  const entry = data.getSnapshot().entries.find(item => item.station.uid === 'a');
+  assert.equal(entry?.observation ?? null, null);
+  assert.deepEqual(feeds, [['a']]);
+  data.destroy();
+});
+
 test('a warm snapshot persists back through the same store', async () => {
   const store = createMemorySnapshotStore();
   const data = createWindyData({

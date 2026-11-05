@@ -154,8 +154,9 @@ test('current response hits avoid catalogue hydration and preserve actual observ
   const response = await router(request(path));
   const second = await response.json();
   assert.equal(response.headers.get('X-Response-Cache'), 'hit');
-  assert.equal(response.headers.get('Age'), '0');
-  assert.equal(second.servedAt, new Date(nowMs).toISOString());
+  assert.equal(response.headers.get('Age'), '2');
+  assert.equal(response.headers.get('X-Station-Cache'), 'fill');
+  assert.equal(second.servedAt, first.servedAt);
   assert.equal(second.station.reading.observedAt, first.station.reading.observedAt);
   assert.equal(hydratedLoads(), 1, 'cache hit precedes hydrated catalogue access');
   nowMs += 3000;

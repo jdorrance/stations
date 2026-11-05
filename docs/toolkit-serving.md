@@ -138,14 +138,17 @@ archive and live-stream obligations remain independent.
 
 Live responses use `Cache-Control: no-store` and a new `servedAt` envelope on
 every assembly, preserving upstream `observedAt`. ETags validate observations,
-not assembly time. `X-Station-Cache` reports `hit`, `stale` or `miss`; the browser
-client also incorporates HTTP `Age` when consuming externally cached envelopes.
+not assembly time. `X-Station-Cache` reports `hit` (fresh snapshot), `fill`
+(stored by this request), `stale` (retained while a refresh runs), or `miss`
+(nothing reusable). The browser client adds HTTP `Age` to `servedAt` when an
+external cache replays an envelope.
 Cache age is separate from [measurement freshness](toolkit-contracts.md#freshness).
 
 The repository Worker additionally caches public catalogue streams and short
 exact `/current` or `ids` + `history=0` JSON responses before catalogue hydration.
-It re-anchors live envelopes and caps their TTL by remaining snapshot freshness;
-stale/unavailable data is not stored in this response cache. The namespace
+It serves the stored envelope unchanged and reports residence in `Age`. Storage
+requires a snapshot for every selected station, and the TTL ends at the soonest
+snapshot expiry. The namespace
 includes deployment identity, credentials and policy. A new isolate can serve
 an entry from the same deployment before learning an out-of-band R2 revision,
 for at most the configured short response TTL. Hits schedule catalogue checks;

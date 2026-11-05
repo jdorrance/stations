@@ -1,12 +1,11 @@
+import { AsyncLocalStorage } from 'node:async_hooks';
 import {
   loadStationCurrent,
   loadStationFeed,
   type ServerEnvironment,
+  type StationConfigInput,
 } from '@azohra/meteo.station/server';
-import {
-  createStationFeedHandler,
-  createRequestEnvironment,
-} from './server.ts';
+import { createStationFeedHandler } from './server.ts';
 import {
   catalogueToGeoJson,
   defaultCategoryForVendor,
@@ -188,6 +187,22 @@ export function createStationsApiHandler(
   const stationCache = createStationCache(options.environment, options.cachePolicy);
   const cacheScope = cacheIdentity(JSON.stringify([options.credentials ?? {}, options.cachePolicy ?? {}]));
   const stationKeys = new WeakMap<CatalogueStation, Promise<string>>();
+  const feedRequests = new AsyncLocalStorage<{ stations: StationConfigInput[]; primaryStationId?: string }>();
+  const delegate = createStationFeedHandler({
+    stations: () => feedRequests.getStore()?.stations ?? [],
+    get primaryStationId() {
+      return feedRequests.getStore()?.primaryStationId;
+    },
+    environment: options.environment,
+    basePath: normalizedBase ?? undefined,
+    maxHistoryHours: options.maxHistoryHours,
+    cors: corsOrigin,
+    cacheControl: (route, maxAgeSeconds) => (
+      route === 'feed' || route === 'current'
+        ? 'no-store'
+        : `public, max-age=${Math.round(maxAgeSeconds)}`
+    ),
+  }, stationCache.cacheTimeoutMs);
 
   /**
    * Resolves the index for the request's catalogue revision. `profile=live`
@@ -555,11 +570,11 @@ export function createStationsApiHandler(
     if (includeHistory === false) url.searchParams.delete('history');
     const geojsonFeed = isFeedRoute && url.searchParams.get('format') === 'geojson';
     const currentRoute = pathname.endsWith('/current');
-    const environment = createRequestEnvironment(options.environment, stationCache.cacheTimeoutMs);
+    const tracked = isFeedRoute || currentRoute;
     const results: StationCacheResult[] = [];
     const batches = new Map<string, Promise<void>>();
     const configs = toStationConfigs(capped, options.credentials);
-    const stationConfigs = isFeedRoute || currentRoute ? configs.map((config, i) => ({
+    const stationConfigs: StationConfigInput[] = tracked ? configs.map((config, i) => ({
       vendor: 'custom' as const,
       id: config.id,
       name: config.name,
@@ -568,7 +583,7 @@ export function createStationsApiHandler(
       elevationM: config.elevationM,
       timeZone: config.timeZone,
       pageUrl: config.pageUrl,
-      load: async (loadContext: { mode: 'current' | 'full'; historyHours: number }) => {
+      load: async loadContext => {
         const station = capped[i]!;
         const mode = includeHistory === false ? 'current' : loadContext.mode;
         let identity = stationKeys.get(station);
@@ -578,6 +593,7 @@ export function createStationsApiHandler(
         }
         const key = `station/v1/${await cacheScope}/${catalogueDoc.generatedAt}/${await identity}/${mode}/${mode === 'full' ? loadContext.historyHours : ''}`;
         const result = await stationCache.read(key, station, async () => {
+          const environment = loadContext.environment;
           // Only cache misses enter this vendor barrier; other vendors start immediately.
           if (station.vendor === 'awc' || station.vendor === 'synoptic') {
             let batch = batches.get(station.vendor);
@@ -597,15 +613,6 @@ export function createStationsApiHandler(
         return result.station;
       },
     })) : configs;
-    const delegate = createStationFeedHandler({
-      stations: stationConfigs,
-      primaryStationId: capped[0]?.uid,
-      environment,
-      basePath: normalizedBase ?? undefined,
-      maxHistoryHours: options.maxHistoryHours,
-      cors: corsOrigin,
-      cacheControl: isFeedRoute || currentRoute ? 'no-store' : undefined,
-    });
     // Selection resolves aliases; the delegate must receive the canonical ID too.
     const stationParam = url.searchParams.get('station');
     if (stationParam && byUid.has(stationParam.trim())) {
@@ -614,14 +621,23 @@ export function createStationsApiHandler(
     const headers = new Headers(request.headers);
     // The delegate's ETag covers its JSON representation, not our GeoJSON metadata.
     if (geojsonFeed) headers.delete('If-None-Match');
-    const response = await delegate(new Request(url, { method: request.method, headers, signal: request.signal }));
-    if (isFeedRoute || currentRoute) {
-      const state = results.some(r => r.state === 'stale') ? 'stale'
-        : results.length > 0 && results.every(r => r.state === 'hit') ? 'hit' : 'miss';
-      const freshUntil = Math.min(...results.map(r => r.freshUntil));
+    const response = await feedRequests.run(
+      { stations: stationConfigs, primaryStationId: capped[0]?.uid },
+      () => delegate(new Request(url, { method: request.method, headers, signal: request.signal })),
+    );
+    if (tracked) {
+      const complete = results.length === capped.length && results.length > 0;
+      const state = !complete ? 'miss'
+        : results.some(result => result.state === 'stale') ? 'stale'
+        : results.every(result => result.state === 'hit') ? 'hit'
+        : results.every(result => result.state === 'hit' || result.state === 'fill') ? 'fill'
+        : 'miss';
+      const freshUntil = complete ? Math.min(...results.map(result => result.freshUntil)) : 0;
+      const clock = options.environment?.now?.().getTime() ?? Date.now();
+      const ttl = complete ? Math.max(0, Math.floor((freshUntil - clock) / 1000)) : 0;
       response.headers.set('X-Station-Cache', state);
       if (isFeedRoute) response.headers.set('X-Feed-Cache', state);
-      response.headers.set('X-Station-Cache-Ttl', results.length ? String(Math.max(0, Math.floor((freshUntil - environment.now().getTime()) / 1000))) : '0');
+      response.headers.set('X-Station-Cache-Ttl', String(ttl));
       response.headers.set('X-Station-Catalogue-Revision', catalogueDoc.generatedAt);
       response.headers.set('Access-Control-Expose-Headers', 'Age, ETag, X-Station-Cache');
     }

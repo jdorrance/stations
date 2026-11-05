@@ -48,6 +48,11 @@ export function createMemorySnapshotStore(
   };
 }
 
+interface StoredReadings {
+  readonly savedAtWallMs: number;
+  readonly readings: readonly PersistedReading[];
+}
+
 export interface IndexedDbSnapshotStoreOptions {
   /** Database name. Default `stations-windy`. */
   readonly databaseName?: string;
@@ -85,36 +90,73 @@ export function createIndexedDbSnapshotStore(
     return database;
   };
 
-  const withStore = async <T>(mode: IDBTransactionMode, run: (store: IDBObjectStore) => IDBRequest<T>): Promise<T> => {
+  const readStore = async (): Promise<PersistedWindySnapshot | null> => {
     const db = await open();
-    return new Promise<T>((resolve, reject) => {
-      const transaction = db.transaction(storeName, mode);
-      const request = run(transaction.objectStore(storeName));
-      let result: T | undefined;
-      request.onsuccess = () => {
-        result = request.result;
-        // A read is durable on the request; a write must wait for the commit so
-        // a quota abort surfaces as a failure instead of a phantom success.
-        if (mode === 'readonly') resolve(result as T);
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readonly');
+      const store = transaction.objectStore(storeName);
+      const catalogueRequest = store.get('catalogue');
+      const readingsRequest = store.get('readings');
+      const legacyRequest = store.get('latest');
+      let catalogue: StationCatalogueDocument | undefined;
+      let readings: StoredReadings | undefined;
+      let legacy: PersistedWindySnapshot | undefined;
+      catalogueRequest.onsuccess = () => { catalogue = catalogueRequest.result; };
+      readingsRequest.onsuccess = () => { readings = readingsRequest.result; };
+      legacyRequest.onsuccess = () => { legacy = legacyRequest.result; };
+      transaction.oncomplete = () => {
+        if (catalogue && readings) {
+          storedCatalogueAt = catalogue.generatedAt;
+          resolve({
+            version: 1,
+            savedAtWallMs: readings.savedAtWallMs,
+            catalogue,
+            readings: readings.readings,
+          });
+          return;
+        }
+        resolve(legacy?.version === 1 && legacy.catalogue ? legacy : null);
       };
-      request.onerror = () => reject(request.error ?? new Error('indexedDB request failed'));
-      transaction.oncomplete = () => resolve(result as T);
       transaction.onabort = () => reject(transaction.error ?? new Error('indexedDB transaction aborted'));
+      transaction.onerror = () => reject(transaction.error ?? new Error('indexedDB request failed'));
     });
   };
+
+  // A write waits for commit so a quota abort surfaces as a failure.
+  const writeRecords = async (records: readonly (readonly [IDBValidKey, unknown])[]): Promise<void> => {
+    const db = await open();
+    await new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction(storeName, 'readwrite');
+      const store = transaction.objectStore(storeName);
+      for (const [key, value] of records) store.put(value, key);
+      store.delete('latest');
+      transaction.oncomplete = () => resolve();
+      transaction.onabort = () => reject(transaction.error ?? new Error('indexedDB transaction aborted'));
+      transaction.onerror = () => reject(transaction.error ?? new Error('indexedDB request failed'));
+    });
+  };
+
+  let storedCatalogueAt: string | null = null;
 
   return {
     async load() {
       try {
-        const value = await withStore<PersistedWindySnapshot | undefined>('readonly', store => store.get('latest'));
-        return value ?? null;
+        return await readStore();
       } catch {
         return fallback.load();
       }
     },
     async save(snapshot) {
       try {
-        await withStore('readwrite', store => store.put(snapshot, 'latest'));
+        const writeCatalogue = storedCatalogueAt !== snapshot.catalogue.generatedAt;
+        const records: (readonly [IDBValidKey, unknown])[] = [];
+        if (writeCatalogue) records.push(['catalogue', snapshot.catalogue]);
+        records.push(['readings', {
+          savedAtWallMs: snapshot.savedAtWallMs,
+          readings: snapshot.readings,
+        } satisfies StoredReadings]);
+        await writeRecords(records);
+        if (writeCatalogue) storedCatalogueAt = snapshot.catalogue.generatedAt;
       } catch {
         await fallback.save(snapshot);
       }

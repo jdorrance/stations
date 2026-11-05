@@ -118,6 +118,12 @@ export function selectWindyStations(
 
 const OBSERVATION_REFRESH_MS = 120_000;
 
+function retainedStation(value: Station | null): Station | null {
+  if (!value) return null;
+  const parsed = stationSchema.safeParse(value);
+  return parsed.success ? parsed.data : null;
+}
+
 type Retained = Omit<WindyDataEntry, 'station' | 'refreshing'> & { checkedAt: number; retryAt: number; failures: number };
 type Timer = ReturnType<typeof setTimeout>;
 
@@ -286,10 +292,14 @@ export function createWindyData(options: WindyDataOptions) {
         const base = now();
         for (const reading of persisted.readings) {
           if (!index.byUidMap.has(reading.uid)) continue;
+          const observation = retainedStation(reading.observation);
+          const unavailable = retainedStation(reading.unavailable);
+          if (reading.observation && !observation) continue;
+          if (reading.unavailable && !unavailable) continue;
           cache.set(reading.uid, {
             status: reading.status === 'refresh-failed' ? 'ok' : reading.status,
-            observation: reading.observation,
-            unavailable: reading.unavailable,
+            observation,
+            unavailable,
             error: null,
             servedAt: reading.servedAt,
             receivedAtMs: base - Math.max(0, wall - reading.receivedAtWallMs),
@@ -494,6 +504,17 @@ export function createWindyData(options: WindyDataOptions) {
     refresh() {
       if (suspended || destroyed) return;
       if (!index) { void hydrateFromStore(); return; }
+      const at = now();
+      for (const station of selected) {
+        if (inFlight.has(station.uid)) continue;
+        const value = cache.get(station.uid);
+        if (!value) continue;
+        touch(station.uid, { ...value, checkedAt: at - OBSERVATION_REFRESH_MS, retryAt: at });
+      }
+      if (catalogueError) {
+        catalogueFailures = 0;
+        void loadCatalogue();
+      }
       reconcile();
     },
     suspend() {

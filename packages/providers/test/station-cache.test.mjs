@@ -49,7 +49,7 @@ test('soft expiry serves immediately and leases one background refresh per key',
   const cache = createStationCache({ ...quiet, now: () => new Date(now), cache: storage() }, { freshSeconds: 2, maxAgeSeconds: 5 });
   const meta = station();
   const load = async () => observation(meta, ++loads);
-  assert.equal((await cache.read('one', meta, load)).state, 'miss');
+  assert.equal((await cache.read('one', meta, load)).state, 'fill');
   now += 1999;
   assert.equal((await cache.read('one', meta, load)).state, 'hit');
   assert.equal(loads, 1);
@@ -146,7 +146,7 @@ test('durable snapshots share success across cache instances and reject expired 
   const unavailable = unavailableStation(observation(), 'upstream_error');
   assert.equal((await createStationCache(env).read('one', station(), async () => unavailable)).station.status, 'unavailable');
   store.values.set('one', '{broken');
-  assert.equal((await createStationCache(env).read('one', station(), async () => observation())).state, 'miss');
+  assert.equal((await createStationCache(env).read('one', station(), async () => observation())).state, 'fill');
 });
 
 test('zero retention disables cache I/O and zero fresh time revalidates retained data', async () => {
@@ -224,7 +224,7 @@ test('current, overlapping feeds and GeoJSON share snapshots while preserving or
 
   document = { ...document, generatedAt: '2026-11-05T01:00:00Z', stations: document.stations.map(entry => ({ ...entry, name: `Updated ${entry.name}` })) };
   const revised = await handler(request('current?station=climatenet:2'));
-  assert.equal(revised.headers.get('X-Station-Cache'), 'miss');
+  assert.equal(revised.headers.get('X-Station-Cache'), 'fill');
   assert.equal((await revised.json()).station.name, 'Updated 2');
 });
 
@@ -280,9 +280,9 @@ test('history windows stay separate from current snapshots and equivalent hours 
   const full = await handler(request('feed?ids=climatenet:1&hours=1'));
   assert.equal((await full.json()).stations[0].history.points.length, 2);
   assert.equal((await handler(request('feed?ids=climatenet:1&hours=1.0'))).headers.get('X-Station-Cache'), 'hit');
-  assert.equal((await handler(request('feed?ids=climatenet:1&hours=2'))).headers.get('X-Station-Cache'), 'miss');
+  assert.equal((await handler(request('feed?ids=climatenet:1&hours=2'))).headers.get('X-Station-Cache'), 'fill');
   const current = await handler(request('feed?ids=climatenet:1&history=0'));
-  assert.equal(current.headers.get('X-Station-Cache'), 'miss');
+  assert.equal(current.headers.get('X-Station-Cache'), 'fill');
   assert.equal((await current.json()).stations[0].history, null);
   assert.equal((await handler(request('feed?ids=climatenet:1&hours=NaN'))).status, 400);
 });
@@ -302,11 +302,11 @@ test('shared storage never reuses station snapshots across credentials or cache 
   });
   for (const [secret, speed] of [['first-secret', 3], ['second-secret', 6]]) {
     const response = await create(secret)(request('current?station=wunderground:PWS'));
-    assert.equal(response.headers.get('X-Station-Cache'), 'miss');
+    assert.equal(response.headers.get('X-Station-Cache'), 'fill');
     assert.equal((await response.json()).station.reading.windAvgMps, speed);
   }
   const scoped = await create('first-secret', { freshSeconds: 1 })(request('current?station=wunderground:PWS'));
-  assert.equal(scoped.headers.get('X-Station-Cache'), 'miss');
+  assert.equal(scoped.headers.get('X-Station-Cache'), 'fill');
   const missing = await create(undefined)(request('current?station=wunderground:PWS'));
   assert.equal((await missing.json()).station.reason, 'not_configured');
   assert.deepEqual(keys, ['first-secret', 'second-secret']);

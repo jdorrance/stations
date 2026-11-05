@@ -1,3 +1,5 @@
+import { withDeadline } from './deadline.ts';
+
 /** Streaming edge responses; cache outages fall through to the source. */
 export interface EdgeResponseCache {
   match(key: Request): Promise<Response | undefined>;
@@ -14,8 +16,10 @@ export async function cachedResponse(
   now: number,
   timeoutMs = 100,
 ): Promise<Response | null> {
+  let match: Promise<Response | undefined> | undefined;
   try {
-    const response = cache ? await bounded(cache.match(key), timeoutMs) : undefined;
+    match = cache?.match(key);
+    const response = match ? await withDeadline(match, timeoutMs, 'Edge cache timed out') : undefined;
     if (!response) return null;
     const expiresAt = Number(response.headers.get(EXPIRES_AT));
     const storedAt = Number(response.headers.get(STORED_AT));
@@ -32,6 +36,7 @@ export async function cachedResponse(
     for (const name of [STORED_AT, EXPIRES_AT, CACHE_CONTROL]) headers.delete(name);
     return new Response(response.body, { status: response.status, headers });
   } catch {
+    if (match) void match.then(late => { void late?.body?.cancel(); }, () => {});
     return null;
   }
 }
@@ -63,24 +68,10 @@ export async function cacheResponse(
       },
       cancel: reason => reader.cancel(reason),
     }) : null;
-    await bounded(cache.put(key, new Response(body, { headers })), timeoutMs);
+    await withDeadline(cache.put(key, new Response(body, { headers })), timeoutMs, 'Edge cache timed out');
   } catch {
     void reader?.cancel().catch(() => {});
     // A failed cache fill must not discard a successful source response.
-  }
-}
-
-async function bounded<T>(task: Promise<T>, timeoutMs: number): Promise<T> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  try {
-    return await Promise.race([
-      task,
-      new Promise<never>((_, reject) => {
-        timer = setTimeout(() => reject(new Error('Edge cache timed out')), timeoutMs);
-      }),
-    ]);
-  } finally {
-    if (timer !== undefined) clearTimeout(timer);
   }
 }
 

@@ -276,7 +276,6 @@ test('a timed-out batch splits once and each half settles independently', async 
   await flush();
   assert.equal(requests.length, 3);
   assert.equal(store.getSnapshot().entries.filter(entry => entry.status === 'refresh-failed' && !entry.refreshing).length, 11);
-  store.refresh();
   await timer.advance(59_999);
   assert.equal(requests.length, 3);
   await timer.advance(1);
@@ -417,8 +416,6 @@ test('split retries share the physical concurrency limit with aborted requests',
   await flush();
   assert.equal(requests.length, 4);
   assert.equal(requests[3].query.ids.length, 13);
-  store.refresh();
-  assert.equal(requests.length, 4);
   requests[1].resolve(timeout);
   await flush();
   assert.equal(requests.length, 5);
@@ -433,7 +430,6 @@ for (const result of [failure, { data: null, error: { kind: 'network', message: 
     store.setViewport(box);
     store.resume();
     await flush();
-    store.refresh();
     await timer.advance(59_999);
     assert.equal(calls.filter(call => call.route === 'feed').length, 1);
     store.destroy();
@@ -493,7 +489,7 @@ for (const action of ['suspend', 'destroy']) {
   });
 }
 
-test('failed batches back off and refresh clicks coalesce without bypassing retry', async () => {
+test('refresh clicks coalesce in flight and retry a failure immediately', async () => {
   const pending = deferred();
   let calls = 0;
   const { store, timer } = setup([station('a')], () => { calls++; return calls === 1 ? pending.promise : Promise.resolve(failure); });
@@ -505,15 +501,12 @@ test('failed batches back off and refresh clicks coalesce without bypassing retr
   assert.equal(calls, 1);
   pending.resolve(failure);
   await flush();
-  store.refresh();
-  await timer.advance(59_999);
   assert.equal(calls, 1);
-  await timer.advance(1);
+  await timer.advance(59_999);
+  assert.equal(calls, 1, 'backoff holds until a refresh click or the deadline');
+  store.refresh();
+  await flush();
   assert.equal(calls, 2);
-  await timer.advance(119_999);
-  assert.equal(calls, 2);
-  await timer.advance(1);
-  assert.equal(calls, 3);
   store.destroy();
 });
 
@@ -535,18 +528,17 @@ test('a failed batch backs off without slowing successful stations', async () =>
   store.destroy();
 });
 
-test('manual refresh respects recently checked station budgets', async () => {
+test('a refresh click reloads a station inside the poll interval', async () => {
   const { store, timer, calls } = setup([station('a')]);
   store.setViewport(box);
   store.resume();
   await flush();
-  for (let i = 0; i < 10; i++) {
-    store.refresh();
-    await flush();
-  }
-  assert.equal(calls.filter(call => call.route === 'feed').length, 1);
-  await timer.advance(120_000);
+  store.refresh();
+  store.refresh();
+  await flush();
   assert.equal(calls.filter(call => call.route === 'feed').length, 2);
+  await timer.advance(120_000);
+  assert.equal(calls.filter(call => call.route === 'feed').length, 3);
   store.destroy();
 });
 

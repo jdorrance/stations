@@ -24,7 +24,7 @@ interface Snapshot {
 
 export interface StationCacheResult {
   readonly station: Station;
-  readonly state: 'hit' | 'stale' | 'miss';
+  readonly state: 'hit' | 'fill' | 'stale' | 'miss';
   readonly freshUntil: number;
 }
 
@@ -115,7 +115,7 @@ export function createStationCache(environment?: ServerEnvironment, policy: Stat
         if (context.waitUntil) context.waitUntil(write);
         else await write;
       }
-      return { station, state: 'miss', freshUntil: maxAgeSeconds > 0 ? snapshot.freshUntil : 0 };
+      return { station, state: maxAgeSeconds > 0 ? 'fill' : 'miss', freshUntil: maxAgeSeconds > 0 ? snapshot.freshUntil : 0 };
     }
 
     const stale = retained();
